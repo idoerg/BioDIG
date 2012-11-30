@@ -22,6 +22,7 @@ Not yet. Working on it. You can read the documentation in the trunk
 Instructions for fresh install of Django Based BioDIG Database.
 
 Prerequisites: (THIS IS THE HARDEST PART)
+
     Django - Web framework used for website -- https://docs.djangoproject.com/en/1.3/topics/install/
     
     PostgreSQL - database system used for website -- aptitude install postgresql-8.4
@@ -36,7 +37,8 @@ Prerequisites: (THIS IS THE HARDEST PART)
     GBrowse - genome browser used -- http://gmod.org/wiki/GBrowse_2.0_Install_HOWTO (WATCH FOR PREREQUISITES)
     
     Chado - database schema used for organism database 
-            -- http://gmod.svn.sourceforge.net/viewvc/gmod/schema/trunk/chado/INSTALL.Chado (You may only need the prerequisites with the dump)
+            -- http://gmod.svn.sourceforge.net/viewvc/gmod/schema/trunk/chado/INSTALL.Chado 
+            (You may only need the prerequisites with the dump)
     
     SQLite - database used to back GBrowse 
     	-- CPAN DBD::SQLite for adaptor
