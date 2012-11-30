@@ -1,0 +1,20 @@
+{% load template_tags %}
+<head>
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/images.css" type="text/css" />
+    <script type="text/javascript" src="{{ STATIC_URL }}js/imageUpdater/imageUpdater.js" ></script>
+</head>
+<div id="picturesDiv" style="height: 100%;">
+    <table>
+        <tbody></tbody>
+    </table>
+    <br clear="all" />
+</div>
+<script>
+	$('#picturesDiv').imageUpdater({
+		'staticUrl' : '{{ STATIC_URL }}',
+		'siteUrl' : '{{ SITE_URL }}',
+		'numPages' : {{ numPages }},
+		'picsPerPage' : {{ picsPerPage }},
+		'numImages' : {{ numImages }}
+	});
+</script>

@@ -1,0 +1,121 @@
+.workbench-area {
+	background-color: white;
+	border-radius: 7px 7px 7px 7px;
+	margin-top: 10px;
+}
+
+#work-area {
+	height: 570px;
+	width: 960px;
+}
+
+#center-work-area {
+	left: 20px;
+	position: relative;	
+	width: 975px;
+	display: table;
+}
+
+#left-toolbar {
+	margin-left: 10px;
+	width: 235px;
+	float: left;
+	margin-right: 10px;
+}
+
+.toolbar {
+	padding: 3px;	
+}
+
+.toolbar-header {
+	min-height: 25px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	border-bottom: 1px solid #CCC;
+}
+
+.toolbar-header:hover {
+	cursor: pointer;
+}
+
+.toolbar-header > div {
+	display: inline-block;
+}
+
+.collapse {
+	padding: 3px 5px 3px 8px;
+}
+
+.toolbar-title {
+	font-family: Lucida Grande;
+	font-size: 14px;
+}
+
+.toolbar-options {
+	color: #333333;
+    font-family: Lucida Grande;
+    font-size: 10px;
+    float: right;
+}
+
+.toolbar-options > span {
+	vertical-align: super;
+}
+
+.image-thumbnail-container {
+	overflow-y: auto;
+	min-height: 100px;
+	max-height: 250px;
+}
+
+.my-pictures-image-holder {
+	height: 87px;
+	width: 87px;
+	overflow: hidden;
+	display: inline-block;
+	padding: 5px;
+	background-color: #F5F5F5;
+}
+
+.my-pictures-image-holder:hover {
+	background-color: #AAAAAA;
+}
+
+.my-pictures-image {
+	position: relative;
+	display: block;
+}
+
+.my-pictures-image:hover {
+	cursor: pointer;
+}
+
+.edit-image-container {
+	z-index: 1000;
+	left: 0;
+	position: absolute;
+	padding: 15px;
+	display: none;
+}
+
+.edit-image-button > img {
+	height: 20px;
+	margin-left: -5px;
+	vertical-align: middle;
+}
+
+.top-right-float {
+    position: relative;
+    float: right;        
+    z-index: 2;
+}
+
+.delete-image-button {
+	position: absolute;
+	right: 0;	
+	display: none;
+}
+
+.delete-image-button:hover {
+	cursor: pointer;	
+}

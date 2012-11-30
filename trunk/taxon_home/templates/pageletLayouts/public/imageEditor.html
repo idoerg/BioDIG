@@ -1,0 +1,88 @@
+{% load template_tags %}
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/zoomable.css"></link>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/taggable.css"></link>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/menu.css"></link>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/downloadify/swfobject.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}js/downloadify/downloadify.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/kineticjs/kinetic-v3.10.0.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/zoomable.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/tagViewingUI/TaggableUtil.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/tagViewingUI/GeneLink.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/tagViewingUI/Tag.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/tagViewingUI/TagGroup.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/tagViewingUI/TagBoard.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/tagViewerUtil/DrawingAPI.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/MenuUI/MenuItem.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/MenuUI/MenuSection.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/MenuUI/Menu.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/DialogUI/PageBlock.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/tagViewingUI/DownloadImageDataDialog.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/tagViewingUI/ChangeCurrentTagGroupsDialog.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/tagViewerUtil/TaggerUI.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/tagViewer.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/DialogUI/HelpDialog.js"></script>
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/dialog.css" type="text/css" />
+    <!-- <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggable.min.js"></script> !-->
+	<style>
+		#helpBox {
+			font-size: 13px;
+			width: 700px;
+		}
+	</style>
+</head>
+<body>
+    <div id="image_container">
+        <div class="zoomable-left">
+            <img id="{{ image.pk }}" src="{{ MEDIA_URL }}{{image.imageName}}" alt="{{ image.altText }}"></img>
+        </div>
+        <div class="zoomable-right">
+            <div class="info-container">
+            </div>
+        </div>
+        <input id="tagGroups" value="{{ tagGroups }}" type="hidden" />
+        <input id="imageMetadata" value="{{ imageMetadata }}" type="hidden" />
+    </div>
+    <div id="helpBox">
+    	<div>
+			<p>
+				The Tag Viewer - You have selected an image. This image has <b>Tag Groups</b>, which are a collection of <b>Tags</b> or labeled structures
+				in the image. When starting you view <b>all</b> Tag Groups available. Let's get started.
+			</p>
+		</div>
+		<br />
+		<div> 
+			<div>Features</div>
+			<br />
+			<div style="padding-left: 10px;">1. Using the menu <b>Tag Groups</b>: Change Current Tag Groups, change the groups being viewed.</div>
+			<div style="padding-left: 10px;">2. Zoom in and out on the image in two ways: </div>
+			<div style="padding-left: 20px;">a. Mouse over the image and use the sliding bar that appears.</div>
+			<div style="padding-left: 20px;">b. Using the menu <b>Tools</b>, click "Zoom In" or "Zoom Out".</div>
+			<div style="padding-left: 10px;">3. Using the menu <b>Tools</b>: Toggle All Tag Visibility, make tags only visible when your mouse is over them.</div>
+			<br />
+			<div><b>Tag</b> Interface:</div>
+			<br />
+			<div style="padding-left: 10px;">1. Place your mouse over a highlighted <b>Tag</b> in the image to make information available to the right.</div>
+			<div style="padding-left: 10px;">2. Click a tag once to make the information permanent.</div>
+			<div style="padding-left: 10px;">3. Click a tag again to make the information disappear after your mouse leaves the tag.</div>
+			<div style="padding-left: 10px;">4. When Information on the right is available, click a gene link to redirect to that gene within the organism's genome.</div>
+		</div>
+    </div>
+</body>
+<script type="text/javascript">
+	var contents = $('#helpBox');
+	var helpDialog = new HelpDialog(new PageBlock(), 'Image Viewer', contents.show());
+	
+	$('#helpButton').click(function() {
+		helpDialog.show();
+	});
+	
+    $('#{{ image.pk }}').tagViewer({
+        originalData : $.parseJSON(unescape($.trim($('#tagGroups').val()))),
+        parent: $('#image_container'),
+        imagesUrl: '{{ STATIC_URL }}images/',
+        siteUrl: '{{ SITE_URL }}',
+        genomicInfo: $('#image_container').find('.info-container'),
+        imageMetadata: $.parseJSON(unescape($.trim($('#imageMetadata').val())))
+    });
+</script>

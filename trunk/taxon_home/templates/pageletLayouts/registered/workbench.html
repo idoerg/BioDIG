@@ -1,0 +1,250 @@
+{% load template_tags %}
+<head>
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/workbench.css" />
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/zoomable.css"></link>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/taggable.css"></link>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/collapser/collapser.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/kineticjs/kinetic-v3.10.0.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/zoomable.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggableUtil/Tag.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggableUtil/TaggableUtil.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggableUtil/TagBoard.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggableUtil/DrawingBoard.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggableUtil/DrawingAPI.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggableUtil/TaggerUI.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggable.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/webServiceClient/WebServiceClient.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/DialogUI/AreYouSureDialog.js"></script>
+</head>
+<body>
+	<div id="left-toolbar">
+		<div class="workbench-area toolbar">
+			<div class="toolbar-header">
+				<div><img class="collapse" src="{{ STATIC_URL }}images/arrow_down.png"></img></div>
+				<div><span class="toolbar-title">My Pictures</span></div>
+				<div class="toolbar-options">
+					<span>Public</span><input id="public-pictures" name="public-pictures" type="checkbox" checked="checked" />
+					<span>Private</span><input id="private-pictures" name="private-pictures" type="checkbox" checked="checked" />
+				</div>
+			</div>
+			<div class="toolbar-body">
+				<div class="image-thumbnail-container">
+					<div>
+					{% for image in myImages %}
+						<div class="my-pictures-image-holder">
+							<div class="top-right-float" title=".ui-icon-close">                        
+				                <span class="ui-state-default ui-corner-all ui-icon ui-icon-trash delete-image-button"></span> 
+				            </div>
+							<img src="{{ MEDIA_URL }}{{ image.image.imageName }}" name="{{ image.image.pk }}" class="{{ image.permissions }}-image my-pictures-image" />
+						</div>
+						
+					{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="workbench-area toolbar">
+			<div class="toolbar-header">
+				<div><img class="collapse" src="{{ STATIC_URL }}images/arrow_down.png"></img></div>
+				<div><span class="toolbar-title">Recently Viewed Images</span></div>
+			</div>
+			<div class="toolbar-body">
+				<div class="image-thumbnail-container">
+				
+				</div>
+			</div>
+		</div>
+		<div class="workbench-area toolbar">
+			<div class="toolbar-header">
+				<div><img class="collapse" src="{{ STATIC_URL }}images/arrow_down.png"></img></div>
+				<div><span class="toolbar-title">My Tags</span></div>
+				<div class="toolbar-options">
+					<span>Public</span><input id="public-tags" name="public-tags" type="checkbox" checked="checked" />
+					<span>Private</span><input id="private-tags" name="private-tags" type="checkbox" checked="checked" />
+				</div>
+			</div>
+			<div class="toolbar-body">
+				<div class="image-thumbnail-container">
+				
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="center-work-area">
+		<div id="header">Workbench</div>
+		<div id="work-area" class="workbench-area">
+			<div class="zoomable-left">
+	            
+	        </div>
+	        <div class="zoomable-right">
+	            <div class="info-container">
+	            </div>
+	        </div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	function ImageMetadataClient() {
+		this.client = new WebServiceClient('{{ SITE_URL }}images/getImageMetadata');
+	};
+
+	ImageMetadataClient.prototype.call = function(imageKey, callback) {
+		var args = {
+			imageKey: imageKey
+		};
+		
+		this.client.call(args, callback);
+	};
+
+	function GetTagsClient() {
+		this.client = new WebServiceClient('{{ SITE_URL }}images/getTags');
+	};
+
+	GetTagsClient.prototype.callback = function(data, textStatus, jqXHR, image, organismsList) {
+		var $workArea = $('#work-area');
+		$workArea.find('.info-container').empty();
+		$workArea.find('.toolbar-container').remove();
+		
+		// add workArea clone to the div
+		$workArea.find('.zoomable-left').html(image);
+		image.taggable({
+	        originalData: data.tags,
+	        parent: $workArea,
+	        imagesUrl: '{{ STATIC_URL }}images/',
+	        siteUrl: '{{ SITE_URL }}',
+	        alreadyLoaded: true,
+	        genomicInfo: $workArea.find('.info-container'),
+	        organisms: organismsList,
+	        callback: function() {
+		        var $editButton = $('<div class="edit-image-container"></div>');
+		        $editButton.append('<button class="edit-image-button"><img src="{{ STATIC_URL }}images/polygonButtonIcon.png"></img><span>Edit Image</span></button>');
+				image.parent().prepend($editButton);
+				image.parent().on('mouseover', function() {
+					$editButton.show();
+				});
+
+				image.parent().on('mouseout', function() {
+					$editButton.hide();
+				});
+	        } 
+	    });
+	};
+
+	GetTagsClient.prototype.call = function(imageKey, organismsList, image) {
+		var args = {
+			imageKey: imageKey
+		};
+
+		var self = this;
+		
+		this.client.call(args, function(data, textStatus, jqXHR) {
+			var scopedCallback = Util.scopeCallback(self, self.callback);
+			scopedCallback(data, textStatus, jqXHR, image, organismsList);
+		});
+	};
+</script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		// allows each of the toolbars to be collapsible
+		$('.toolbar-header').collapser({
+			selector: '.toolbar-body',
+			siblings: true
+		});
+	
+		// centers all of the images in there containers so that they fit correctly
+		$('.my-pictures-image').load(function() {
+			var $img = $(this);
+			var $parent = $img.parent();
+			var imgRatio = $img.width()/$img.height();
+			var containerRatio = $parent.width()/$parent.height();
+			if (imgRatio > containerRatio) {
+				$img.css('width', $parent.width());
+				var topVal = ($parent.height() - $img.height())/2;
+				$img.css('top', topVal);
+			}
+			else if (imgRatio <= containerRatio) {
+				$img.css('height', $parent.height());
+				var leftVal = ($parent.width() - $img.width())/2;
+				$img.css('left', leftVal);
+			}
+		});
+	
+		var areYouSureDialog = new AreYouSureDialog();
+	
+		// make the trash cans work on hover
+		$('.my-pictures-image').on('mouseenter', function() {
+			$(this).parent().find('.delete-image-button').show();
+		});
+	
+		$('.my-pictures-image').on('mouseout', function(event) {
+			if (!$(event.relatedTarget).hasClass('delete-image-button')) {
+				$(this).parent().find('.delete-image-button').hide();
+			}
+		});
+		
+		// calls the getTags web service for this image in order to
+		// get the tags for the picture and stores them in cache so
+		// that only a ping is needed for the next time
+		$('.my-pictures-image').on('click', function() {		
+			var $imgClone = $(this).clone();
+			$imgClone.attr('id', 'current-editing');
+			$imgClone.attr('class', '');
+			var key = $(this).attr('name');
+			
+			var getTagsClient = new GetTagsClient();
+			var getImageMetadataClient = new ImageMetadataClient();
+			
+			getImageMetadataClient.call(key, function(data, textStatus, jqXHR) {
+				getTagsClient.call(key, data.organisms, $imgClone);
+			});
+		});
+	
+		// trash cans should prompt the user to delete the image and this should pull up the
+		// dialog box asking if they are sure
+		$('.delete-image-button').on('click', function() {
+			// set the message of the AreYouSureDialog box
+			areYouSureDialog.setMessage("Are you sure you would like to delete this image?");
+			areYouSureDialog.setTitle("Delete Image");
+			var $self = $(this);
+			// open the AreYouSureDialog box which will call the specified function
+			// upon the click of a yes
+			areYouSureDialog.open(function() {
+				var $img = $self.parent().next('img');
+				var imageKey = $img.attr('name');
+				// calls the delete POST service in order to delete this image
+	            $.ajax({
+	                url: '{{ SITE_URL }}administration/deleteImage',
+	                type: 'POST',
+	                data: { imageKey: imageKey },
+	                context: document.body,
+	                success: function(data){
+	                    $img.parent().remove();
+	                    alert("Success!");
+	                },
+	                error: function() {
+						alert("Error");
+	                }
+	            });
+			});
+		});
+	
+		// check boxes should limit the field of my pictures to public and private
+		$('#public-pictures').on('click', function() {
+			if (!$(this).is(':checked')) {
+				$('.public-image').parent().hide('slow');
+			}
+			else {
+				$('.public-image').parent().show('slow');
+			}
+		});
+	
+		$('#private-pictures').on('click', function() {
+			if (!$(this).is(':checked')) {
+				$('.private-image').parent().hide('slow');
+			}
+			else {
+				$('.private-image').parent().show('slow');
+			}
+		});
+	});
+</script>

@@ -1,0 +1,25 @@
+        body {
+            background-color: lightgray;
+        }
+        
+        div#body_holder {
+            width: 100%;
+            height: 100%;
+            text-align: center;
+	}
+        
+        div#body_div {
+            background-color: white;
+            position: relative;
+            margin: 0 auto;
+            width: 960px;
+	    height: auto !important;
+	    min-height: 100%;
+	    box-shadow: 0px 0px 11px 4px #555555;
+	    -moz-box-shadow: 0px 0px 11px 4px #555555;
+	    -webkit-box-shadow: 0px 0px 11px 4px #555555;
+	    filter: progid:DXImageTransform.Microsoft.Shadow(color='#555555', Direction=90, Strength=5),
+		    progid:DXImageTransform.Microsoft.Shadow(color='#555555', Direction=-90, Strength=5);
+	    zoom: 1;
+	    text-align: left;
+        }

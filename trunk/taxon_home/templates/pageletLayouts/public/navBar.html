@@ -1,0 +1,81 @@
+<head>  
+	<link rel="shortcut icon" href="{{ MEDIA_URL }}{{ banner_url }}" />
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/navBar.css" type="text/css" />
+	<style>
+		.search_button {
+			background-image: url({{ STATIC_URL }}images/search.png);
+		}
+		
+		.search_button:hover {
+			background-image: url({{STATIC_URL}}images/search.png),  -webkit-gradient(linear, left top, left bottom, from(#6495ED), to(#2F5BB7));
+			background-image: url({{STATIC_URL}}images/search.png), -moz-linear-gradient(top, #6495ED, #2F5BB7); /* for firefox 3.6+ */
+		}
+	</style>
+	<script>
+		function logout(e) {
+			var form = document.createElement("form");
+			form.setAttribute("method", "post");
+			form.setAttribute("action", "{{ SITE_URL }}logout_handler/");
+			document.body.appendChild(form);
+			form.submit();
+        	}
+	</script>
+</head>
+<div id="banner"><img src="{{ STATIC_URL }}images/mycoplasma_banner.png" width="960px" alt="Banner" /></div>
+<div id="navbar">
+	<ul id="menu">    
+	{% for option in optionsList %}
+		<li class="menuItem">
+			<a{% if option.href %} href="{{ SITE_URL }}{{ option.href }}"{% endif %}><span>{{ option.optionName }}</span></a>              
+			<ul class = "dropDownMenu"> 
+			{% for dropDownItem in option.dropdownitem_set.all %}
+				<li class="dropDownItem">
+					<a{% if option.href %} href="{{ SITE_URL }}{{dropDownItem.href}}"{% endif %}>
+						<span> {{ dropDownItem.itemName }} </span>
+					</a>
+				</li>
+			{% endfor %}
+			</ul>      
+		</li>
+	{% endfor %}
+	</ul>
+	{% if addHelpButton %}
+		<div id="helpButton">
+			<span>Info</span>
+			<img src="{{ STATIC_URL }}images/info.png" />
+		</div>
+	{% endif %}
+</div>
+<div id="picture_buttons">
+	<div class="login_search" id="login">        
+	{% if user.is_authenticated %}
+		<div>
+			<ul id="user_options">
+				<li class="logged_in_title_left"><a href="{{ SITE_URL }}administration/">Administration</a></li>
+				<li class="logout"><a onclick="logout(event)">Log out</a></li> 
+			</ul>
+		</div>     
+	{% else %}
+	{% if is_admin_page %}
+		<form name="login" method="post" action="{{ SITE_URL }}login_handler/">
+			<table>       			
+				<tbody>
+					<tr> <td class="login_title">Username</td><td class="login_title">Password</td></tr>
+					<tr>
+						<td><input class="login_text" type="text" name="username" size="18"></td>
+						<td><input class="login_text" type="password" name="password" size="18"></td>
+						<td><input class="submit_button" id="login_submit" type="submit" name="submit" value="Login"></td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+	{% endif %}
+	{% endif %}
+	</div>
+	<div class="login_search">
+		<form id="search"  method="get" action="{{ SITE_URL }}search/">
+			<input type="text" name="search_val" id="search_val" />
+			<input type="submit" class="search_button" id="submit_search" name="submit_search" value="" />
+		</form>
+	</div>    
+</div>

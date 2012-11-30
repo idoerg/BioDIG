@@ -1,0 +1,75 @@
+{% load template_tags %}
+<head>
+	<script type="text/javascript" src="{{ STATIC_URL }}js/collapser/collapser.js" ></script>
+</head>
+<body>
+	<div>
+		<div id="collapse-holder-genomes" class="collapse_holder">
+		    <img class="collapse" id="collapse-genomes" src="{{ STATIC_URL }}images/arrow_down.png"></img>
+		    <span>Genome Results for {{ candidateInfo|getCommonNames }}</span>
+		</div>
+		<div id="collapsible-genomes">
+			<div id="genome-tabs" class="search-tabs">
+				<ul>
+            	{% for candidate in candidateInfo %}
+            		<li id="{{candidate.1}}-genome-tab"{% if forloop.counter0|isZero %}class="activeTab"{% endif %}>
+            			{{candidate.0|abbreviateCommonName}}
+            		</li>
+            	{% endfor %}
+            	</ul>
+			</div>
+			<div id="genome-search-content" class="search-content">
+				{% for candidate in candidateInfo %}
+            		<div id="{{candidate.1}}-genome-content" class="contentHolder{% if forloop.counter0|isZero %} activeContent{% endif %}">
+            			{% if candidate.1|isEmptyString %}                
+		                <div style="margin-top: 50px;"> Sorry there is no genome for this organism </div>
+		                {% else %}
+		                <iframe id="{{candidate.1}}" class="genome_browser" src="/gb2/gbrowse/organismId{{candidate.1}}/" width="100%" height="100%"></iframe>
+		                {% endif %}
+            		</div>
+            	{% endfor %} 
+			</div>
+	    </div>
+	</div>
+</body>
+<script type="text/javascript">
+	(function($) {
+		$(document).ready(function() {
+			$('#collapse-holder-genomes').collapser({
+				selector: '#collapsible-genomes'
+			});
+			
+			$('#image-tabs li').on('click', function() {
+				$('#image-tabs .activeTab').removeClass('activeTab');
+				$('#image-search-content .activeContent').removeClass('activeContent').hide();
+				
+				$(this).addClass('activeTab');
+				var contentId = $(this).attr('id').split('-')[0];
+				contentId = '#' + contentId + '-genome-content';
+				$(contentId).addClass('activeContent').show();
+			});
+
+			$(window).load(function() { 
+		        var genome_browser = $('.genome_browser');     
+		        genome_browser.contents().find(".datatitle").hide();
+		        //genome_browser.contents().find("#banner_panel").hide();
+		        genome_browser.contents().find("#tabbed_menu").hide();
+		        genome_browser.contents().find("#banner_panel_hide").parent().hide();
+		        genome_browser.contents().find("#main").children('p').hide();
+		        genome_browser.contents().find("#source_form").parent().hide();
+		        genome_browser.contents().find("#plugin_form").parent().hide();
+		        $('#genome-search-content .contentHolder').hide();
+		        $('#genome-search-content .activeContent').show();
+		        $('#genome-search-content .contentHolder').resizable({
+					handles: 's',
+					start: function() {
+						$('.genome_browser').css('position', 'absolute').css('z-index', -1);
+			        },
+			        stop: function() {
+			        	$('.genome_browser').css('position', 'static').css('z-index', 0);
+			        }
+		        });
+		    });
+		});
+	})(jQuery);
+</script>

@@ -1,0 +1,142 @@
+{% load template_tags %}
+<head>
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/home.css" type="text/css" />
+	<!--[if IE]> 
+	<style>
+		.right_container {
+			display: inline;
+		}
+
+		.left_container {
+			display: inline;	
+			float: left
+		}
+	</style>
+	<![endif]-->
+	
+	<script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/zoomable.js"></script>
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/zoomable.css" type="text/css" />
+	
+	<script type="text/javascript" src="{{ STATIC_URL }}js/DialogUI/PageBlock.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}js/DialogUI/HelpDialog.js"></script>
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/dialog.css" type="text/css" />
+</head>
+<div class="left_container">
+	<img id="phylogenetic_tree" src="{{ STATIC_URL }}images/mycoplasma_tree_lowRes.png" alt="Phylogenetic Tree" title="Phylogenetic Tree" />
+</div>
+<div class="right_container">
+	<div id="search_selected">
+		<div style="display: inline-block; margin-right: 15px;">
+			<label>Image</label><input id="search_photos" name="search_photos" type="checkbox" checked="checked" value="Yes" />
+			<label>Genome</label><input id="search_genomes" name="search_genomes" type="checkbox" checked="checked" value="Yes" />
+		</div>
+		<div style="display: inline-block;">
+			<button class="search_button" style="background-image: none; color: white;">Go</button>
+		</div>
+	</div>           
+	<div id="mycoplasma_selector_menu">
+		<ol id="selectable">
+		{% for organism in all_mycoplasma %}
+			<li class="ui-widget-content" id="{{organism.common_name}}">
+				<span>{{organism.common_name}}</span>
+				{% if organism.pk|inList:all_genomes %}
+				<img class="organismInfoImg" style="height:18px" src="{{ STATIC_URL }}images/dnaIcon.png" />
+				{% endif %}
+				{% if organism.pk|inList:all_images %}
+				<img class="organismInfoImg" src="{{ STATIC_URL }}images/imageIcon.png" />
+				{% endif %}
+				{% if organism.pk|inList:all_tags %}
+				<img class="organismInfoImg" style="height: 25px; margin-left: -5px; vertical-align: bottom;" src="{{ STATIC_URL }}images/tag.png" />
+				{% endif %}
+			</li>
+		{% endfor %}
+		</ol>
+	</div>
+</div>
+<div id="helpBox">
+	<div>
+		<p>
+			MyDIG – the <b>My</b>coplasma <b>D</b>atabase of <b>I</b>mages and <b>G</b>enomes contains genomes of all publicly available Mycoplasma. 
+			It also contains a growing collection of images. Some of those images are gene-tagged, i.e. regions of those images are linked to specific genes. 
+			In this way,  you can view the genotype-phenotype connections between cellular and subcellular structures in Mycoplasma, and the genes associated with them. 
+			This database is still being populated. The MyDIG database is constructed using the BioDIG set of tools for annotating linking biological image and genomic information.
+		</p>
+	</div>
+	<div>
+		Feedback is welcome. Please email Andrew Oberlin <a href="mailto:oberliat@miamioh.edu?Subject=BioDIG">oberliat@miamioh.edu</a> with any comments you may have. 
+	</div>
+	<br />
+	<div> 
+		<div>To get started:</div>
+		<br />
+		<div style="padding-left: 10px;">1. Select one or more species from the right-hand menu, using ctrl-rightclick</div>
+		<div style="padding-left: 10px;">2. In the checkboxes on top, check whether you want to view images, genomes or both.</div>
+		<div style="padding-left: 10px;">3. Click “go” when ready </div>
+		<div style="padding-left: 10px;">4. You will be taken to the image & genomes viewer</div>
+		<br />
+		<div>The letters next to the species' names indicate the following:</div>
+		<br />
+		<div style="padding-left: 10px;"><img class="organismInfoImg" style="height:18px" src="{{ STATIC_URL }}images/dnaIcon.png" />: Species  / strain has a full or partial genomes</div>
+		<div style="padding-left: 10px;"><img class="organismInfoImg" src="{{ STATIC_URL }}images/imageIcon.png" />: Species / strain has images</div>
+		<div style="padding-left: 10px;"><img class="organismInfoImg" style="height: 25px; margin-left: -5px; vertical-align: bottom;" src="{{ STATIC_URL }}images/tag.png" />: Species / strain's images are tagged (visually linked to genes).</div>
+	</div>
+</div>
+<style>
+	#selectable .ui-selecting { background: paleblue; cursor: pointer;}
+	#selectable .ui-selected { background: #AAAAAA; color: white; }
+	#selectable { list-style-type: none; margin: 0; padding: 0; width: 100%; }
+	#selectable li { margin: 3px; padding: 0.4em; font-size: 15; border-bottom: 1px solid #CCCCCC;}
+    #selectable li:hover { cursor: pointer; }
+</style>
+<script>
+    $(function() {
+	    $( "#selectable" ).selectable();
+    });
+
+    $('#search_selected button').bind('click', function() {	           
+            var selected_id = $('.ui-selected').map(function() {            
+                return this.id;
+            }).get().join(' & ');
+            if (selected_id != "") {
+		        var form = document.createElement("form");
+                form.setAttribute("method", "get");
+                form.setAttribute("action", "{{ SITE_URL }}search/");
+                hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", "search_val");
+                hiddenField.setAttribute("value", selected_id);
+                form.appendChild(hiddenField);
+                form.appendChild($('#search_genomes').clone()[0]);  
+                form.appendChild($('#search_photos').clone()[0]);  
+                document.body.appendChild(form);
+                form.submit();
+            }
+    });
+    
+    $('#mycoplasma_selector_menu ol li').dblclick(function() {
+    	var form = document.createElement("form");
+        form.setAttribute("method", "get");
+        form.setAttribute("action", "{{ SITE_URL }}search/");
+        hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", "search_val");
+        hiddenField.setAttribute("value", $(this).attr('id'));
+        form.appendChild(hiddenField);
+        form.appendChild($('#search_genomes').clone()[0]);  
+        form.appendChild($('#search_photos').clone()[0]); 
+        document.body.appendChild(form);
+        form.submit();
+    });
+    
+    $('#phylogenetic_tree').zoomable({
+    	originalHeight: 800,
+    	originalWidth: 660,
+    	actualImageSrc: '{{ STATIC_URL }}images/mycoplasma_tree_hiRes.png'
+    });
+    var contents = $('#helpBox');
+    var helpDialog = new HelpDialog(new PageBlock(), 'Homepage', contents.show());
+    
+    $('#helpButton').click(function() {
+    	helpDialog.show();
+    });
+</script>
