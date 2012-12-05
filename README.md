@@ -1,32 +1,10 @@
-# BioDIG Biological Database of Images and Genomes
-
-## What is BioDIG?
-
-BioDIG is a collection of software tools to connect image and genomic data. 
-While we are experiencing an explosion in both sequence and image data, we need to 
-link these two types of data. Examples include: model organism mutations, cell morphology — 
-e.g. pathology and cancer and any type of phenotype data that can be imaged, that can be associated 
-with one or more genes. Anything from a Blue Whale to a virus, really.
-
-## Can I see an example?
-
-The Mycoplasma Database of Images and Genomes (MyDIG):
-http://wan1.mbi.muohio.edu/dome
-
-## Is there an installer?
-
-Not yet. Working on it. You can read the documentation in the trunk
-
-## So How do I install?
-
 Instructions for fresh install of Django Based BioDIG Database.
 
 Prerequisites: (THIS IS THE HARDEST PART)
-
     Django - Web framework used for website -- https://docs.djangoproject.com/en/1.3/topics/install/
     
     PostgreSQL - database system used for website -- aptitude install postgresql-8.4
-      		- for Django make sure that in pg_hba.conf that 
+    			- for Django make sure that in pg_hba.conf that 
     
     MySQL - database system used with a GO database clone
     
@@ -37,8 +15,7 @@ Prerequisites: (THIS IS THE HARDEST PART)
     GBrowse - genome browser used -- http://gmod.org/wiki/GBrowse_2.0_Install_HOWTO (WATCH FOR PREREQUISITES)
     
     Chado - database schema used for organism database 
-            -- http://gmod.svn.sourceforge.net/viewvc/gmod/schema/trunk/chado/INSTALL.Chado 
-            (You may only need the prerequisites with the dump)
+            -- http://gmod.svn.sourceforge.net/viewvc/gmod/schema/trunk/chado/INSTALL.Chado (You may only need the prerequisites with the dump)
     
     SQLite - database used to back GBrowse 
     	-- CPAN DBD::SQLite for adaptor
