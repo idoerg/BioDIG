@@ -4,6 +4,8 @@
  -------------------------------------------------------------------------------------
 */
 var Util = {};
+Util.endL = "\n";
+Util.tab = "    ";
 
 Util.scopeCallback = function(scope, fn) {
 	return function() {
@@ -11,17 +13,45 @@ Util.scopeCallback = function(scope, fn) {
 	};
 };
 
-Util.newXMLDoc = function(initialNodeName) {
-	var initial = '<' + initialNodeName + '></' + initialNodeName + '>';
-	if (window.DOMParser) {
-	    parser = new DOMParser();
-	    xmlDoc = parser.parseFromString(initial,"text/xml");
-	}
-	else { //Internet Explorer
-	    xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
-	    xmlDoc.async = false;
-	    xmlDoc.loadXML(initial);
+Util.convertObjectToXml = function(obj) {
+	var xml = '<?xml version="1.0" encoding="UTF-8"?>' + Util.endL;
+	
+	for (var key in obj) {
+		var innerXml = "<" + key + ">" + Util.endL;
+		innerXml += Util.convertObjectToXmlHelper(1, obj[key]);
+		innerXml += "</" + key + ">" + Util.endL;
+		xml += innerXml;
 	}
 	
-	return xmlDoc;
+	return xml;
+};
+
+Util.convertObjectToXmlHelper = function(depth, obj) {
+	var xml = "";
+	var tab = "";
+	for (var i = 0; i < depth; i++) {
+		tab += Util.tab;
+	}
+	
+	if ($.isArray(obj)) {
+		for (var key in obj) {
+			var innerXml = tab + "<item>" + Util.endL;
+			innerXml += Util.convertObjectToXmlHelper(depth + 1, obj[key]) + Util.endL;
+			innerXml += tab + "</item>" + Util.endL;
+			xml += innerXml;
+		}
+	}
+	else if (typeof obj == "object") {
+		for (var key in obj) {
+			var innerXml = tab + "<" + key + ">" + Util.endL;
+			innerXml += Util.convertObjectToXmlHelper(depth + 1, obj[key]) + Util.endL;
+			innerXml += tab + "</" + key + ">" + Util.endL;
+			xml += innerXml;
+		}
+	}
+	else {
+		return tab + obj;
+	}
+	
+	return xml;
 };

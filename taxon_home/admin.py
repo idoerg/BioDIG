@@ -1,4 +1,4 @@
-from mycoplasma_home.models import *
+from taxon_home.models import *
 from django.contrib import admin
 
 admin.site.register(NavBarOption)

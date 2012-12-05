@@ -59,12 +59,11 @@ class PictureType(models.Model):
 class PictureProp(models.Model):
     picture_id = models.ForeignKey(Picture)
     type_id = models.ForeignKey(PictureType)
-    class Meta:
-        db_table = u'pictureprop'
     def __unicode__(self):
         return ", ".join((str(self.picture_id), str(self.type_id)))
     class Meta:
         unique_together = ('picture_id','type_id')
+        db_table = u'pictureprop'
 
 class PictureDefinitionTag(models.Model):
     picture = models.ForeignKey(Picture)
@@ -79,16 +78,12 @@ class RecentlyViewedPicture(models.Model):
     picture = models.ForeignKey(Picture)
     user = models.ForeignKey(User)
     lastDateViewed = models.DateTimeField()
-    
-    class Meta:
-        db_table = u'recentlyviewedpicture'
-    
     def save(self, *args, **kwargs):
         self.lastDateViewed = datetime.now()
         super(RecentlyViewedPicture, self).save(*args, **kwargs)
-    
     class Meta:
         unique_together = ("picture", "user")
+        db_table = u'recentlyviewedpicture'
     
     def __unicode__(self):
         return (self.picture.imageName.name) + " viewed by " + self.user.username

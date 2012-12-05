@@ -49,7 +49,7 @@ TaggerUI.prototype.createStructure = function() {
 	var newTagGroupDialog = new NewTagGroupDialog(pageBlock);
 	var newGeneLinkDialog = new NewGeneLinkDialog(pageBlock, this.imageMetadata.organisms, this.siteUrl);
 	var changeCurrentTagGroupsDialog = new ChangeCurrentTagGroupsDialog(pageBlock);
-	var downloadImageDataDialog = new DownloadImageDataDialog(pageBlock, this.image, this.siteUrl);
+	var downloadImageDataDialog = new DownloadImageDataDialog(pageBlock, this.image, this.imagesUrl);
 	
 	var dialogs = {
 		'saveTags' : saveTagDialog,

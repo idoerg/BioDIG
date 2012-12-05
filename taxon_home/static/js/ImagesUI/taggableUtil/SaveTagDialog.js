@@ -47,12 +47,12 @@ function SaveTagDialog(pageBlock) {
 	this.finalizeBody = $('<div />');
 	
 	this.submitTagButton = $('<button />', {
-		'class' : 'tagging-menu-button',
+		'class' : 'tagging-button',
 		'text': 'Submit'
 	});
 	
 	this.cancelButton = $('<button />', {
-		'class' : 'tagging-menu-button',
+		'class' : 'tagging-button',
 		'text': 'Cancel',
 		'style' : 'margin-left: 10px'
 	});

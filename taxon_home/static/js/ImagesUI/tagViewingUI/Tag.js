@@ -14,8 +14,8 @@ Tag.prototype.setTagGroup = function(tagGroup) {
 	this.tagGroup = tagGroup;
 };
 
-Tag.prototype.addGeneLink = function(feature) {
-	this.geneLinks.push(new GeneLink(feature));
+Tag.prototype.addGeneLink = function(id, feature) {
+	this.geneLinks.push(new GeneLink(id, feature));
 };
 
 Tag.prototype.setId = function(id) {
@@ -89,8 +89,8 @@ Tag.prototype.copy = function() {
 Tag.prototype.__convertToGeneLinks = function(geneLinksObj) {
 	var geneLinks = [];
 	
-	$.each(geneLinksObj, function(index, feature) {
-		geneLinks.push(new GeneLink(feature));
+	$.each(geneLinksObj, function(index, geneLink) {
+		geneLinks.push(new GeneLink(geneLink.id, geneLink.feature));
 	});
 	
 	return geneLinks;

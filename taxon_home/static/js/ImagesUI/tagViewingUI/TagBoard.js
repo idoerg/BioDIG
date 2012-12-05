@@ -12,6 +12,8 @@
 function TagBoard(tagBoard, originalData, image, imageMetadata, genomeInfo, siteUrl) {
 	this.board = tagBoard;
 	this.image = image;
+	this.imageCache = new Image();
+	this.imageCache.src = this.image[0].src;
 	this.imageMetadata = imageMetadata;
 	this.tagGroups = this.__convertOriginalDataToTagGroups(originalData);
 	this.stage = null;
@@ -29,6 +31,26 @@ function TagBoard(tagBoard, originalData, image, imageMetadata, genomeInfo, site
 	this.tagInfo = genomeInfo.find('.geneLinksInfo .tagInfoContainer');
 	this.geneLinksInfo = genomeInfo.find('.geneLinksInfo');
 	this.visibleShapes = [];
+};
+
+TagBoard.prototype.getImageUrl = function() {
+	return this.image[0].src;
+};
+
+TagBoard.prototype.getImageCache = function() {
+	return this.imageCache;
+};
+
+TagBoard.prototype.getOrganisms = function() {
+	return this.imageMetadata.organisms;
+};
+
+TagBoard.prototype.getUploadedBy = function() {
+	return this.imageMetadata.uploadedBy;
+};
+
+TagBoard.prototype.getUploadDate = function() {
+	return this.imageMetadata.uploadDate;
 };
 
 TagBoard.prototype.getBoard = function() {
@@ -401,31 +423,22 @@ TagBoard.prototype.getCurrentTagGroups = function() {
 	return this.currentTagGroups;
 };
 
-TagBoard.prototype.createFile = function(urlOfImage, organisms, uploadDateUser, tagGroups, imageTags, geneLinks) {
-	var file = {
-		'BioDIGImageData' : {}
-	};
-	
-	if (urlOfImage) {
-		file.BioDIGImageData.imageUrl = this.image.attr('src');
-	}
-	
-	if (organisms) {
-		
-	}
-	
-	if (uploadDateUser) {
-		file.BioDIGImageData.uploadedBy = this.imageMetadata.uploadedBy;
-		file.BioDIGImageData.uploadeDate = this.imageMetadata.uploadeDate;
-	}
-	
-	if (tagGroups) {
-		if (imageTags) {
-			if (geneLinks) {
-				
-			}
+TagBoard.prototype.createFile = function(urlOfImage, imageFile, organisms, uploadDateUser, 
+		tagGroups, imageTags, geneLinks, xml, cached) {
+	if (xml) {
+		if (cached) {
+			return new CachedXmlDataFile(this, urlOfImage, organisms, uploadDateUser, tagGroups, imageTags, geneLinks);
+		}
+		else {
+			return new FreshXmlDataFile(this, urlOfImage, organisms, uploadDateUser, tagGroups, imageTags, geneLinks);
 		}
 	}
-
-	return file;
+	else {
+		if (cached) {
+			return new CachedJsonDataFile(this, urlOfImage, organisms, uploadDateUser, tagGroups, imageTags, geneLinks);
+		}
+		else {
+			return new FreshJsonDataFile(this, urlOfImage, organisms, uploadDateUser, tagGroups, imageTags, geneLinks);
+		}
+	}
 };

@@ -101,14 +101,52 @@ TaggableUtil.toDate = function(dateTime) {
 	date = date[0].split("-");
 	time = time.split(":");
 	
-	var year = parseInt(date[0]);
-	var month = parseInt(date[1]);
-	var day = parseInt(date[2]);
+	var year = parseInt(date[0], 10);
+	var month = parseInt(date[1], 10);
+	var day = parseInt(date[2], 10);
 	
-	var hours = parseInt(time[0]);
-	var minutes = parseInt(time[1]);
-	var seconds = parseInt(time[2]);
+	var hours = parseInt(time[0], 10);
+	var minutes = parseInt(time[1], 10);
+	var seconds = parseInt(time[2], 10);
 	var milliseconds = 0;
 	
-	return new Date(year, month, day, hours, minutes, seconds, milliseconds);
+	return new Date(year, month - 1, day, hours, minutes, seconds, milliseconds);
+};
+
+TaggableUtil.formatDate = function(date) {
+	// example: 2012-10-11 09:34:28
+	var dateTime = date.getFullYear();
+	
+	var month = date.getMonth() + 1;
+	if (month < 10) {
+		month = "0" + month;
+	}
+	
+	var day = date.getDate();
+	if (day < 10) {
+		day = "0" + day;
+	}
+	
+	var hour = date.getHours();
+	if (hour < 10) {
+		hour = "0" + hour;
+	}
+	
+	var minute = date.getMinutes();
+	if (minute < 10) {
+		minute = "0" + minute;
+	}
+	
+	var second = date.getSeconds();
+	if (second < 10) {
+		second = "0" + second;
+	}
+	
+	dateTime += "-" + month;
+	dateTime += "-" + day;
+	dateTime += " " + hour;
+	dateTime += ":" + minute;
+	dateTime += ":" + second;
+	
+	return dateTime;
 };

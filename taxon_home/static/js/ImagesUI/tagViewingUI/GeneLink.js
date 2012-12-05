@@ -1,7 +1,12 @@
-function GeneLink(feature) {
+function GeneLink(id, feature) {
+	this.id = id;
 	this.name = feature.name;
 	this.uniqueName = feature.uniquename;
 	this.organismId = feature.organismId;
+};
+
+GeneLink.prototype.getId = function() {
+	return this.id;
 };
 
 GeneLink.prototype.getUniqueName = function() {

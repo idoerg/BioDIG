@@ -28,6 +28,14 @@ TagGroup.prototype.getName = function() {
 	return this.name;
 };
 
+TagGroup.prototype.getDateCreated = function() {
+	return this.dateCreated;
+};
+
+TagGroup.prototype.getLastModified = function() {
+	return this.lastModified;
+};
+
 TagGroup.prototype.getKey = function() {
 	return this.key;
 };

@@ -68,7 +68,7 @@ function TaggingMenu(id, imagesUrl) {
 	
 	this.drawRectButton = $('<button />', {
 		'id' : id + '-draw-rect',
-		'class' : 'draw-rect tagging-menu-button toolbar-item'
+		'class' : 'draw-rect tagging-button toolbar-item'
 	});
 	
 	this.drawRectButton.append($('<img />', {
@@ -78,7 +78,7 @@ function TaggingMenu(id, imagesUrl) {
 	
 	this.drawPolyButton = $('<button />', {
 		'id' : id + '-draw-poly',
-		'class' : 'draw-poly tagging-menu-button toolbar-item',
+		'class' : 'draw-poly tagging-button toolbar-item',
 		'style' : 'margin-left: 30px'
 	});
 	
@@ -101,12 +101,12 @@ function TaggingMenu(id, imagesUrl) {
 	});
 	
 	this.submitTagButton = $('<button />', {
-		'class' : 'tagging-menu-button',
+		'class' : 'tagging-button',
 		'text': 'Submit'
 	});
 	
 	this.cancelButton = $('<button />', {
-		'class' : 'tagging-menu-button .tagging-menu-button-last',
+		'class' : 'tagging-button .tagging-button-last',
 		'text': 'Cancel',
 		'style' : 'margin-left: 10px'
 	});

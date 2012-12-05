@@ -44,7 +44,7 @@ TaggerUI.prototype.createStructure = function() {
 	
 	var pageBlock = new PageBlock();
 	var changeCurrentTagGroupsDialog = new ChangeCurrentTagGroupsDialog(pageBlock);
-	var downloadImageDataDialog = new DownloadImageDataDialog(pageBlock, this.image, this.siteUrl);
+	var downloadImageDataDialog = new DownloadImageDataDialog(pageBlock, this.image, this.imagesUrl);
 	
 	var dialogs = {
 		'changeCurrentGroups' : changeCurrentTagGroupsDialog,

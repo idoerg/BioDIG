@@ -85,12 +85,12 @@ function NewGeneLinkDialog(pageBlock, organisms, siteUrl) {
 	this.finalizeBody = $('<div />');
 	
 	this.submitGeneLinkButton = $('<button />', {
-		'class' : 'tagging-menu-button',
+		'class' : 'tagging-button',
 		'text': 'Add'
 	});
 	
 	this.cancelButton = $('<button />', {
-		'class' : 'tagging-menu-button',
+		'class' : 'tagging-button',
 		'text': 'Cancel',
 		'style' : 'margin-left: 10px'
 	});
@@ -142,7 +142,7 @@ NewGeneLinkDialog.prototype.onSubmit = function() {
 				if (!data.error) {
 					data.feature.organismId = organismId;
 					for (var i = 0; i < self.selectedTags.length; i++) {
-						self.selectedTags[i].addGeneLink(data.feature);
+						self.selectedTags[i].addGeneLink(data.id, data.feature);
 					}
 					this.hide();
 				}

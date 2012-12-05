@@ -40,12 +40,12 @@ function NewTagGroupDialog(pageBlock) {
 	this.finalizeBody = $('<div />');
 	
 	this.submitTagGroupButton = $('<button />', {
-		'class' : 'tagging-menu-button',
+		'class' : 'tagging-button',
 		'text': 'Add'
 	});
 	
 	this.cancelButton = $('<button />', {
-		'class' : 'tagging-menu-button',
+		'class' : 'tagging-button',
 		'text': 'Cancel',
 		'style' : 'margin-left: 10px'
 	});
