@@ -16,7 +16,10 @@ class AjaxApplicationBase:
 		obj['SITE_URL'] = settings.SITE_URL
 		obj['STATIC_URL'] = settings.STATIC_URL
 		self.renderEngine.setApplicationLayout(obj)
-
+	
+	def setStatus(self, status):
+		self.renderEngine.setStatus(status)
+	
 	'''
 		Should be overridden, sets the applicationLayout
 		and all of the pagelet bindings

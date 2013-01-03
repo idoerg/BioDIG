@@ -17,13 +17,20 @@ class RenderEngine:
 	'''
 	def __init__(self, ):
 		self.pageletMap = dict()
+		self.status = 200
 		self.layoutDir = settings.APPLICATION_LAYOUT_DIR
 		if (self.layoutDir[len(self.layoutDir) - 1] != '/'):	
 			self.layoutDir = self.layoutDir + '/'
 		self.pageletDir = settings.PAGELET_LAYOUT_DIR
 		if (self.pageletDir[len(self.pageletDir) - 1] != '/'):
 			self.pageletDir = self.pageletDir + '/'
-		
+	
+	
+	'''
+		Sets the status code
+	'''
+	def setStatus(self, status):
+		self.status = status	
 	
 	'''
 		Sets the application layout for this rendering engine
@@ -90,4 +97,4 @@ class RenderEngine:
 		return HttpResponse(layout)
 
 	def renderJson(self, request):
-		return HttpResponse(json.dumps(self.applicationLayout))
+		return HttpResponse(json.dumps(self.applicationLayout), status=self.status)

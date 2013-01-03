@@ -6,9 +6,9 @@
 	Date: July 23, 2012
 '''
 from renderEngine.AjaxRegisteredApplicationBase import AjaxRegisteredApplicationBase
-from mycoplasma_home.views.api.Util import getMultiListPost
+from taxon_home.views.util.Util import getMultiListPost
 from django.views.decorators.csrf import csrf_exempt
-from mycoplasma_home.models import TagColor, Tag, TagGroup, TagPoint
+from taxon_home.models import TagColor, Tag, TagGroup, TagPoint
 from django.core.exceptions import ObjectDoesNotExist
 
 class Application(AjaxRegisteredApplicationBase):

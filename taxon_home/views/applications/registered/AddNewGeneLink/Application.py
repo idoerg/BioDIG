@@ -7,7 +7,7 @@
 '''
 from renderEngine.AjaxRegisteredApplicationBase import AjaxRegisteredApplicationBase
 from django.views.decorators.csrf import csrf_exempt
-from mycoplasma_home.models import GeneLink, Tag, Feature, Organism
+from taxon_home.models import GeneLink, Tag, Feature, Organism
 from django.core.exceptions import ObjectDoesNotExist
 
 class Application(AjaxRegisteredApplicationBase):

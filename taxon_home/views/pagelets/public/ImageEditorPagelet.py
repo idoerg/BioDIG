@@ -6,7 +6,10 @@
     Date: August 5, 2012
 '''
 from renderEngine.PageletBase import PageletBase
-from taxon_home.views.api import ImagesAPI
+from taxon_home.views.webServices.SearchGeneLinks.api.get import GetAPI as GeneLinkAPI
+from taxon_home.views.webServices.SearchTags.api.get import GetAPI as TagAPI
+from taxon_home.views.webServices.SearchTagGroups.api.get import GetAPI as TagGroupAPI
+from taxon_home.views.webServices.SearchImageMetadata.api.get import GetAPI as ImageMetadataAPI
 import simplejson as json
 from taxon_home.models import Picture
 
@@ -23,11 +26,27 @@ class ImageEditorPagelet(PageletBase):
     def doProcessRender(self, request):
         self.setLayout('public/imageEditor.html')
         try:
-            imageKey = request.REQUEST['imageKey']
-            image = Picture.objects.get(pk__exact=imageKey)
-            if (not image.isPrivate):
-                tagGroups = ImagesAPI.getImageTagGroups(image, user=request.user, getTags=True, getLinks=True, isKey=False)
-                imageMetadata = ImagesAPI.getImageMetadata(image, user=request.user, isKey=False)
+            imageKey = request.GET.get('imageKey', None)
+            if (imageKey):
+                image = Picture.objects.get(pk__exact=imageKey)
+                
+                # initialize tagging APIs
+                tagGroupAPI = TagGroupAPI(unlimited=True)
+                tagAPI = TagAPI(unlimited=True)
+                geneLinkAPI = GeneLinkAPI(unlimited=True)
+                
+                tagGroups = tagGroupAPI.getTagGroupsByImage(image, isKey=False).getObject()
+                
+                for group in tagGroups:
+                    tags = tagAPI.getTagsByTagGroup(group['id']).getObject()
+                    for tag in tags:
+                        geneLinks = geneLinkAPI.getGeneLinksByTag(tag['id']).getObject()
+                        tag['geneLinks'] = geneLinks
+                    group['tags'] = tags
+                    
+                # initialize image metadata API
+                imageMetadataAPI = ImageMetadataAPI()
+                imageMetadata = imageMetadataAPI.getImageMetadata(image, isKey=False).getObject()
         
                 return {
                     'imageMetadata' : json.dumps(imageMetadata),

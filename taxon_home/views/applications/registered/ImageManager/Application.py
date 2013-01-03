@@ -6,8 +6,8 @@
 	Date: August 14, 2012
 '''
 from renderEngine.RegisteredApplicationBase import RegisteredApplicationBase
-from mycoplasma_home.views.pagelets.registered.NavBarPagelet import NavBarPagelet
-from mycoplasma_home.views.pagelets.registered.ImageManagerPagelet import ImageManagerPagelet 
+from taxon_home.views.pagelets.registered.NavBarPagelet import NavBarPagelet
+from taxon_home.views.pagelets.registered.ImageManagerPagelet import ImageManagerPagelet 
 
 class Application(RegisteredApplicationBase):
 	def doProcessRender(self, request):

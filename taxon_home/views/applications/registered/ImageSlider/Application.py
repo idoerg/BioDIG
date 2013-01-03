@@ -6,7 +6,7 @@
 	Date: August 14, 2012
 '''
 from renderEngine.RegisteredApplicationBase import RegisteredApplicationBase
-from mycoplasma_home.views.pagelets.registered.ImageSliderPagelet import ImageSliderPagelet 
+from taxon_home.views.pagelets.registered.ImageSliderPagelet import ImageSliderPagelet 
 
 class Application(RegisteredApplicationBase):
 	def doProcessRender(self, request):

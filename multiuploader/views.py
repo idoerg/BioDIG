@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render_to_response
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseBadRequest
-from mycoplasma_home.models import Picture
+from taxon_home.models import Picture
 from django.core.files.uploadedfile import UploadedFile
 from django.core.files import File
 

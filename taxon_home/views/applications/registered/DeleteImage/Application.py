@@ -7,7 +7,7 @@
 '''
 from renderEngine.AjaxAdminApplicationBase import AjaxAdminApplicationBase
 from django.views.decorators.csrf import csrf_exempt
-from mycoplasma_home.models import Picture
+from taxon_home.models import Picture
 from django.core.exceptions import ObjectDoesNotExist
 
 NO_ERROR = 'Success'

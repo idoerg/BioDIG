@@ -13,6 +13,9 @@ class ApplicationBase:
 	def setApplicationLayout(self, applicationLayout, applicationArgs):
 		self.renderEngine.setApplicationLayout(applicationLayout, applicationArgs)
 
+	def setStatus(self, status):
+		self.renderEngine.setStatus(status)
+
 	def addPageletBinding(self, pageletName, pageletObj):
 		self.renderEngine.addPageletBinding(pageletName, pageletObj)
 

@@ -14,7 +14,7 @@ urlpatterns = patterns('taxon_home.views.applications.public',
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^$', 'Home.Application.renderAction'),
     url(r'^index.html$', 'Home.Application.renderAction'),
-    url(r'^images/editor/$','EditImage.Application.renderAction'),
+    url(r'^images/editor$','EditImage.Application.renderAction'),
     url(r'^images/$', 'Images.Application.renderAction'),
     url(r'^images/change/$', 'ChangeImages.Application.renderAction'),
     url(r'^genome_browser/$', 'GBrowse.Application.renderAction'),
@@ -26,9 +26,13 @@ urlpatterns = patterns('taxon_home.views.applications.public',
 )
 
 urlpatterns += patterns('taxon_home.views.webServices',
-    url(r'^images/getTags$', 'GetImageTags.Application.renderAction'),
-    url(r'^images/getTagGroups$', 'GetImageTagGroups.Application.renderAction'),
-    url(r'^images/getImageMetadata$', 'GetImageMetadata.Application.renderAction')
+    #url(r'^api/tags$', 'Tags.Application.renderAction'),
+    #url(r'^api/tagGroups$', 'TagGroups.Application.renderAction'),
+    #url(r'^api/imageMetadata$', 'ImageMetadata.Application.renderAction'),
+    url(r'^api/geneLinks/search$', 'SearchGeneLinks.Application.renderAction'),
+    url(r'^api/tags/search$', 'SearchTags.Application.renderAction'),
+    url(r'^api/tagGroups/search$', 'SearchTagGroups.Application.renderAction'),
+    url(r'^api/imageMetadata/search$', 'SearchImageMetadata.Application.renderAction')
 )
 
 urlpatterns += patterns('taxon_home.views.applications.registered',
@@ -38,7 +42,7 @@ urlpatterns += patterns('taxon_home.views.applications.registered',
     #url(r'^administration/gbrowse_manager/genome_uploader/$', 'mycoplasma_home.views.genome_uploader'),
     url(r'^administration/imageManager/$', 'ImageManager.Application.renderAction'),
     url(r'^administration/deleteImage$', 'DeleteImage.Application.renderAction'),
-    url(r'^administration/imageManager/getSlider/$', 'ImageSlider.Application.renderAction'),
+    url(r'^administration/imageManager/getSlider$', 'ImageSlider.Application.renderAction'),
     url(r'^administration/addNewTagGroup$', 'AddNewTagGroup.Application.renderAction'),
     url(r'^administration/saveTag$','SaveTag.Application.renderAction'),
     url(r'^administration/addNewGeneLink$','AddNewGeneLink.Application.renderAction')

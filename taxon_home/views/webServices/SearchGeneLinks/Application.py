@@ -6,25 +6,21 @@
 	Date: July 23, 2012
 '''
 from renderEngine.AjaxApplicationBase import WebServiceApplicationBase
+from renderEngine.WebServiceObject import WebServiceObject
 from django.views.decorators.csrf import csrf_exempt
-from mycoplasma_home.views.api import ImagesAPI
+import api.API as API
+import taxon_home.views.util.ErrorConstants as Errors
 
 class Application(WebServiceApplicationBase):
 	def doProcessRender(self, request):
-		renderObj = {
-			'error' : False,
-			'errorMessage' : ImagesAPI.NO_ERROR
-		}
-		if request.REQUEST.has_key('imageKey'):
-			# the key for lookup and the image it is attached to
-			imageKey = request.REQUEST['imageKey']
-			renderObj = ImagesAPI.getImageMetadata(imageKey, request.user)				
+		renderObj = WebServiceObject()		
+		if (request.method == "GET"):
+			renderObj = API.getGeneLinks(request)
 		else:
-			renderObj['error'] = True
-			renderObj['errorMessage'] = ImagesAPI.NO_IMAGE_KEY
-		
+			renderObj.setError(Errors.INVALID_METHOD.setMethod(request.method))		
 
-		self.setJsonObject(renderObj)
+		self.setJsonObject(renderObj.getObject())
+		self.setStatus(renderObj.getCode())
 		
 	
 '''
