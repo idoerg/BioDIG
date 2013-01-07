@@ -25,48 +25,46 @@ class GetAPI:
                 tagGroup = TagGroup.objects.get(pk__exact=tagGroupKey)
             else:
                 tagGroup = tagGroupKey
+        except (ObjectDoesNotExist, ValueError):
+            raise Errors.INVALID_TAG_GROUP_KEY
             
-            authenticated = True
-            
-            if (tagGroup.picture.isPrivate):
-                if (self.user and self.user.is_authenticated()):
-                    authenticated = tagGroup.user == self.user
-                else:
-                    authenticated = False
-                    
-            if (authenticated):
-                if (self.unlimited):
-                    tags = Tag.objects.filter(group__exact=tagGroup).order_by('pk')[self.offset:]
-                else:
-                    tags = Tag.objects.filter(group__exact=tagGroup).order_by('pk')[self.offset : self.offset+self.limit]
-                
-                for tag in tags:
-                    tagPoints = TagPoint.objects.filter(tag__exact = tag).order_by('rank')
-                    points = []
-                    
-                    for tagPoint in tagPoints:
-                        points.append([
-                            tagPoint.pointX, 
-                            tagPoint.pointY
-                        ])
-                    
-                    color = [tag.color.red, tag.color.green, tag.color.blue]
-                    
-                    metadata.put(
-                        LimitDict(self.fields, {
-                            'id' : tag.pk,
-                            'color' : color,
-                            'points' : points,
-                            'description' : tag.description
-                        })
-                    )
-            else:
-                metadata.setError(Errors.AUTHENTICATION)
-        except ObjectDoesNotExist:
-            metadata.setError(Errors.INVALID_TAG_GROUP_KEY)
-        except ValueError:
-            metadata.setError(Errors.INVALID_TAG_GROUP_KEY)
+        authenticated = True
         
+        if tagGroup.picture.isPrivate:
+            if self.user and self.user.is_authenticated():
+                authenticated = tagGroup.picture.user == self.user
+            else:
+                authenticated = False
+                
+        if not authenticated:
+            raise Errors.AUTHENTICATION
+        
+        if (self.unlimited):
+            tags = Tag.objects.filter(group__exact=tagGroup).order_by('pk')[self.offset:]
+        else:
+            tags = Tag.objects.filter(group__exact=tagGroup).order_by('pk')[self.offset : self.offset+self.limit]
+        
+        for tag in tags:
+            tagPoints = TagPoint.objects.filter(tag__exact = tag).order_by('rank')
+            points = []
+            
+            for tagPoint in tagPoints:
+                points.append([
+                    tagPoint.pointX, 
+                    tagPoint.pointY
+                ])
+            
+            color = [tag.color.red, tag.color.green, tag.color.blue]
+            
+            metadata.put(
+                LimitDict(self.fields, {
+                    'id' : tag.pk,
+                    'color' : color,
+                    'points' : points,
+                    'description' : tag.description
+                })
+            )
+
         return metadata
     
     '''
@@ -82,93 +80,89 @@ class GetAPI:
                 image = Picture.objects.get(pk__exact=imageKey)
             else:
                 image =imageKey
+        except (ObjectDoesNotExist, ValueError):
+            raise Errors.INVALID_IMAGE_KEY
             
-            authenticated = True
-            
-            if (image.isPrivate):
-                if (self.user and self.user.is_authenticated()):
-                    authenticated = image.user == self.user
-                else:
-                    authenticated = False
-                    
-            if (authenticated):
-                tagGroups = TagGroup.objects.filter(picture__exact=image)
-                
-                if (self.unlimited):
-                    tags = Tag.objects.filter(group__in=tagGroups).order_by('pk')[self.offset:]
-                else:
-                    tags = Tag.objects.filter(group__in=tagGroups).order_by('pk')[self.offset : self.offset+self.limit]
-                
-                for tag in tags:
-                    tagPoints = TagPoint.objects.filter(tag__exact = tag).order_by('rank')
-                    points = []
-                    
-                    for tagPoint in tagPoints:
-                        points.append([
-                            tagPoint.pointX, 
-                            tagPoint.pointY
-                        ])
-                    
-                    color = [tag.color.red, tag.color.green, tag.color.blue]
-                    
-                    metadata.put(
-                        LimitDict(self.fields, {
-                            'id' : tag.pk,
-                            'color' : color,
-                            'points' : points,
-                            'description' : tag.description
-                        })
-                    )
-            else:
-                metadata.setError(Errors.AUTHENTICATION)
-        except ObjectDoesNotExist:
-            metadata.setError(Errors.INVALID_TAG_GROUP_KEY)
-        except ValueError:
-            metadata.setError(Errors.INVALID_TAG_GROUP_KEY)
+        authenticated = True
         
+        if (image.isPrivate):
+            if (self.user and self.user.is_authenticated()):
+                authenticated = image.user == self.user
+            else:
+                authenticated = False
+                
+        if not authenticated:
+            raise Errors.AUTHENTICATION
+        
+        tagGroups = TagGroup.objects.filter(picture__exact=image)
+        
+        if (self.unlimited):
+            tags = Tag.objects.filter(group__in=tagGroups).order_by('pk')[self.offset:]
+        else:
+            tags = Tag.objects.filter(group__in=tagGroups).order_by('pk')[self.offset : self.offset+self.limit]
+        
+        for tag in tags:
+            tagPoints = TagPoint.objects.filter(tag__exact = tag).order_by('rank')
+            points = []
+            
+            for tagPoint in tagPoints:
+                points.append([
+                    tagPoint.pointX, 
+                    tagPoint.pointY
+                ])
+            
+            color = [tag.color.red, tag.color.green, tag.color.blue]
+            
+            metadata.put(
+                LimitDict(self.fields, {
+                    'id' : tag.pk,
+                    'color' : color,
+                    'points' : points,
+                    'description' : tag.description
+                })
+            )
+            
         return metadata
+
     
     '''
         Gets all the tags in the database that are private
     '''
     def getTags(self):
         metadata = WebServiceArray()
-        
-        try:            
-            if (self.user and self.user.is_authenticated()):
-                images = Picture.objects.filter(isPrivate=False) | Picture.objects.filter(user__exact=self.user, isPrivate=True)
-                
-            else:
-                images = Picture.objects.filter(isPrivate=False)
-                
-            tagGroups = TagGroup.objects.filter(picture__in=images)
-                    
-            if (self.unlimited):
-                tags = Tag.objects.filter(group__in=tagGroups).order_by('pk')[self.offset:]
-            else:
-                tags = Tag.objects.filter(group__in=tagGroups).order_by('pk')[self.offset : self.offset+self.limit]
+          
+        if (self.user and self.user.is_authenticated()):
+            images = Picture.objects.filter(isPrivate=False) | Picture.objects.filter(user__exact=self.user, isPrivate=True)
             
-            for tag in tags:
-                tagPoints = TagPoint.objects.filter(tag__exact = tag).order_by('rank')
-                points = []
+        else:
+            images = Picture.objects.filter(isPrivate=False)
+            
+        tagGroups = TagGroup.objects.filter(picture__in=images)
                 
-                for tagPoint in tagPoints:
-                    points.append([
-                        tagPoint.pointX, 
-                        tagPoint.pointY
-                    ])
-                
-                color = [tag.color.red, tag.color.green, tag.color.blue]
-                
-                metadata.put(
-                    LimitDict(self.fields, {
-                        'id' : tag.pk,
-                        'color' : color,
-                        'points' : points,
-                        'description' : tag.description
-                    })
-                )
-        except ValueError:
-            metadata.setError(Errors.INVALID_TAG_GROUP_KEY)
+        if (self.unlimited):
+            tags = Tag.objects.filter(group__in=tagGroups).order_by('pk')[self.offset:]
+        else:
+            tags = Tag.objects.filter(group__in=tagGroups).order_by('pk')[self.offset : self.offset+self.limit]
         
-        return metadata
+        for tag in tags:
+            tagPoints = TagPoint.objects.filter(tag__exact = tag).order_by('rank')
+            points = []
+            
+            for tagPoint in tagPoints:
+                points.append([
+                    tagPoint.pointX, 
+                    tagPoint.pointY
+                ])
+            
+            color = [tag.color.red, tag.color.green, tag.color.blue]
+            
+            metadata.put(
+                LimitDict(self.fields, {
+                    'id' : tag.pk,
+                    'color' : color,
+                    'points' : points,
+                    'description' : tag.description
+                })
+            )
+                 
+        return metadata 

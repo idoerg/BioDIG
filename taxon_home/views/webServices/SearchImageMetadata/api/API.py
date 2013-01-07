@@ -9,9 +9,11 @@ def getImageMetadata(request):
         # the key for lookup and the image it is attached to
         imageKey = request.GET['imageKey']
         fields = Util.getDelimitedList(request.GET, 'fields')
-        
         getAPI = GetAPI(request.user, fields)
-        renderObj = getAPI.getImageMetadata(imageKey)                
+        try:
+            renderObj = getAPI.getImageMetadata(imageKey)
+        except Errors.WebServiceException as e:
+            renderObj.setError(e)           
     else:
         renderObj.setError(Errors.NO_IMAGE_KEY)
     

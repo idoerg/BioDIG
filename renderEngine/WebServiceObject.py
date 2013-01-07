@@ -10,7 +10,8 @@ class WebServiceObject:
     def __init__(self):
         self.obj = {}
         self.fields = None
-        self.errorObj = Errors.WebServiceConstant('', 200)
+        self.errorObj = Errors.WebServiceException('', 200)
+        self.error = False
         
     '''
         Puts a value into the object
@@ -30,12 +31,13 @@ class WebServiceObject:
     '''
     def setError(self, errorObj):
         self.errorObj = errorObj
+        self.error = True
     
     '''
         Checks to see if this object is currently errored
     '''
     def isError(self):
-        return self.errorObj.getCode() != 200
+        return self.error
     
     '''
     
@@ -69,6 +71,13 @@ class WebServiceObject:
             }
             
     '''
+        Says whether this metadata allows a certain field
+    '''
+    def allowsField(self, field):
+        return self.fields == None or field in self.fields
+            
+            
+    '''
         Limits the fields that can be added to this object
     '''
     def limitFields(self, fields):
@@ -82,7 +91,8 @@ class WebServiceArray(WebServiceObject):
     def __init__(self):
         self.obj = []
         self.fields = None
-        self.errorObj = Errors.WebServiceConstant('', 200)
+        self.errorObj = Errors.WebServiceException('', 200)
+        self.error = False
         
     def put(self, obj):
         self.obj.append(obj)

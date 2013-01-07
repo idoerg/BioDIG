@@ -90,7 +90,6 @@ class RecentlyViewedPicture(models.Model):
 
 class TagGroup(models.Model):
     name = models.TextField(unique=True)
-    user = models.ForeignKey(User)
     picture = models.ForeignKey(Picture)
     dateCreated = models.DateTimeField(auto_now_add=True, editable=False)
     lastModified = models.DateTimeField(auto_now=True)
@@ -111,7 +110,6 @@ class TagColor(models.Model):
 class Tag(models.Model):
     description = models.CharField(max_length=50)
     color = models.ForeignKey(TagColor)
-    user = models.ForeignKey(User)
     group = models.ForeignKey(TagGroup)
     class Meta:
         db_table = u'tag'

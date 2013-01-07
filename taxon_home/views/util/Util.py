@@ -1,6 +1,6 @@
 import re
 
-def getMultiListPost(request, name):
+def getMultiListPost(request, name, default):
     dic = {}
     parts = []
     namePattern = re.compile(name + r'\[([0-9]+)\]')
@@ -11,11 +11,13 @@ def getMultiListPost(request, name):
                 'entire' : match.group(0),
                 'key' : match.group(1)
             })
-
-    for part in parts:
-        dic[int(part['key'])] = request.POST.getlist(part['entire'] + '[]')
-
-    return dic
+    if parts:
+        for part in parts:
+            dic[int(part['key'])] = request.POST.getlist(part['entire'] + '[]')
+            
+        return dic
+    else:
+        return default
 
 def getInt(queryDict, key, default):
     value = queryDict.get(key, '')

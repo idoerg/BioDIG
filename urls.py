@@ -26,7 +26,7 @@ urlpatterns = patterns('taxon_home.views.applications.public',
 )
 
 urlpatterns += patterns('taxon_home.views.webServices',
-    #url(r'^api/tags$', 'Tags.Application.renderAction'),
+    url(r'^api/tags$', 'Tags.Application.renderAction'),
     #url(r'^api/tagGroups$', 'TagGroups.Application.renderAction'),
     #url(r'^api/imageMetadata$', 'ImageMetadata.Application.renderAction'),
     url(r'^api/geneLinks/search$', 'SearchGeneLinks.Application.renderAction'),

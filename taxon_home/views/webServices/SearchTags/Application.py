@@ -13,12 +13,16 @@ import api.API as API
 
 class Application(WebServiceApplicationBase):
 	def doProcessRender(self, request):
-		renderObj = WebServiceObject()		
-		if (request.method == "GET"):
-			renderObj = API.getImageTags(request)
-		else:
-			renderObj.setError(Errors.INVALID_METHOD.setMethod(request.method))
-
+		renderObj = WebServiceObject()
+		
+		try:
+			if (request.method == "GET"):
+				renderObj = API.getImageTags(request)
+			else:
+				renderObj.setError(Errors.INVALID_METHOD.setCustom(request.method))
+		except Errors.WebServiceException as e:
+			renderObj.setError(e)
+			
 		self.setJsonObject(renderObj.getObject())
 		self.setStatus(renderObj.getCode())
 		

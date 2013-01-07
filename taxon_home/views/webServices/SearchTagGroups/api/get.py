@@ -27,38 +27,35 @@ class GetAPI:
                 image = Picture.objects.get(pk__exact=imageKey)
             else:
                 image = imageKey
+        except (ObjectDoesNotExist, ValueError):
+            raise Errors.INVALID_IMAGE_KEY
                 
-            authenticated = True
-            if (image.isPrivate):
-                if (self.user and self.user.is_authenticated()):
-                    authenticated = image.user == self.user
-                else:
-                    authenticated = False
-                    
-            if (authenticated):
-                if (self.unlimited):
-                    groups = TagGroup.objects.filter(picture__exact=image)[self.offset:]
-                else:
-                    groups = TagGroup.objects.filter(picture__exact=image)[self.offset : self.offset+self.limit]
-                
-                for group in groups:
-                    metadata.put(
-                        LimitDict(self.fields, {
-                            'id' : group.pk,
-                            'name' : group.name,
-                            'dateCreated' : group.dateCreated.strftime("%Y-%m-%d %H:%M:%S"),
-                            'lastModified' : group.lastModified.strftime("%Y-%m-%d %H:%M:%S"),
-                            'imageId' : group.picture.pk
-                        })
-                    )
-                    
+        authenticated = True
+        if image.isPrivate:
+            if self.user and self.user.is_authenticated():
+                authenticated = image.user == self.user
             else:
-                metadata.setError(Errors.AUTHENTICATION)
-        except ObjectDoesNotExist:
-            metadata.setError(Errors.INVALID_IMAGE_KEY)
-        except ValueError:
-            metadata.setError(Errors.INVALID_IMAGE_KEY)
+                authenticated = False
+                
+        if not authenticated:
+            raise Errors.AUTHENTICATION
         
+        if (self.unlimited):
+            groups = TagGroup.objects.filter(picture__exact=image)[self.offset:]
+        else:
+            groups = TagGroup.objects.filter(picture__exact=image)[self.offset : self.offset+self.limit]
+        
+        for group in groups:
+            metadata.put(
+                LimitDict(self.fields, {
+                    'id' : group.pk,
+                    'name' : group.name,
+                    'dateCreated' : group.dateCreated.strftime("%Y-%m-%d %H:%M:%S"),
+                    'lastModified' : group.lastModified.strftime("%Y-%m-%d %H:%M:%S"),
+                    'imageId' : group.picture.pk
+                })
+            )
+    
         return metadata
     
     
@@ -67,32 +64,27 @@ class GetAPI:
     '''
     def getTagGroups(self):
         metadata = WebServiceArray()
-        
-        try:
-            if (self.user and self.user.is_authenticated()):
-                images = Picture.objects.filter(isPrivate=False) | Picture.objects.filter(user__exact=self.user, isPrivate=True)
-                
-            else:
-                images = Picture.objects.filter(isPrivate=False)
-
-            if (self.unlimited):
-                groups = TagGroup.objects.filter(picture__in=images)[self.offset:]
-            else:
-                groups = TagGroup.objects.filter(picture__in=images)[self.offset : self.offset+self.limit]
+ 
+        if (self.user and self.user.is_authenticated()):
+            images = Picture.objects.filter(isPrivate=False) | Picture.objects.filter(user__exact=self.user, isPrivate=True)
             
-            for group in groups:
-                metadata.put(
-                    LimitDict(self.fields, {
-                        'id' : group.pk,
-                        'name' : group.name,
-                        'dateCreated' : group.dateCreated.strftime("%Y-%m-%d %H:%M:%S"),
-                        'lastModified' : group.lastModified.strftime("%Y-%m-%d %H:%M:%S"),
-                        'imageId' : group.picture.pk
-                    })
-                )
-        except ObjectDoesNotExist:
-            metadata.setError(Errors.INVALID_IMAGE_KEY)
-        except ValueError:
-            metadata.setError(Errors.INVALID_IMAGE_KEY)
+        else:
+            images = Picture.objects.filter(isPrivate=False)
+
+        if (self.unlimited):
+            groups = TagGroup.objects.filter(picture__in=images)[self.offset:]
+        else:
+            groups = TagGroup.objects.filter(picture__in=images)[self.offset : self.offset+self.limit]
+        
+        for group in groups:
+            metadata.put(
+                LimitDict(self.fields, {
+                    'id' : group.pk,
+                    'name' : group.name,
+                    'dateCreated' : group.dateCreated.strftime("%Y-%m-%d %H:%M:%S"),
+                    'lastModified' : group.lastModified.strftime("%Y-%m-%d %H:%M:%S"),
+                    'imageId' : group.picture.pk
+                })
+            )
         
         return metadata

@@ -25,36 +25,35 @@ class GetAPI:
                 tag = Tag.objects.get(pk__exact=tagKey)
             else:
                 tag = tagKey
+        except (ObjectDoesNotExist, ValueError):
+            raise Errors.INVALID_TAG_KEY
             
-            authenticated = True
-            
-            if (tag.group.picture.isPrivate):
-                if (self.user and self.user.is_authenticated()):
-                    authenticated = tag.group.picture.user == self.user
-                else:
-                    authenticated = False
-                    
-            if (authenticated):
-                
-                if (self.unlimited):
-                    geneLinks = GeneLink.objects.filter(tag__exact=tag).order_by('pk')[self.offset:]
-                else:
-                    geneLinks = GeneLink.objects.filter(tag__exact=tag).order_by('pk')[self.offset : self.offset+self.limit]
-                                
-                for geneLink in geneLinks:
-                    metadata.put(
-                        LimitDict(self.fields, {
-                            'id' : geneLink.pk,
-                            'tagId' : tag.pk,
-                            'uniquename' : geneLink.feature.uniquename,
-                            'name' : geneLink.feature.name,
-                            'organismId' : geneLink.feature.organism.organism_id,
-                        })    
-                    )
+        authenticated = True
+        
+        if (tag.group.picture.isPrivate):
+            if (self.user and self.user.is_authenticated()):
+                authenticated = tag.group.picture.user == self.user
             else:
-                metadata.setError(Errors.AUTHENTICATION)
-        except ObjectDoesNotExist:
-            metadata.setError(Errors.INVALID_TAG_KEY)
+                authenticated = False
+                
+        if not authenticated:
+            raise Errors.AUTHENTICATION
+            
+        if (self.unlimited):
+            geneLinks = GeneLink.objects.filter(tag__exact=tag).order_by('pk')[self.offset:]
+        else:
+            geneLinks = GeneLink.objects.filter(tag__exact=tag).order_by('pk')[self.offset : self.offset+self.limit]
+                        
+        for geneLink in geneLinks:
+            metadata.put(
+                LimitDict(self.fields, {
+                    'id' : geneLink.pk,
+                    'tagId' : tag.pk,
+                    'uniquename' : geneLink.feature.uniquename,
+                    'name' : geneLink.feature.name,
+                    'organismId' : geneLink.feature.organism.organism_id
+                })    
+            )
         
         return metadata
     
@@ -71,40 +70,41 @@ class GetAPI:
                 tagGroup = TagGroup.objects.get(pk__exact=tagGroupKey)
             else:
                 tagGroup = tagGroupKey
+        except (ObjectDoesNotExist, ValueError):
+            raise Errors.NO_TAG_GROUP_KEY
             
-            authenticated = True
-            
-            if (tagGroup.picture.isPrivate):
-                if (self.user and self.user.is_authenticated()):
-                    authenticated = tagGroup.picture.user == self.user
-                else:
-                    authenticated = False
-                    
-            if (authenticated):
-                
-                tags = Tag.objects.filter(group__exact=tagGroup)
-                
-                if (self.unlimited):
-                    geneLinks = GeneLink.objects.filter(tag__in=tags).order_by('pk')[self.offset:]
-                else:
-                    geneLinks = GeneLink.objects.filter(tag__in=tags).order_by('pk')[self.offset : self.offset+self.limit]
-                    
-                for geneLink in geneLinks:
-                    metadata.put(
-                        LimitDict(self.fields, {
-                            'id' : geneLink.pk,
-                            'tagId' : geneLink.tag.pk,
-                            'uniquename' : geneLink.feature.uniquename,
-                            'name' : geneLink.feature.name,
-                            'organismId' : geneLink.feature.organism.organism_id,
-                        })    
-                    )
-            else:
-                metadata.setError(Errors.AUTHENTICATION)
-        except ObjectDoesNotExist:
-            metadata.setError(Errors.INVALID_TAG_KEY)
+        authenticated = True
         
+        if (tagGroup.picture.isPrivate):
+            if (self.user and self.user.is_authenticated()):
+                authenticated = tagGroup.picture.user == self.user
+            else:
+                authenticated = False
+        
+        if not authenticated:
+            raise Errors.AUTHENTICATION
+        
+        tags = Tag.objects.filter(group__exact=tagGroup)
+        
+        if (self.unlimited):
+            geneLinks = GeneLink.objects.filter(tag__in=tags).order_by('pk')[self.offset:]
+        else:
+            geneLinks = GeneLink.objects.filter(tag__in=tags).order_by('pk')[self.offset : self.offset+self.limit]
+            
+        for geneLink in geneLinks:
+            metadata.put(
+                LimitDict(self.fields, {
+                    'id' : geneLink.pk,
+                    'tagId' : geneLink.tag.pk,
+                    'uniquename' : geneLink.feature.uniquename,
+                    'name' : geneLink.feature.name,
+                    'organismId' : geneLink.feature.organism.organism_id,
+                })    
+            )
+
         return metadata
+        
+        
     
     '''
         Gets the gene links registered to the image key provided
@@ -119,40 +119,39 @@ class GetAPI:
                 image = TagGroup.objects.get(pk__exact=imageKey)
             else:
                 image = imageKey
+        except (ObjectDoesNotExist, ValueError):
+            raise Errors.INVALID_IMAGE_KEY
             
-            authenticated = True
-            
-            if (image.isPrivate):
-                if (self.user and self.user.is_authenticated()):
-                    authenticated = image.user == self.user
-                else:
-                    authenticated = False
-                    
-            if (authenticated):
-                
-                tagGroups = TagGroup.objects.filter(picture__exact=image)
-                
-                tags = Tag.objects.filter(group__in=tagGroups)
-                
-                if (self.unlimited):
-                    geneLinks = GeneLink.objects.filter(tag__in=tags).order_by('pk')[self.offset:]
-                else:
-                    geneLinks = GeneLink.objects.filter(tag__in=tags).order_by('pk')[self.offset : self.offset+self.limit]
-                
-                for geneLink in geneLinks:
-                    metadata.put(
-                        LimitDict(self.fields, {
-                            'id' : geneLink.pk,
-                            'tagId' : geneLink.tag.pk,
-                            'uniquename' : geneLink.feature.uniquename,
-                            'name' : geneLink.feature.name,
-                            'organismId' : geneLink.feature.organism.organism_id
-                        })    
-                    )
+        authenticated = True
+        
+        if (image.isPrivate):
+            if (self.user and self.user.is_authenticated()):
+                authenticated = image.user == self.user
             else:
-                metadata.setError(Errors.AUTHENTICATION)
-        except ObjectDoesNotExist:
-            metadata.setError(Errors.INVALID_TAG_KEY)
+                authenticated = False
+                
+        if not authenticated: 
+            raise Errors.AUTHENTICATION
+        
+        tagGroups = TagGroup.objects.filter(picture__exact=image)
+        
+        tags = Tag.objects.filter(group__in=tagGroups)
+        
+        if (self.unlimited):
+            geneLinks = GeneLink.objects.filter(tag__in=tags).order_by('pk')[self.offset:]
+        else:
+            geneLinks = GeneLink.objects.filter(tag__in=tags).order_by('pk')[self.offset : self.offset+self.limit]
+        
+        for geneLink in geneLinks:
+            metadata.put(
+                LimitDict(self.fields, {
+                    'id' : geneLink.pk,
+                    'tagId' : geneLink.tag.pk,
+                    'uniquename' : geneLink.feature.uniquename,
+                    'name' : geneLink.feature.name,
+                    'organismId' : geneLink.feature.organism.organism_id
+                })    
+            )
         
         return metadata
     
@@ -162,33 +161,30 @@ class GetAPI:
     def getGeneLinks(self):
         metadata = WebServiceArray()
         
-        try:
-            if (self.user and self.user.is_authenticated()):
-                images = Picture.objects.filter(isPrivate=False) | Picture.objects.filter(user__exact=self.user, isPrivate=True)
-            else:
-                images = Picture.objects.filter(isPrivate=False)
-                
-            tagGroups = TagGroup.objects.filter(picture__in=images)
-                    
-            tags = Tag.objects.filter(group__in=tagGroups)
-                    
-            if (self.unlimited):
-                geneLinks = GeneLink.objects.filter(tag__in=tags).order_by('pk')[self.offset:]
-            else:
-                geneLinks = GeneLink.objects.filter(tag__in=tags).order_by('pk')[self.offset : self.offset+self.limit]
+        if (self.user and self.user.is_authenticated()):
+            images = Picture.objects.filter(isPrivate=False) | Picture.objects.filter(user__exact=self.user, isPrivate=True)
+        else:
+            images = Picture.objects.filter(isPrivate=False)
             
-            for geneLink in geneLinks:
-                metadata.put(
-                    LimitDict(self.fields, {
-                        'id' : geneLink.pk,
-                        'tagId' : geneLink.tag.pk,
-                        'uniquename' : geneLink.feature.uniquename,
-                        'name' : geneLink.feature.name,
-                        'organismId' : geneLink.feature.organism.organism_id
-                    })
-                )
-        except ValueError:
-            metadata.setError(Errors.INVALID_TAG_GROUP_KEY)    
+        tagGroups = TagGroup.objects.filter(picture__in=images)
+                
+        tags = Tag.objects.filter(group__in=tagGroups)
+                
+        if (self.unlimited):
+            geneLinks = GeneLink.objects.filter(tag__in=tags).order_by('pk')[self.offset:]
+        else:
+            geneLinks = GeneLink.objects.filter(tag__in=tags).order_by('pk')[self.offset : self.offset+self.limit]
+        
+        for geneLink in geneLinks:
+            metadata.put(
+                LimitDict(self.fields, {
+                    'id' : geneLink.pk,
+                    'tagId' : geneLink.tag.pk,
+                    'uniquename' : geneLink.feature.uniquename,
+                    'name' : geneLink.feature.name,
+                    'organismId' : geneLink.feature.organism.organism_id
+                })
+            )
             
         return metadata
         

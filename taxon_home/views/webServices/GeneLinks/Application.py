@@ -14,17 +14,21 @@ import api.API as API
 class Application(WebServiceApplicationBase):
 	def doProcessRender(self, request):
 		renderObj = WebServiceObject()
-		
 		try:
-			if (request.method == 'GET'):
-				renderObj = API.getImageTagGroups(request)		
+			if request.method == "GET":
+				renderObj = API.getGeneLink(request)
+			elif request.method == "POST":
+				renderObj = API.createGeneLink(request)
+			elif request.method == "DELETE":
+				renderObj = API.deleteGeneLink(request)
 			else:
 				renderObj.setError(Errors.INVALID_METHOD.setCustom(request.method))
 		except Errors.WebServiceException as e:
 			renderObj.setError(e)
-		
+
 		self.setJsonObject(renderObj.getObject())
 		self.setStatus(renderObj.getCode())
+		
 	
 '''
 	Used for mapping to the url in urls.py

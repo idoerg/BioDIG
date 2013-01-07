@@ -47,11 +47,9 @@ class GetAPI:
                     except ObjectDoesNotExist:
                         None                    
             else:
-                metadata.setError(Errors.AUTHENTICATION)
-        except ObjectDoesNotExist:
-            metadata.setError(Errors.INVALID_IMAGE_KEY)  
-        except ValueError:
-            metadata.setError(Errors.INVALID_IMAGE_KEY)
+                raise Errors.AUTHENTICATION
+        except (ObjectDoesNotExist, ValueError):
+            raise Errors.INVALID_IMAGE_KEY
        
         if (not metadata.isError()):
             metadata.limitFields(self.fields)

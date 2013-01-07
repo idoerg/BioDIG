@@ -18,7 +18,7 @@ class Application(WebServiceApplicationBase):
 		if (request.method == "GET"):
 			renderObj = API.getImageMetadata(request)
 		else:
-			renderObj.setError(Errors.INVALID_METHOD.setMethod(request.method))	
+			renderObj.setError(Errors.INVALID_METHOD.setCustom(request.method))	
 
 		self.setJsonObject(renderObj.getObject())
 		self.setStatus(renderObj.getCode())
