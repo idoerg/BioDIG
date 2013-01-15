@@ -64,15 +64,6 @@ class PictureProp(models.Model):
     class Meta:
         unique_together = ('picture_id','type_id')
         db_table = u'pictureprop'
-
-class PictureDefinitionTag(models.Model):
-    picture = models.ForeignKey(Picture)
-    organism_id = models.IntegerField()
-    name = models.TextField()
-    class Meta:
-        db_table = u'picturedefinitiontag'
-    def __unicode__(self):
-        return ", ".join((str(self.picture_id), str(self.name)))
     
 class RecentlyViewedPicture(models.Model):
     picture = models.ForeignKey(Picture)
@@ -89,12 +80,13 @@ class RecentlyViewedPicture(models.Model):
         return (self.picture.imageName.name) + " viewed by " + self.user.username
 
 class TagGroup(models.Model):
-    name = models.TextField(unique=True)
+    name = models.TextField()
     picture = models.ForeignKey(Picture)
     dateCreated = models.DateTimeField(auto_now_add=True, editable=False)
     lastModified = models.DateTimeField(auto_now=True)
     class Meta:
         db_table = u'taggroup'
+        unique_together = ('name', 'picture',)
     def __unicode__(self):
         return self.name
 
@@ -1859,4 +1851,13 @@ class GeneLink(models.Model):
         db_table = u'genelink'
     def __unicode__(self):
         return str(self.tag.description) + " and " + str(self.feature.uniquename)
+    
+class PictureDefinitionTag(models.Model):
+    picture = models.ForeignKey(Picture)
+    organism = models.ForeignKey(Organism)
+    name = models.TextField()
+    class Meta:
+        db_table = u'picturedefinitiontag'
+    def __unicode__(self):
+        return ", ".join((str(self.picture_id), str(self.name)))
     

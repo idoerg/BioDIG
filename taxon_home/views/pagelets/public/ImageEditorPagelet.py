@@ -9,7 +9,7 @@ from renderEngine.PageletBase import PageletBase
 from taxon_home.views.webServices.SearchGeneLinks.api.get import GetAPI as GeneLinkAPI
 from taxon_home.views.webServices.SearchTags.api.get import GetAPI as TagAPI
 from taxon_home.views.webServices.SearchTagGroups.api.get import GetAPI as TagGroupAPI
-from taxon_home.views.webServices.SearchImageMetadata.api.get import GetAPI as ImageMetadataAPI
+from taxon_home.views.webServices.ImageMetadata.api.get import GetAPI as ImageMetadataAPI
 import simplejson as json
 from taxon_home.models import Picture
 
@@ -26,7 +26,7 @@ class ImageEditorPagelet(PageletBase):
     def doProcessRender(self, request):
         self.setLayout('public/imageEditor.html')
         try:
-            imageKey = request.GET.get('imageKey', None)
+            imageKey = request.GET.get('imageId', None)
             if (imageKey):
                 image = Picture.objects.get(pk__exact=imageKey)
                 
@@ -35,7 +35,7 @@ class ImageEditorPagelet(PageletBase):
                 tagAPI = TagAPI(unlimited=True)
                 geneLinkAPI = GeneLinkAPI(unlimited=True)
                 
-                tagGroups = tagGroupAPI.getTagGroupsByImage(image, isKey=False).getObject()
+                tagGroups = tagGroupAPI.getTagGroupsByImage(image, False).getObject()
                 
                 for group in tagGroups:
                     tags = tagAPI.getTagsByTagGroup(group['id']).getObject()
@@ -45,7 +45,7 @@ class ImageEditorPagelet(PageletBase):
                     group['tags'] = tags
                     
                 # initialize image metadata API
-                imageMetadataAPI = ImageMetadataAPI()
+                imageMetadataAPI = ImageMetadataAPI(request.user)
                 imageMetadata = imageMetadataAPI.getImageMetadata(image, isKey=False).getObject()
         
                 return {

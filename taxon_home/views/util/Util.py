@@ -29,7 +29,7 @@ def getInt(queryDict, key, default):
     return value
 
 def getDelimitedList(queryDict, key, delimiter=','):
-    value = queryDict.get('fields', None)
+    value = queryDict.get(key, None)
     if value:
         value = "".join(value.split())
         value = value.split(',')

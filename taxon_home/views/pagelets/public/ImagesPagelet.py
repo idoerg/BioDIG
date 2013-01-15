@@ -5,7 +5,7 @@
 	Date: July 26, 2012
 '''
 from renderEngine.PageletBase import PageletBase
-from taxon_home.models import PictureProp
+from taxon_home.models import Picture
 
 class ImagesPagelet(PageletBase):
 	'''
@@ -18,15 +18,14 @@ class ImagesPagelet(PageletBase):
 	def doProcessRender(self, request):
 		self.setLayout('public/images.html')
 	
-		num_items_row = 5
-		num_items_col = 3
-		picsPerPage = num_items_row * num_items_col	  
-		numPics = PictureProp.objects.filter(type_id__imageType__exact = "database_photo").count()
-		numPicPages = numPics/picsPerPage + 1
+		limit = 15
+		numPics = Picture.objects.all().count()
+		pages = numPics/limit + 1
 		# sets the number of pictures to display in a row of the picture table generated
 
 		return {
-			'picsPerPage': picsPerPage,
-			'numPages': numPicPages,
-			'numImages': numPics
+			'limit': limit,
+			'pages' : pages,
+			'totalImages' : numPics,
+			'imagesPerRow' : 5
 		}

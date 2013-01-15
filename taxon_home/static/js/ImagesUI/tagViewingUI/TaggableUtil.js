@@ -30,7 +30,7 @@ TaggableUtil.getCoordinates = function(event) {
 	// finds the relative position
 	posX = posX - imgPos[0];
 	posY = posY - imgPos[1];
-	return [posX, posY];
+	return {x : posX, y : posY};
 };
 
 TaggableUtil.findPosition = function(oElement) {
@@ -57,7 +57,7 @@ TaggableUtil.findPosition = function(oElement) {
 **/
 TaggableUtil.convertFromOriginalToZoom = function(point, image) {
 	var scale = image.height()/image.data('originalHeight');
-	return [point[0]*scale, point[1]*scale];
+	return { x : point.x*scale, y : point.y*scale };
 };
 
 /**
@@ -66,7 +66,7 @@ TaggableUtil.convertFromOriginalToZoom = function(point, image) {
 **/
 TaggableUtil.convertFromZoomToOriginal = function(point, image) {
 	var scale = image.data('originalHeight')/image.height();
-	return [point[0]*scale, point[1]*scale];
+	return { x : point.x*scale, y : point.y*scale };
 };
 
 /*
@@ -76,21 +76,21 @@ TaggableUtil.convertFromZoomToOriginal = function(point, image) {
 */
 TaggableUtil.getOtherRectPoints = function(points) {
 	var pointOne, pointTwo;
-	if (points[0][0] < points[1][0] && points[0][1] < points[1][1]) {
-		pointOne = [points[0][0], points[1][1]];
-		pointTwo = [points[1][0], points[0][1]];
+	if (points[0].x < points[1].x && points[0].y < points[1].y) {
+		pointOne = { x : points[0].x, y : points[1].y };
+		pointTwo = { x : points[1].x, y : points[0].y };
 	}
-	else if (points[0][0] > points[1][0] && points[0][1] > points[1][1]) {
-		pointOne = [points[1][0], points[0][1]];
-		pointTwo = [points[0][0], points[1][1]];
+	else if (points[0].x > points[1].x && points[0].y > points[1].y) {
+		pointOne = { x : points[1].x, y : points[0].y };
+		pointTwo = { x : points[0].x, y : points[1].y };
 	}
-	else if (points[0][0] < points[1][0] && points[0][1] > points[1][1]) {
-		pointOne = [points[0][0], points[1][1]];
-		pointTwo = [points[1][0], points[0][1]];
+	else if (points[0].x < points[1].x && points[0].y > points[1].y) {
+		pointOne = { x : points[0].x, y : points[1].y };
+		pointTwo = { x : points[1].x, y : points[0].y };
 	}
 	else {
-		pointOne = [points[1][0], points[0][1]];
-		pointTwo = [points[0][0], points[1][1]];
+		pointOne = { x : points[1].x, y : points[0].y };
+		pointTwo = { x : points[0].x, y : points[1].y };
 	}
 	return [pointOne, pointTwo]; 
 };

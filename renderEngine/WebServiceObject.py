@@ -83,6 +83,14 @@ class WebServiceObject:
     def limitFields(self, fields):
         if (fields != None):
             self.fields = set(fields)
+            
+    '''
+        Sets the object for the metadata. Convenient for creating
+        an object before using metadata, but does not provide the
+        limiting of fields. May also fail with json if you are not careful
+    '''
+    def setObject(self, obj):
+        self.obj = obj
 
 class WebServiceArray(WebServiceObject):
     '''

@@ -16,7 +16,8 @@ class PutAPI:
         @param tagKey: The tag's key to update or the tag itself
         @param updateParams: A dictionary of the new parameters for the tag to be changed
         @isKey: Indicates whether the input tagKey is actually a key or not
-    '''    
+    '''
+    @transaction.commit_on_success 
     def updateTagGroup(self, tagGroupKey, name=None, isKey=True):
         metadata = WebServiceObject()
         try:

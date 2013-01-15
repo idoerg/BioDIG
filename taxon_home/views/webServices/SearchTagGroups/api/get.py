@@ -40,7 +40,7 @@ class GetAPI:
         if not authenticated:
             raise Errors.AUTHENTICATION
         
-        if (self.unlimited):
+        if self.unlimited:
             groups = TagGroup.objects.filter(picture__exact=image)[self.offset:]
         else:
             groups = TagGroup.objects.filter(picture__exact=image)[self.offset : self.offset+self.limit]
@@ -65,13 +65,12 @@ class GetAPI:
     def getTagGroups(self):
         metadata = WebServiceArray()
  
-        if (self.user and self.user.is_authenticated()):
-            images = Picture.objects.filter(isPrivate=False) | Picture.objects.filter(user__exact=self.user, isPrivate=True)
-            
+        if self.user and self.user.is_authenticated():
+            images = Picture.objects.filter(isPrivate=False) | Picture.objects.filter(user__exact=self.user, isPrivate=True) 
         else:
             images = Picture.objects.filter(isPrivate=False)
 
-        if (self.unlimited):
+        if self.unlimited:
             groups = TagGroup.objects.filter(picture__in=images)[self.offset:]
         else:
             groups = TagGroup.objects.filter(picture__in=images)[self.offset : self.offset+self.limit]

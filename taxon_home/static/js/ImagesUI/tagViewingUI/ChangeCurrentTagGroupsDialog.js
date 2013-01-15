@@ -128,7 +128,7 @@ ChangeCurrentTagGroupsDialog.prototype.show = function() {
 			var text = entryClone.children('.current-tag-group-text');
 			checkbox.val(i);
 			
-			if (currentTagGroups[tagGroup.getKey()]) {
+			if (currentTagGroups[tagGroup.getId()]) {
 				checkbox.attr("checked", "checked");
 			}
 			

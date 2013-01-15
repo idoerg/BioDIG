@@ -18,7 +18,8 @@ class PostAPI:
         @param description: The description for this tag
         @param color: The color array for this tag
             format: [r, g, b]
-    '''    
+    '''   
+    @transaction.commit_on_success  
     def createTag(self, tagGroupKey, points, description, color, isKey=True):
         metadata = WebServiceObject()
         tagPoints = []

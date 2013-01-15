@@ -21,12 +21,10 @@ function TagBoard(tagBoard, originalData, image, imageMetadata, genomeInfo, site
 	this.locked = false;
 	this.tagsVisible = true;
 	this.currentTagGroups = {};
-	if (this.tagGroups.length > 0) {
-		for (var i = 0; i < this.tagGroups.length; i++) {
-			var key = this.tagGroups[i].getKey();
-			this.currentTagGroups[key] = this.tagGroups[i];
-		}
-	}
+	var self = this;
+	$.each(this.tagGroups, function(key, group) {
+		self.currentTagGroups[key] = group;
+	});
 	this.siteUrl = siteUrl;
 	this.tagInfo = genomeInfo.find('.geneLinksInfo .tagInfoContainer');
 	this.geneLinksInfo = genomeInfo.find('.geneLinksInfo');
@@ -69,27 +67,15 @@ TagBoard.prototype.getSelectedTags = function() {
 	return tags;
 };
 
-TagBoard.prototype.addTag = function(color, points, description, callback, errorCallback) {
-	var tag = new Tag(null, color, points, description, [], this.image.attr('id'), this.siteUrl, null);
-	var keys = [];
-	
-	for (key in this.currentTagGroups) {
-		if (this.currentTagGroups.hasOwnProperty(key)) {
-			keys.push(key);
-		}
-	}
+TagBoard.prototype.addTag = function(color, points, description, tagGroupKey, callback, errorCallback) {
+	var group = this.tagGroups[tagGroupKey];
+	var tag = new Tag(null, color, points, description, [], this.image.attr('id'), this.siteUrl, group);
 	
 	// saves the tag and then adds the 
 	tag.save(
-		Util.scopeCallback(this, function(tagKeys) {
-			for (key in this.currentTagGroups) {
-				if (this.currentTagGroups.hasOwnProperty(key)) {
-					var tagCopy = tag.copy();
-					tagCopy.setTagGroup(this.currentTagGroups[key]);
-					tagCopy.setId(tagKeys[key]);
-					this.currentTagGroups[key].addTag(tagCopy);
-				}
-			}
+		Util.scopeCallback(this, function(newTag) {
+			tag.setId(newTag['id']);
+			group.addTag(tag);
 			
 			this.redraw();
 			
@@ -97,8 +83,7 @@ TagBoard.prototype.addTag = function(color, points, description, callback, error
 		}),
 		function(errorMessage) {
 			errorCallback(errorMessage);
-		},
-		keys
+		}
 	);
 };
 
@@ -122,17 +107,16 @@ TagBoard.prototype.redraw = function() {
 	}
 	
 	this.layer = new Kinetic.Layer();
-	for (var key in this.currentTagGroups) {
-	  if (this.currentTagGroups.hasOwnProperty(key)) {
-		  var tags = this.currentTagGroups[key].getTags();
-		  // Draws the tags on the board and sets up mouseover and mouseout events
-		  for (var i = 0; i < tags.length; i++) {
-			  this.layer.add(this.__createPolyFromTag(tags[i], i));
-		  }
-		  
-		  this.stage.add(this.layer);
-	  }
-	}
+	var self = this;
+	$.each(this.currentTagGroups, function(key, group) {
+	    var tags = group.getTags();
+	    // Draws the tags on the board and sets up mouseover and mouseout events
+	    for (var i = 0; i < tags.length; i++) {
+		    self.layer.add(self.__createPolyFromTag(tags[i], i));
+	    }
+	  
+	    self.stage.add(self.layer);
+	});
 	
 	this.board.on('mousemove', Util.scopeCallback(this, this.boardMouseMove));
 };
@@ -168,7 +152,7 @@ TagBoard.prototype.__createPolyFromTag = function(tag, i) {
 	
 	// creates a polygon with the points for this tag
 	var poly = new Kinetic.Polygon({
-		points: $.map( drawPoints, function(n){return n;}),
+		points: $.map( drawPoints, function(point){return [point.x, point.y]}),
 		fill: fill,
 		stroke: "rgba(255,255,255,0)",
 		strokeWidth: 1
@@ -356,12 +340,12 @@ TagBoard.prototype.__getPolyPos = function(poly) {
 };
 
 TagBoard.prototype.__convertOriginalDataToTagGroups = function(originalData) {
-	var tagGroups = [];
+	var tagGroups = {};
 	
-	for (group in originalData['tagGroups']) {
-		var newGroup = new TagGroup(originalData['tagGroups'][group], this.image.attr('id'), this.siteUrl);
+	for (group in originalData) {
+		var newGroup = new TagGroup(originalData[group], this.image.attr('id'), this.siteUrl);
 		var self = this;
-		tagGroups.push(newGroup);
+		tagGroups[newGroup.getId()] = newGroup;
 	}
 	
 	return tagGroups;
@@ -392,29 +376,25 @@ TagBoard.prototype.emptyCurrentTagGroups = function() {
 TagBoard.prototype.addNewTagGroup = function(name, callback, errorCallback) {
 	var self = this;
 	$.ajax({
-		url: this.siteUrl + 'administration/addNewTagGroup',
+		url: this.siteUrl + 'api/tagGroups',
 		type: 'POST',
 		dataType: 'json',
 		data: {
-			imageKey: self.image.attr('id'),
+			imageId: self.image.attr('id'),
 			name: name
 		},
-		success: function(data, textStatus, jqXHR) {
-			if (!data.error) {				
-				// add a new tag group
-				var newTagGroup = new TagGroup(data.tagGroup, self.image.attr('id'), self.siteUrl);
-				self.tagGroups.push(newTagGroup);
-				self.addToCurrentTagGroups(newTagGroup);
-				if (callback) {
-					callback();
-				}
-			}
-			else {
-				errorCallback(data.errorMessage);
+		success: function(data, textStatus, jqXHR) {			
+			// add a new tag group
+			var newTagGroup = new TagGroup(data, self.image.attr('id'), self.siteUrl);
+			self.tagGroups[newTagGroup.getId()] = newTagGroup;
+			self.addToCurrentTagGroups(newTagGroup);
+			if (callback) {
+				callback();
 			}
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
-			errorCallback(textStatus);
+			var errorMessage = $.parseJSON(jqXHR.responseText).message;
+			errorCallback(errorMessage);
 		}
 	});
 };

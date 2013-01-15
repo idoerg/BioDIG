@@ -13,6 +13,7 @@ class DeleteAPI:
     '''
         Gets all the tags in the database that are private
     '''
+    @transaction.commit_on_success 
     def deleteTagGroup(self, tagGroupKey, isKey=True):
         metadata = WebServiceObject()
         

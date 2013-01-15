@@ -27,8 +27,8 @@
 <div class="right_container">
 	<div id="search_selected">
 		<div style="display: inline-block; margin-right: 15px;">
-			<label>Image</label><input id="search_photos" name="search_photos" type="checkbox" checked="checked" value="Yes" />
-			<label>Genome</label><input id="search_genomes" name="search_genomes" type="checkbox" checked="checked" value="Yes" />
+			<label>Image</label><input id="searchImages" name="searchImages" type="checkbox" checked="checked" value="true" />
+			<label>Genome</label><input id="searchGenomes" name="searchGenomes" type="checkbox" checked="checked" value="true" />
 		</div>
 		<div style="display: inline-block;">
 			<button class="search_button" style="background-image: none; color: white;">Go</button>
@@ -37,7 +37,7 @@
 	<div id="mycoplasma_selector_menu">
 		<ol id="selectable">
 		{% for organism in all_mycoplasma %}
-			<li class="ui-widget-content" id="{{organism.common_name}}">
+			<li class="ui-widget-content" id="{{organism.pk}}">
 				<span>{{organism.common_name}}</span>
 				{% if organism.pk|inList:all_genomes %}
 				<img class="organismInfoImg" style="height:18px" src="{{ STATIC_URL }}images/dnaIcon.png" />
@@ -94,23 +94,24 @@
     });
 
     $('#search_selected button').bind('click', function() {	           
-            var selected_id = $('.ui-selected').map(function() {            
-                return this.id;
-            }).get().join(' & ');
-            if (selected_id != "") {
-		        var form = document.createElement("form");
-                form.setAttribute("method", "get");
-                form.setAttribute("action", "{{ SITE_URL }}search/");
-                hiddenField = document.createElement("input");
-                hiddenField.setAttribute("type", "hidden");
-                hiddenField.setAttribute("name", "search_val");
-                hiddenField.setAttribute("value", selected_id);
-                form.appendChild(hiddenField);
-                form.appendChild($('#search_genomes').clone()[0]);  
-                form.appendChild($('#search_photos').clone()[0]);  
-                document.body.appendChild(form);
-                form.submit();
-            }
+        var selected_id = $('.ui-selected').map(function() {            
+            return this.id;
+        }).get().join(',');
+        
+        if (selected_id != "") {
+	      	var form = document.createElement("form");
+	        form.setAttribute("method", "get");
+	        form.setAttribute("action", "{{ SITE_URL }}search/");
+	        hiddenField = document.createElement("input");
+	        hiddenField.setAttribute("type", "hidden");
+	        hiddenField.setAttribute("name", "organismId");
+	        hiddenField.setAttribute("value", selected_id);
+	        form.appendChild(hiddenField);
+	        form.appendChild($('#searchGenomes').clone()[0]);  
+	        form.appendChild($('#searchImages').clone()[0]);  
+	        document.body.appendChild(form);
+	        form.submit();
+        }
     });
     
     $('#mycoplasma_selector_menu ol li').dblclick(function() {
@@ -119,11 +120,11 @@
         form.setAttribute("action", "{{ SITE_URL }}search/");
         hiddenField = document.createElement("input");
         hiddenField.setAttribute("type", "hidden");
-        hiddenField.setAttribute("name", "search_val");
+        hiddenField.setAttribute("name", "organismId");
         hiddenField.setAttribute("value", $(this).attr('id'));
         form.appendChild(hiddenField);
-        form.appendChild($('#search_genomes').clone()[0]);  
-        form.appendChild($('#search_photos').clone()[0]); 
+        form.appendChild($('#searchGenomes').clone()[0]);  
+        form.appendChild($('#searchImages').clone()[0]); 
         document.body.appendChild(form);
         form.submit();
     });

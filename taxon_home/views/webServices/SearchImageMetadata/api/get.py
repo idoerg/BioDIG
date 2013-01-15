@@ -1,64 +1,105 @@
-import taxon_home.views.util.ErrorConstants as Errors
-from taxon_home.models import Picture, PictureDefinitionTag, Organism
-from django.core.exceptions import ObjectDoesNotExist
-from django.forms.models import model_to_dict
-from renderEngine.WebServiceObject import WebServiceObject
+from taxon_home.models import Picture, PictureDefinitionTag
+from renderEngine.WebServiceObject import WebServiceArray, WebServiceObject, LimitDict
+from taxon_home.views.webServices.ImageMetadata.api.get import GetAPI as ImageMetadataAPI
+
 
 class GetAPI:
-    def __init__(self, user=None, fields=None):
+    def __init__(self, limit=10, offset=0, user=None, fields=None, unlimited=False):
         self.user = user
         self.fields = fields
+        self.limit = limit
+        self.offset = offset
+        self.unlimited = unlimited
 
     '''
-        Gets the metadata associated with an image given the image key
+        Gets theimage  metadata associated with a set of organisms 
         
-        @param imageKey: The primary key for the image or the image
-        @param user: a Django auth_user object necessary for images
-        that are still private
-        @param isKey: Whether the first argument is a key object or not (default: true)
+        @param organismId: A list of organism ids
         
         @return: A dictionary containing organisms associated with the image and all 
         of the images attributes. The dictionary will also contain error information
         stored in the errorMessage and error fields
     '''
-    def getImageMetadata(self, imageKey, isKey=True):
-        organisms = []
+    def getImageMetadataByOrganism(self, organismId):
         metadata = WebServiceObject()
         
-        try:
-            if (isKey):
-                image = Picture.objects.get(pk__exact=imageKey) 
-            else:
-                image = imageKey
-            
-            authenticated = True
-            if (image.isPrivate):
-                if (self.user and self.user.is_authenticated()):
-                    authenticated = image.user == self.user
+        if self.user and self.user.is_authenticated():
+            allowedImages = Picture.objects.filter(isPrivate=False) | Picture.objects.filter(user__exact=self.user, isPrivate=True) 
+        else:
+            allowedImages = Picture.objects.filter(isPrivate=False)
+        
+        defTags = []    
+        
+        if self.unlimited:
+            for orgId in organismId:
+                defTags.append(PictureDefinitionTag.objects.filter(organism__exact=orgId, picture__in=allowedImages)[self.offset:])
+        else:
+            for orgId in organismId:
+                defTags.append(PictureDefinitionTag.objects.filter(organism__exact=orgId, picture__in=allowedImages)[self.offset:self.offset + self.limit])   
+
+        closedSet = {}
+        imageMetadata = {}
+        imageFields = set(['url', 'uploadDate', 'description', 'uploadedBy'])
+        if self.fields:
+            newImageFields = imageFields.intersection(set(self.fields))
+            if newImageFields:
+                imageFields = newImageFields
+        imageMetadataAPI = ImageMetadataAPI(self.user, imageFields)
+        
+        for orgTags in defTags:
+            for tag in orgTags:
+                if not closedSet.has_key(tag.picture.pk):
+                    closedSet[tag.picture.pk] = imageMetadataAPI.getImageMetadata(tag.picture, False).getObject()
+                if imageMetadata.has_key(tag.organism.pk):
+                    imageMetadata[tag.organism.pk]['images'].append(closedSet[tag.picture.pk])
                 else:
-                    authenticated = False
+                    imageMetadata[tag.organism.pk] = {
+                        'images' : [closedSet[tag.picture.pk]],
+                        'organism' : {
+                            'commonName' : tag.organism.common_name,
+                            'abbreviation' : tag.organism.abbreviation,
+                            'genus' : tag.organism.genus,
+                            'species' : tag.organism.species      
+                        }
+                    }
                     
-            if (authenticated):
-                defTags = PictureDefinitionTag.objects.filter(picture__exact=image)
-                
-                for tag in defTags:
-                    try:
-                        organisms.append(model_to_dict(Organism.objects.get(pk__exact=tag.organism_id), fields=['organism_id', 'common_name']))
-                    except ObjectDoesNotExist:
-                        None                    
-            else:
-                raise Errors.AUTHENTICATION
-        except (ObjectDoesNotExist, ValueError):
-            raise Errors.INVALID_IMAGE_KEY
-       
-        if (not metadata.isError()):
-            metadata.limitFields(self.fields)
-            
-            # put in the information we care about
-            metadata.put('organisms', organisms)
-            metadata.put('description', image.description)
-            metadata.put('uploadedBy', image.user.username)
-            metadata.put('uploadDate', image.uploadDate.strftime("%Y-%m-%d %H:%M:%S"))
-            metadata.put('url', image.imageName.url)
+        if len(imageMetadata) != len(organismId):
+            for orgId in organismId:
+                if not imageMetadata.has_key(orgId):
+                    imageMetadata[orgId] = []
+        
+        metadata.setObject(LimitDict(self.fields, imageMetadata))
         
         return metadata
+    
+    '''
+        Gets the metadata associated with an image given the image key
+        
+        @param organismId: A list of organism ids
+        
+        @return: A dictionary containing organisms associated with the image and all 
+        of the images attributes. The dictionary will also contain error information
+        stored in the errorMessage and error fields
+    '''
+    def getImageMetadata(self):
+        metadata = WebServiceArray()
+        
+        if self.user and self.user.is_authenticated():
+            if self.unlimited:
+                allowedImages = (Picture.objects.filter(isPrivate=False) | Picture.objects.filter(user__exact=self.user, isPrivate=True))[self.offset:]
+            else:
+                allowedImages = (Picture.objects.filter(isPrivate=False) | Picture.objects.filter(user__exact=self.user, isPrivate=True))[self.offset:self.offset+self.limit]
+        else:
+            if self.unlimited:
+                allowedImages = Picture.objects.filter(isPrivate=False)[self.offset:]
+            else:
+                allowedImages = Picture.objects.filter(isPrivate=False)[self.offset:self.offset+self.limit]
+        
+        imageMetadataAPI = ImageMetadataAPI(self.user, self.fields)
+        
+        for image in allowedImages:
+            metadata.put(imageMetadataAPI.getImageMetadata(image, False).getObject())
+        
+        return metadata
+    
+

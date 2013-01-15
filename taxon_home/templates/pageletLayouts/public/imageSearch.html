@@ -1,77 +1,73 @@
 {% load template_tags %}
 <head>
 	<script type="text/javascript" src="{{ STATIC_URL }}js/collapser/collapser.js" ></script>
-	<script type="text/javascript" src="{{ STATIC_URL }}js/imageUpdater/imageUpdater.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}js/imageUpdater/imageUpdaterByOrganism.js"></script>
 	<link rel="stylesheet" href="{{ STATIC_URL }}css/images.css" type="text/css" />
 </head>
 <body>
-	<div>
+	<div class="results">
 		<div id="collapse-holder-images" class="collapse_holder">
 		    <img class="collapse" id="collapse-images" src="{{ STATIC_URL }}images/arrow_down.png"></img>
-		    <span>Image Results for {{ candidateInfo|getCommonNames }}</span>
+		    <span>Image Results for {{ query }}</span>
 		</div>
-		<div id="collapsible-images">
-			<div id="image-tabs" class="search-tabs">
-				<ul>            
-            	{% for candidate in candidateInfo %}
-            		<li id="{{candidate.1}}-image-tab"{% if forloop.counter0|isZero %} class="activeTab"{% endif %}>
-            			{{ candidate.0|abbreviateCommonName }}
-            		</li>
-            	{% endfor %} 
-            	</ul>
+		<div id="image-search-container">
+			<div class="results-menu">
+				<div class="tabTitle">Organisms Found</div>
+			 	{% for candidate in candidateInfo %}
+				<div id="imageTab{{ candidate.2 }}" class="tab{% if forloop.counter0|isZero %} activeTab{% endif %}">{{ candidate.1 }}</div>
+				{% endfor %}
 			</div>
-			<div id="image-search-content" class="search-content">
+			<div class="results-container">
 				{% for candidate in candidateInfo %}
-            		<div id="{{candidate.1}}-image-content" class="contentHolder{% if forloop.counter0|isZero %} activeContent{% endif %}">
-						<div class="picturesContainer">
-							<input type="hidden" class="numImages" value="{{ candidate.3 }}" />
-							<input type="hidden" class="numPages" value="{{ candidate.2 }}" />
-							<input type="hidden" class="organism" value="{{ candidate.1 }}" />
-						    <table>
-						        <tbody></tbody>
-						    </table>
-						    <br clear="all" />
-						</div>
-            		</div>
-            	{% endfor %} 
+				<div id="imageResult{{ candidate.2 }}" class="image-content{% if forloop.counter0|isZero %} activeContent{% endif %}">
+					<input type="hidden" class="totalImages" value="{{ candidate.4 }}" />
+					<input type="hidden" class="pages" value="{{ candidate.3 }}" />
+					<input type="hidden" class="organismId" value="{{ candidate.2 }}" />
+					<table>
+				        <tbody></tbody>
+				    </table>
+				</div>
+				{% endfor %}
 			</div>
-	    </div>
+		</div>
 	</div>
 </body>
 <script type="text/javascript">
 	(function($) {
 		$(document).ready(function() {
 			$('#collapse-holder-images').collapser({
-				selector: '#collapsible-images'
+				selector: '#image-search-container'
 			});
 			
-			$('#image-tabs li').on('click', function() {
-				$('#image-tabs .activeTab').removeClass('activeTab');
-				$('#image-search-content .activeContent').removeClass('activeContent').hide();
-				
-				$(this).addClass('activeTab');
-				var contentId = $(this).attr('id').split('-')[0];
-				contentId = '#' + contentId + '-image-content';
-				$(contentId).addClass('activeContent').show();
+			$('#image-search-container .tab').on('click', function() {
+				if (!$(this).hasClass('activeTab')) {
+					$('#image-search-container .activeTab').removeClass('activeTab');
+					$('#image-search-container .activeContent').removeClass('activeContent').hide();
+					
+					$(this).addClass('activeTab');
+					var contentId = $(this).attr('id').split('imageTab')[1];
+					contentId = '#imageResult' + contentId;
+					$(contentId).addClass('activeContent').show();
+				}
 			});
 		
 			$(window).load(function() {
-				$('#image-search-content .contentHolder').each(function() {
-					var numImages = $(this).find('.numImages').val();
-					var numPages = $(this).find('.numPages').val();
-					var organism = $(this).find('.organism').val();
-					$(this).children('.picturesContainer').imageUpdater({
+				$('#image-search-container .results-container > div').each(function() {
+					var totalImages = $(this).find('.totalImages').val();
+					var pages = $(this).find('.pages').val();
+					var organismId = $(this).find('.organismId').val();
+					$(this).imageUpdaterByOrganism({
 						'staticUrl' : '{{ STATIC_URL }}',
 						'siteUrl' : '{{ SITE_URL }}',
-						'numPages' : numPages,
-						'numImages' : numImages,
-						'picsPerPage' : {{ picsPerPage }},
-						'organism' : organism
+						'pages' : pages,
+						'limit' : {{ limit }},
+						'totalImages' : totalImages,
+						'imagesPerRow' : {{ imagesPerRow }},
+						'organismId' : organismId
 					});
 				});
 				
-				$('#image-search-content .contentHolder').hide();
-		        $('#image-search-content .activeContent').show();
+		        $('#image-search-container .results-container .activeContent').show();
 			});
 		});
 	})(jQuery);

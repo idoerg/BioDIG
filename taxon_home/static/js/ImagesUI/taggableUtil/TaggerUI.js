@@ -85,7 +85,7 @@ TaggerUI.prototype.createStructure = function() {
 		var group = groups[key];
 		$tagGroupSelect.append($('<option />', {
 			'text' : group.getName(),
-			'name' : group.getKey()
+			'name' : group.getId()
 		}));
 	}
 	

@@ -29,22 +29,19 @@ class ImageSearchPagelet(PageletBase):
     def doProcessRender(self, request):
         self.setLayout('public/imageSearch.html')
         
-        num_items_row = 5
-        num_items_col = 3
-        picsPerPage = num_items_row * num_items_col
+        limit = 8
         
         candidateInfo = list()
         
         for candidate in self.searchParams['candidates']:
-            if (not candidate['error']):
-                for match in candidate['matches']:
-                    numImages = PictureDefinitionTag.objects.filter(organism_id__exact=match.pk).count()
-                    numPages = numImages/picsPerPage + 1
-                    candidateInfo.append((match.common_name, str(match.pk), numPages, numImages))
-            else:
-                candidateInfo.append(("No entries for " + candidate['subquery'], -1, -1, -1))
-        
+            for match in candidate:
+                numImages = PictureDefinitionTag.objects.filter(organism__exact=match.pk).count()
+                pages = numImages/limit + 1
+                candidateInfo.append((match.common_name, match.abbreviation, str(match.pk), pages, numImages))
+    
         return {
             'candidateInfo': candidateInfo,
-            'picsPerPage': picsPerPage
+            'limit': limit,
+            'imagesPerRow' : 4,
+            'query' : self.searchParams['query']
         }

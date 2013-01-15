@@ -148,9 +148,9 @@ DrawingBoard.prototype.__draw = function(points, refresh) {
 	
 	// goes through each point and draws the polygon
 	context.beginPath();
-	context.moveTo(points[0][0], points[0][1]);
+	context.moveTo(points[0].x, points[0].y);
 	for (var i = 1; i < points.length; i++) {
-		context.lineTo(points[i][0], points[i][1]);    
+		context.lineTo(points[i].x, points[i].y);    
 	}
 	context.closePath();
 	

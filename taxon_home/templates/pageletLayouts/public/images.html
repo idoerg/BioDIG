@@ -13,8 +13,9 @@
 	$('#picturesDiv').imageUpdater({
 		'staticUrl' : '{{ STATIC_URL }}',
 		'siteUrl' : '{{ SITE_URL }}',
-		'numPages' : {{ numPages }},
-		'picsPerPage' : {{ picsPerPage }},
-		'numImages' : {{ numImages }}
+		'pages' : {{ pages }},
+		'limit' : {{ limit }},
+		'totalImages' : {{ totalImages }},
+		'imagesPerRow' : {{ imagesPerRow }}
 	});
 </script>

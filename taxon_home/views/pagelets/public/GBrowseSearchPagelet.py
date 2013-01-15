@@ -5,7 +5,7 @@
     Date: August 21, 2012
 '''
 from renderEngine.PageletBase import PageletBase
-from django.core.exceptions import ObjectDoesNotExist
+from taxon_home.models import OrganismWithGenome
 
 class GBrowseSearchPagelet(PageletBase):
     '''
@@ -32,12 +32,11 @@ class GBrowseSearchPagelet(PageletBase):
         candidateInfo = list()
         
         for candidate in self.searchParams['candidates']:
-            if (not candidate['error']):
-                for match in candidate['matches']:
-                    candidateInfo.append((match.common_name, str(match.pk)))
-            else:
-                candidateInfo.append(("No entries for " + candidate['subquery'], -1, -1))      
+            for match in candidate:
+                isGenome = True if OrganismWithGenome.objects.filter(organism_id__exact=match.pk).count() else False
+                candidateInfo.append((match.common_name, match.abbreviation, str(match.pk), isGenome))     
             
         return {
-            'candidateInfo' : candidateInfo
+            'candidateInfo' : candidateInfo,
+            'query' : self.searchParams['query']
         }

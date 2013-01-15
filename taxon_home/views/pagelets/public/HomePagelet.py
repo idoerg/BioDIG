@@ -18,7 +18,7 @@ class HomePagelet(PageletBase):
 	def doProcessRender(self, request):
 		self.setLayout('public/home.html')
 
-		allMycoplasma = Organism.objects.filter(genus__exact="Mycoplasma").order_by('species')
+		allMycoplasma = Organism.objects.all().order_by('species')
 		allGenomes = OrganismWithGenome.objects.values_list('organism_id', flat=True).order_by('organism_id')
 		allImages = OrganismWithImages.objects.values_list('organism_id', flat=True).order_by('organism_id')
 		allTags = OrganismWithTags.objects.values_list('organism_id', flat=True).order_by('organism_id')

@@ -1,20 +1,22 @@
-from renderEngine.WebServiceObject import WebServiceObject
 import taxon_home.views.util.ErrorConstants as Errors
 import taxon_home.views.util.Util as Util
 from get import GetAPI
 
 def getImageMetadata(request):
-    renderObj = WebServiceObject()
-    if request.GET.has_key('imageKey'):
-        # the key for lookup and the image it is attached to
-        imageKey = request.GET['imageKey']
-        fields = Util.getDelimitedList(request.GET, 'fields')
-        getAPI = GetAPI(request.user, fields)
-        try:
-            renderObj = getAPI.getImageMetadata(imageKey)
-        except Errors.WebServiceException as e:
-            renderObj.setError(e)           
+    #optional parameters
+    offset = Util.getInt(request.GET, 'offset', 0)
+    limit = Util.getInt(request.GET, 'limit', 10)
+    unlimited = request.GET.get('unlimited', False)
+    fields = Util.getDelimitedList(request.GET, 'fields')
+
+    getAPI = GetAPI(limit, offset, request.user, fields, unlimited)
+    if request.GET.has_key('by'):
+        by = request.GET['by']        
+        if by == 'organism':
+            # required paramaters
+            organismIds = Util.getDelimitedList(request.GET, 'organismId')
+            return getAPI.getImageMetadataByOrganism(organismIds)
+        else:
+            raise Errors.INVALID_PARAMETER.setCustom('by')
     else:
-        renderObj.setError(Errors.NO_IMAGE_KEY)
-    
-    return renderObj
+        return getAPI.getImageMetadata()

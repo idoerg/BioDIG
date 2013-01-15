@@ -16,7 +16,7 @@
 		**/
 		addPagination: function($self) {
 			var settings = $self.data('settings');
-			$self.append('<div id="Pagination" class="image-pagination"> \
+			$self.append('<div id="' + settings.organismId + 'Pagination" class="image-pagination"> \
 					<div style="float:left"> \
 						Showing <span class="first-image">1</span>-<span class="last-image">' + settings.limit +
 						'</span> of <span class="num-images">' + settings.totalImages + '</span> \
@@ -93,7 +93,9 @@
 	            type: 'GET',
 	            data: {
 	                limit: settings.limit,
-	                offset: (newPage - 1) * settings.limit 
+	                offset: (newPage - 1) * settings.limit,
+	                by: 'organism',
+	                organismId : settings.organismId
 	            },
 	            dataType: 'json',
 	            context: document.body,
@@ -102,18 +104,18 @@
                     var $table = $self.find('table tbody').empty();
                     
                     var $currentRow = $('<tr>').appendTo($table);
-                    for (var i = 0; i < data.length; i++) {
+                    for (var i = 0; i < data[settings.organismId]['images'].length; i++) {
                         if (i % settings.imagesPerRow == 0) {
                             $currentRow = $('<tr>').appendTo($table);
                         }
                         var $currentCell = $('<td>').appendTo($currentRow).addClass('table_cell');
 
-                        private_methods.createNewPictureCell(data, i, settings, $currentCell);
+                        private_methods.createNewPictureCell(data[settings.organismId]['images'], i, settings, $currentCell);
                         imagesOnPage++;
 		            }
                     settings.imagesOnPage = imagesOnPage;
                     settings.currentPage = newPage;
-                    var $pagination = $('#Pagination');
+                    var $pagination = $('#' + settings.organismId + 'Pagination');
                     $pagination.find('.numbers_holder input').val(settings.currentPage);
                     firstImage = (settings.currentPage - 1) * settings.limit + 1;
                     $pagination.find('.first-image').html(firstImage);
@@ -130,7 +132,7 @@
 
 	        var $pictureDiv = $('<div>');
 	        var $href = $('<a>').attr('href', settings.siteUrl + 'images/editor?imageId=' + picture.id);
-	        $href.append($('<img>').attr('src', picture.url).width(180).height(130));
+	        $href.append($('<img>').attr('src', picture.url).width(172).height(130));
 	                        
 	        var $descriptionDiv = $('<div class="description"><span>' + picture.description + '</span></div>');
 				
@@ -152,7 +154,8 @@
 					'limit' : 15,
 					'currentPage' : 1,
 					'totalImages' : 0,
-					'imagesPerRow' : 5
+					'imagesPerRow' : 4,
+					'organismId' : -1
 				}, options);
 				
 				$(this).data('settings', settings);
@@ -168,8 +171,7 @@
 		}
 	};
 
-	$.fn.imageUpdater = function(method) {
-
+	$.fn.imageUpdaterByOrganism = function(method) {
 		// Method calling logic
 		if ( public_methods[method] ) {
 			return public_methods[ method ].apply( this, Array.prototype.slice.call( arguments, 1 ));

@@ -55,7 +55,7 @@ def updateTag(request):
         raise Errors.MISSING_PARAMETER.setCustom('color')
     
     description = request.PUT.get('description', None)
-    if description:
+    if not description:
         raise Errors.MISSING_PARAMETER.setCustom('description')
     
     # read in optional parameters and initialize the API
@@ -70,28 +70,41 @@ def updateTag(request):
     @param request: Django Request object to be used to parse the query
 '''
 def createTag(request):
-    # get tagId for new gene link
-    tagId = request.POST.get('tagId', None)
+    # get the tagGroupKey
+    tagGroupKey = request.POST.get('tagGroupId', None)
+    if not tagGroupKey:
+        raise Errors.NO_TAG_GROUP_KEY
     
-    if not tagId:
-        raise Errors.NO_TAG_KEY
+    # get the points
+    points = request.POST.get('points', None)
+    if points:
+        try:
+            points = json.loads(points)
+        except ValueError:
+            raise Errors.INVALID_SYNTAX.setCustom('points')
+    else:
+        raise Errors.MISSING_PARAMETER.setCustom('points')
     
-    # find name or uniquename
-    name = request.POST.get('name', None)
-    uniquename = request.POST.get('uniquename', None)
-    organismId = request.POST.get('organismId', None)
+    # get the color
+    color = request.POST.get('color', None)
+    if color:
+        try:
+            color = json.loads(color)
+        except ValueError:
+            color = Util.getDelimitedList(request.PUT, 'color')
+    else:
+        raise Errors.MISSING_PARAMETER.setCustom('color')
+    
+    # get the description
+    description = request.POST.get('description', None)
+    if not description:
+        raise Errors.MISSING_PARAMETER.setCustom('description')
     
     # read in optional parameters and initialize the API
     fields = Util.getDelimitedList(request.POST, 'fields')
-    
-    if not (uniquename or (name and organismId)):
-        if not uniquename:
-            raise Errors.MISSING_PARAMETER.setCustom('uniquename')
-        else:
-            raise Errors.INVALID_SYNTAX.setCustom('name and organismId required')
         
     postAPI = PostAPI(request.user, fields)
-    return postAPI.createGeneLink(name, uniquename, organismId)
+    return postAPI.createTag(tagGroupKey, points, description, color)
 
 '''
     Deletes a tag and returns the information for the tag that was deleted

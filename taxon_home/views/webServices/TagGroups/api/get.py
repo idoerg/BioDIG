@@ -12,7 +12,7 @@ class GetAPI:
     '''
         Gets all the tags in the database that are private
     '''
-    def getTag(self, tagGroupKey, isKey=True):
+    def getTagGroup(self, tagGroupKey, isKey=True):
         metadata = WebServiceObject()
         
         try:            

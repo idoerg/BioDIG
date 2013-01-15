@@ -74,8 +74,10 @@
 	</div>
 	<div class="login_search">
 		<form id="search"  method="get" action="{{ SITE_URL }}search/">
-			<input type="text" name="search_val" id="search_val" />
-			<input type="submit" class="search_button" id="submit_search" name="submit_search" value="" />
+			<input type="text" name="query" id="query" />
+			<input type="hidden" name="searchImages" value="true" />
+			<input type="hidden" name="searchGenomes" value="false" />
+			<input type="submit" class="search_button" value="" />
 		</form>
 	</div>    
 </div>

@@ -6,7 +6,7 @@ function Tag(id, colorArr, tagPoints, description, geneLinks, imageKey, siteUrl,
 	this.description = description;
 	this.imageKey = imageKey;
 	this.siteUrl = siteUrl;
-	this.saveUrl = siteUrl + 'administration/saveTag';
+	this.saveUrl = siteUrl + 'api/tags';
 	this.geneLinks = this.__convertToGeneLinks(geneLinks);
 };
 
@@ -56,27 +56,23 @@ Tag.prototype.getFormattedColor = function() {
  * 
  * @param callback: function to run when the saving of the tag has been confirmed.
  */
-Tag.prototype.save = function(callback, errorCallback, tagGroupKeys) {
+Tag.prototype.save = function(callback, errorCallback) {
 	$.ajax({
 		url : this.saveUrl,
 		type : 'POST',
 		data : {
-			color : this.color,
-			points : this.points,
+			color : JSON.stringify(this.color),
+			points : JSON.stringify(this.points),
 			description : this.description,
-			tagGroupKeys : tagGroupKeys
+			tagGroupId : this.tagGroup.getId()
 		},
 		dataType : 'json',
 		success : function(data, textStatus, jqXHR) {
-			if (!data.error) {
-				callback(data.tagKeys);
-			}
-			else {
-				errorCallback(data.errorMessage);
-			}
+			callback(data);
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			errorCallback(textStatus);
+			var errorMessage = $.parseJSON(jqXHR.responseText).message;
+			errorCallback(errorMessage);
 		}
 	});
 };

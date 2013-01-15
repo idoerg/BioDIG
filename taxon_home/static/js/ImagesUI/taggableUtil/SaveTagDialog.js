@@ -88,10 +88,11 @@ SaveTagDialog.prototype.onError = function(errorMessage) {
 
 SaveTagDialog.prototype.onSubmit = function() {
 	var description = $.trim(this.name.val());
+	var tagGroupKey = this.table.find('input:radio[name=tagGroup]:checked').val();
 	
-	if (description) {		
+	if (description && tagGroupKey) {		
 		// adds the current drawn tag to the local tags object
-		this.tagBoard.addTag(this.colorArr, this.tagPoints, description, 
+		this.tagBoard.addTag(this.colorArr, this.tagPoints, description, tagGroupKey,
 			Util.scopeCallback(this, this.onSuccess), Util.scopeCallback(this, this.onError));
 		// updates the tag board
 		this.tagBoard.redraw();
@@ -107,7 +108,7 @@ SaveTagDialog.prototype.hide = function() {
 SaveTagDialog.prototype.show = function(tagBoard, colorArr, tagPoints, newTagGroupDialog) {
 	this.colorArr = colorArr;
 	this.tagPoints = tagPoints;
-	if (tagBoard.getTagGroups().length == 0) {
+	if ($.isEmptyObject(tagBoard.getTagGroups())) {
 		var self = this;
 		newTagGroupDialog.addSubmitCallback(function(newTagBoard) {
 			self.showHelper(newTagBoard);
@@ -124,28 +125,43 @@ SaveTagDialog.prototype.showHelper = function(tagBoard) {
 	this.table.empty();
 	var tbody = $('<tbody />');
 	var i = 0;
-	var currentTagGroups = tagBoard.getCurrentTagGroups();
-	for (key in currentTagGroups) {
-		if (currentTagGroups.hasOwnProperty(key)) {
-			var group = currentTagGroups[key];
+	var tagGroups = tagBoard.getTagGroups();
+	for (key in tagGroups) {
+		if (tagGroups.hasOwnProperty(key)) {
+			var group = tagGroups[key];
 			var newRow = $('<tr />');
-			var text = ' ';
+			var text = '';
 			if (i == 0) {
-				text = 'Tag Groups:';
+				text = 'Select a Tag Group:';
 			}
-			newRow.append($('<td />', {
-				'text' : text
+			
+			var labelCell = $('<td />', {
+				'text' : text,
+				'style' : 'text-align: right;'
+			});
+			
+			var tagGroupCell = $('<td />', {
+				'class' : 'tag-group-cell'
+			});
+			
+			tagGroupCell.append($('<input />', {
+				'value' : group.getId(),
+				'type' : 'radio',
+				'name' : 'tagGroup',
+				'checked' : i == 0
 			}));
-			newRow.append($('<td />', {
-				'text' : group.getName(),
-				'class' : 'tag-group-cell',
+			
+			tagGroupCell.append($('<span />', {
+				'text' : group.getName()
 			}));
+			
+			newRow.append(labelCell);
+			newRow.append(tagGroupCell);
 			tbody.append(newRow);
 			i++;
 		}
 	}
 	this.table.append(tbody);
-	this.currentTagGroups = currentTagGroups;
 	this.dialog.show();
 	this.tagBoard = tagBoard;
 };

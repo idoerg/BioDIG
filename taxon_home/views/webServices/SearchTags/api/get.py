@@ -49,10 +49,10 @@ class GetAPI:
             points = []
             
             for tagPoint in tagPoints:
-                points.append([
-                    tagPoint.pointX, 
-                    tagPoint.pointY
-                ])
+                points.append({
+                    'x' : tagPoint.pointX, 
+                    'y' : tagPoint.pointY
+                })
             
             color = [tag.color.red, tag.color.green, tag.color.blue]
             
