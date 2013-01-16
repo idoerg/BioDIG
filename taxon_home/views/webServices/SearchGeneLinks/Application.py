@@ -16,7 +16,7 @@ class Application(WebServiceApplicationBase):
 		renderObj = WebServiceObject()	
 		
 		try:	
-			if (request.method == "GET"):
+			if request.method == "GET":
 				renderObj = API.getGeneLinks(request)
 			else:
 				renderObj.setError(Errors.INVALID_METHOD.setCustom(request.method))

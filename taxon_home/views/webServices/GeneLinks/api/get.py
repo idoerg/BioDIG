@@ -16,7 +16,7 @@ class GetAPI:
         metadata = WebServiceObject()
         
         try:            
-            if (isKey):
+            if isKey:
                 geneLink = GeneLink.objects.get(pk__exact=geneLinkKey)
             else:
                 geneLink = geneLinkKey
@@ -29,7 +29,7 @@ class GetAPI:
             
         metadata.put('id', geneLink.pk)
         metadata.put('tagId', geneLink.tag.pk)
-        metadata.put('uniquename', geneLink.feature.uniquename)
+        metadata.put('uniqueName', geneLink.feature.uniquename)
         metadata.put('name', geneLink.feature.name)
         metadata.put('organismId', geneLink.feature.organism.organism_id)
         
