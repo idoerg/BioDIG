@@ -28,7 +28,7 @@ class ImageEditorPagelet(PageletBase):
         try:
             imageKey = request.GET.get('imageId', None)
             if (imageKey):
-                image = Picture.objects.get(pk__exact=imageKey)
+                image = Picture.objects.get(pk__exact=imageKey, isPrivate=False)
                 
                 # initialize tagging APIs
                 tagGroupAPI = TagGroupAPI(unlimited=True)

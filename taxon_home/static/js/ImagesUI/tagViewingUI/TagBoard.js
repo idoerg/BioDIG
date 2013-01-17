@@ -60,9 +60,10 @@ TagBoard.prototype.getTagGroups = function() {
 };
 
 TagBoard.prototype.getSelectedTags = function() {
-	var tags = [];
+	var tags = {};
 	for (var i = 0; i < this.visibleShapes.length; i++) {
-		tags.push(this.visibleShapes[i].tag);
+		var tag = this.visibleShapes[i].tag;
+		tags[tag.getId()] = tag;
 	}
 	return tags;
 };
@@ -111,9 +112,9 @@ TagBoard.prototype.redraw = function() {
 	$.each(this.currentTagGroups, function(key, group) {
 	    var tags = group.getTags();
 	    // Draws the tags on the board and sets up mouseover and mouseout events
-	    for (var i = 0; i < tags.length; i++) {
-		    self.layer.add(self.__createPolyFromTag(tags[i], i));
-	    }
+	    $.each(tags, function(id, tag) {
+		    self.layer.add(self.__createPolyFromTag(tag, id));
+	    });
 	  
 	    self.stage.add(self.layer);
 	});

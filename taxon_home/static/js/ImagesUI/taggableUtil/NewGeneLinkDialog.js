@@ -1,6 +1,6 @@
 function NewGeneLinkDialog(pageBlock, organisms, siteUrl) {
 	this.block = pageBlock;
-	this.submitUrl = siteUrl + 'administration/addNewGeneLink';
+	this.submitUrl = siteUrl + 'api/geneLinks';
 	
 	this.dialog = $('<div />', {
 		'class' : 'tagging-dialog',
@@ -22,6 +22,12 @@ function NewGeneLinkDialog(pageBlock, organisms, siteUrl) {
 	this.contents = $('<div />', {
 		'class' : 'tagging-dialog-contents'
 	});
+	
+	this.table = $('<table />', {
+		'class' : 'dialog-table'
+	});
+	
+	this.contents.append(this.table);
 	
 	var geneNameContainer = $('<div />');
 	
@@ -63,8 +69,8 @@ function NewGeneLinkDialog(pageBlock, organisms, siteUrl) {
 	
 	$.each(organisms, function(index, organism) {
 		var option = $('<option />', {
-			'text' : organism.common_name,
-			'value' : organism.organism_id
+			'text' : organism.commonName,
+			'value' : organism.id
 		});
 		self.organism.append(option);
 	});
@@ -102,7 +108,6 @@ function NewGeneLinkDialog(pageBlock, organisms, siteUrl) {
 	
 	this.finalizeUI.append(this.finalizeBody);
 	
-	
 	this.dialog.append(this.title);
 	this.dialog.append(this.contents);
 	this.dialog.append(this.finalizeUI);
@@ -120,41 +125,30 @@ NewGeneLinkDialog.prototype.onSubmit = function() {
 	var geneName = $.trim(this.geneName.val());
 	var uniqueName = $.trim(this.geneUniqueName.val());
 	var organismId = this.organism.val();
-	var tagIds = [];
-	if (geneName && organismId && this.selectedTags) {
-		for (var i = 0; i < this.selectedTags.length; i++) {
-			tagIds.push(this.selectedTags[i].getId());
-		}
-		
+	var tagId = this.table.find('input:radio[name=tag]:checked').val();
+	if (geneName && organismId && tagId) {
 		var self = this;
 		
 		$.ajax({
 			url : this.submitUrl,
 			type : 'POST',
 			data : {
-				geneName : geneName,
+				name : geneName,
 				organismId : organismId,
-				tagKeys: tagIds,
-				geneUniqueName: uniqueName
+				tagId: tagId,
+				uniqueName: uniqueName
 			},
 			dataType : 'json',
 			success : function(data, textStatus, jqXHR) {
-				if (!data.error) {
-					data.feature.organismId = organismId;
-					for (var i = 0; i < self.selectedTags.length; i++) {
-						self.selectedTags[i].addGeneLink(data.id, data.feature);
-					}
-					this.hide();
-				}
-				else {
-					alert(data.errorMessage);
-				}
+				data.feature.organismId = organismId;
+				this.tags[tagId].addGeneLink(data.id, data.feature);
+				this.hide();
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
-				alert(errorThrown);
+				var errorMessage = $.parseJSON(jqXHR.responseText).message;
+				alert(errorMessage);
 			}
 		});
-		
 	}
 };
 
@@ -167,8 +161,60 @@ NewGeneLinkDialog.prototype.hide = function() {
 	this.dialog.hide();
 };
 
-NewGeneLinkDialog.prototype.show = function(selectedTags) {
-	this.selectedTags = selectedTags;
+NewGeneLinkDialog.prototype.show = function(tagBoard) {
+	var tags = tagBoard.getSelectedTags();
+	if ($.isEmptyObject(tags)) {
+		var currentTagGroups = tagBoard.getCurrentTagGroups();
+		if ($.isEmptyObject(currentTagGroups)) {
+			alert("Please select tags by clicking on them or a current tag group.");
+		}
+		else {
+			tags = {};
+			$.each(currentTagGroups, function(key, group) {
+				$.extend(tags, group.getTags());
+			});
+		}
+	}
+	
+	if (!$.isEmptyObject(tags)) {
+		this.table.empty();
+		var tbody = $('<tbody />');
+		
+		var index = 0;
+		$.each(tags, function(id, tag) {
+			var newRow = $('<tr />');
+			var text = '';
+			if (index == 0) {
+				text = 'Select a Tag:';
+			}
+			
+			var labelCell = $('<td />', {
+				'text' : text
+			});
+			
+			var tagCell = $('<td />');
+			
+			tagCell.append($('<input />', {
+				'value' : tag.getId(),
+				'type' : 'radio',
+				'name' : 'tag',
+				'checked' : index == 0
+			}));
+			
+			tagCell.append($('<span />', {
+				'text' : tag.getDescription()
+			}));
+			
+			newRow.append(labelCell);
+			newRow.append(tagCell);
+			tbody.append(newRow);
+			index++;
+		});
+	}
+	
+	this.tags = tags;
+	
+	this.table.append(tbody);
 	this.block.show();
 	this.dialog.show();
 };

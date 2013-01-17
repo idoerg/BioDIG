@@ -49,9 +49,11 @@ class GetAPI:
                 LimitDict(self.fields, {
                     'id' : geneLink.pk,
                     'tagId' : tag.pk,
-                    'uniquename' : geneLink.feature.uniquename,
-                    'name' : geneLink.feature.name,
-                    'organismId' : geneLink.feature.organism.organism_id
+                    'feature' : LimitDict(self.fields, {
+                        'uniqueName' : geneLink.feature.uniquename,
+                        'name' : geneLink.feature.name,
+                        'organismId' : geneLink.feature.organism.organism_id
+                    })
                 })    
             )
         

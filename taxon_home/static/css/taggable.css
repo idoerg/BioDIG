@@ -230,16 +230,12 @@ th {
 	padding-bottom: 10px;
 }
 
-.submit-tag-group-table {
+.dialog-table {
 	width: 100%;
 }
 
-.submit-tag-group-table td {
+.dialog-table td {
 	text-align: left;
-}
-
-.submit-tag-group-table td.tag-group-cell {
-	text-align: right;
 }
 
 .organismTitle {

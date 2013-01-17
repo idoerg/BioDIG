@@ -1,7 +1,7 @@
 import taxon_home.views.util.ErrorConstants as Errors
 from taxon_home.models import GeneLink
 from django.core.exceptions import ObjectDoesNotExist
-from renderEngine.WebServiceObject import WebServiceObject
+from renderEngine.WebServiceObject import WebServiceObject, LimitDict
 
 class GetAPI:
     
@@ -29,8 +29,11 @@ class GetAPI:
             
         metadata.put('id', geneLink.pk)
         metadata.put('tagId', geneLink.tag.pk)
-        metadata.put('uniqueName', geneLink.feature.uniquename)
-        metadata.put('name', geneLink.feature.name)
-        metadata.put('organismId', geneLink.feature.organism.organism_id)
-        
+        metadata.put('feature', 
+            LimitDict(self.fields, {
+                'uniqueName' : geneLink.feature.uniquename,
+                'name': geneLink.feature.name,
+                'organismId' : geneLink.feature.organism.organism_id
+            })
+        )
         return metadata

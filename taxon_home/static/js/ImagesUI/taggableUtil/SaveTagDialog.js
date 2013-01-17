@@ -21,7 +21,7 @@ function SaveTagDialog(pageBlock) {
 	});
 	
 	this.table = $('<table />', {
-		'class' : 'submit-tag-group-table'
+		'class' : 'dialog-table'
 	});
 	
 	this.nameUI = $('<div />');
@@ -136,13 +136,10 @@ SaveTagDialog.prototype.showHelper = function(tagBoard) {
 			}
 			
 			var labelCell = $('<td />', {
-				'text' : text,
-				'style' : 'text-align: right;'
+				'text' : text
 			});
 			
-			var tagGroupCell = $('<td />', {
-				'class' : 'tag-group-cell'
-			});
+			var tagGroupCell = $('<td />');
 			
 			tagGroupCell.append($('<input />', {
 				'value' : group.getId(),

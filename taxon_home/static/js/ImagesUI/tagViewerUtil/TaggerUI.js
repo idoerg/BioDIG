@@ -18,7 +18,7 @@ function TaggerUI(image, parent, originalData, imageMetadata, genomicInfo, image
 	this.created = false;
 	
 	for (var i = 0; i < imageMetadata.organisms.length; i++) {
-		this.title += imageMetadata.organisms[i].common_name;
+		this.title += imageMetadata.organisms[i].commonName;
 		if (i < imageMetadata.organisms.length - 1) {
 			this.title += ", ";
 		}

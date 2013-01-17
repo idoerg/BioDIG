@@ -45,7 +45,8 @@ class GetAPI:
                             'commonName' : organism.common_name,
                             'abbreviation' : organism.abbreviation,
                             'genus' : organism.genus,
-                            'species' : organism.species      
+                            'species' : organism.species,
+                            'id' : organism.pk
                         })
                     except ObjectDoesNotExist:
                         None                    

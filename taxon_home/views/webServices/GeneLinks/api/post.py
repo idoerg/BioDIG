@@ -1,7 +1,7 @@
 import taxon_home.views.util.ErrorConstants as Errors
 from taxon_home.models import Tag, GeneLink, Feature
 from django.core.exceptions import ObjectDoesNotExist
-from renderEngine.WebServiceObject import WebServiceObject
+from renderEngine.WebServiceObject import WebServiceObject, LimitDict
 from django.db import transaction, DatabaseError
 
 class PostAPI:
@@ -46,6 +46,16 @@ class PostAPI:
                     feature = feature & Feature.objects.filter(uniquename=uniqueName)
                 else:
                     feature = Feature.objects.filter(uniquename=uniqueName)
+            
+            if not feature:
+                error = ""
+                if name and organismId:
+                    error += "name: " + name + ", organismId: " + organismId
+                if uniqueName:
+                    comma = ", " if error else ""
+                    error += comma + "uniqueName: " + uniqueName
+                
+                raise Errors.NO_MATCHING_FEATURE.setCustom(error)
             geneLink = GeneLink(tag=tag, feature=feature)
             geneLink.save()
         except DatabaseError as e:
@@ -57,9 +67,13 @@ class PostAPI:
             
         metadata.put('id', geneLink.pk)
         metadata.put('tagId', geneLink.tag.pk)
-        metadata.put('uniqueName', geneLink.feature.uniquename)
-        metadata.put('name', geneLink.feature.name)
-        metadata.put('organismId', geneLink.feature.organism.organism_id)
+        metadata.put('feature', 
+            LimitDict(self.fields, {
+                'uniqueName' : geneLink.feature.uniquename,
+                'name' : geneLink.feature.name,
+                'organismId' : geneLink.feature.organism.organism_id
+            })
+        )
         
         return metadata
         

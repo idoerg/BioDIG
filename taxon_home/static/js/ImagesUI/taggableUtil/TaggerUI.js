@@ -18,7 +18,7 @@ function TaggerUI(image, parent, originalData, imageMetadata, genomicInfo, image
 	this.created = false;
 	
 	for (var i = 0; i < imageMetadata.organisms.length; i++) {
-		this.title += imageMetadata.organisms[i].common_name;
+		this.title += imageMetadata.organisms[i].commonName;
 		if (i < imageMetadata.organisms.length - 1) {
 			this.title += ", ";
 		}
@@ -122,13 +122,7 @@ TaggerUI.prototype.createStructure = function() {
 	});
 	
 	this.menu.getSection('geneLinks').getMenuItem('addNewLink').onClick(function() {
-		var selectedTags = self.drawingAPI.getTagBoard().getSelectedTags();
-		if (selectedTags.length > 0) {
-			newGeneLinkDialog.show(selectedTags);
-		}
-		else {
-			alert("Please select a tag by clicking on it");
-		}
+		newGeneLinkDialog.show(self.drawingAPI.getTagBoard());
 	});
 	
 	this.taggingMenu.onCancelClick(function() {

@@ -25,9 +25,8 @@ class ImageEditorPagelet(PageletBase):
     '''
     def doProcessRender(self, request):
         self.setLayout('admin/imageEditor.html')
-
         try:
-            imageKey = request.GET.get('imageKey', None)
+            imageKey = request.GET.get('imageId', None)
             if (imageKey):
                 image = Picture.objects.get(pk__exact=imageKey)
                 
@@ -36,7 +35,7 @@ class ImageEditorPagelet(PageletBase):
                 tagAPI = TagAPI(unlimited=True)
                 geneLinkAPI = GeneLinkAPI(unlimited=True)
                 
-                tagGroups = tagGroupAPI.getTagGroupsByImage(image, isKey=False).getObject()
+                tagGroups = tagGroupAPI.getTagGroupsByImage(image, False).getObject()
                 
                 for group in tagGroups:
                     tags = tagAPI.getTagsByTagGroup(group['id']).getObject()
@@ -46,7 +45,7 @@ class ImageEditorPagelet(PageletBase):
                     group['tags'] = tags
                     
                 # initialize image metadata API
-                imageMetadataAPI = ImageMetadataAPI()
+                imageMetadataAPI = ImageMetadataAPI(request.user)
                 imageMetadata = imageMetadataAPI.getImageMetadata(image, isKey=False).getObject()
         
                 return {
@@ -54,12 +53,9 @@ class ImageEditorPagelet(PageletBase):
                     'tagGroups' : json.dumps(tagGroups),
                     'image' : image
                 }
-    
-            return {
-                'imageMetadata' : json.dumps(imageMetadata),
-                'tagGroups' : json.dumps(tagGroups),
-                'image' : image
-            }
+            else:
+                self.setLayout('public/404Media.html')
+                return {}
         except ObjectDoesNotExist:
             self.setLayout('public/404Media.html')
             return {}

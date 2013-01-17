@@ -7,7 +7,7 @@
  * @return
  */
 function TagGroup(group, imageKey, siteUrl) {
-	this.tags = [];
+	this.tags = {};
 	this.lastModified = TaggableUtil.toDate(group.lastModified);
 	this.dateCreated = TaggableUtil.toDate(group.dateCreated);
 	this.name = group.name;
@@ -20,7 +20,7 @@ function TagGroup(group, imageKey, siteUrl) {
 			var description = tag.description;
 			var geneLinks = tag.geneLinks;
 			var id = tag.id;
-			this.tags.push(new Tag(id, colorArr, tagPoints, description, geneLinks, imageKey, siteUrl, this));
+			this.tags[id] = new Tag(id, colorArr, tagPoints, description, geneLinks, imageKey, siteUrl, this);
 		}
 	}
 };
@@ -46,5 +46,5 @@ TagGroup.prototype.getTags = function() {
 };
 
 TagGroup.prototype.addTag = function(tag) {
-	this.tags.push(tag);
+	this.tags[tag.getId()] = tag;
 };
