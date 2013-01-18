@@ -27,13 +27,9 @@ class NavBarPagelet(PageletBase):
 			is_admin_page = request.GET['add_login']
 		
 		optionsList = NavBarOption.objects.all().order_by('rank')
-		bannertype_obj = PictureType.objects.get(imageType__exact="banner")
-		banner_img = PictureProp.objects.get(type_id__exact=bannertype_obj.pk).picture_id
-		banner_url = banner_img.imageName
 
 		return {
 			'optionsList' : optionsList,
-			'banner_url' : banner_url,
 			'is_admin_page' : is_admin_page,
 			'addHelpButton' : self.addHelpButton
 		}
