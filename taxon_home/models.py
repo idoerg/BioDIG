@@ -7,26 +7,6 @@ from django.contrib.auth.models import User
 from datetime import datetime
 import os
 
-class NavBarOption(models.Model):
-    optionName = models.CharField(max_length=20)
-    href = models.CharField(max_length=100)
-    rank = models.IntegerField()
-    class Meta:
-        db_table = u'navbaroption'
-    def __unicode__(self):
-        return self.optionName
-        
-
-class DropDownItem(models.Model):
-    itemName = models.CharField(max_length=20)
-    navBarOpt = models.ForeignKey(NavBarOption)
-    href = models.CharField(max_length=100, unique=False)
-    rank = models.IntegerField()
-    class Meta:
-        db_table = u'dropdownitem'
-    def __unicode__(self):
-        return self.itemName
-
 class Picture(models.Model):
     description = models.TextField(blank=True, null=True)
     imageName = models.ImageField(upload_to="pictures/")
@@ -47,23 +27,6 @@ class Picture(models.Model):
     
     def __unicode__(self):
         return str(self.imageName.name)
-
-class PictureType(models.Model):
-    description = models.CharField(max_length=50)
-    imageType = models.CharField(max_length=15)
-    class Meta:
-        db_table = u'picturetype'
-    def __unicode__(self):
-        return self.imageType
-
-class PictureProp(models.Model):
-    picture_id = models.ForeignKey(Picture)
-    type_id = models.ForeignKey(PictureType)
-    def __unicode__(self):
-        return ", ".join((str(self.picture_id), str(self.type_id)))
-    class Meta:
-        unique_together = ('picture_id','type_id')
-        db_table = u'pictureprop'
     
 class RecentlyViewedPicture(models.Model):
     picture = models.ForeignKey(Picture)
