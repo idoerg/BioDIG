@@ -23,21 +23,22 @@
 </head>
 <div id="banner"><img src="{{ STATIC_URL }}images/mycoplasma_banner.png" width="960px" alt="Banner" /></div>
 <div id="navbar">
-	<ul id="menu">    
-	{% for option in optionsList %}
+	<ul id="menu">
 		<li class="menuItem">
-			<a{% if option.href %} href="{{ SITE_URL }}{{ option.href }}"{% endif %}><span>{{ option.optionName }}</span></a>              
-			<ul class = "dropDownMenu"> 
-			{% for dropDownItem in option.dropdownitem_set.all %}
-				<li class="dropDownItem">
-					<a{% if option.href %} href="{{ SITE_URL }}{{dropDownItem.href}}"{% endif %}>
-						<span> {{ dropDownItem.itemName }} </span>
-					</a>
-				</li>
-			{% endfor %}
-			</ul>      
+			<a href="{{ SITE_URL }}index.html">
+				<span>Home</span>
+			</a>     
 		</li>
-	{% endfor %}
+		<li class="menuItem">
+			<a href="{{ SITE_URL }}genome_browser">
+				<span>GBrowse</span>
+			</a>     
+		</li>
+		<li class="menuItem">
+			<a href="{{ SITE_URL }}images">
+				<span>Images</span>
+			</a>     
+		</li>
 	</ul>
 	{% if addHelpButton %}
 		<div id="helpButton">
