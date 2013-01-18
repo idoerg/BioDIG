@@ -1,5 +1,5 @@
 <head>  
-    <link rel="shortcut icon" href="{{ MEDIA_URL }}{{ banner_url }}" />
+    <!-- <link rel="shortcut icon" href="{{ MEDIA_URL }}" /> -->
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/adminNavBar.css" />
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery/1.7.2/jquery.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui/1.8.21/jquery-ui.min.js"></script>
@@ -39,21 +39,22 @@
     </div>
     <div id="navbar">
         <ul id="menu">    
-                {% for option in optionsList %}
-                    <li class="menuItem">
-                            <a{% if option.href %} href="{{ SITE_URL  }}{{option.href}}"{% endif %}><span>{{option.optionName}}</span></a>              
-                         <ul class = "dropDownMenu"> 
-                                {% for dropDownItem in option.dropdownitem_set.all %}
-                                    <li class="dropDownItem">
-                                        <a{% if option.href %} href="{{ SITE_URL }}{{dropDownItem.href}}"{% endif %}>
-                                		<span> {{dropDownItem.itemName}} </span>
-                                        </a>
-                                    </li>
-                                {% endfor %}
-                         </ul>      
-                    </li>
-                {% endfor %}
-            </ul>
+            <li class="menuItem">
+				<a href="{{ SITE_URL }}index.html">
+					<span>Home</span>
+				</a>     
+			</li>
+			<li class="menuItem">
+				<a href="{{ SITE_URL }}genome_browser">
+					<span>GBrowse</span>
+				</a>     
+			</li>
+			<li class="menuItem">
+				<a href="{{ SITE_URL }}images">
+					<span>Images</span>
+				</a>     
+			</li>
+        </ul>
     </div>
     <div id="picture_buttons">
         <div class="login_search" id="login">        
