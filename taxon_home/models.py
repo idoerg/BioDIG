@@ -1818,7 +1818,6 @@ class GeneLink(models.Model):
 class PictureDefinitionTag(models.Model):
     picture = models.ForeignKey(Picture)
     organism = models.ForeignKey(Organism)
-    name = models.TextField()
     class Meta:
         db_table = u'picturedefinitiontag'
     def __unicode__(self):

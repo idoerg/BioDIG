@@ -18,6 +18,10 @@ class Application(WebServiceApplicationBase):
 		try:
 			if (request.method == "GET"):
 				renderObj = API.getImageMetadata(request)
+			elif (request.method == "PUT"):
+				renderObj = API.editImageMetadata(request)
+			#elif (request.method == "DELETE"):
+				#renderObj = API.clearImageMetadata(request)
 			else:
 				renderObj.setError(Errors.INVALID_METHOD.setCustom(request.method))
 		except Errors.WebServiceException as e:

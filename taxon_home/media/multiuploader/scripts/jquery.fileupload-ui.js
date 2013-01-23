@@ -125,7 +125,6 @@
                             $(this).show();
                         });
                 }
-                refreshSliderNoData();
             },
             // Callback for failed (abort or error) uploads:
             fail: function (e, data) {

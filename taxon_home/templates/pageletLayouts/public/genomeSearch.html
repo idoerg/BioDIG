@@ -10,7 +10,10 @@
 		</div>
 		<div id="genome-search-container">
 			<div class="results-menu">
-				<div class="tabTitle">Organisms Found</div>
+				<div class="tabTitle">
+					<span>Organisms Found</span>
+					<img class="max" id="minimizeGenomeResults" title="Click to minimize/maximize the navigation" src="{{ STATIC_URL }}images/minimizeLeft.png"></img>
+				</div>
 			 	{% for candidate in candidateInfo %}
 				<div id="genomeTab{{ candidate.2 }}" class="tab{% if forloop.counter0|isZero %} activeTab{% endif %}">{{ candidate.1 }}</div>
 				{% endfor %}
@@ -34,6 +37,27 @@
 		$(document).ready(function() {
 			$('#collapse-holder-genomes').collapser({
 				selector: '#genome-search-container'
+			});
+
+			$('#minimizeGenomeResults').on('click', function() {
+				if ($(this).hasClass('max')) {
+					$(this).removeClass('max').addClass('min');
+					var resultsMenu = $('#genome-search-container > .results-menu');
+					resultsMenu.children('.tab').hide();
+					resultsMenu.children('.tabTitle').children('span').hide();
+					resultsMenu.css('position', 'absolute').css('height', 'auto').width(35);
+					$('#genome-search-container > .results-container').css('width', '100%');
+					$(this).attr('src', '{{ STATIC_URL }}images/minimizeRight.png');
+				}
+				else {
+					$(this).removeClass('min').addClass('max');
+					var resultsMenu = $('#genome-search-container > .results-menu');
+					resultsMenu.children('.tab').show();
+					resultsMenu.children('.tabTitle').css('padding', '3px 10px').children('span').show();
+					resultsMenu.css('position', 'relative').height(400).width(200);
+					$('#genome-search-container > .results-container').css('width', 738);
+					$(this).attr('src', '{{ STATIC_URL }}images/minimizeLeft.png');
+				}
 			});
 			
 			$('#genome-search-container .tab').on('click', function() {

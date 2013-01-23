@@ -17,8 +17,4 @@ class ImageManagerPagelet(PageletBase):
     def doProcessRender(self, request):
         self.setLayout('registered/imageManager.html')
 
-        
-
-        return {
-            
-        }
+        return {}

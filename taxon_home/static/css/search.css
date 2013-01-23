@@ -101,6 +101,14 @@
 	cursor: pointer;
 }
 
+#minimizeGenomeResults {
+	width: 15px;
+	float: right;
+	display: block;
+	padding-top: 5px;	
+	cursor: pointer;
+}
+
 .results-container {
 	display: inline-block;
 	height: 396px;
@@ -115,6 +123,7 @@ td.table_cell {
 	color: #333333;
     padding: 3px 10px;
     border-bottom: 1px solid #CCC;
+    min-height: 20px;
 }
 
 .sorry {
