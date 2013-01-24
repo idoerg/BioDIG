@@ -94,6 +94,7 @@
 	width: 200px;
 	height: 400px;
 	border-right: 1px solid #CCC;
+	background-color: white;
 }
 
 .results-menu .tab {
