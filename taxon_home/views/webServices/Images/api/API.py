@@ -3,6 +3,7 @@ import taxon_home.views.util.ErrorConstants as Errors
 import taxon_home.views.util.Util as Util
 from get import GetAPI
 from put import PutAPI
+from delete import DeleteAPI
 
 def getImageMetadata(request):
     renderObj = WebServiceObject()
@@ -40,3 +41,16 @@ def editImageMetadata(request):
         raise Errors.NOT_MODIFIED
     
     return renderObj
+
+def deleteImage(request):
+    # required parameters
+    imageKey = request.DELETE.get('id', None)
+    if not imageKey:
+        raise Errors.NO_IMAGE_KEY
+    
+    fields = Util.getDelimitedList(request.GET, 'fields')
+    
+    deleteAPI = DeleteAPI(request.user, fields)
+    return deleteAPI.deleteImage(imageKey)
+
+

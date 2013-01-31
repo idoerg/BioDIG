@@ -89,7 +89,7 @@
 
 	        var range = private_methods.getRange(settings.limit, newPage);
 	        $.ajax({
-	            url: settings.siteUrl + "api/imageMetadata/search",
+	            url: settings.siteUrl + "api/images/search",
 	            type: 'GET',
 	            data: {
 	                limit: settings.limit,

@@ -3,16 +3,35 @@
 	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/workbench.css" />
 	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/zoomable.css"></link>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/taggable.css"></link>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/collapser/collapser.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/menu.css"></link>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/downloadify/swfobject.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}js/downloadify/downloadify.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/JSZip/jszip.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/JSZip/jszip-deflate.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/kineticjs/kinetic-v3.10.0.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/zoomable.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggableUtil/Tag.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggableUtil/TaggableUtil.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggableUtil/TagBoard.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/tagViewingUI/TaggableUtil.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/tagViewingUI/GeneLink.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/tagViewingUI/Tag.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/tagViewingUI/TagGroup.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggableUtil/DrawingBoard.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/tagViewingUI/TagBoard.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggableUtil/DrawingAPI.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/MenuUI/MenuItem.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/MenuUI/MenuSection.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/MenuUI/Menu.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/DialogUI/PageBlock.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/DataFile/CachedXmlDataFile.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/DataFile/CachedJsonDataFile.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/tagViewingUI/DownloadImageDataDialog.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/tagViewingUI/ChangeCurrentTagGroupsDialog.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggableUtil/NewGeneLinkDialog.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggableUtil/NewTagGroupDialog.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggableUtil/SaveTagDialog.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggableUtil/TaggingMenu.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggableUtil/TaggerUI.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggable.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/collapser/collapser.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/webServiceClient/WebServiceClient.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/DialogUI/AreYouSureDialog.js"></script>
 </head>
@@ -37,7 +56,6 @@
 				            </div>
 							<img src="{{ MEDIA_URL }}{{ image.image.imageName }}" name="{{ image.image.pk }}" class="{{ image.permissions }}-image my-pictures-image" />
 						</div>
-						
 					{% endfor %}
 					</div>
 				</div>
@@ -73,74 +91,32 @@
 	<div id="center-work-area">
 		<div id="header">Workbench</div>
 		<div id="work-area" class="workbench-area">
-			<div class="zoomable-left">
-	            
-	        </div>
-	        <div class="zoomable-right">
-	            <div class="info-container">
-	            </div>
-	        </div>
 		</div>
 	</div>
 </body>
 <script type="text/javascript">
-	function ImageMetadataClient() {
-		this.client = new WebServiceClient('{{ SITE_URL }}images/getImageMetadata');
+	function ImageClient() {
+		this.client = new WebServiceClient('{{ SITE_URL }}api/images');
 	};
 
-	ImageMetadataClient.prototype.call = function(imageKey, callback) {
+	ImageClient.prototype.call = function(imageKey, callback) {
 		var args = {
-			imageKey: imageKey
+			id: imageKey
 		};
 		
 		this.client.call(args, callback);
 	};
 
-	function GetTagsClient() {
-		this.client = new WebServiceClient('{{ SITE_URL }}images/getTags');
+	function TaggingDataClient() {
+		this.tagGroupClient = new WebServiceClient('{{ SITE_URL }}api/aggregate/tagGroups/search');
 	};
 
-	GetTagsClient.prototype.callback = function(data, textStatus, jqXHR, image, organismsList) {
-		var $workArea = $('#work-area');
-		$workArea.find('.info-container').empty();
-		$workArea.find('.toolbar-container').remove();
-		
-		// add workArea clone to the div
-		$workArea.find('.zoomable-left').html(image);
-		image.taggable({
-	        originalData: data.tags,
-	        parent: $workArea,
-	        imagesUrl: '{{ STATIC_URL }}images/',
-	        siteUrl: '{{ SITE_URL }}',
-	        alreadyLoaded: true,
-	        genomicInfo: $workArea.find('.info-container'),
-	        organisms: organismsList,
-	        callback: function() {
-		        var $editButton = $('<div class="edit-image-container"></div>');
-		        $editButton.append('<button class="edit-image-button"><img src="{{ STATIC_URL }}images/polygonButtonIcon.png"></img><span>Edit Image</span></button>');
-				image.parent().prepend($editButton);
-				image.parent().on('mouseover', function() {
-					$editButton.show();
-				});
-
-				image.parent().on('mouseout', function() {
-					$editButton.hide();
-				});
-	        } 
-	    });
-	};
-
-	GetTagsClient.prototype.call = function(imageKey, organismsList, image) {
+	TaggingDataClient.prototype.call = function(imageKey, callback) {
 		var args = {
-			imageKey: imageKey
+			imageId: imageKey
 		};
-
-		var self = this;
 		
-		this.client.call(args, function(data, textStatus, jqXHR) {
-			var scopedCallback = Util.scopeCallback(self, self.callback);
-			scopedCallback(data, textStatus, jqXHR, image, organismsList);
-		});
+		this.tagGroupClient.call(args, callback);
 	};
 </script>
 <script type="text/javascript">
@@ -172,13 +148,13 @@
 		var areYouSureDialog = new AreYouSureDialog();
 	
 		// make the trash cans work on hover
-		$('.my-pictures-image').on('mouseenter', function() {
-			$(this).parent().find('.delete-image-button').show();
+		$('.my-pictures-image-holder').on('mouseenter', function() {
+			$(this).find('.delete-image-button').show();
 		});
 	
-		$('.my-pictures-image').on('mouseout', function(event) {
-			if (!$(event.relatedTarget).hasClass('delete-image-button')) {
-				$(this).parent().find('.delete-image-button').hide();
+		$('.my-pictures-image-holder').on('mouseout', function(event) {
+			if (!$(event.relatedTarget).hasClass('delete-image-button') && !$(event.relatedTarget).hasClass('my-pictures-image')) {
+				$(this).find('.delete-image-button').hide();
 			}
 		});
 		
@@ -191,11 +167,29 @@
 			$imgClone.attr('class', '');
 			var key = $(this).attr('name');
 			
-			var getTagsClient = new GetTagsClient();
-			var getImageMetadataClient = new ImageMetadataClient();
+			var taggingDataClient = new TaggingDataClient();
+			var getImageClient = new ImageClient();
 			
-			getImageMetadataClient.call(key, function(data, textStatus, jqXHR) {
-				getTagsClient.call(key, data.organisms, $imgClone);
+			getImageClient.call(key, function(data, textStatus, jqXHR) {
+				taggingDataClient.call(key, function(tagGroups) {
+					var $workArea = $('#work-area').empty();
+					$('<div />', { 'class' : 'zoomable-left' })
+						.html($imgClone)
+						.appendTo($workArea);
+					$('<div />', { 'class' : 'zoomable-right' })
+						.append($('<div />', { 'class' : 'info-container' }))
+						.appendTo($workArea);
+					
+					$imgClone.taggable({
+				        originalData: tagGroups,
+				        imageMetadata: data,
+				        parent: $workArea,
+				        imagesUrl: '{{ STATIC_URL }}images/',
+				        siteUrl: '{{ SITE_URL }}',
+				        alreadyLoaded: true,
+				        genomicInfo: $workArea.find('.info-container')
+					});
+				});
 			});
 		});
 	
@@ -213,9 +207,9 @@
 				var imageKey = $img.attr('name');
 				// calls the delete POST service in order to delete this image
 	            $.ajax({
-	                url: '{{ SITE_URL }}administration/deleteImage',
-	                type: 'POST',
-	                data: { imageKey: imageKey },
+	                url: '{{ SITE_URL }}api/images',
+	                type: 'DELETE',
+	                data: { id: imageKey },
 	                context: document.body,
 	                success: function(data){
 	                    $img.parent().remove();

@@ -172,7 +172,7 @@ DATABASE_ROUTERS = ['taxon_home.routers.DBRouter']
 # Note: This will rate limit all programs but will not 
 # effect the pages viewable to the public as those pages 
 # only use the web services internally
-RATE_LIMIT = True # Set to false to disable rate limiting
-TIMEOUT = 60 # number of minutes before cache timeout
+RATE_LIMIT = False # Set to false to disable rate limiting
+TIMEOUT = 1 # number of minutes before cache timeout
 MAX_REQUESTS = 100 # number of request allowed before cache timeout
 

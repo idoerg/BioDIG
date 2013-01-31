@@ -9,7 +9,7 @@ from renderEngine.PageletBase import PageletBase
 from taxon_home.views.webServices.SearchGeneLinks.api.get import GetAPI as GeneLinkAPI
 from taxon_home.views.webServices.SearchTags.api.get import GetAPI as TagAPI
 from taxon_home.views.webServices.SearchTagGroups.api.get import GetAPI as TagGroupAPI
-from taxon_home.views.webServices.ImageMetadata.api.get import GetAPI as ImageMetadataAPI
+from taxon_home.views.webServices.Images.api.get import GetAPI as ImageMetadataAPI
 import simplejson as json
 from taxon_home.models import Picture
 

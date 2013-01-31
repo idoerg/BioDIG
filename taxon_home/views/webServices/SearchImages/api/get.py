@@ -1,6 +1,6 @@
 from taxon_home.models import Picture, PictureDefinitionTag
 from renderEngine.WebServiceObject import WebServiceArray, WebServiceObject, LimitDict
-from taxon_home.views.webServices.ImageMetadata.api.get import GetAPI as ImageMetadataAPI
+from taxon_home.views.webServices.Images.api.get import GetAPI as ImageMetadataAPI
 
 
 class GetAPI:
@@ -39,7 +39,7 @@ class GetAPI:
 
         closedSet = {}
         imageMetadata = {}
-        imageFields = set(['url', 'uploadDate', 'description', 'uploadedBy'])
+        imageFields = set(['id' , 'url', 'uploadDate', 'description', 'uploadedBy'])
         if self.fields:
             newImageFields = imageFields.intersection(set(self.fields))
             if newImageFields:
