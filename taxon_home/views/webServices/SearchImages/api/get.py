@@ -1,5 +1,6 @@
 from taxon_home.models import Picture, PictureDefinitionTag
 from renderEngine.WebServiceObject import WebServiceArray, WebServiceObject, LimitDict
+from renderEngine.WebServiceException import WebServiceException
 from taxon_home.views.webServices.Images.api.get import GetAPI as ImageMetadataAPI
 
 

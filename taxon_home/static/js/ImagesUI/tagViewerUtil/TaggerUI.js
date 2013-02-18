@@ -144,7 +144,7 @@ TaggerUI.prototype.getToolbar = function(id) {
 	menu.addNewSection('tools', tools);
 	
 	// create tag groups menu section
-	var tagGroups = new MenuSection('Tag Groups', this.imagesUrl + 'tag.png');
+	var tagGroups = new MenuSection('Tag Groups', this.imagesUrl + 'tagGroupIcon.png');
 	tagGroups.addMenuItem('changeCurrentGroups', 'Change Current Tag Groups', 'ui-icon ui-icon-pencil', false);
 	menu.addNewSection('tagGroups', tagGroups);
 	

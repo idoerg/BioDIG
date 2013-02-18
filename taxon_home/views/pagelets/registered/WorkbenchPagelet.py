@@ -5,8 +5,7 @@
     Date: July 23, 2012
 '''
 from renderEngine.PageletBase import PageletBase
-from multiuploader.models import Image
-from taxon_home.models import Picture
+from taxon_home.models import Picture, RecentlyViewedPicture, Tag, TagGroup
 
 class WorkbenchPagelet(PageletBase):
     '''
@@ -19,7 +18,7 @@ class WorkbenchPagelet(PageletBase):
     def doProcessRender(self, request):
         self.setLayout('registered/workbench.html')
 
-        userImages = Picture.objects.filter(user__exact=request.user.pk)
+        userImages = Picture.objects.filter(user__exact=request.user)
 
         myImages = []
                 
@@ -32,7 +31,39 @@ class WorkbenchPagelet(PageletBase):
                 'permissions' : permissions,
                 'image' : image
             })
+            
+        recentImages = RecentlyViewedPicture.objects.filter(user__exact=request.user).order_by('lastDateViewed')[:10]
         
+        userTags = Tag.objects.filter(user__exact=request.user)
+        myTags = []
+                
+        #
+        for tag in userTags:
+            permissions = 'public'
+            if tag.isPrivate:
+                permissions = 'private'
+            myTags.append({
+                'permissions' : permissions,
+                'tag' : tag
+            })
+        
+        
+        userTagGroups = TagGroup.objects.filter(user__exact=request.user)
+        myTagGroups = []
+                
+        #
+        for tagGroup in userTagGroups:
+            permissions = 'public'
+            if tagGroup.isPrivate:
+                permissions = 'private'
+            myTagGroups.append({
+                'permissions' : permissions,
+                'tagGroup' : tagGroup
+            })
+            
         return {
-            'myImages' : myImages
+            'myImages' : myImages,
+            'recentImages' : recentImages,
+            'myTags' : myTags,
+            'myTagGroups' : myTagGroups
         }

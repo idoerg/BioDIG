@@ -213,10 +213,18 @@ TaggerUI.prototype.getToolbar = function(id) {
 	tools.addMenuItem('toggleTags', 'Toggle All Tag Visibility', this.imagesUrl + 'eye.png', true);
 	menu.addNewSection('tools', tools);
 	
+	// create organism menu section
+	var organisms = new MenuSection('Organisms', this.imagesUrl + 'organismIcon.png');
+	organisms.addMenuItem('addOrganism', 'Add Organism', 'ui-icon ui-icon-plusthick', false);
+	organisms.addMenuItem('deleteOrganism', 'Delete Organism', 'ui-icon ui-icon-trash', false);
+	menu.addNewSection('organisms', organisms);
+	
 	// create tag groups menu section
-	var tagGroups = new MenuSection('Tag Groups', this.imagesUrl + 'tag.png');
+	var tagGroups = new MenuSection('Tag Groups', this.imagesUrl + 'tagGroupIcon.png');
 	tagGroups.addMenuItem('addNewTagGroup', 'Add New Tag Group', 'ui-icon ui-icon-plusthick', false);
 	tagGroups.addMenuItem('changeCurrentGroups', 'Change Current Tag Groups', 'ui-icon ui-icon-pencil', false);
+	tagGroups.addMenuItem('editTagGroup', 'Edit Tag Group', 'ui-icon ui-icon-pencil', false);
+	tagGroups.addMenuItem('deleteTagGroup', 'Delete Tag Group', 'ui-icon ui-icon-trash', false);
 	menu.addNewSection('tagGroups', tagGroups);
 	
 	// create tag groups menu section
@@ -227,7 +235,7 @@ TaggerUI.prototype.getToolbar = function(id) {
 	menu.addNewSection('tags', tags);
 	
 	// create gene links menu section
-	var geneLinks = new MenuSection('Gene Links', this.imagesUrl + 'tag.png');
+	var geneLinks = new MenuSection('Gene Links', this.imagesUrl + 'geneLinksIcon.png');
 	geneLinks.addMenuItem('addNewLink', 'Add New Link To Tag', 'ui-icon ui-icon-plusthick', false);
 	geneLinks.addMenuItem('deleteLink', 'Delete Link From Tag', 'ui-icon ui-icon-trash', false);
 	menu.addNewSection('geneLinks', geneLinks);

@@ -21,7 +21,8 @@ urlpatterns = patterns('taxon_home.views.applications.public',
     #url(r'^blast/submit/$', 'mycoplasma_home.views.submit_blast'),
     url(r'^login_handler/$', 'Login.Application.renderAction'),
     url(r'^logout_handler/$', 'Logout.Application.renderAction'),
-    url(r'^search/$', 'Search.Application.renderAction')
+    url(r'^search/$', 'Search.Application.renderAction'),
+    url(r'^advancedSearch/$', 'AdvancedSearch.Application.renderAction')
 )
 
 urlpatterns += patterns('taxon_home.views.webServices',
@@ -41,11 +42,6 @@ urlpatterns += patterns('taxon_home.views.applications.registered',
     url(r'^administration/$', 'Administration.Application.renderAction'),
     #url(r'^administration/gbrowse_manager/$', 'mycoplasma_home.views.gbrowse_manager'),
     #url(r'^administration/gbrowse_manager/genome_uploader/$', 'mycoplasma_home.views.genome_uploader'),
-    url(r'^administration/imageManager/$', 'ImageManager.Application.renderAction'),
-    url(r'^administration/deleteImage$', 'DeleteImage.Application.renderAction'),
-    url(r'^administration/addNewTagGroup$', 'AddNewTagGroup.Application.renderAction'),
-    url(r'^administration/saveTag$','SaveTag.Application.renderAction'),
-    url(r'^administration/addNewGeneLink$','AddNewGeneLink.Application.renderAction')
 )
 '''
 urlpatterns += patterns('taxon_home.views.applications.admin',

@@ -14,7 +14,7 @@ class Picture(models.Model):
     altText = models.TextField(blank=True, null=True)
     user = models.ForeignKey(User)
     uploadDate = models.DateTimeField(auto_now_add=True)
-    isPrivate = models.BooleanField(default=False, null=False)
+    isPrivate = models.BooleanField(default=True, null=True)
     
     class Meta:
         db_table = u'picture'
@@ -24,6 +24,41 @@ class Picture(models.Model):
         super(Picture, self).delete(*args, **kwargs)
         if (os.path.exists(path)):
             os.remove(path)
+    
+    def readPermissions(self, user):       
+        # if the image is public then anyone can read it
+        if not self.isPrivate:
+            return True
+        
+        exists = user and user.is_authenticated()
+        # user exists and is an admin so they get read permissions 
+        # no matter what
+        if exists and user.is_staff:
+            return True
+        
+        # check to see if user exists, if so do they have permissions?
+        if exists:
+            return self.user == user
+        
+        return False
+    
+    def writePermissions(self, user):        
+        exists = user and user.is_authenticated()
+        # user exists and is an admin so they get write permissions 
+        # no matter what
+        if exists and user.is_staff:
+            return True
+        
+        # check to see if user exists, if not then they do not 
+        # have write permissions
+        if exists:
+            # if the image is public then anyone can write to it
+            if not self.isPrivate:
+                return True
+            # check user permissions on a private image
+            return self.user == user
+        
+        return False
     
     def __unicode__(self):
         return str(self.imageName.name)
@@ -47,9 +82,57 @@ class TagGroup(models.Model):
     picture = models.ForeignKey(Picture)
     dateCreated = models.DateTimeField(auto_now_add=True, editable=False)
     lastModified = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(User)
+    isPrivate = models.BooleanField(default=True, null=True)
     class Meta:
         db_table = u'taggroup'
         unique_together = ('name', 'picture',)
+        
+    def readPermissions(self, user):
+        # if the tag group is public then anyone can read it
+        if not self.isPrivate:
+            return True
+        
+        exists = user and user.is_authenticated()
+        # user exists and is an admin so they get read permissions 
+        # no matter what
+        if exists and user.is_staff:
+            return True
+        
+        # need read permissions on the picture to have read permissions
+        # on one of its tag groups
+        if not self.picture.readPermissions(user):
+            return False
+        
+        # check to see if user exists, if so do they have permissions?
+        if exists:
+            return self.user == user
+        
+        return False
+    
+    def writePermissions(self, user):
+        exists = user and user.is_authenticated()
+        # user exists and is an admin so they get write permissions 
+        # no matter what
+        if exists and user.is_staff:
+            return True
+        
+        # need write permissions on the picture to have write permissions
+        # on one of its tag groups
+        if not self.picture.writePermissions(user):
+            return False
+        
+        # check to see if user exists, if not then they do not 
+        # have write permissions
+        if exists:
+            # if the image is public then anyone can write to it
+            if not self.isPrivate:
+                return True
+            # check user permissions on a private image
+            return self.user == user
+        
+        return False
+    
     def __unicode__(self):
         return self.name
 
@@ -63,13 +146,61 @@ class TagColor(models.Model):
         return 'R: ' + str(self.red) + ', G: ' + str(self.green) + ', B: ' + str(self.blue)
 
 class Tag(models.Model):
-    description = models.CharField(max_length=50)
+    name = models.TextField()
     color = models.ForeignKey(TagColor)
     group = models.ForeignKey(TagGroup)
+    user = models.ForeignKey(User)
+    isPrivate = models.BooleanField(default=True, null=True)
     class Meta:
         db_table = u'tag'
+        
+    def readPermissions(self, user):
+        # if the tag group is public then anyone can read it
+        if not self.isPrivate:
+            return True
+        
+        exists = user and user.is_authenticated()
+        # user exists and is an admin so they get read permissions 
+        # no matter what
+        if exists and user.is_staff:
+            return True
+        
+        # need read permissions on the tag group to have read permissions
+        # on one of its tags
+        if not self.group.readPermissions(user):
+            return False
+        
+        # check to see if user exists, if so do they have permissions?
+        if exists:
+            return self.user == user
+        
+        return False
+    
+    def writePermissions(self, user):
+        exists = user and user.is_authenticated()
+        # user exists and is an admin so they get write permissions 
+        # no matter what
+        if exists and user.is_staff:
+            return True
+        
+        # need write permissions on the picture to have write permissions
+        # on one of its tag groups
+        if not self.group.writePermissions(user):
+            return False
+        
+        # check to see if user exists, if not then they do not 
+        # have write permissions
+        if exists:
+            # if the image is public then anyone can write to it
+            if not self.isPrivate:
+                return True
+            # check user permissions on a private image
+            return self.user == user
+        
+        return False
+        
     def __unicode__(self):
-        return self.description
+        return self.name
     
 class TagPoint(models.Model):
     tag = models.ForeignKey(Tag)
@@ -79,7 +210,7 @@ class TagPoint(models.Model):
     class Meta:
         db_table = u'tagpoint'
     def __unicode__(self):
-        return "(" + str(self.pointX) + "," + str(self.pointY) + ") " + self.tag.description
+        return "(" + str(self.pointX) + "," + str(self.pointY) + ") " + self.tag.name
         
 class BlastUpload(models.Model):
     fasta_file = models.FileField(upload_to="fasta_files/")
@@ -1810,8 +1941,56 @@ class TmpCdsHandlerRelationship(models.Model):
 class GeneLink(models.Model):
     tag = models.ForeignKey(Tag)
     feature = models.ForeignKey(Feature)
+    user = models.ForeignKey(User)
+    isPrivate = models.BooleanField(default=True, null=True)
     class Meta:
         db_table = u'genelink'
+    
+    def readPermissions(self, user):
+        # if the tag group is public then anyone can read it
+        if not self.isPrivate:
+            return True
+        
+        exists = user and user.is_authenticated()
+        # user exists and is an admin so they get read permissions 
+        # no matter what
+        if exists and user.is_staff:
+            return True
+        
+        # need read permissions on the tag to have read permissions
+        # on one of its gene links
+        if not self.tag.readPermissions(user):
+            return False
+        
+        # check to see if user exists, if so do they have permissions?
+        if exists:
+            return self.user == user
+        
+        return False
+    
+    def writePermissions(self, user):
+        exists = user and user.is_authenticated()
+        # user exists and is an admin so they get write permissions 
+        # no matter what
+        if exists and user.is_staff:
+            return True
+        
+        # need write permissions on the picture to have write permissions
+        # on one of its tag groups
+        if not self.tag.writePermissions(user):
+            return False
+        
+        # check to see if user exists, if not then they do not 
+        # have write permissions
+        if exists:
+            # if the image is public then anyone can write to it
+            if not self.isPrivate:
+                return True
+            # check user permissions on a private image
+            return self.user == user
+        
+        return False
+    
     def __unicode__(self):
         return str(self.tag.description) + " and " + str(self.feature.uniquename)
     

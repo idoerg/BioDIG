@@ -24,11 +24,15 @@ class GetAPI:
             raise Errors.INVALID_TAG_GROUP_KEY
         except Exception:
             raise Errors.INTERNAL_ERROR
+        
+        if not tagGroup.readPermissions(self.user):
+            raise Errors.AUTHENTICATION
 
         metadata.limitFields(self.fields)
                 
         metadata.put('id', tagGroup.pk)
         metadata.put('name', tagGroup.name)
+        metadata.put('user', tagGroup.user)
         metadata.put('dateCreated', tagGroup.dateCreated.strftime("%Y-%m-%d %H:%M:%S"))
         metadata.put('lastModified', tagGroup.lastModified.strftime("%Y-%m-%d %H:%M:%S"))
         metadata.put('imageId', tagGroup.picture.pk)

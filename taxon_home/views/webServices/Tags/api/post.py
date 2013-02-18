@@ -20,7 +20,7 @@ class PostAPI:
             format: [r, g, b]
     '''   
     @transaction.commit_on_success  
-    def createTag(self, tagGroupKey, points, description, color, isKey=True):
+    def createTag(self, tagGroupKey, points, name, color, isKey=True):
         metadata = WebServiceObject()
         tagPoints = []
         
@@ -31,12 +31,8 @@ class PostAPI:
                 tagGroup = tagGroupKey
         except (ObjectDoesNotExist, ValueError):
                 raise Errors.INVALID_TAG_GROUP_KEY
-            
-        authenticated = True
-        if self.user and self.user.is_authenticated():
-            authenticated = tagGroup.picture.user == self.user or self.user.is_staff
         
-        if not authenticated:
+        if not tagGroup.writePermissions(self.user):
             raise Errors.AUTHENTICATION
             
         # create the new tag points to put in the tag
@@ -55,7 +51,7 @@ class PostAPI:
                 raise Errors.INVALID_SYNTAX.setCustom('color')
             
             # start saving the new tag now that it has passed all tests
-            tag = Tag(description=description, color=tagColor, group=tagGroup)
+            tag = Tag(name=name, color=tagColor, group=tagGroup, user=self.user)
             tag.save()
             
             for tagPoint in tagPoints:
@@ -70,8 +66,9 @@ class PostAPI:
         
         # add new tag to response for success
         metadata.put('id', tag.pk)
+        metadata.put('user', tag.user.username)
         metadata.put('color', [tag.color.red, tag.color.green, tag.color.blue])
-        metadata.put('description', tag.description)
+        metadata.put('name', tag.name)
         metadata.put('points', points)
         
         return metadata

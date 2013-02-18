@@ -26,6 +26,9 @@ class DeleteAPI:
             raise Errors.INVALID_GENE_LINK_KEY
         except Exception:
             raise Errors.INTERNAL_ERROR
+            
+        if not tag.writePermissions(self.user):
+            raise Errors.AUTHENTICATION
         
         metadata.limitFields(self.fields)
         
@@ -44,7 +47,7 @@ class DeleteAPI:
         
         metadata.put('id', tag.pk)
         metadata.put('color', [tag.color.red, tag.color.green, tag.color.blue])
-        metadata.put('description', tag.description)
+        metadata.put('name', tag.name)
         
         try:
             tag.delete()

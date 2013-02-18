@@ -25,9 +25,13 @@ class GetAPI:
         except Exception:
             raise Errors.INTERNAL_ERROR
         
+        if not geneLink.readPermissions(self.user):
+            raise Errors.AUTHENTICATION
+        
         metadata.limitFields(self.fields)
             
         metadata.put('id', geneLink.pk)
+        metadata.put('user', geneLink.user.username)
         metadata.put('tagId', geneLink.tag.pk)
         metadata.put('feature', 
             LimitDict(self.fields, {

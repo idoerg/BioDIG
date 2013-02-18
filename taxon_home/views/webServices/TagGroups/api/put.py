@@ -27,17 +27,8 @@ class PutAPI:
                 tagGroup = tagGroupKey
         except (ObjectDoesNotExist, ValueError):
             raise Errors.INVALID_TAG_GROUP_KEY
-            
         
-        authenticated = True
-        
-        if tagGroup.picture.isPrivate:
-            if self.user and self.user.is_authenticated():
-                authenticated = tagGroup.picture.user == self.user
-            else:
-                authenticated = False
-        
-        if not authenticated:
+        if not tagGroup.writePermissions(self.user):
             raise Errors.AUTHENTICATION
         
         # update the name

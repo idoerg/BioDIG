@@ -54,15 +54,15 @@ def updateTag(request):
     else:
         raise Errors.MISSING_PARAMETER.setCustom('color')
     
-    description = request.PUT.get('description', None)
-    if not description:
-        raise Errors.MISSING_PARAMETER.setCustom('description')
+    name = request.PUT.get('name', None)
+    if not name:
+        raise Errors.MISSING_PARAMETER.setCustom('name')
     
     # read in optional parameters and initialize the API
     fields = Util.getDelimitedList(request.PUT, 'fields')
     putAPI = PutAPI(request.user, fields)
     
-    return putAPI.updateTag(tagKey, points, description, color)
+    return putAPI.updateTag(tagKey, points, name, color)
 
 '''
     Creates a new gene link and returns the representation of the newly created gene link.
@@ -96,15 +96,15 @@ def createTag(request):
         raise Errors.MISSING_PARAMETER.setCustom('color')
     
     # get the description
-    description = request.POST.get('description', None)
-    if not description:
-        raise Errors.MISSING_PARAMETER.setCustom('description')
+    name = request.POST.get('name', None)
+    if not name:
+        raise Errors.MISSING_PARAMETER.setCustom('name')
     
     # read in optional parameters and initialize the API
     fields = Util.getDelimitedList(request.POST, 'fields')
         
     postAPI = PostAPI(request.user, fields)
-    return postAPI.createTag(tagGroupKey, points, description, color)
+    return postAPI.createTag(tagGroupKey, points, name, color)
 
 '''
     Deletes a tag and returns the information for the tag that was deleted

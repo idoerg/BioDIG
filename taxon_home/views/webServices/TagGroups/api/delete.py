@@ -27,6 +27,9 @@ class DeleteAPI:
         except Exception:
             raise Errors.INTERNAL_ERROR
         
+        if not tagGroup.writePermissions(self.user):
+            raise Errors.AUTHENTICATION
+        
         metadata.limitFields(self.fields)
                 
         # add new tag to response for success

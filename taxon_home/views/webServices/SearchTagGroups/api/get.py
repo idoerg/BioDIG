@@ -30,14 +30,7 @@ class GetAPI:
         except (ObjectDoesNotExist, ValueError):
             raise Errors.INVALID_IMAGE_KEY
                 
-        authenticated = True
-        if image.isPrivate:
-            if self.user and self.user.is_authenticated():
-                authenticated = image.user == self.user
-            else:
-                authenticated = False
-                
-        if not authenticated:
+        if not image.readPermissions(self.user):
             raise Errors.AUTHENTICATION
         
         if self.unlimited:
@@ -46,15 +39,17 @@ class GetAPI:
             groups = TagGroup.objects.filter(picture__exact=image)[self.offset : self.offset+self.limit]
         
         for group in groups:
-            metadata.put(
-                LimitDict(self.fields, {
-                    'id' : group.pk,
-                    'name' : group.name,
-                    'dateCreated' : group.dateCreated.strftime("%Y-%m-%d %H:%M:%S"),
-                    'lastModified' : group.lastModified.strftime("%Y-%m-%d %H:%M:%S"),
-                    'imageId' : group.picture.pk
-                })
-            )
+            if group.readPermissions(self.user):
+                metadata.put(
+                    LimitDict(self.fields, {
+                        'id' : group.pk,
+                        'user' : group.user.username,
+                        'name' : group.name,
+                        'dateCreated' : group.dateCreated.strftime("%Y-%m-%d %H:%M:%S"),
+                        'lastModified' : group.lastModified.strftime("%Y-%m-%d %H:%M:%S"),
+                        'imageId' : group.picture.pk
+                    })
+                )
     
         return metadata
     
@@ -76,14 +71,16 @@ class GetAPI:
             groups = TagGroup.objects.filter(picture__in=images)[self.offset : self.offset+self.limit]
         
         for group in groups:
-            metadata.put(
-                LimitDict(self.fields, {
-                    'id' : group.pk,
-                    'name' : group.name,
-                    'dateCreated' : group.dateCreated.strftime("%Y-%m-%d %H:%M:%S"),
-                    'lastModified' : group.lastModified.strftime("%Y-%m-%d %H:%M:%S"),
-                    'imageId' : group.picture.pk
-                })
-            )
+            if group.readPermissions(self.user):
+                metadata.put(
+                    LimitDict(self.fields, {
+                        'id' : group.pk,
+                        'user' : group.user.username,
+                        'name' : group.name,
+                        'dateCreated' : group.dateCreated.strftime("%Y-%m-%d %H:%M:%S"),
+                        'lastModified' : group.lastModified.strftime("%Y-%m-%d %H:%M:%S"),
+                        'imageId' : group.picture.pk
+                    })
+                )
         
         return metadata

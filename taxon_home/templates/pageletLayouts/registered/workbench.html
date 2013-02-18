@@ -37,6 +37,9 @@
 </head>
 <body>
 	<div id="left-toolbar">
+		<div class="toolbar toolbar-title toolbar-title-header">
+			<span>Toolbar</span>
+		</div>
 		<div class="workbench-area toolbar">
 			<div class="toolbar-header">
 				<div><img class="collapse" src="{{ STATIC_URL }}images/arrow_down.png"></img></div>
@@ -49,12 +52,12 @@
 			<div class="toolbar-body">
 				<div class="image-thumbnail-container">
 					<div>
-					{% for image in myImages %}
+					{% for item in myImages %}
 						<div class="my-pictures-image-holder">
 							<div class="top-right-float" title=".ui-icon-close">                        
 				                <span class="ui-state-default ui-corner-all ui-icon ui-icon-trash delete-image-button"></span> 
 				            </div>
-							<img src="{{ MEDIA_URL }}{{ image.image.imageName }}" name="{{ image.image.pk }}" class="{{ image.permissions }}-image my-pictures-image" />
+							<img src="{{ MEDIA_URL }}{{ item.image.imageName }}" name="{{ item.image.pk }}" class="scaled-image {{ item.permissions }}-image my-pictures-image" />
 						</div>
 					{% endfor %}
 					</div>
@@ -68,7 +71,13 @@
 			</div>
 			<div class="toolbar-body">
 				<div class="image-thumbnail-container">
-				
+					<div>
+					{% for image in recentImages %}
+						<div class="my-pictures-image-holder">
+							<img src="{{ MEDIA_URL }}{{ image.picture.imageName }}" name="{{ image.picture.pk }}" class="scaled-image recent-pictures-image" />
+						</div>
+					{% endfor %}
+					</div>
 				</div>
 			</div>
 		</div>
@@ -83,7 +92,45 @@
 			</div>
 			<div class="toolbar-body">
 				<div class="image-thumbnail-container">
-				
+					<div>
+					{% for item in myTags %}
+						<div class="tag-item {{ item.permissions }}-tag">
+							<table cellspacing="0" cellpadding="0">
+								<tbody>
+									<tr>
+										<td style="vertical-align: middle;">
+											<div class="my-tags-image-holder">
+												<img src="{{ MEDIA_URL }}{{ item.tag.group.picture.imageName }}" name="{{ item.tag.pk }}" class="scaled-image"></img>
+											</div>
+										</td>
+										<td>
+											<div>
+												<table cellspacing="0" cellpadding="0" style="border: 1px solid #CCCCCC; width: 160px;">
+													<tbody>
+														<tr>
+															<td class="tag-item-text tag-item-label">Name:</td>
+															<td class="tag-item-text tag-item-info">{{ item.tag.name }}</td>
+														</tr>
+														<tr>
+															<td class="tag-item-text tag-item-label" style="background-color: #DDD;">Group:</td>
+															<td class="tag-item-text tag-item-info" style="background-color: #DDD;">{{ item.tag.group.name }}</td>
+														</tr>
+														<tr>
+															<td class="tag-item-text tag-item-label">Color:</td>
+															<td class="tag-item-text tag-item-info">
+																<div class="colorBox" style="background-color: rgba({{ item.tag.color.red }}, {{ item.tag.color.green }}, {{ item.tag.color.blue }}, 0.5);"></div>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					{% endfor %}
+					</div>
 				</div>
 			</div>
 		</div>
@@ -127,7 +174,7 @@
 		});
 	
 		// centers all of the images in there containers so that they fit correctly
-		$('.my-pictures-image').load(function() {
+		$('.scaled-image').load(function() {
 			var $img = $(this);
 			var $parent = $img.parent();
 			var imgRatio = $img.width()/$img.height();
@@ -160,7 +207,7 @@
 		// calls the getTags web service for this image in order to
 		// get the tags for the picture and stores them in cache so
 		// that only a ping is needed for the next time
-		$('.my-pictures-image').on('click', function() {		
+		$('.scaled-image').on('click', function() {		
 			var $imgClone = $(this).clone();
 			$imgClone.attr('id', 'current-editing');
 			$imgClone.attr('class', '');
@@ -237,6 +284,25 @@
 			}
 			else {
 				$('.private-image').parent().show('slow');
+			}
+		});
+
+		// check boxes should limit the field of my tags to public and private
+		$('#public-tags').on('click', function() {
+			if (!$(this).is(':checked')) {
+				$('.public-tag').parent().hide('slow');
+			}
+			else {
+				$('.public-tag').parent().show('slow');
+			}
+		});
+	
+		$('#private-tags').on('click', function() {
+			if (!$(this).is(':checked')) {
+				$('.private-tag').parent().hide('slow');
+			}
+			else {
+				$('.private-tag').parent().show('slow');
 			}
 		});
 	});

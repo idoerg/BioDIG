@@ -21,22 +21,14 @@ class GetAPI:
         metadata = WebServiceArray()
         
         try:
-            if (isKey):
+            if isKey:
                 tag = Tag.objects.get(pk__exact=tagKey)
             else:
                 tag = tagKey
         except (ObjectDoesNotExist, ValueError):
             raise Errors.INVALID_TAG_KEY
-            
-        authenticated = True
         
-        if (tag.group.picture.isPrivate):
-            if (self.user and self.user.is_authenticated()):
-                authenticated = tag.group.picture.user == self.user
-            else:
-                authenticated = False
-                
-        if not authenticated:
+        if not tag.readPermissions(self.user):
             raise Errors.AUTHENTICATION
             
         if (self.unlimited):
@@ -45,17 +37,19 @@ class GetAPI:
             geneLinks = GeneLink.objects.filter(tag__exact=tag).order_by('pk')[self.offset : self.offset+self.limit]
                         
         for geneLink in geneLinks:
-            metadata.put(
-                LimitDict(self.fields, {
-                    'id' : geneLink.pk,
-                    'tagId' : tag.pk,
-                    'feature' : LimitDict(self.fields, {
-                        'uniqueName' : geneLink.feature.uniquename,
-                        'name' : geneLink.feature.name,
-                        'organismId' : geneLink.feature.organism.organism_id
-                    })
-                })    
-            )
+            if geneLink.readPermissions(self.user):
+                metadata.put(
+                    LimitDict(self.fields, {
+                        'id' : geneLink.pk,
+                        'user' : geneLink.user.username,
+                        'tagId' : tag.pk,
+                        'feature' : LimitDict(self.fields, {
+                            'uniqueName' : geneLink.feature.uniquename,
+                            'name' : geneLink.feature.name,
+                            'organismId' : geneLink.feature.organism.organism_id
+                        })
+                    })    
+                )
         
         return metadata
     
@@ -68,22 +62,14 @@ class GetAPI:
         metadata = WebServiceArray()
         
         try:
-            if (isKey):
+            if isKey:
                 tagGroup = TagGroup.objects.get(pk__exact=tagGroupKey)
             else:
                 tagGroup = tagGroupKey
         except (ObjectDoesNotExist, ValueError):
             raise Errors.NO_TAG_GROUP_KEY
-            
-        authenticated = True
         
-        if (tagGroup.picture.isPrivate):
-            if (self.user and self.user.is_authenticated()):
-                authenticated = tagGroup.picture.user == self.user
-            else:
-                authenticated = False
-        
-        if not authenticated:
+        if not tagGroup.readPermissions(self.user):
             raise Errors.AUTHENTICATION
         
         tags = Tag.objects.filter(group__exact=tagGroup)
@@ -94,15 +80,17 @@ class GetAPI:
             geneLinks = GeneLink.objects.filter(tag__in=tags).order_by('pk')[self.offset : self.offset+self.limit]
             
         for geneLink in geneLinks:
-            metadata.put(
-                LimitDict(self.fields, {
-                    'id' : geneLink.pk,
-                    'tagId' : geneLink.tag.pk,
-                    'uniquename' : geneLink.feature.uniquename,
-                    'name' : geneLink.feature.name,
-                    'organismId' : geneLink.feature.organism.organism_id,
-                })    
-            )
+            if geneLink.readPermissions(self.user):
+                metadata.put(
+                    LimitDict(self.fields, {
+                        'id' : geneLink.pk,
+                        'user' : geneLink.user.username,
+                        'tagId' : geneLink.tag.pk,
+                        'uniquename' : geneLink.feature.uniquename,
+                        'name' : geneLink.feature.name,
+                        'organismId' : geneLink.feature.organism.organism_id,
+                    })    
+                )
 
         return metadata
         
@@ -117,22 +105,14 @@ class GetAPI:
         metadata = WebServiceArray()
         
         try:
-            if (isKey):
+            if isKey:
                 image = TagGroup.objects.get(pk__exact=imageKey)
             else:
                 image = imageKey
         except (ObjectDoesNotExist, ValueError):
             raise Errors.INVALID_IMAGE_KEY
             
-        authenticated = True
-        
-        if (image.isPrivate):
-            if (self.user and self.user.is_authenticated()):
-                authenticated = image.user == self.user
-            else:
-                authenticated = False
-                
-        if not authenticated: 
+        if not image.readPermissions(self.user): 
             raise Errors.AUTHENTICATION
         
         tagGroups = TagGroup.objects.filter(picture__exact=image)
@@ -145,15 +125,17 @@ class GetAPI:
             geneLinks = GeneLink.objects.filter(tag__in=tags).order_by('pk')[self.offset : self.offset+self.limit]
         
         for geneLink in geneLinks:
-            metadata.put(
-                LimitDict(self.fields, {
-                    'id' : geneLink.pk,
-                    'tagId' : geneLink.tag.pk,
-                    'uniquename' : geneLink.feature.uniquename,
-                    'name' : geneLink.feature.name,
-                    'organismId' : geneLink.feature.organism.organism_id
-                })    
-            )
+            if geneLink.readPermissions(self.user):
+                metadata.put(
+                    LimitDict(self.fields, {
+                        'id' : geneLink.pk,
+                        'user' : geneLink.user.username,
+                        'tagId' : geneLink.tag.pk,
+                        'uniquename' : geneLink.feature.uniquename,
+                        'name' : geneLink.feature.name,
+                        'organismId' : geneLink.feature.organism.organism_id
+                    })    
+                )
         
         return metadata
     
@@ -163,7 +145,7 @@ class GetAPI:
     def getGeneLinks(self):
         metadata = WebServiceArray()
         
-        if (self.user and self.user.is_authenticated()):
+        if self.user and self.user.is_authenticated():
             images = Picture.objects.filter(isPrivate=False) | Picture.objects.filter(user__exact=self.user, isPrivate=True)
         else:
             images = Picture.objects.filter(isPrivate=False)
@@ -172,21 +154,23 @@ class GetAPI:
                 
         tags = Tag.objects.filter(group__in=tagGroups)
                 
-        if (self.unlimited):
+        if self.unlimited:
             geneLinks = GeneLink.objects.filter(tag__in=tags).order_by('pk')[self.offset:]
         else:
             geneLinks = GeneLink.objects.filter(tag__in=tags).order_by('pk')[self.offset : self.offset+self.limit]
         
         for geneLink in geneLinks:
-            metadata.put(
-                LimitDict(self.fields, {
-                    'id' : geneLink.pk,
-                    'tagId' : geneLink.tag.pk,
-                    'uniquename' : geneLink.feature.uniquename,
-                    'name' : geneLink.feature.name,
-                    'organismId' : geneLink.feature.organism.organism_id
-                })
-            )
+            if geneLink.readPermissions(self.user):
+                metadata.put(
+                    LimitDict(self.fields, {
+                        'id' : geneLink.pk,
+                        'user' : geneLink.user.username,
+                        'tagId' : geneLink.tag.pk,
+                        'uniquename' : geneLink.feature.uniquename,
+                        'name' : geneLink.feature.name,
+                        'organismId' : geneLink.feature.organism.organism_id
+                    })
+                )
             
         return metadata
         

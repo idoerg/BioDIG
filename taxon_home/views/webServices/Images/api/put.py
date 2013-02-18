@@ -30,50 +30,44 @@ class PutAPI:
                 image = Picture.objects.get(pk__exact=imageKey) 
             else:
                 image = imageKey
-            
-            authenticated = True
-            if image.isPrivate:
-                if self.user and self.user.is_authenticated():
-                    authenticated = image.user == self.user
-                else:
-                    authenticated = False
-                    
-            if authenticated:
-                defTags = PictureDefinitionTag.objects.filter(picture__exact=image)
-                
-                organismField = not self.fields or 'organisms' in self.fields
-                
-                if organisms:
-                    newOrganisms = Organism.objects.filter(organism_id__in=organisms)
-                    newDefTags = []
-                    for newOrg in newOrganisms:
-                        newDefTags.append(PictureDefinitionTag(picture=image, organism=newOrg))
-                    try:
-                        defTags.delete()
-                        for newTag in newDefTags:
-                            newTag.save()
-                            if organismField:
-                                organisms.append({
-                                    'commonName' : newTag.organism.common_name,
-                                    'abbreviation' : newTag.organism.abbreviation,
-                                    'genus' : newTag.organism.genus,
-                                    'species' : newTag.organism.species,
-                                    'id' : newTag.organism.pk
-                                })
-                    except DatabaseError as e:
-                        transaction.rollback()
-                        raise Errors.INTEGRITY_ERROR.setCustom(str(e))
-                if description:
-                    image.description = description
-                    try:
-                        image.save()
-                    except DatabaseError as e:
-                        transaction.rollback()
-                        raise Errors.INTEGRITY_ERROR.setCustom(str(e))                   
-            else:
-                raise Errors.AUTHENTICATION
+        
         except (ObjectDoesNotExist, ValueError):
             raise Errors.INVALID_IMAGE_KEY
+        
+        if not image.writePermissions(self.user):
+                raise Errors.AUTHENTICATION
+
+        defTags = PictureDefinitionTag.objects.filter(picture__exact=image)
+        
+        organismField = not self.fields or 'organisms' in self.fields
+        
+        if organisms:
+            newOrganisms = Organism.objects.filter(organism_id__in=organisms)
+            newDefTags = []
+            for newOrg in newOrganisms:
+                newDefTags.append(PictureDefinitionTag(picture=image, organism=newOrg))
+            try:
+                defTags.delete()
+                for newTag in newDefTags:
+                    newTag.save()
+                    if organismField:
+                        organisms.append({
+                            'commonName' : newTag.organism.common_name,
+                            'abbreviation' : newTag.organism.abbreviation,
+                            'genus' : newTag.organism.genus,
+                            'species' : newTag.organism.species,
+                            'id' : newTag.organism.pk
+                        })
+            except DatabaseError as e:
+                transaction.rollback()
+                raise Errors.INTEGRITY_ERROR.setCustom(str(e))
+        if description:
+            image.description = description
+            try:
+                image.save()
+            except DatabaseError as e:
+                transaction.rollback()
+                raise Errors.INTEGRITY_ERROR.setCustom(str(e))
        
         if (not metadata.isError()):
             metadata.limitFields(self.fields)

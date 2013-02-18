@@ -1,5 +1,5 @@
 import taxon_home.views.util.ErrorConstants as Errors
-from taxon_home.models import Picture, PictureDefinitionTag
+from taxon_home.models import Picture, PictureDefinitionTag, RecentlyViewedPicture
 from django.core.exceptions import ObjectDoesNotExist
 from renderEngine.WebServiceObject import WebServiceObject
 
@@ -30,14 +30,7 @@ class GetAPI:
         except (ObjectDoesNotExist, ValueError):
             raise Errors.INVALID_IMAGE_KEY
             
-        authenticated = True
-        if (image.isPrivate):
-            if (self.user and self.user.is_authenticated()):
-                authenticated = image.user == self.user
-            else:
-                authenticated = False
-                
-        if not authenticated:
+        if not image.readPermissions(self.user):
             raise Errors.AUTHENTICATION
         
         if not self.fields or 'organisms' in self.fields:
@@ -61,5 +54,9 @@ class GetAPI:
         metadata.put('uploadDate', image.uploadDate.strftime("%Y-%m-%d %H:%M:%S"))
         metadata.put('url', image.imageName.url)
         metadata.put('id', image.pk)
+        
+        # add to recently viewed images if there is a user
+        if self.user and self.user.is_authenticated():
+            RecentlyViewedPicture.objects.get_or_create(user=self.user, picture=image)[0].save()
         
         return metadata

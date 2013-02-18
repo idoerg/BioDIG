@@ -30,16 +30,12 @@ class PostAPI:
                 image = imageKey
         except (ObjectDoesNotExist, ValueError):
             raise Errors.INVALID_TAG_GROUP_KEY
-            
-        authenticated = True
-        if self.user and self.user.is_authenticated():
-            authenticated = image.user == self.user or self.user.is_staff
         
-        if not authenticated:
+        if not image.writePermissions(self.user):
             raise Errors.AUTHENTICATION
         
         # start saving the new tag now that it has passed all tests
-        tagGroup = TagGroup(name=name, picture=image)
+        tagGroup = TagGroup(name=name, picture=image, user=self.user)
         try:
             tagGroup.save()
         except DatabaseError as e:
@@ -51,6 +47,7 @@ class PostAPI:
         # add new tag to response for success
         metadata.put('id', tagGroup.pk)
         metadata.put('name', tagGroup.name)
+        metadata.put('user', tagGroup.user.username)
         metadata.put('dateCreated', tagGroup.dateCreated.strftime("%Y-%m-%d %H:%M:%S"))
         metadata.put('lastModified', tagGroup.lastModified.strftime("%Y-%m-%d %H:%M:%S"))
         metadata.put('imageId', tagGroup.picture.pk)

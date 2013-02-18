@@ -32,5 +32,6 @@
 
 #container {
     margin: 0 auto;
+    white-space: nowrap;
 }
 

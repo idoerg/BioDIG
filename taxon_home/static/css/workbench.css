@@ -5,22 +5,22 @@
 }
 
 #work-area {
-	height: 570px;
+	height: 633px;
 	width: 960px;
 }
 
 #center-work-area {
-	left: 20px;
-	position: relative;	
-	width: 975px;
-	display: table;
+	width: 970px;
+	display: inline-table;
+	white-space: normal;
 }
 
 #left-toolbar {
 	margin-left: 10px;
 	width: 235px;
-	float: left;
+	display: inline-table;
 	margin-right: 10px;
+	white-space: normal;
 }
 
 .toolbar {
@@ -51,6 +51,13 @@
 	font-size: 14px;
 }
 
+.toolbar-title-header {
+	margin-top: 12px;
+    font-size: 20px;
+    color: white;
+    font-variant: small-caps;
+}
+
 .toolbar-options {
 	color: #333333;
     font-family: Lucida Grande;
@@ -65,7 +72,7 @@
 .image-thumbnail-container {
 	overflow-y: auto;
 	min-height: 100px;
-	max-height: 250px;
+	max-height: 200px;
 }
 
 .my-pictures-image-holder {
@@ -81,12 +88,25 @@
 	background-color: #AAAAAA;
 }
 
-.my-pictures-image {
+.my-tags-image-holder {
+	height: 50px;
+	width: 50px;
+	overflow: hidden;
+	display: inline-block;
+	padding: 5px;
+	background-color: #F5F5F5;
+}
+
+.my-tags-image-holder:hover {
+	background-color: #AAAAAA;
+}
+
+.scaled-image {
 	position: relative;
 	display: block;
 }
 
-.my-pictures-image:hover {
+.scaled-image:hover {
 	cursor: pointer;
 }
 
@@ -118,4 +138,34 @@
 
 .delete-image-button:hover {
 	cursor: pointer;	
+}
+
+.tag-item {
+	border-bottom: 1px solid #CCC;
+}
+
+.tag-item td {
+	vertical-align: top;
+    padding: 2px;
+}
+
+.tag-item-text {
+	color: #222;
+    font-family: Lucida Grande;
+    font-size: 11px;
+    padding-left: 3px;
+}
+
+.tag-item-label {
+	width: 44px;
+}
+
+.tag-item-info {
+	width: 95px;
+}
+
+.colorBox {
+	height: 12px;
+	width: 12px;
+	border-radius: 2px;
 }

@@ -47,7 +47,7 @@
 				var taggableObj = new TaggerUI(
 					$(this), settings.parent, settings.originalData, settings.imageMetadata,
 					settings.genomicInfo, settings.imagesUrl, settings.siteUrl,
-					settings.alreadyloaded, settings.callback
+					settings.alreadyLoaded, settings.callback
 				);
 				
 				// saves the taggable object in the data cache for reference

@@ -26,6 +26,9 @@ class DeleteAPI:
         except Exception:
             raise Errors.INTERNAL_ERROR
         
+        if not geneLink.writePermissions(self.user):
+            raise Errors.AUTHENTICATION
+        
         metadata.limitFields(self.fields)
                 
         metadata.put('id', geneLink.pk)

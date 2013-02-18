@@ -1,0 +1,182 @@
+<head>
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/advancedSearch.css" type="text/css" />
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/selectBox.css" type="text/css" />
+	<script type="text/javascript" src="{{ STATIC_URL }}js/MenuUI/selectBox.js"></script>
+</head>
+<body>
+	<div class="searchContainer">
+		<div class="searchSection">
+			<div class="searchSectionTitle">Search For...</div>
+			<div>
+				<table cellspacing='0' cellpadding='0'>
+					<tbody>
+						<tr>
+							<td>
+								<span class="searchLabel">keywords</span>
+							</td>
+							<td>
+								<input class="searchBox" type="text" name="keywords"></input>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="searchLabel">exact phrase</span>
+							</td>
+							<td>
+								<input class="searchBox" type="text" name="exact"></input>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="searchLabel">exclude keywords</span>
+							</td>
+							<td>
+								<input class="searchBox" type="text" name="exclude"></input>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="searchSection topBorder">
+			<div class="searchSectionTitle">Search By...</div>
+			<div>
+				<table cellspacing='0' cellpadding='0'>
+					<tbody>
+						<tr>
+							<td>
+								<span class="searchLabel">search by</span>
+							</td>
+							<td>
+								<select id="by" class="searchMenu" name="by">
+									<option value="image">Image</option>
+									<option value="organism">Organism</option>
+									<option value="tagGroup">Tag Group</option>
+									<option value="tag">Tag</option>
+									<option value="geneLink">Gene Link</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="searchLabel">results per page</span>
+							</td>
+							<td>
+								<input class="searchBox" name="limit" value="10"></input>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div id="refineSearch" class="searchSection topBorder">
+			<div class="searchSectionTitle">Refine Search By...</div>
+			<div>
+				<table cellspacing='0' cellpadding='0'>
+					<tbody>
+						<tr style="display: none;">
+							<td>
+								<span class="searchLabel">image</span>
+							</td>
+							<td>
+								<select class="searchMenu" name="refineImage">
+									<option value="any">Any</option>
+									<option value="byIds">By Image Id</option>
+									<option value="byQuery">By Image Query</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="searchLabel">organism</span>
+							</td>
+							<td>
+								<select class="searchMenu" name="refineOrganism">
+									<option value="any">Any</option>
+									<option value="byIds">By Organism Id</option>
+									<option value="byQuery">By Organism Query</option>
+								</select>
+							</td>
+						</tr>
+						<tr style="display: none;">
+							<td>
+								<span class="searchLabel">tag group</span>
+							</td>
+							<td>
+								<select class="searchMenu" name="refineTagGroup">
+									<option value="any">Any</option>
+									<option value="byIds">By Tag Group Id</option>
+									<option value="byQuery">By Tag Group Query</option>
+								</select>
+							</td>
+						</tr>
+						<tr style="display: none;">
+							<td>
+								<span class="searchLabel">tag</span>
+							</td>
+							<td>
+								<select class="searchMenu" name="refineTag">
+									<option value="any">Any</option>
+									<option value="byIds">By Tag Id</option>
+									<option value="byQuery">By Tag Query</option>
+								</select>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="searchSection topBorder" style="text-align: right;">
+			<button id="advancedSearch" class="search_button">Advanced Search</button>		
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	function isNumeric(n) {
+		return !isNaN(parseFloat(n)) && isFinite(n);
+	}
+
+	// restyle all select boxes to allow for nicer looking select boxes
+	$('.searchMenu').selectBox({ imagesUrl : '{{ STATIC_URL }}images/' });
+
+	// change the Refine Search Panel based on the current search category
+	$('select#by').selectBox('change', function(value) {
+		switch(value) {
+			case 'image':
+				var organism = $('.selectContainer[name=refineOrganism]');
+				organism.closest('tr').show();
+				$('#refineSearch').find('.selectContainer').not(organism).closest('tr').hide();
+				break;
+			case 'organism':
+				var image = $('.selectContainer[name=refineImage]');
+				image.closest('tr').show();
+				$('#refineSearch').find('.selectContainer').not(image).closest('tr').hide();
+				break;
+			case 'tagGroup':
+				var image = $('.selectContainer[name=refineImage]');
+				image.closest('tr').show();
+				var organism = $('.selectContainer[name=refineOrganism]');
+				organism.closest('tr').show();
+				$('#refineSearch').find('.selectContainer').not(organism).not(image).closest('tr').hide();
+				break;
+			case 'tag':
+				var image = $('.selectContainer[name=refineImage]');
+				image.closest('tr').show();
+				var organism = $('.selectContainer[name=refineOrganism]');
+				organism.closest('tr').show();
+				var tagGroup = $('.selectContainer[name=refineTagGroup]');
+				tagGroup.closest('tr').show();
+				$('#refineSearch').find('.selectContainer').not(image).not(organism).not(tagGroup).closest('tr').hide();
+				break;
+			case 'geneLink':
+				$('#refineSearch').find('.selectContainer').closest('tr').show();
+				break;
+			default:
+				break;
+		};
+	});
+
+	$('button#advancedSearch').on('click', function() {
+
+	});
+</script>

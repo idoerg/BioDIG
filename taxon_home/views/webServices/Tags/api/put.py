@@ -18,7 +18,7 @@ class PutAPI:
         @isKey: Indicates whether the input tagKey is actually a key or not
     '''    
     @transaction.commit_on_success 
-    def updateTag(self, tagKey, points=None, description=None, color=None, isKey=True):
+    def updateTag(self, tagKey, points=None, name=None, color=None, isKey=True):
         metadata = WebServiceObject()
         try:
             if (isKey):
@@ -27,22 +27,13 @@ class PutAPI:
                 tag = tagKey
         except (ObjectDoesNotExist, ValueError):
             raise Errors.INVALID_TAG_KEY
-            
-        
-        authenticated = True
-        
-        if tag.group.picture.isPrivate:
-            if self.user and self.user.is_authenticated():
-                authenticated = tag.group.picture.user == self.user
-            else:
-                authenticated = False
-        
-        if not authenticated:
+
+        if not tag.writePermissions(self.user):
             raise Errors.AUTHENTICATION
         
         # update the description
-        if description:
-            tag.description = description
+        if name:
+            tag.name = name
         
         # update the color (ignores bad syntax)
         try:
@@ -94,7 +85,8 @@ class PutAPI:
         
         # add new tag to response for success
         metadata.put('id', tag.pk)
+        metadata.put('user', tag.user)
         metadata.put('color', [tag.color.red, tag.color.green, tag.color.blue])
-        metadata.put('description', tag.description)
+        metadata.put('name', tag.name)
         
         return metadata

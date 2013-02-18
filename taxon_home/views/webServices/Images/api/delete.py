@@ -32,14 +32,8 @@ class DeleteAPI:
         except (ObjectDoesNotExist, ValueError):
             raise Errors.INVALID_IMAGE_KEY
             
-        authenticated = True
-        if (image.isPrivate):
-            if (self.user and self.user.is_authenticated()):
-                authenticated = image.user == self.user
-            else:
-                authenticated = False
                 
-        if not authenticated:
+        if not image.writePermissions(self.user):
             raise Errors.AUTHENTICATION
         
         if not self.fields or 'organisms' in self.fields:

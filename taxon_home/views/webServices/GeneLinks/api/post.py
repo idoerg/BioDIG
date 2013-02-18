@@ -29,12 +29,8 @@ class PostAPI:
                 tag = tagKey
         except (ObjectDoesNotExist, ValueError):
             raise Errors.INVALID_TAG_GROUP_KEY
-            
-        authenticated = True
-        if self.user and self.user.is_authenticated():
-            authenticated = tag.group.picture.user == self.user or self.user.is_staff
         
-        if not authenticated:
+        if not tag.writePermissions(self.user):
             raise Errors.AUTHENTICATION 
         
         try:
@@ -66,6 +62,7 @@ class PostAPI:
         metadata.limitFields(self.fields)
             
         metadata.put('id', geneLink.pk)
+        metadata.put('user', geneLink.user.username)
         metadata.put('tagId', geneLink.tag.pk)
         metadata.put('feature', 
             LimitDict(self.fields, {
