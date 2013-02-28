@@ -35,3 +35,23 @@
     white-space: nowrap;
 }
 
+.no-text-select {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+input[type=text] {
+	border: 1px solid #BBBBBB;
+    font-family: Lucida Grande;
+    font-size: 15px;
+    height: 30px;
+    padding: 1px 5px;
+}
+
+input[type=text]:focus {
+	box-shadow: 0 0 2px 0 #DDDDDD inset;
+}

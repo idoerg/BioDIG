@@ -15,23 +15,25 @@ function AreYouSureDialog() {
     this.dialogBox.dialog({
         autoOpen  : false,
         title     : '',
-        buttons   : [{
-                        text: "Yes",
-                        click: function() {
-                            if (self.callback) {
-                            	self.callback();
-                            }
-                            $(this).dialog("close"); 
-                        }
-                    },
-                    {
-                        text: "No",
-                        click: function() { 
-                            $(this).dialog("close"); 
-                        }
-                    }],
+        buttons   : [
+			{
+			    text: "Yes",
+			    click: function() {
+			    if (self.callback) {
+			    	self.callback();
+			    }
+			    $(this).dialog("close"); 
+			    }
+			},
+            {
+                text: "No",
+                click: function() { 
+                    $(this).dialog("close"); 
+                }
+            }
+		],
         draggable : false,
-        resizable : false,
+        resizable : false
     });	
 };
 

@@ -44,7 +44,7 @@ def updateTagGroup(request):
     if not name:
         raise Errors.NOT_MODIFIED
     
-    return putAPI.updateTag(tagGroupKey, name)
+    return putAPI.updateTagGroup(tagGroupKey, name)
         
 
 '''

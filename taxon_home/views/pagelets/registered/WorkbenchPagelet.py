@@ -5,7 +5,7 @@
     Date: July 23, 2012
 '''
 from renderEngine.PageletBase import PageletBase
-from taxon_home.models import Picture, RecentlyViewedPicture, Tag, TagGroup
+from taxon_home.models import Picture, RecentlyViewedPicture, Tag, TagGroup, GeneLink
 
 class WorkbenchPagelet(PageletBase):
     '''
@@ -34,7 +34,7 @@ class WorkbenchPagelet(PageletBase):
             
         recentImages = RecentlyViewedPicture.objects.filter(user__exact=request.user).order_by('lastDateViewed')[:10]
         
-        userTags = Tag.objects.filter(user__exact=request.user)
+        userTags = Tag.objects.filter(user__exact=request.user).order_by('dateCreated')
         myTags = []
                 
         #
@@ -48,7 +48,7 @@ class WorkbenchPagelet(PageletBase):
             })
         
         
-        userTagGroups = TagGroup.objects.filter(user__exact=request.user)
+        userTagGroups = TagGroup.objects.filter(user__exact=request.user).order_by('dateCreated')
         myTagGroups = []
                 
         #
@@ -61,9 +61,23 @@ class WorkbenchPagelet(PageletBase):
                 'tagGroup' : tagGroup
             })
             
+        userGeneLinks = GeneLink.objects.filter(user__exact=request.user).order_by('dateCreated')
+        myGeneLinks = []
+                
+        #
+        for geneLink in userGeneLinks:
+            permissions = 'public'
+            if geneLink.isPrivate:
+                permissions = 'private'
+            myGeneLinks.append({
+                'permissions' : permissions,
+                'geneLink' : geneLink
+            })
+            
         return {
             'myImages' : myImages,
             'recentImages' : recentImages,
             'myTags' : myTags,
-            'myTagGroups' : myTagGroups
+            'myTagGroups' : myTagGroups,
+            'myGeneLinks' : myGeneLinks
         }

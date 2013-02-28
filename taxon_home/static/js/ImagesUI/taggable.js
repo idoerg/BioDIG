@@ -53,6 +53,12 @@
 				// saves the taggable object in the data cache for reference
 				$(this).data('taggable', taggableObj);
 			});
+		},
+		menu : function(options) {
+			var taggableObj = $(this).data('taggable');
+			taggableObj.menu.getSection(options.section).getMenuItem(options.item).onClick(
+				Util.scopeCallback(taggableObj, options.click)
+			);
 		}
 	};
 	

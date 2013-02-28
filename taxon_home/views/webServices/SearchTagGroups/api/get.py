@@ -47,7 +47,8 @@ class GetAPI:
                         'name' : group.name,
                         'dateCreated' : group.dateCreated.strftime("%Y-%m-%d %H:%M:%S"),
                         'lastModified' : group.lastModified.strftime("%Y-%m-%d %H:%M:%S"),
-                        'imageId' : group.picture.pk
+                        'imageId' : group.picture.pk,
+                        'isPrivate' : group.isPrivate
                     })
                 )
     
@@ -79,7 +80,8 @@ class GetAPI:
                         'name' : group.name,
                         'dateCreated' : group.dateCreated.strftime("%Y-%m-%d %H:%M:%S"),
                         'lastModified' : group.lastModified.strftime("%Y-%m-%d %H:%M:%S"),
-                        'imageId' : group.picture.pk
+                        'imageId' : group.picture.pk,
+                        'isPrivate' : group.isPrivate
                     })
                 )
         

@@ -1,89 +1,49 @@
 import taxon_home.views.util.ErrorConstants as Errors
-from taxon_home.models import Picture
-from renderEngine.WebServiceObject import WebServiceArray
+from taxon_home.models import TagGroup
+from renderEngine.WebServiceObject import WebServiceObject
 from django.core.exceptions import ObjectDoesNotExist
 from taxon_home.views.webServices.SearchGeneLinks.api.get import GetAPI as GeneLinkAPI
 from taxon_home.views.webServices.SearchTags.api.get import GetAPI as TagAPI
-from taxon_home.views.webServices.SearchTagGroups.api.get import GetAPI as TagGroupAPI
+from taxon_home.views.webServices.TagGroups.api.get import GetAPI as TagGroupAPI
 
 
 class GetAPI:
     
-    def __init__(self, limit=10, offset=0, user=None, fields=None, unlimited=False):
-        self.limit = limit
-        self.offset = offset
+    def __init__(self, user=None, fields=None, unlimited=False):
         self.unlimited = unlimited
         self.user = user
         self.fields = fields
         
     '''
-        Gets the tag groups for the given image
+        Gets the tag group
         
-        @param imageKey: The primary key for the image or the image
+        @param imageKey: The primary key for the tag group or the tag group
         @param isKey: Whether the first argument is a key object or not (default: true)
     '''
-    def getAggregateTagGroupsByImage(self, imageKey, isKey=True):
-        metadata = WebServiceArray()
+    def getTagGroup(self, tagGroupKey, isKey=True):
+        metadata = WebServiceObject()
         
         try:
-            if (isKey):
-                image = Picture.objects.get(pk__exact=imageKey)
+            if isKey:
+                group = TagGroup.objects.get(pk__exact=tagGroupKey)
             else:
-                image = imageKey
+                group = tagGroupKey
         except (ObjectDoesNotExist, ValueError):
-            raise Errors.INVALID_IMAGE_KEY
-                
-        authenticated = True
-        if image.isPrivate:
-            if self.user and self.user.is_authenticated():
-                authenticated = image.user == self.user
-            else:
-                authenticated = False
-                
-        if not authenticated:
-            raise Errors.AUTHENTICATION
+            raise Errors.INVALID_TAG_GROUP_KEY
                 
         # initialize tagging APIs
-        tagGroupAPI = TagGroupAPI(self.limit, self.offset, self.user, self.fields, self.unlimited)
-        tagAPI = TagAPI(unlimited=True)
-        geneLinkAPI = GeneLinkAPI(unlimited=True)
+        tagGroupAPI = TagGroupAPI(self.user, self.fields)
+        tagAPI = TagAPI(user=self.user, unlimited=True)
+        geneLinkAPI = GeneLinkAPI(user=self.user, unlimited=True)
         
-        tagGroups = tagGroupAPI.getTagGroupsByImage(image, False).getObject()
-        
-        for group in tagGroups:
-            tags = tagAPI.getTagsByTagGroup(group['id']).getObject()
-            for tag in tags:
-                geneLinks = geneLinkAPI.getGeneLinksByTag(tag['id']).getObject()
-                tag['geneLinks'] = geneLinks
-            group['tags'] = tags
+        group = tagGroupAPI.getTagGroup(group, isKey=False).getObject()
+
+        tags = tagAPI.getTagsByTagGroup(group['id']).getObject()
+        for tag in tags:
+            geneLinks = geneLinkAPI.getGeneLinksByTag(tag['id']).getObject()
+            tag['geneLinks'] = geneLinks
+        group['tags'] = tags
             
-        metadata.setObject(tagGroups)
-    
-        return metadata
-    
-    '''
-        Gets the tag groups for the given image
-        
-        @param imageKey: The primary key for the image or the image
-        @param isKey: Whether the first argument is a key object or not (default: true)
-    '''
-    def getAggregateTagGroups(self):
-        metadata = WebServiceArray()
-                
-        # initialize tagging APIs
-        tagGroupAPI = TagGroupAPI(self.limit, self.offset, self.user, self.fields, self.unlimited)
-        tagAPI = TagAPI(unlimited=True)
-        geneLinkAPI = GeneLinkAPI(unlimited=True)
-        
-        tagGroups = tagGroupAPI.getTagGroups().getObject()
-        
-        for group in tagGroups:
-            tags = tagAPI.getTagsByTagGroup(group['id']).getObject()
-            for tag in tags:
-                geneLinks = geneLinkAPI.getGeneLinksByTag(tag['id']).getObject()
-                tag['geneLinks'] = geneLinks
-            group['tags'] = tags
-            
-        metadata.setObject(tagGroups)
+        metadata.setObject(group)
     
         return metadata

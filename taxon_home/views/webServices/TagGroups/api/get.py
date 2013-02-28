@@ -32,9 +32,10 @@ class GetAPI:
                 
         metadata.put('id', tagGroup.pk)
         metadata.put('name', tagGroup.name)
-        metadata.put('user', tagGroup.user)
+        metadata.put('user', tagGroup.user.username)
         metadata.put('dateCreated', tagGroup.dateCreated.strftime("%Y-%m-%d %H:%M:%S"))
         metadata.put('lastModified', tagGroup.lastModified.strftime("%Y-%m-%d %H:%M:%S"))
         metadata.put('imageId', tagGroup.picture.pk)
+        metadata.put('isPrivate', tagGroup.isPrivate)
         
         return metadata

@@ -87,7 +87,7 @@ div#picture_buttons {
 	margin: 0 auto 10px;
 	position: relative;
 	text-align: center;
-	height: 75px;
+	height: 90px;
 	border-bottom: 1px solid #CCCCCC;
 }
 
@@ -102,8 +102,8 @@ form#search {
 	border-radius: 5px;
 	background-repeat: no-repeat;
 	background-position: 50%;
-	height: 22px;
-	width: 35px;
+	height: 29px;
+    width: 42px;
 }	
 
 .search_button:hover {

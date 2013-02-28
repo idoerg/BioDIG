@@ -17,7 +17,7 @@ class Application(WebServiceApplicationBase):
 		
 		try:
 			if (request.method == 'GET'):
-				renderObj = API.getAggregateTagGroups(request)		
+				renderObj = API.getTagGroup(request)		
 			else:
 				renderObj.setError(Errors.INVALID_METHOD.setCustom(request.method))
 		except Errors.WebServiceException as e:

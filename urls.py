@@ -33,14 +33,14 @@ urlpatterns += patterns('taxon_home.views.webServices',
     url(r'^api/geneLinks/search$', 'SearchGeneLinks.Application.renderAction'),
     url(r'^api/tags/search$', 'SearchTags.Application.renderAction'),
     url(r'^api/tagGroups/search$', 'SearchTagGroups.Application.renderAction'),
-    url(r'^api/aggregate/tagGroups/search$', 'AggregateTagGroups.Application.renderAction'),
+    url(r'^api/aggregate/tagGroups$', 'AggregateTagGroups.Application.renderAction'),
+    url(r'^api/aggregate/tagGroups/search$', 'AggregateTagGroupsSearch.Application.renderAction'),
     url(r'^api/images/search$', 'SearchImages.Application.renderAction')
 )
 
 urlpatterns += patterns('taxon_home.views.applications.registered',
-    #url(r'^images/editor/submit/$', 'SubmitImageTag.Application.renderAction'),
     url(r'^administration/$', 'Administration.Application.renderAction'),
-    #url(r'^administration/gbrowse_manager/$', 'mycoplasma_home.views.gbrowse_manager'),
+    url(r'^administration/uploadImages/$', 'ImageUploader.Application.renderAction')
     #url(r'^administration/gbrowse_manager/genome_uploader/$', 'mycoplasma_home.views.genome_uploader'),
 )
 '''

@@ -14,7 +14,7 @@ class Picture(models.Model):
     altText = models.TextField(blank=True, null=True)
     user = models.ForeignKey(User)
     uploadDate = models.DateTimeField(auto_now_add=True)
-    isPrivate = models.BooleanField(default=True, null=True)
+    isPrivate = models.BooleanField(default=True)
     
     class Meta:
         db_table = u'picture'
@@ -83,7 +83,7 @@ class TagGroup(models.Model):
     dateCreated = models.DateTimeField(auto_now_add=True, editable=False)
     lastModified = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User)
-    isPrivate = models.BooleanField(default=True, null=True)
+    isPrivate = models.BooleanField(default=True)
     class Meta:
         db_table = u'taggroup'
         unique_together = ('name', 'picture',)
@@ -149,8 +149,10 @@ class Tag(models.Model):
     name = models.TextField()
     color = models.ForeignKey(TagColor)
     group = models.ForeignKey(TagGroup)
+    dateCreated = models.DateTimeField(auto_now_add=True, editable=False)
+    lastModified = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User)
-    isPrivate = models.BooleanField(default=True, null=True)
+    isPrivate = models.BooleanField(default=True)
     class Meta:
         db_table = u'tag'
         
@@ -1941,8 +1943,10 @@ class TmpCdsHandlerRelationship(models.Model):
 class GeneLink(models.Model):
     tag = models.ForeignKey(Tag)
     feature = models.ForeignKey(Feature)
+    dateCreated = models.DateTimeField(auto_now_add=True, editable=False)
+    lastModified = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User)
-    isPrivate = models.BooleanField(default=True, null=True)
+    isPrivate = models.BooleanField(default=True)
     class Meta:
         db_table = u'genelink'
     

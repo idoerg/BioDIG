@@ -1,25 +1,37 @@
-        body {
-            background-color: lightgray;
-        }
-        
-        div#body_holder {
-            width: 100%;
-            height: 100%;
-            text-align: center;
-	}
-        
-        div#body_div {
-            background-color: white;
-            position: relative;
-            margin: 0 auto;
-            width: 960px;
-	    height: auto !important;
-	    min-height: 100%;
-	    box-shadow: 0px 0px 11px 4px #555555;
-	    -moz-box-shadow: 0px 0px 11px 4px #555555;
-	    -webkit-box-shadow: 0px 0px 11px 4px #555555;
-	    filter: progid:DXImageTransform.Microsoft.Shadow(color='#555555', Direction=90, Strength=5),
-		    progid:DXImageTransform.Microsoft.Shadow(color='#555555', Direction=-90, Strength=5);
-	    zoom: 1;
-	    text-align: left;
-        }
+body {
+	background-color: lightgray;
+}
+       
+div#body_holder {
+	width: 100%;
+	height: 100%;
+	text-align: center;
+}
+       
+div#body_div {
+	background-color: white;
+	position: relative;
+	margin: 0 auto;
+	width: 960px;
+	height: auto !important;
+	min-height: 100%;
+	box-shadow: 0px 0px 11px 4px #555555;
+	-moz-box-shadow: 0px 0px 11px 4px #555555;
+	-webkit-box-shadow: 0px 0px 11px 4px #555555;
+	filter: progid:DXImageTransform.Microsoft.Shadow(color='#555555', Direction=90, Strength=5),
+	 progid:DXImageTransform.Microsoft.Shadow(color='#555555', Direction=-90, Strength=5);
+	zoom: 1;
+	text-align: left;
+}
+
+input[type=text] {
+	border: 1px solid #BBBBBB;
+    font-family: Lucida Grande;
+    font-size: 15px;
+    height: 30px;
+    padding: 1px 5px;
+}
+
+input[type=text]:focus {
+	box-shadow: 0 0 2px 0 #DDDDDD inset;
+}

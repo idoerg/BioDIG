@@ -36,100 +36,148 @@
     <script type="text/javascript" src="{{ STATIC_URL }}js/DialogUI/AreYouSureDialog.js"></script>
 </head>
 <body>
-	<div id="left-toolbar">
+	<div id="left-toolbar" class="no-text-select">
 		<div class="toolbar toolbar-title toolbar-title-header">
 			<span>Toolbar</span>
+			<span class="max" id="minMaxNav">
+				<img title="Click to minimize/maximize the navigation" src="{{ STATIC_URL }}images/minimizeLeft.png"></img>
+			</span>
 		</div>
-		<div class="workbench-area toolbar">
-			<div class="toolbar-header">
-				<div><img class="collapse" src="{{ STATIC_URL }}images/arrow_down.png"></img></div>
-				<div><span class="toolbar-title">My Pictures</span></div>
-				<div class="toolbar-options">
-					<span>Public</span><input id="public-pictures" name="public-pictures" type="checkbox" checked="checked" />
-					<span>Private</span><input id="private-pictures" name="private-pictures" type="checkbox" checked="checked" />
+		<div class="workbench-toolbar-container">
+			<div class="workbench-area toolbar">
+				<div class="toolbar-header">
+					<div><img class="collapse" src="{{ STATIC_URL }}images/arrow_down.png"></img></div>
+					<div><span class="toolbar-title">My Pictures</span></div>
+					<div class="toolbar-options">
+						<span>Public</span><input id="public-pictures" name="public-pictures" type="checkbox" checked="checked" />
+						<span>Private</span><input id="private-pictures" name="private-pictures" type="checkbox" checked="checked" />
+					</div>
 				</div>
-			</div>
-			<div class="toolbar-body">
-				<div class="image-thumbnail-container">
-					<div>
-					{% for item in myImages %}
-						<div class="my-pictures-image-holder">
-							<div class="top-right-float" title=".ui-icon-close">                        
-				                <span class="ui-state-default ui-corner-all ui-icon ui-icon-trash delete-image-button"></span> 
-				            </div>
-							<img src="{{ MEDIA_URL }}{{ item.image.imageName }}" name="{{ item.image.pk }}" class="scaled-image {{ item.permissions }}-image my-pictures-image" />
+				<div class="toolbar-body">
+					<div class="image-thumbnail-container">
+						<div>
+						{% for item in myImages %}
+							<div class="my-pictures-image-holder">
+								<div class="top-right-float" title=".ui-icon-close">                        
+					                <span class="ui-state-default ui-corner-all ui-icon ui-icon-trash delete-image-button"></span> 
+					            </div>
+								<img src="{{ MEDIA_URL }}{{ item.image.imageName }}" name="{{ item.image.pk }}" class="scaled-image {{ item.permissions }}-image my-pictures-image taggable-image" />
+							</div>
+						{% endfor %}
 						</div>
-					{% endfor %}
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="workbench-area toolbar">
-			<div class="toolbar-header">
-				<div><img class="collapse" src="{{ STATIC_URL }}images/arrow_down.png"></img></div>
-				<div><span class="toolbar-title">Recently Viewed Images</span></div>
-			</div>
-			<div class="toolbar-body">
-				<div class="image-thumbnail-container">
-					<div>
-					{% for image in recentImages %}
-						<div class="my-pictures-image-holder">
-							<img src="{{ MEDIA_URL }}{{ image.picture.imageName }}" name="{{ image.picture.pk }}" class="scaled-image recent-pictures-image" />
+			<div class="workbench-area toolbar">
+				<div class="toolbar-header">
+					<div><img class="collapse" src="{{ STATIC_URL }}images/arrow_down.png"></img></div>
+					<div><span class="toolbar-title">Recently Viewed Images</span></div>
+				</div>
+				<div class="toolbar-body">
+					<div class="image-thumbnail-container">
+						<div>
+						{% for image in recentImages %}
+							<div class="my-pictures-image-holder">
+								<img src="{{ MEDIA_URL }}{{ image.picture.imageName }}" name="{{ image.picture.pk }}" class="scaled-image recent-pictures-image taggable-image" />
+							</div>
+						{% endfor %}
 						</div>
-					{% endfor %}
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="workbench-area toolbar">
-			<div class="toolbar-header">
-				<div><img class="collapse" src="{{ STATIC_URL }}images/arrow_down.png"></img></div>
-				<div><span class="toolbar-title">My Tags</span></div>
-				<div class="toolbar-options">
-					<span>Public</span><input id="public-tags" name="public-tags" type="checkbox" checked="checked" />
-					<span>Private</span><input id="private-tags" name="private-tags" type="checkbox" checked="checked" />
+			<div class="workbench-area toolbar">
+				<div class="toolbar-header">
+					<div><img class="collapse" src="{{ STATIC_URL }}images/arrow_down.png"></img></div>
+					<div><span class="toolbar-title">My Tags</span></div>
+					<div class="toolbar-options">
+						<span>Public</span><input id="public-tags" name="public-tags" type="checkbox" checked="checked" />
+						<span>Private</span><input id="private-tags" name="private-tags" type="checkbox" checked="checked" />
+					</div>
+				</div>
+				<div class="toolbar-body">
+					<div class="image-thumbnail-container">
+						<div>
+						{% for item in myTags %}
+							<div class="item tag-item {{ item.permissions }}-tag" id="{{ item.tag.pk }}-tag">
+								<table cellspacing="0" cellpadding="0">
+									<tbody>
+										<tr>
+											<td style="vertical-align: middle;">
+												<div class="my-tags-image-holder">
+													<img src="{{ MEDIA_URL }}{{ item.tag.group.picture.imageName }}" name="{{ item.tag.pk }}" class="scaled-image"></img>
+												</div>
+											</td>
+											<td>
+												<div>
+													<table cellspacing="0" cellpadding="0" style="border: 1px solid #CCCCCC; width: 175px;">
+														<tbody>
+															<tr>
+																<td class="item-text item-label">Name:</td>
+																<td class="item-text item-info">{{ item.tag.name }}</td>
+															</tr>
+															<tr>
+																<td class="item-text item-label" style="background-color: #DDD;">Group:</td>
+																<td class="item-text item-info" style="background-color: #DDD;">{{ item.tag.group.name }}</td>
+															</tr>
+															<tr>
+																<td class="item-text item-label">Color:</td>
+																<td class="item-text item-info">
+																	<div class="colorBox" style="background-color: rgba({{ item.tag.color.red }}, {{ item.tag.color.green }}, {{ item.tag.color.blue }}, 0.5);"></div>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						{% endfor %}
+						</div>
+					</div>
 				</div>
 			</div>
-			<div class="toolbar-body">
-				<div class="image-thumbnail-container">
-					<div>
-					{% for item in myTags %}
-						<div class="tag-item {{ item.permissions }}-tag">
-							<table cellspacing="0" cellpadding="0">
-								<tbody>
-									<tr>
-										<td style="vertical-align: middle;">
-											<div class="my-tags-image-holder">
-												<img src="{{ MEDIA_URL }}{{ item.tag.group.picture.imageName }}" name="{{ item.tag.pk }}" class="scaled-image"></img>
-											</div>
-										</td>
-										<td>
-											<div>
-												<table cellspacing="0" cellpadding="0" style="border: 1px solid #CCCCCC; width: 160px;">
-													<tbody>
-														<tr>
-															<td class="tag-item-text tag-item-label">Name:</td>
-															<td class="tag-item-text tag-item-info">{{ item.tag.name }}</td>
-														</tr>
-														<tr>
-															<td class="tag-item-text tag-item-label" style="background-color: #DDD;">Group:</td>
-															<td class="tag-item-text tag-item-info" style="background-color: #DDD;">{{ item.tag.group.name }}</td>
-														</tr>
-														<tr>
-															<td class="tag-item-text tag-item-label">Color:</td>
-															<td class="tag-item-text tag-item-info">
-																<div class="colorBox" style="background-color: rgba({{ item.tag.color.red }}, {{ item.tag.color.green }}, {{ item.tag.color.blue }}, 0.5);"></div>
-															</td>
-														</tr>
-													</tbody>
-												</table>
-											</div>
-										</td>
-									</tr>
-								</tbody>
-							</table>
+			<div class="workbench-area toolbar">
+				<div class="toolbar-header">
+					<div><img class="collapse" src="{{ STATIC_URL }}images/arrow_down.png"></img></div>
+					<div><span class="toolbar-title">My Tag Groups</span></div>
+					<div class="toolbar-options">
+						<span>Public</span><input id="public-tag-groups" name="public-tag-groups" type="checkbox" checked="checked" />
+						<span>Private</span><input id="private-tag-groups" name="private-tag-groups" type="checkbox" checked="checked" />
+					</div>
+				</div>
+				<div class="toolbar-body">
+					<div class="image-thumbnail-container">
+						<div>
+						{% for item in myTagGroups %}
+							<div class="item tag-group-item {{ item.permissions }}-tag-group" id="{{ item.tagGroup.pk }}-tag-group">
+								<table cellspacing="0" cellpadding="0">
+									<tbody>
+										<tr>
+											<td style="vertical-align: middle;">
+												<div class="my-tags-image-holder">
+													<img src="{{ MEDIA_URL }}{{ item.tagGroup.picture.imageName }}" name="{{ item.tagGroup.pk }}" class="scaled-image"></img>
+												</div>
+											</td>
+											<td style="vertical-align: middle;">
+												<div>
+													<table cellspacing="0" cellpadding="0" style="width: 175px;">
+														<tbody>
+															<tr>
+																<td class="item-text item-label">Name:</td>
+																<td class="item-text item-info">{{ item.tagGroup.name }}</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						{% endfor %}
 						</div>
-					{% endfor %}
 					</div>
 				</div>
 			</div>
@@ -138,6 +186,82 @@
 	<div id="center-work-area">
 		<div id="header">Workbench</div>
 		<div id="work-area" class="workbench-area"></div>
+		<div id="tag-group-info-master">
+			<div class="tag-group-info-left">
+				<div class="tag-group-info-image-container">
+					<img class="tag-group-info-image" src=""></img>
+				</div>
+				<div class="tag-group-info-tags">
+					<div class="item tag-item">
+						<table cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td>
+										<div>
+											<table cellspacing="0" cellpadding="0" style="border: 1px solid #CCCCCC; width: 175px;">
+												<tbody>
+													<tr>
+														<td class="item-text item-label">Name:</td>
+														<td class="item-text item-info tag-name"></td>
+													</tr>
+													<tr>
+														<td class="item-text item-label">Color:</td>
+														<td class="item-text item-info tag-color">
+															<div class="colorBox"></div>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="tag-group-info-right">
+				<div class="tag-group-info-title">Tag Group Information</div>
+				<table cellspacing="0" cellpadding="0">
+					<tbody>
+						<tr>
+							<td style="display: none;"><span class="tag-group-info-id"></span></td>
+							<td><span>Name:</span></td>
+							<td><span class="tag-group-info-name"></span><input type="text" style="display: none; width: 280px;" class="tag-group-info-name-edit" /></td>
+							<td><span class="edit-button tag-group-info-name-edit-button ui-icon ui-icon-pencil"></span></td>
+						</tr>
+						<tr>
+							<td><span>User:</span></td>
+							<td><span class="tag-group-info-user"></span></td>
+						</tr>
+						<tr>
+							<td><span>Last Modified:</span></td>
+							<td><span class="tag-group-info-last-modified"></span></td>
+						</tr>
+						<tr>
+							<td><span>Date Created:</span></td>
+							<td><span class="tag-group-info-date-created"></span></td>
+						</tr>
+						<tr>
+							<td><span>Published?</span></td>
+							<td>
+								<div class="tag-group-info-published tag-group-info-public">
+									<img src="{{ STATIC_URL }}images/success.png"></img><span >Public</span>
+								</div>
+								<div class="tag-group-info-published tag-group-info-private">
+									<img src="{{ STATIC_URL }}images/failure.png"></img><span>Private</span>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="tag-group-info-buttons">
+				<button class="tagging-button delete">Delete</button>
+				<button class="tagging-button save">Save</button>
+				<button class="tagging-button publish">Publish</button>
+			</div>
+		</div>
 	</div>
 </body>
 <script type="text/javascript">
@@ -166,13 +290,141 @@
 	};
 </script>
 <script type="text/javascript">
+	function fillTagGroupDisplay(data, tagGroupInfo) {
+		tagGroupInfo.find('.tag-group-info-id').text(data.id);
+		tagGroupInfo.find('.tag-group-info-name').text(data.name);
+		tagGroupInfo.find('.tag-group-info-user').text(data.user);
+		tagGroupInfo.find('.tag-group-info-last-modified').text(data.lastModified);
+		tagGroupInfo.find('.tag-group-info-date-created').text(data.dateCreated);
+	}
+
+	function createTagGroupDisplay(data, image) {
+		// fill the tagGroup Info clone with this tag groups information
+		var tagGroupInfo = $('#tag-group-info-master').clone().attr('id', '').addClass('tag-group-info-clone');
+		fillTagGroupDisplay(data, tagGroupInfo);
+	
+		// add the image and scale it accordingly
+		var $img = tagGroupInfo.find('.tag-group-info-image').attr('src', (image.attr('src')));
+	
+		$img.load(function() {
+			var $parent = $img.parent();
+			var imgRatio = $img.width()/$img.height();
+			var containerRatio = $parent.width()/$parent.height();
+			if (imgRatio > containerRatio) {
+				$img.css('width', $parent.width());
+				var topVal = ($parent.height() - $img.height())/2;
+				$img.css('top', topVal);
+			}
+			else if (imgRatio <= containerRatio) {
+				$img.css('height', $parent.height());
+				var leftVal = ($parent.width() - $img.width())/2;
+				$img.css('left', leftVal);
+			}
+		});
+	
+		// show to the user
+		$('#work-area').html(tagGroupInfo.show());   
+	
+		// figure out if data is private and set publishing
+		var permissions = '.tag-group-info-' + (data.isPrivate ? 'public' : 'private');
+		tagGroupInfo.find(permissions).hide();
+		if (!data.isPrivate) {
+			tagGroupInfo.find('.publish').hide();
+		}
+	
+		// edit button for tag group name
+		tagGroupInfo.find('.tag-group-info-name-edit-button').on('click', function() {
+			var name = tagGroupInfo.find('.tag-group-info-name').hide().text();
+			tagGroupInfo.find('.tag-group-info-name-edit').show().val(name);
+		});
+	
+		// show the tags to the user for this tag group
+		var tagsInfo = tagGroupInfo.find('.tag-group-info-tags');
+		
+		if (data.tags.length > 0) {
+			
+		}
+		else {
+			tagsInfo.html($('<div>', {
+				'class' : 'tag-group-info-empty item-text',
+				'text' : 'Sorry, this tag group has no tags.'
+			}));
+		}
+	
+		// save the changes to tag group if there are any
+		tagGroupInfo.find('button.save').on('click', function() {
+			var edited = tagGroupInfo.find('.tag-group-info-name-edit');
+			var old = tagGroupInfo.find('.tag-group-info-name');
+			if (!edited.is(':hidden') && old.text() != edited.val()) {
+				$.ajax({
+					url: '{{ SITE_URL }}api/tagGroups',
+	                type: 'PUT',
+	                data: { 
+		            	id: tagGroupInfo.find('.tag-group-info-id').text(),
+		            	name: edited.val()
+		            },
+		            dataType: 'json',
+	                context: document.body,
+	                success: function(data) {
+						fillTagGroupDisplay(data, tagGroupInfo);
+						$('#' + data.id + '-tag-group').find('.item-info').text(data.name); 
+	                },
+	                error: function(jqXHR, textStatus, errorThrown) {
+	    				var errorMessage = $.parseJSON(jqXHR.responseText).message;
+	    				alert(errorMessage);
+	    			}
+				});
+			}
+		});
+
+		// delete the tag group
+		tagGroupInfo.find('button.delete').on('click', function() {
+			var dialog = new AreYouSureDialog();
+			dialog.setMessage('Are you sure you want to delete this tag group? It will delete all of its tags and gene links');
+			dialog.setTitle('Delete Tag Group');
+			dialog.open(function() {
+				alert("Yes!");
+			});
+		});
+	};
+
 	$(document).ready(function() {
 		// allows each of the toolbars to be collapsible
 		$('.toolbar-header').collapser({
 			selector: '.toolbar-body',
-			siblings: true
+			siblings: true, 
+			callback: function(collapsing, element) {
+				if (!collapsing) {
+					$('.toolbar-header').not(element).collapser('collapse');
+				}
+			}
 		});
-	
+
+		$('.toolbar-header').collapser('collapse');
+
+		$('#minMaxNav').on('click', function() {
+			if ($(this).hasClass('max')) {
+				if (!$(this).data('toolbarWidth')) {
+					$(this).data('toolbarWidth', $('#left-toolbar').width());
+					$(this).data('workAreaWidth', $('#center-work-area').css('width'));
+				}
+				$(this).removeClass('max').addClass('min');
+				$('.workbench-toolbar-container').hide();
+				$(this).siblings().hide();
+				$('#left-toolbar').width(0);
+				$('#center-work-area').css('width', 'calc(100% - 62px)');
+				$(this).children('img').attr('src', '{{ STATIC_URL }}images/minimizeRight.png');
+			}
+			else {
+				$(this).removeClass('min').addClass('max');
+				$('.workbench-toolbar-container').show();
+				$(this).siblings().show();
+				$('#left-toolbar').css('width', $(this).data('toolbarWidth'));
+				$('#center-work-area').css('width', $(this).data('workAreaWidth'));
+				$(this).children('img').attr('src', '{{ STATIC_URL }}images/minimizeLeft.png');
+			}
+		});
+		
 		// centers all of the images in there containers so that they fit correctly
 		$('.scaled-image').load(function() {
 			var $img = $(this);
@@ -207,7 +459,7 @@
 		// calls the getTags web service for this image in order to
 		// get the tags for the picture and stores them in cache so
 		// that only a ping is needed for the next time
-		$('.scaled-image').on('click', function() {		
+		$('.taggable-image').on('click', function() {		
 			var $imgClone = $(this).clone();
 			$imgClone.attr('id', 'current-editing');
 			$imgClone.attr('class', '');
@@ -235,6 +487,19 @@
 				        alreadyLoaded: true,
 				        genomicInfo: $workArea.find('.info-container')
 					});
+
+					$imgClone.taggable('menu', {
+						section : 'tagGroups',
+						item : 'editTagGroup',
+						click : function() {
+							$('#work-area').children().hide();
+							//var tagGroup = this.
+							
+							var tagGroupInfo = $('#tag-group-info-master').clone();
+							tagGroupInfo.find('.tag-group-info-name').text(name);
+							tagGroupInfo.appendTo($('#work-area')).show();
+						}
+					});
 				});
 			});
 		});
@@ -261,10 +526,31 @@
 	                    $img.parent().remove();
 	                    alert("Success!");
 	                },
-	                error: function() {
-						alert("Error");
-	                }
+	                error: function(jqXHR, textStatus, errorThrown) {
+	    				var errorMessage = $.parseJSON(jqXHR.responseText).message;
+	    				alert(errorMessage);
+	    			}
 	            });
+			});
+		});
+
+		// handle clicking of tag group item
+		$('.tag-group-item').on('click', function() {
+			var image = $(this).find('.scaled-image');
+			
+			$.ajax({
+				url: '{{ SITE_URL }}api/aggregate/tagGroups',
+                type: 'GET',
+                data: { id: image.attr('name') },
+                dataType: 'json',
+                context: document.body,
+                success: function(data) {
+                    createTagGroupDisplay(data, image);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+    				var errorMessage = $.parseJSON(jqXHR.responseText).message;
+    				alert(errorMessage);
+    			}
 			});
 		});
 	
@@ -303,6 +589,25 @@
 			}
 			else {
 				$('.private-tag').parent().show('slow');
+			}
+		});
+
+		// check boxes should limit the field of my tag groups to public and private
+		$('#public-tag-groups').on('click', function() {
+			if (!$(this).is(':checked')) {
+				$('.public-tag-group').parent().hide('slow');
+			}
+			else {
+				$('.public-tag-group').parent().show('slow');
+			}
+		});
+	
+		$('#private-tags').on('click', function() {
+			if (!$(this).is(':checked')) {
+				$('.private-tag-group').parent().hide('slow');
+			}
+			else {
+				$('.private-tag-group').parent().show('slow');
 			}
 		});
 	});

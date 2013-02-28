@@ -6,7 +6,7 @@
 '''
 from renderEngine.PageletBase import PageletBase
 
-class ImageManagerPagelet(PageletBase):
+class ImageUploaderPagelet(PageletBase):
     '''
         Renders the user workbench for the website        
     

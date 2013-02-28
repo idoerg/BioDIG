@@ -28,6 +28,9 @@
 						$element = $(options.selector);
 					}
 					$element.show();
+					
+					$(this).data('collapseEl', $element);
+					
 					$(this).on('click', function() {
 						if ($(this).data('collapsed')) {
 							$(this).data('collapsed', false);
@@ -36,6 +39,10 @@
 							if ($collapseImg.length > 0) {
 								var prevSrc = $collapseImg.attr('src');
 								$collapseImg.attr('src', prevSrc.replace('arrow_right', 'arrow_down'));
+							}
+							
+							if (options.callback) {
+								options.callback(false, $(this));
 							}
 						}
 						else {
@@ -46,6 +53,10 @@
 								var prevSrc = $collapseImg.attr('src');
 								$collapseImg.attr('src', prevSrc.replace('arrow_down', 'arrow_right'));
 							}
+							
+							if (options.callback) {
+								options.callback(true, $(this));
+							}
 						}
 					});
 					
@@ -55,6 +66,34 @@
 				}
 				else {
 					console.error('No element specified for collapser');
+				}
+			});
+		},
+		collapse : function() {
+			this.each(function() {
+				var $element = $(this).data('collapseEl');
+				if ($element) {
+					$(this).data('collapsed', true);
+					$element.slideUp();
+					var $collapseImg = $(this).find('img.collapse');
+					if ($collapseImg.length > 0) {
+						var prevSrc = $collapseImg.attr('src');
+						$collapseImg.attr('src', prevSrc.replace('arrow_down', 'arrow_right'));
+					}
+				}
+			});
+		},
+		open : function() {
+			this.each(function() {
+				var $element = $(this).data('collapseEl');
+				if ($element) {
+					$(this).data('collapsed', false);
+					$element.slideDown();
+					var $collapseImg = $(this).find('img.collapse');
+					if ($collapseImg.length > 0) {
+						var prevSrc = $collapseImg.attr('src');
+						$collapseImg.attr('src', prevSrc.replace('arrow_right', 'arrow_down'));
+					}
 				}
 			});
 		}

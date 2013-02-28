@@ -1,20 +1,24 @@
 import taxon_home.views.util.Util as Util
+import taxon_home.views.util.ErrorConstants as Errors
 from get import GetAPI
 
-def getAggregateTagGroups(request):
-    # the key for lookup and the image it is attached to
-    imageKey = request.GET.get('imageId', None)
-    offset = Util.getInt(request.GET, 'offset', 0)
-    limit = Util.getInt(request.GET, 'limit', 10)
-
-    unlimited = request.GET.get('unlimited', False)
+'''
+    Gets the information for a tag given its key
+    
+    @param request: Django Request object to be used to parse the query
+'''
+def getTagGroup(request):
+    # read in crucial parameters
+    tagGroupKey = request.GET.get('id', None)
+    
+    # read in optional parameters and initialize the API
     fields = Util.getDelimitedList(request.GET, 'fields')
+    getAPI = GetAPI(request.user, fields)
+
+    if not tagGroupKey:
+        raise Errors.NO_TAG_GROUP_KEY
     
-    getAPI = GetAPI(limit, offset, request.user, fields, unlimited)
-    
-    if imageKey:
-        return getAPI.getAggregateTagGroupsByImage(imageKey)
-    else:
-        return getAPI.getAggregateTagGroups()
+    # the key for lookup and the image it is attached to
+    return getAPI.getTagGroup(tagGroupKey)
     
     

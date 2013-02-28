@@ -129,8 +129,8 @@ div#picture_buttons {
 	margin: 0 auto 10px;
 	position: relative;
 	text-align: center;
-	height: 75px;
-border-bottom: 1px solid #CCCCCC;
+	height: 90px;
+	border-bottom: 1px solid #CCCCCC;
 }
 
 form#search {
@@ -145,8 +145,8 @@ form#search {
 	background-image: url({{ STATIC_URL }}images/search.png);
 	background-repeat: no-repeat;
 	background-position: 50%;
-	height: 22px;
-	width: 35px;
+	height: 29px;
+    width: 42px;
 }	
 
 .search_button:hover {

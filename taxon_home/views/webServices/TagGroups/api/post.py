@@ -51,6 +51,7 @@ class PostAPI:
         metadata.put('dateCreated', tagGroup.dateCreated.strftime("%Y-%m-%d %H:%M:%S"))
         metadata.put('lastModified', tagGroup.lastModified.strftime("%Y-%m-%d %H:%M:%S"))
         metadata.put('imageId', tagGroup.picture.pk)
+        metadata.put('isPrivate', tagGroup.isPrivate)
         
         return metadata
         
