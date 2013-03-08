@@ -50,9 +50,11 @@ class GetAPI:
         # put in the information we care about
         metadata.put('organisms', organisms)
         metadata.put('description', image.description)
+        metadata.put('altText', image.altText)
         metadata.put('uploadedBy', image.user.username)
         metadata.put('uploadDate', image.uploadDate.strftime("%Y-%m-%d %H:%M:%S"))
         metadata.put('url', image.imageName.url)
+        metadata.put('thumbnail', image.thumbnail.url)
         metadata.put('id', image.pk)
         
         # add to recently viewed images if there is a user

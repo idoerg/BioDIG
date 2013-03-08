@@ -25,7 +25,7 @@ class DeleteAPI:
         metadata = WebServiceObject()
         
         try:
-            if (isKey):
+            if isKey:
                 image = Picture.objects.get(pk__exact=imageKey) 
             else:
                 image = imageKey
@@ -56,9 +56,11 @@ class DeleteAPI:
         # put in the information we care about
         metadata.put('organisms', organisms)
         metadata.put('description', image.description)
+        metadata.put('altText', image.altText)
         metadata.put('uploadedBy', image.user.username)
         metadata.put('uploadDate', image.uploadDate.strftime("%Y-%m-%d %H:%M:%S"))
         metadata.put('url', image.imageName.url)
+        metadata.put('thumbnail', image.thumbnail.url)
         metadata.put('id', image.pk)
         
         try:

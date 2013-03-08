@@ -3,6 +3,7 @@ import taxon_home.views.util.ErrorConstants as Errors
 import taxon_home.views.util.Util as Util
 from get import GetAPI
 from put import PutAPI
+from post import PostAPI
 from delete import DeleteAPI
 
 def getImageMetadata(request):
@@ -21,6 +22,24 @@ def getImageMetadata(request):
     
     return renderObj
 
+def createImageMetadata(request):
+    renderObj = WebServiceObject()
+    
+    # these should overwrite current metadata
+    image = request.FILES.get('image', None)
+    description = request.POST.get('description', None)
+    altText = request.POST.get('altText', None)
+    organisms = Util.getDelimitedList(request.POST, 'organisms')
+    fields = Util.getDelimitedList(request.POST, 'fields')
+    
+    if image:
+        postAPI = PostAPI(request.user, fields)
+        renderObj = postAPI.createImageMetadata(image, description, altText, organisms)
+    else:
+        raise Errors.MISSING_PARAMETER.setCustom('image')
+    
+    return renderObj
+
 def editImageMetadata(request):
     renderObj = WebServiceObject()
     
@@ -31,12 +50,13 @@ def editImageMetadata(request):
     
     # these should overwrite current metadata
     description = request.PUT.get('description', None)
+    altText = request.POST.get('altText', None)
     organisms = Util.getDelimitedList(request.PUT, 'organisms')
-    fields = Util.getDelimitedList(request.GET, 'fields')
+    fields = Util.getDelimitedList(request.PUT, 'fields')
     
     if description or organisms:
         putAPI = PutAPI(request.user, fields)
-        renderObj = putAPI.editImageMetadata(imageKey, description, organisms)
+        renderObj = putAPI.editImageMetadata(imageKey, description, altText, organisms)
     else:
         raise Errors.NOT_MODIFIED
     

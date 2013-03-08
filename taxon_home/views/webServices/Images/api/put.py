@@ -21,12 +21,12 @@ class PutAPI:
         stored in the errorMessage and error fields
     '''
     @transaction.commit_on_success 
-    def editImageMetadata(self, imageKey, description, organisms, isKey=True):
-        organisms = []
+    def editImageMetadata(self, imageKey, description, altText, organisms, isKey=True):
+        organismsArr = []
         metadata = WebServiceObject()
         
         try:
-            if (isKey):
+            if isKey:
                 image = Picture.objects.get(pk__exact=imageKey) 
             else:
                 image = imageKey
@@ -35,7 +35,7 @@ class PutAPI:
             raise Errors.INVALID_IMAGE_KEY
         
         if not image.writePermissions(self.user):
-                raise Errors.AUTHENTICATION
+            raise Errors.AUTHENTICATION
 
         defTags = PictureDefinitionTag.objects.filter(picture__exact=image)
         
@@ -51,7 +51,7 @@ class PutAPI:
                 for newTag in newDefTags:
                     newTag.save()
                     if organismField:
-                        organisms.append({
+                        organismsArr.append({
                             'commonName' : newTag.organism.common_name,
                             'abbreviation' : newTag.organism.abbreviation,
                             'genus' : newTag.organism.genus,
@@ -68,25 +68,34 @@ class PutAPI:
             except DatabaseError as e:
                 transaction.rollback()
                 raise Errors.INTEGRITY_ERROR.setCustom(str(e))
-       
-        if (not metadata.isError()):
-            metadata.limitFields(self.fields)
             
-            if not organisms and organismField:
-                for defTag in defTags:
-                    organisms.append({
-                        'commonName' : defTag.organism.common_name,
-                        'abbreviation' : defTag.organism.abbreviation,
-                        'genus' : defTag.organism.genus,
-                        'species' : defTag.organism.species,
-                        'id' : defTag.organism.pk
-                    })
-            # put in the information we care about
-            metadata.put('organisms', organisms)
-            metadata.put('description', image.description)
-            metadata.put('uploadedBy', image.user.username)
-            metadata.put('uploadDate', image.uploadDate.strftime("%Y-%m-%d %H:%M:%S"))
-            metadata.put('url', image.imageName.url)
-            metadata.put('id', image.pk)
+        if altText:
+            image.altText = altText
+            try:
+                image.save()
+            except DatabaseError as e:
+                transaction.rollback()
+                raise Errors.INTEGRITY_ERROR.setCustom(str(e))
+       
+        metadata.limitFields(self.fields)
+        
+        if not organisms and organismField:
+            for defTag in defTags:
+                organisms.append({
+                    'commonName' : defTag.organism.common_name,
+                    'abbreviation' : defTag.organism.abbreviation,
+                    'genus' : defTag.organism.genus,
+                    'species' : defTag.organism.species,
+                    'id' : defTag.organism.pk
+                })
+        # put in the information we care about
+        metadata.put('organisms', organismsArr)
+        metadata.put('description', image.description)
+        metadata.put('altText', image.altText)
+        metadata.put('uploadedBy', image.user.username)
+        metadata.put('uploadDate', image.uploadDate.strftime("%Y-%m-%d %H:%M:%S"))
+        metadata.put('url', image.imageName.url)
+        metadata.put('thumbnail', image.thumbnail.url)
+        metadata.put('id', image.pk)
         
         return metadata

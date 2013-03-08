@@ -13,6 +13,8 @@
 
 #center-work-area {
 	width: calc(100% - 300px);
+	width: -webkit-calc(100% - 300px);
+	width: -moz-calc(100% - 300px);
 	display: inline-table;
 	white-space: normal;
 }

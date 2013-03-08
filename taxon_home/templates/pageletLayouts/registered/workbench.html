@@ -412,7 +412,9 @@
 				$('.workbench-toolbar-container').hide();
 				$(this).siblings().hide();
 				$('#left-toolbar').width(0);
-				$('#center-work-area').css('width', 'calc(100% - 62px)');
+				$('#center-work-area').css('width', 'calc(100% - 62px)')
+					.css('width', '-moz-calc(100% - 62px)')
+					.css('width', '-webkit-calc(100% - 62px)');
 				$(this).children('img').attr('src', '{{ STATIC_URL }}images/minimizeRight.png');
 			}
 			else {

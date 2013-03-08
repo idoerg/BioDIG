@@ -39,7 +39,7 @@ def handleUpload(file):
     thumbfile = open(os.path.join('/tmp',filename), 'r')
     content = File(thumbfile)
 
-    return (UploadedFile(content), filename);
+    return (UploadedFile(content), filename)
 
 @csrf_exempt
 def multiuploader_delete(request, pk):
@@ -71,7 +71,7 @@ def multiuploader(request):
         #getting file data for farther manipulations
         file = request.FILES[u'files[]']
         
-        (wrapped_file, filename) = handleUpload(file);
+        (wrapped_file, filename) = handleUpload(file)
         #filename = wrapped_file.name
         file_size = wrapped_file.file.size
         # log.info ('Got file: "%s"' % str(filename))

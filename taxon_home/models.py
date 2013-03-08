@@ -5,11 +5,15 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
-import os
+
+# Receive the pre_delete signal and delete the file associated with the model instance.
+from django.db.models.signals import pre_delete
+from django.dispatch.dispatcher import receiver
 
 class Picture(models.Model):
     description = models.TextField(blank=True, null=True)
     imageName = models.ImageField(upload_to="pictures/")
+    thumbnail = models.ImageField(upload_to="thumbnails/")
     publication = models.CharField(max_length=50, blank=True, null=True)
     altText = models.TextField(blank=True, null=True)
     user = models.ForeignKey(User)
@@ -18,12 +22,7 @@ class Picture(models.Model):
     
     class Meta:
         db_table = u'picture'
-    
-    def delete(self, *args, **kwargs):
-        path = self.imageName.path
-        super(Picture, self).delete(*args, **kwargs)
-        if (os.path.exists(path)):
-            os.remove(path)
+        
     
     def readPermissions(self, user):       
         # if the image is public then anyone can read it
@@ -62,6 +61,11 @@ class Picture(models.Model):
     
     def __unicode__(self):
         return str(self.imageName.name)
+
+@receiver(pre_delete, sender=Picture)
+def Picture_Delete(sender, instance, **kwargs):
+    instance.imageName.delete(False)
+    instance.thumbnail.delete(False)
     
 class RecentlyViewedPicture(models.Model):
     picture = models.ForeignKey(Picture)
