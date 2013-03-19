@@ -61,7 +61,7 @@
 								<div class="top-right-float" title=".ui-icon-close">                        
 					                <span class="ui-state-default ui-corner-all ui-icon ui-icon-trash delete-image-button"></span> 
 					            </div>
-								<img src="{{ MEDIA_URL }}{{ item.image.imageName }}" name="{{ item.image.pk }}" class="scaled-image {{ item.permissions }}-image my-pictures-image taggable-image" />
+								<img src="{{ MEDIA_URL }}{{ item.image.thumbnail }}" name="{{ item.image.pk }}" class="scaled-image {{ item.permissions }}-image my-pictures-image taggable-image" />
 							</div>
 						{% endfor %}
 						</div>
@@ -78,7 +78,7 @@
 						<div>
 						{% for image in recentImages %}
 							<div class="my-pictures-image-holder">
-								<img src="{{ MEDIA_URL }}{{ image.picture.imageName }}" name="{{ image.picture.pk }}" class="scaled-image recent-pictures-image taggable-image" />
+								<img src="{{ MEDIA_URL }}{{ image.picture.thumbnail }}" name="{{ image.picture.pk }}" class="scaled-image recent-pictures-image taggable-image" />
 							</div>
 						{% endfor %}
 						</div>
@@ -104,7 +104,7 @@
 										<tr>
 											<td style="vertical-align: middle;">
 												<div class="my-tags-image-holder">
-													<img src="{{ MEDIA_URL }}{{ item.tag.group.picture.imageName }}" name="{{ item.tag.pk }}" class="scaled-image"></img>
+													<img src="{{ MEDIA_URL }}{{ item.tag.group.picture.thumbnail }}" name="{{ item.tag.pk }}" class="scaled-image"></img>
 												</div>
 											</td>
 											<td>
@@ -157,7 +157,7 @@
 										<tr>
 											<td style="vertical-align: middle;">
 												<div class="my-tags-image-holder">
-													<img src="{{ MEDIA_URL }}{{ item.tagGroup.picture.imageName }}" name="{{ item.tagGroup.pk }}" class="scaled-image"></img>
+													<img src="{{ MEDIA_URL }}{{ item.tagGroup.picture.thumbnail }}" name="{{ item.tagGroup.pk }}" class="scaled-image"></img>
 												</div>
 											</td>
 											<td style="vertical-align: middle;">
@@ -479,16 +479,17 @@
 					$('<div />', { 'class' : 'zoomable-right' })
 						.append($('<div />', { 'class' : 'info-container' }))
 						.appendTo($workArea);
-					
+
 					$imgClone.taggable({
 				        originalData: tagGroups,
 				        imageMetadata: data,
 				        parent: $workArea,
 				        imagesUrl: '{{ STATIC_URL }}images/',
 				        siteUrl: '{{ SITE_URL }}',
-				        alreadyLoaded: true,
 				        genomicInfo: $workArea.find('.info-container')
 					});
+
+					$imgClone.attr('src', data.url);
 
 					$imgClone.taggable('menu', {
 						section : 'tagGroups',

@@ -2008,5 +2008,5 @@ class PictureDefinitionTag(models.Model):
     class Meta:
         db_table = u'picturedefinitiontag'
     def __unicode__(self):
-        return ", ".join((str(self.picture_id), str(self.name)))
+        return ", ".join((str(self.picture.imageName), str(self.organism.common_name)))
     

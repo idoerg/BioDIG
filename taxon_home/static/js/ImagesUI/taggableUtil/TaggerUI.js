@@ -59,10 +59,6 @@ TaggerUI.prototype.createStructure = function() {
 		'downloadImageData' : downloadImageDataDialog
 	};
 	
-	if ($('#taggable-tooltip').length == 0) {
-		this.parent.parent().append('<div id="taggable-tooltip"></div>');
-	}
-	
 	// creates the tag board and the drawing board
 	var tagBoard = $('<div />', {
 		id      : id + '-tag-board',
