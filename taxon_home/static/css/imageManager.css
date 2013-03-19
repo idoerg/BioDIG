@@ -110,7 +110,7 @@
 }
 
 .cell-container {
-	padding-top: 25px;
+	margin-top: 25px;
 }
 
 .filename-container {
@@ -179,4 +179,15 @@ textarea.altText {
 .loading-holder {
 	position: absolute;
 	padding: 30px;
+}
+
+.close-button {
+	float: right;
+	height: 18px;
+    width: 18px;
+}
+
+.close-button:hover {
+	background-color: #CCC;
+	cursor: pointer;
 }

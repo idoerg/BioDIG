@@ -27,6 +27,7 @@
 
 #container_holder {
     padding-bottom: 30px;
+    min-height: 650px;
 }
 
 #container {

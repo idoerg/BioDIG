@@ -113,10 +113,6 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'BioDIG.urls'
 
-MULTI_IMAGES_FOLDER = 'multiuploader_images/'
-MULTI_IMAGE_URL = '/media/multiuploader_images/'
-MULTI_FILE_DELETE_URL = '/uploader/delete/'
-
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
@@ -135,9 +131,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'taxon_home',
-    'sorl.thumbnail',
-    'multiuploader',
+    'taxon_home'
 )
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True

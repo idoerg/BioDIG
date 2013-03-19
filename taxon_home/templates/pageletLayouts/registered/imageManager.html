@@ -1,6 +1,7 @@
 <head>
     <title>Image Manager</title>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/imageManager.css"></link>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/DialogUI/AreYouSureDialog.js"></script>
 </head>
 <body>
     <div id="header">Image Uploader</div>
@@ -16,9 +17,15 @@
     		<div class="managerButtonContainer">
     			<button id="clearUploads" class="managerButton">Clear Uploads</button>
     		</div>
+    		<div class="managerButtonContainer">
+    			<button id="clearAll" class="managerButton">Clear All</button>
+    		</div>
     	</div>
     	<div id="managerBody">
     		<div id="imageMaster">
+    			<div class="close-button">
+    				<span class="ui-icon ui-icon-closethick"></span>
+    			</div>
     			<div class="row">
 	    			<div class="preview-thumbnail-container cell">
 	    				<img class="preview-thumbnail" src=""></img>
@@ -59,42 +66,45 @@
     	</div>
     </div>
     <script type="text/javascript">
+		var numUploads = 0;
+    	
 	    function uploadFile(form, url, success, error) {
+		    numUploads++;
 	        // Create the iframe...
-	        var iframe = document.createElement("iframe");
-	        iframe.setAttribute("id", "upload_iframe");
-	        iframe.setAttribute("name", "upload_iframe");
-	        iframe.setAttribute("width", "0");
-	        iframe.setAttribute("height", "0");
-	        iframe.setAttribute("border", "0");
-	        iframe.setAttribute("style", "width: 0; height: 0; border: none;");
+	        var iframe = $('<iframe />', {
+	        	"id" : "upload_iframe_" + numUploads,
+	        	"name" : "upload_iframe_" + numUploads,
+	        	"width" : "0",
+	        	"height" : "0",
+	        	"border" : "0",
+	        	"style" : "width: 0; height: 0; border: none;"
+	        });
 	     
 	        // Add to document...
-	        $(iframe).appendTo($('body'));
-	        window.frames['upload_iframe'].name = "upload_iframe";
-	     
-	        iframeId = document.getElementById("upload_iframe");
+	        iframe.appendTo($('body'));
+	        window.frames['upload_iframe_' + numUploads].name = "upload_iframe_" + numUploads
 	     
 	        // Add event...
 	        var eventHandler = function () {
-                if (iframeId.detachEvent) {
-	            	iframeId.detachEvent("onload", eventHandler);
+                if (iframe[0].detachEvent) {
+	            	iframe[0].detachEvent("onload", eventHandler);
                 }
 	            else {
-		            iframeId.removeEventListener("load", eventHandler, false);
+		            iframe[0].removeEventListener("load", eventHandler, false);
 	            }
      
                 // Message from server...
-                if (iframeId.contentDocument) {
-                    content = iframeId.contentDocument.body.innerHTML;
+                if (iframe[0].contentDocument) {
+                    content = iframe[0].contentDocument.body.innerHTML;
                 } 
-                else if (iframeId.contentWindow) {
-                    content = iframeId.contentWindow.document.body.innerHTML;
+                else if (iframe[0].contentWindow) {
+                    content = iframe[0].contentWindow.document.body.innerHTML;
                 } 
-                else if (iframeId.document) {
-                    content = iframeId.document.body.innerHTML;
+                else if (iframe[0].document) {
+                    content = iframe[0].document.body.innerHTML;
                 }
 
+				console.log(content);
                 content = JSON.parse(content);
 				if (content.hasOwnProperty('status')) {
 					error(content);
@@ -104,19 +114,19 @@
 				}				
      
                 // Del the iframe...
-                setTimeout('iframeId.parentNode.removeChild(iframeId)', 250);
+                setTimeout(function() { iframe.remove(); }, 250);
             }
 	     
-	        if (iframeId.addEventListener) {
-		        iframeId.addEventListener("load", eventHandler, true);
+	        if (iframe[0].addEventListener) {
+		        iframe[0].addEventListener("load", eventHandler, true);
 	        }
 	        
-	        if (iframeId.attachEvent) {
-		        iframeId.attachEvent("onload", eventHandler);
+	        if (iframe[0].attachEvent) {
+		        iframe[0].attachEvent("onload", eventHandler);
 	        }
 	     	
 	        // Set properties of form...
-	        form.setAttribute("target", "upload_iframe");
+	        form.setAttribute("target", "upload_iframe_" + numUploads);
 	        form.setAttribute("action", url);
 	        form.setAttribute("method", "post");
 	        form.setAttribute("enctype", "multipart/form-data");
@@ -135,6 +145,26 @@
 			}
     	}, '#addImages');
 
+		$('#clearUploads').on('click', function() {
+			$('#managerBody .imageClone').each(function() {
+				if ($(this).find('.upload').parent().hasClass('disabled-cell-container')) {
+					$(this).remove();
+				}
+			});
+		});
+
+		$('#clearAll').on('click', function() {
+			$('#managerBody .imageClone').remove();
+		});
+
+		$('#startUploads').on('click', function() {
+			$('#managerBody .imageClone').each(function() {
+				if ($(this).find('.delete').parent().hasClass('disabled-cell-container')) {
+					$(this).find('.upload').trigger('click');
+				}
+			});
+		});
+    	
     	$(document).on('change', '#addImages', function() {
     		if ($(this)[0].files) {
         		var managerBody = $('#managerBody');
@@ -190,6 +220,10 @@
 					var form = $('<form />').appendTo(clone.find('.uploadForm').empty());
 					fileInputClone.insertAfter($(this));
 					form.append($(this).attr('id', '').attr('name', 'image'));
+
+					clone.find('.close-button').on('click', function() {
+						clone.slideUp('slow', function() { clone.remove(); });
+					});
 					
 					clone.find('.upload').on('click', function() {
 						var uploadButton = $(this);
@@ -205,18 +239,41 @@
 
 						var loading = clone.find('.loading').show();
 						
-						uploadFile(form[0], "{{ SITE_URL }}api/images", 
+						uploadFile(form[0], "{{ SITE_URL }}api/images",
 							function(data) {
 								loading.hide();
 								uploadButton.attr('disabled', true).parent().addClass('disabled-cell-container');
 								deleteButton.attr('disabled', false).parent().removeClass('disabled-cell-container');
+
+								deleteButton.on('click', function() {
+									var youSure = new AreYouSureDialog();
+									youSure.setTitle('Delete Image');
+									youSure.setMessage('Are you sure you want to delete this image?');
+									youSure.open(function() {
+										$.ajax({
+							                url: '{{ SITE_URL }}api/images',
+							                type: 'DELETE',
+							                data: { id: data.id },
+							                context: document.body,
+							                success: function(data){
+							                	clone.slideUp('slow', function() { clone.remove(); });
+							                },
+							                error: function(jqXHR, textStatus, errorThrown) {
+							    				var errorMessage = $.parseJSON(jqXHR.responseText).message;
+							    				alert(errorMessage);
+							    			}
+							            });
+									});
+								});
+
 								var newName = data.url.split("/");
 								newName = newName[newName.length - 1] + " (" + filenameEl.text() + ")";
 								filenameEl.attr('title', newName);
 								filenameEl.text(newName);
 							},
-							function(error) {
-								alert(error.message);
+							function(jqXHR, textStatus, errorThrown) {
+								var errorMessage = $.parseJSON(jqXHR.responseText).message;
+			    				alert(errorMessage);
 							}
 						);
 					});
@@ -226,6 +283,7 @@
 	    	        reader.readAsDataURL(file);
 				}
 			}
+			
     		$('#addImagesOverlay').removeClass('managerButtonHover');
     	});
     </script>

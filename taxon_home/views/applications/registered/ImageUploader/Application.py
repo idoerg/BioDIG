@@ -7,7 +7,8 @@
 '''
 from renderEngine.RegisteredApplicationBase import RegisteredApplicationBase
 from taxon_home.views.pagelets.registered.NavBarPagelet import NavBarPagelet
-from taxon_home.views.pagelets.registered.ImageUploaderPagelet import ImageUploaderPagelet 
+from taxon_home.views.pagelets.registered.ImageUploaderPagelet import ImageUploaderPagelet
+from taxon_home.views.pagelets.public.FooterPagelet import FooterPagelet
 
 class Application(RegisteredApplicationBase):
 	def doProcessRender(self, request):
@@ -18,6 +19,7 @@ class Application(RegisteredApplicationBase):
 		self.setApplicationLayout('registered/base.html', args)
 		self.addPageletBinding('navBar', NavBarPagelet())
 		self.addPageletBinding('center-1', ImageUploaderPagelet())
+		self.addPageletBinding('footer', FooterPagelet())
 
 '''
 	Used for mapping to the url in urls.py
