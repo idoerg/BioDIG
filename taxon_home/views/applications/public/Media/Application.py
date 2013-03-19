@@ -18,6 +18,10 @@ def renderAction(request, *args, **kwargs):
 	authorized = False
 	query = request.path_info.split('media/')[1]
 	filename = os.path.join(settings.MEDIA_ROOT, query)
+	# check for thumbnail
+	thumbnailCheck = query.split('thumbnails/')
+	if len(thumbnailCheck) > 1:
+		query = os.path.join('pictures', thumbnailCheck[1])
 	if request.user and request.user.is_authenticated():
 		if request.user.is_staff:
 			authorized = True
