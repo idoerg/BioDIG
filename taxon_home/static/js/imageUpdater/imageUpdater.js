@@ -130,7 +130,7 @@
 
 	        var $pictureDiv = $('<div>');
 	        var $href = $('<a>').attr('href', settings.siteUrl + 'images/editor?imageId=' + picture.id);
-	        $href.append($('<img>').attr('src', picture.url).width(180).height(130));
+	        $href.append($('<img>').attr('src', settings.useActualImages ? picture.url :  picture.thumbnail).width(180).height(130));
 	                        
 	        var $descriptionDiv = $('<div class="description"><span>' + picture.description + '</span></div>');
 				
@@ -152,7 +152,8 @@
 					'limit' : 15,
 					'currentPage' : 1,
 					'totalImages' : 0,
-					'imagesPerRow' : 5
+					'imagesPerRow' : 5,
+					'useActualImages' : false
 				}, options);
 				
 				$(this).data('settings', settings);
