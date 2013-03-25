@@ -70,7 +70,7 @@ TagBoard.prototype.getSelectedTags = function() {
 
 TagBoard.prototype.addTag = function(color, points, description, tagGroupKey, callback, errorCallback) {
 	var group = this.tagGroups[tagGroupKey];
-	var tag = new Tag(null, color, points, description, [], this.image.attr('id'), this.siteUrl, group);
+	var tag = new Tag(null, color, points, description, [], this.imageMetadata.id, this.siteUrl, group);
 	
 	// saves the tag and then adds the 
 	tag.save(
@@ -90,7 +90,7 @@ TagBoard.prototype.addTag = function(color, points, description, tagGroupKey, ca
 
 TagBoard.prototype.redraw = function() {
 	this.locked =  false;
-	var id = this.image.attr('id');
+	var id = this.imageMetadata.id;
 	
 	// check to see if a stage has been initialized
 	if (!this.stage) {
@@ -344,7 +344,7 @@ TagBoard.prototype.__convertOriginalDataToTagGroups = function(originalData) {
 	var tagGroups = {};
 	
 	for (group in originalData) {
-		var newGroup = new TagGroup(originalData[group], this.image.attr('id'), this.siteUrl);
+		var newGroup = new TagGroup(originalData[group], this.imageMetadata.id, this.siteUrl);
 		var self = this;
 		tagGroups[newGroup.getId()] = newGroup;
 	}
@@ -381,12 +381,12 @@ TagBoard.prototype.addNewTagGroup = function(name, callback, errorCallback) {
 		type: 'POST',
 		dataType: 'json',
 		data: {
-			imageId: self.image.attr('id'),
+			imageId: self.imageMetadata.id,
 			name: name
 		},
 		success: function(data, textStatus, jqXHR) {			
 			// add a new tag group
-			var newTagGroup = new TagGroup(data, self.image.attr('id'), self.siteUrl);
+			var newTagGroup = new TagGroup(data, self.imageMetadata.id, self.siteUrl);
 			self.tagGroups[newTagGroup.getId()] = newTagGroup;
 			self.addToCurrentTagGroups(newTagGroup);
 			if (callback) {

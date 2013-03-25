@@ -38,8 +38,8 @@ class GetAPI:
                 
         # initialize tagging APIs
         tagGroupAPI = TagGroupAPI(self.limit, self.offset, self.user, self.fields, self.unlimited)
-        tagAPI = TagAPI(unlimited=True)
-        geneLinkAPI = GeneLinkAPI(unlimited=True)
+        tagAPI = TagAPI(user=self.user, unlimited=True)
+        geneLinkAPI = GeneLinkAPI(user=self.user, unlimited=True)
         
         tagGroups = tagGroupAPI.getTagGroupsByImage(image, False).getObject()
         
@@ -65,8 +65,8 @@ class GetAPI:
                 
         # initialize tagging APIs
         tagGroupAPI = TagGroupAPI(self.limit, self.offset, self.user, self.fields, self.unlimited)
-        tagAPI = TagAPI(unlimited=True)
-        geneLinkAPI = GeneLinkAPI(unlimited=True)
+        tagAPI = TagAPI(user=self.user, unlimited=True)
+        geneLinkAPI = GeneLinkAPI(user=self.user, unlimited=True)
         
         tagGroups = tagGroupAPI.getTagGroups().getObject()
         

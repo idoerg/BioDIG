@@ -31,6 +31,5 @@ def getInt(queryDict, key, default):
 def getDelimitedList(queryDict, key, delimiter=','):
     value = queryDict.get(key, None)
     if value:
-        value = "".join(value.split())
-        value = value.split(',')
+        value = [item.strip() for item in value.split(delimiter)]
     return value

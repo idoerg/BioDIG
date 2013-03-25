@@ -27,14 +27,14 @@ function TaggerUI(image, parent, originalData, imageMetadata, genomicInfo, image
 	$(this.image).zoomable({
 		callback: Util.scopeCallback(this, this.createStructure),
 		zoom_callback: Util.scopeCallback(this, this.resizeCanvas),
-		zoom_callback_args: [$(this.image).attr('id')],
+		zoom_callback_args: [this.imageMetadata.id],
 		alreadyLoaded: this.alreadyLoaded
 	});
 };
 
 TaggerUI.prototype.createStructure = function() {	
 	// create the toolbar
-	var id = this.image.attr('id');
+	var id = this.imageMetadata.id;
 	
 	this.menu = this.getToolbar(id);
 	this.taggingMenu = this.getTaggingMenu(id);
@@ -49,6 +49,7 @@ TaggerUI.prototype.createStructure = function() {
 	var newTagGroupDialog = new NewTagGroupDialog(pageBlock);
 	var newGeneLinkDialog = new NewGeneLinkDialog(pageBlock, this.imageMetadata.organisms, this.siteUrl);
 	var changeCurrentTagGroupsDialog = new ChangeCurrentTagGroupsDialog(pageBlock);
+	var addOrganismDialog = new AddOrganismDialog(pageBlock);
 	var downloadImageDataDialog = new DownloadImageDataDialog(pageBlock, this.image, this.imagesUrl);
 	
 	var dialogs = {
@@ -86,6 +87,10 @@ TaggerUI.prototype.createStructure = function() {
 	}
 	
 	var self = this;
+	
+	this.menu.getSection('organisms').getMenuItem('addOrganism').onClick(function() {
+		addOrganismDialog.show(self.imageMetadata.id);
+	});
 	
 	// events for clicking the start and stop drawing buttons
 	this.menu.getSection('tags').getMenuItem('addNewTag').onClick(function() {
@@ -248,7 +253,7 @@ TaggerUI.prototype.getTaggingMenu = function(id) {
  * to the current tag
 **/
 TaggerUI.prototype.__renderGeneLinksMenu = function() {
-	var id = this.image.attr('id');
+	var id = this.imageMetadata.id;
 	
 	// adds the title to the Gene Links Menu
 	var genomicInfoTitle = $('<div />', {

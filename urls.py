@@ -35,7 +35,8 @@ urlpatterns += patterns('taxon_home.views.webServices',
     url(r'^api/tagGroups/search$', 'SearchTagGroups.Application.renderAction'),
     url(r'^api/aggregate/tagGroups$', 'AggregateTagGroups.Application.renderAction'),
     url(r'^api/aggregate/tagGroups/search$', 'AggregateTagGroupsSearch.Application.renderAction'),
-    url(r'^api/images/search$', 'SearchImages.Application.renderAction')
+    url(r'^api/images/search$', 'SearchImages.Application.renderAction'),
+    url(r'^api/organisms/search$', 'SearchOrganisms.Application.renderAction')
 )
 
 urlpatterns += patterns('taxon_home.views.applications.registered',

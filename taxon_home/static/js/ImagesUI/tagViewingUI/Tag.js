@@ -63,7 +63,7 @@ Tag.prototype.save = function(callback, errorCallback) {
 		data : {
 			color : JSON.stringify(this.color),
 			points : JSON.stringify(this.points),
-			description : this.description,
+			name : this.description,
 			tagGroupId : this.tagGroup.getId()
 		},
 		dataType : 'json',

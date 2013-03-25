@@ -14,13 +14,13 @@ import taxon_home.views.util.ErrorConstants as Errors
 class Application(WebServiceApplicationBase):
 	def doProcessRender(self, request):
 		renderObj = WebServiceObject()
-		if request.REQUEST.has_key('imageKey'):
-			# the key for lookup and the image it is attached to
-			imageKey = request.REQUEST['imageKey']
-			renderObj = API.getImageMetadata(imageKey, request.user)				
-		else:
-			renderObj.error(Errors.NO_IMAGE_KEY)
-		
+		try:
+			if (request.method == "GET"):
+				renderObj = API.getOrganisms(request)
+			else:
+				renderObj.setError(Errors.INVALID_METHOD.setCustom(request.method))
+		except Errors.WebServiceException as e:
+			renderObj.setError(e)
 
 		self.setJsonObject(renderObj.getObject())
 		self.setStatus(renderObj.getCode())

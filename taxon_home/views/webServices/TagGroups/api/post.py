@@ -29,7 +29,7 @@ class PostAPI:
             else:
                 image = imageKey
         except (ObjectDoesNotExist, ValueError):
-            raise Errors.INVALID_TAG_GROUP_KEY
+            raise Errors.INVALID_IMAGE_KEY
         
         if not image.writePermissions(self.user):
             raise Errors.AUTHENTICATION

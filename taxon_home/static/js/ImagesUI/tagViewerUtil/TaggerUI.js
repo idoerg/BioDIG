@@ -27,14 +27,14 @@ function TaggerUI(image, parent, originalData, imageMetadata, genomicInfo, image
 	$(this.image).zoomable({
 		callback: Util.scopeCallback(this, this.createStructure),
 		zoom_callback: Util.scopeCallback(this, this.resizeCanvas),
-		zoom_callback_args: [$(this.image).attr('id')],
+		zoom_callback_args: [this.imageMetadata.id],
 		alreadyLoaded: this.alreadyLoaded
 	});
 };
 
 TaggerUI.prototype.createStructure = function() {	
 	// create the toolbar
-	var id = this.image.attr('id');
+	var id = this.imageMetadata.id;
 	
 	this.menu = this.getToolbar(id);
 	
@@ -152,7 +152,7 @@ TaggerUI.prototype.getToolbar = function(id) {
  * to the current tag
 **/
 TaggerUI.prototype.__renderGeneLinksMenu = function() {
-	var id = this.image.attr('id');
+	var id = this.imageMetadata.id;
 	
 	// adds the title to the Gene Links Menu
 	var genomicInfoTitle = $('<div />', {

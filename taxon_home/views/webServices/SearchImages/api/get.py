@@ -57,6 +57,7 @@ class GetAPI:
                     imageMetadata[tag.organism.pk] = {
                         'images' : [closedSet[tag.picture.pk]],
                         'organism' : {
+                            'id' : tag.organism.pk,
                             'commonName' : tag.organism.common_name,
                             'abbreviation' : tag.organism.abbreviation,
                             'genus' : tag.organism.genus,

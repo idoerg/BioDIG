@@ -132,7 +132,7 @@
 
 	        var $pictureDiv = $('<div>');
 	        var $href = $('<a>').attr('href', settings.siteUrl + 'images/editor?imageId=' + picture.id);
-	        $href.append($('<img>').attr('src', picture.url).width(172).height(130));
+	        $href.append($('<img>').attr('src', settings.useActualImages ? picture.url :  picture.thumbnail).width(172).height(130));
 	                        
 	        var $descriptionDiv = $('<div class="description"><span>' + picture.description + '</span></div>');
 				
@@ -155,7 +155,8 @@
 					'currentPage' : 1,
 					'totalImages' : 0,
 					'imagesPerRow' : 4,
-					'organismId' : -1
+					'organismId' : -1,
+					'useActualImages' : false
 				}, options);
 				
 				$(this).data('settings', settings);
