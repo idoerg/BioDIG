@@ -236,7 +236,8 @@ TagBoard.prototype.boardMouseMove = function(event) {
 				
 				var descriptionRow = $('<tr />');
 				var descriptionLabel = $('<td />', {
-					'text' : 'Description:'
+					'text' : 'Description:',
+					'class' : 'geneLinkLabel'
 				});
 				var description = $('<td />', {
 					'text' : tag.getDescription()
@@ -250,7 +251,8 @@ TagBoard.prototype.boardMouseMove = function(event) {
 					'class' : 'even'
 				});
 				var colorLabel = $('<td />', {
-					'text' : 'Color:'
+					'text' : 'Color:',
+					'class' : 'geneLinkLabel'
 				});
 				var color = $('<td />', {
 					'text' : ''
@@ -273,7 +275,8 @@ TagBoard.prototype.boardMouseMove = function(event) {
 						var geneLink = geneLinks[i];
 						var geneLinkRow = $('<tr />');
 						var geneLinkLabel = $('<td />', {
-							'text' : i == 0 ? 'Gene Links:' : ''
+							'text' : i == 0 ? 'Gene Links:' : '',
+							'class' : 'geneLinkLabel'
 						});
 						var geneLinkCell = $('<td />');
 						

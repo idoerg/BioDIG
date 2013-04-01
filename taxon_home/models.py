@@ -21,8 +21,7 @@ class Picture(models.Model):
     isPrivate = models.BooleanField(default=True)
     
     class Meta:
-        db_table = u'picture'
-        
+        db_table = u'picture'    
     
     def readPermissions(self, user):       
         # if the image is public then anyone can read it
@@ -1953,6 +1952,7 @@ class GeneLink(models.Model):
     isPrivate = models.BooleanField(default=True)
     class Meta:
         db_table = u'genelink'
+        unique_together = ('tag', 'feature')
     
     def readPermissions(self, user):
         # if the tag group is public then anyone can read it

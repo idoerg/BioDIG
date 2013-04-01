@@ -328,3 +328,7 @@ th {
 	overflow-y: auto;
 	height: 450px;
 }
+
+.geneLinkLabel {
+	width: 110px;
+}
