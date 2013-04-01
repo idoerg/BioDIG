@@ -28,6 +28,8 @@
     <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggableUtil/NewGeneLinkDialog.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggableUtil/NewTagGroupDialog.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggableUtil/SaveTagDialog.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggableUtil/AddOrganismDialog.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggableUtil/EditImageDialog.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggableUtil/TaggingMenu.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggableUtil/TaggerUI.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggable.js"></script>
@@ -491,6 +493,7 @@
 
 					$imgClone.attr('src', data.url);
 
+					/*
 					$imgClone.taggable('menu', {
 						section : 'tagGroups',
 						item : 'editTagGroup',
@@ -503,6 +506,7 @@
 							tagGroupInfo.appendTo($('#work-area')).show();
 						}
 					});
+					*/
 				});
 			});
 		});

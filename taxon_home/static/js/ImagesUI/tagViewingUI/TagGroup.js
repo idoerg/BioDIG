@@ -17,7 +17,7 @@ function TagGroup(group, imageKey, siteUrl) {
 			var tag = group.tags[i];
 			var colorArr = tag.color;
 			var tagPoints = tag.points;
-			var description = tag.description;
+			var description = tag.name;
 			var geneLinks = tag.geneLinks;
 			var id = tag.id;
 			this.tags[id] = new Tag(id, colorArr, tagPoints, description, geneLinks, imageKey, siteUrl, this);

@@ -1,4 +1,4 @@
-function AddOrganismDialog(pageBlock) {
+function EditImageDialog(pageBlock) {
 	this.block = pageBlock;
 	this.dialog = $('<div />', {
 		'class' : 'tagging-dialog',
@@ -8,7 +8,7 @@ function AddOrganismDialog(pageBlock) {
 	
 	this.title = $('<div />', {
 		'class' : 'tagging-dialog-title',
-		'text' : 'Add Organisms'
+		'text' : 'Add New Tag Group'
 	});
 	
 	this.closeButton = $('<span />', {
@@ -26,31 +26,12 @@ function AddOrganismDialog(pageBlock) {
 	});
 	
 	var nameLabel = $('<span />', {
-		'text' : 'Names',
+		'text' : 'Name',
 		'style' : 'margin-right: 10px'
 	});
 	
-	this.ids = $('<input />', {
-		'type' : 'text'
-	});
-	
-	var idsLabel = $('<span />', {
-		'text' : "Id's",
-		'style' : 'margin-right: 37px'
-	});
-	
-	var separator = $('<div />', {
-			style : 'border-bottom: 1px solid #CCC; margin-bottom: 15px; padding-top: 15px;'
-		}).append($('<div />', {
-			text : 'OR',
-			style : 'position: absolute; margin-top: -10px; left: 145px; background-color: white;'
-		}));
-	
 	this.contents.append(nameLabel);
 	this.contents.append(this.name);
-	this.contents.append(separator);
-	this.contents.append(idsLabel);
-	this.contents.append(this.ids);
 	
 	this.finalizeUI = $('<div />', {
 		'class' : 'tagging-dialog-contents'
@@ -58,7 +39,7 @@ function AddOrganismDialog(pageBlock) {
 	
 	this.finalizeBody = $('<div />');
 	
-	this.submitOrganismsButton = $('<button />', {
+	this.submitTagGroupButton = $('<button />', {
 		'class' : 'tagging-button',
 		'text': 'Add'
 	});
@@ -69,7 +50,7 @@ function AddOrganismDialog(pageBlock) {
 		'style' : 'margin-left: 10px'
 	});
 	
-	this.finalizeBody.append(this.submitOrganismsButton);
+	this.finalizeBody.append(this.submitTagGroupButton);
 	this.finalizeBody.append(this.cancelButton);
 	this.finalizeBody.css('border-top', '1px solid #CCC');
 	this.finalizeBody.css('padding-top', '5px');
@@ -83,39 +64,50 @@ function AddOrganismDialog(pageBlock) {
 	
 	this.submitCallback = null;
 	
-	this.submitOrganismsButton.on('click', Util.scopeCallback(this, this.onSubmit));
+	this.submitTagGroupButton.on('click', Util.scopeCallback(this, this.onSubmit));
 	this.cancelButton.on('click', Util.scopeCallback(this, this.onCancel));
 	this.closeButton.on('click', Util.scopeCallback(this, this.onCancel));
 	
 	$('body').append(this.dialog);
 };
 
-AddOrganismDialog.prototype.setTagBoard = function(tagBoard) {
+EditImageDialog.prototype.setTagBoard = function(tagBoard) {
 	this.tagBoard = tagBoard;
 };
 
-AddOrganismDialog.prototype.addSubmitCallback = function(callback) {
+EditImageDialog.prototype.addSubmitCallback = function(callback) {
 	this.submitCallback = callback;
 };
 
-AddOrganismDialog.prototype.onSubmit = function() {
+EditImageDialog.prototype.onSubmit = function() {
 	var name = $.trim(this.name.val());
-	if (name) {
+	if (name && this.tagBoard) {
 		var self = this;
-		
+		this.tagBoard.addNewTagGroup(name, 
+			function() {
+				self.hide();
+				if (self.submitCallback != null) {
+					self.submitCallback(self.tagBoard);
+					self.submitCallback = null;
+				}
+			},
+			function(errorMessage) {
+				self.hide();
+				alert(errorMessage);
+			});
 	}
 };
 
-AddOrganismDialog.prototype.onCancel = function() {
+EditImageDialog.prototype.onCancel = function() {
 	this.hide();
 };
 
-AddOrganismDialog.prototype.hide = function() {
+EditImageDialog.prototype.hide = function() {
 	this.block.hide();
 	this.dialog.hide();
 };
 
-AddOrganismDialog.prototype.show = function() {
+EditImageDialog.prototype.show = function() {
 	this.block.show();
 	this.dialog.show();
 };

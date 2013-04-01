@@ -50,6 +50,7 @@ TaggerUI.prototype.createStructure = function() {
 	var newGeneLinkDialog = new NewGeneLinkDialog(pageBlock, this.imageMetadata.organisms, this.siteUrl);
 	var changeCurrentTagGroupsDialog = new ChangeCurrentTagGroupsDialog(pageBlock);
 	var addOrganismDialog = new AddOrganismDialog(pageBlock);
+	var editImageDialog = new EditImageDialog(pageBlock);
 	var downloadImageDataDialog = new DownloadImageDataDialog(pageBlock, this.image, this.imagesUrl);
 	
 	var dialogs = {
@@ -112,6 +113,10 @@ TaggerUI.prototype.createStructure = function() {
 	
 	this.menu.getSection('tools').getMenuItem('download').onClick(function() {
 		downloadImageDataDialog.show();
+	});
+	
+	this.menu.getSection('tools').getMenuItem('editImage').onClick(function() {
+		editImageDialog.show();
 	});
 	
 	this.menu.getSection('tools').getMenuItem('zoomIn').onClick(function() {
@@ -209,6 +214,7 @@ TaggerUI.prototype.getToolbar = function(id) {
 	// create tools menu section
 	var tools = new MenuSection('Tools', this.imagesUrl + 'tools.png');
 	tools.addMenuItem('download', 'Download Image Data', 'ui-icon ui-icon-disk', false);
+	tools.addMenuItem('editImage', 'Edit Image Data', 'ui-icon ui-icon-pencil', false);
 	tools.addMenuItem('zoomIn', 'Zoom In', 'ui-icon ui-icon-zoomin', false);
 	tools.addMenuItem('zoomOut', 'Zoom Out', 'ui-icon ui-icon-zoomout', false);
 	tools.addMenuItem('toggleTags', 'Toggle All Tag Visibility', this.imagesUrl + 'eye.png', true);
@@ -246,7 +252,7 @@ TaggerUI.prototype.getToolbar = function(id) {
 
 TaggerUI.prototype.getTaggingMenu = function(id) {
 	return new TaggingMenu(id, this.imagesUrl);
-}
+};
 
 /**
  * Renders the Gene Links Menu UI which is in charge of adding new links 
