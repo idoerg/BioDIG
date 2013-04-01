@@ -1,7 +1,7 @@
 function GeneLink(id, feature) {
 	this.id = id;
 	this.name = feature.name;
-	this.uniqueName = feature.uniquename;
+	this.uniqueName = feature.uniqueName;
 	this.organismId = feature.organismId;
 };
 
