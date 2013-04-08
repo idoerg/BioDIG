@@ -148,7 +148,8 @@ form#search {
 	background-repeat: no-repeat;
 	background-position: 50%;
 	height: 29px;
-    width: 42px;
+    	width: 42px;
+    	vertical-align: top;
 }	
 
 .search_button:hover {
