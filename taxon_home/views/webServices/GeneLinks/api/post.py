@@ -18,7 +18,8 @@ class PostAPI:
         @param description: The description for this tag
         @param color: The color array for this tag
             format: [r, g, b]
-    '''    
+    '''
+    @transaction.commit_on_success 
     def createGeneLink(self, tagKey, name=None,  uniqueName=None, organismId=None, isKey=True):
         metadata = WebServiceObject()
         
@@ -60,10 +61,10 @@ class PostAPI:
                     comma = ", " if name and organismId else ""
                     error += comma + "uniqueName: " + uniqueName
                     
-                error += "\n Responses: "
+                error += "\n\n Responses: \n\n"
                 
                 for f in feature:
-                    error += "uniquename: " + f.uniquename + ", name: " + f.name + ", organism: " + f.organism.common_name + "\n"
+                    error += "uniquename: " + f.uniquename + ", name: " + f.name + ", organism: " + f.organism.common_name + "\n\n"
                 
                 raise Errors.NO_MATCHING_FEATURE.setCustom(error)
             geneLink = GeneLink(tag=tag, feature=feature[0])
