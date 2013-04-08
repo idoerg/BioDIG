@@ -141,8 +141,8 @@ NewGeneLinkDialog.prototype.onSubmit = function() {
 			dataType : 'json',
 			success : function(data, textStatus, jqXHR) {
 				data.feature.organismId = organismId;
-				this.tags[tagId].addGeneLink(data.id, data.feature);
-				this.hide();
+				self.tags[tagId].addGeneLink(data.id, data.feature);
+				self.hide();
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
 				var errorMessage = $.parseJSON(jqXHR.responseText).message;
