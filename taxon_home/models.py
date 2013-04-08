@@ -398,7 +398,7 @@ class CvRoot(models.Model):
 class StatsPathsToRoot(models.Model):
     cvterm_id = models.IntegerField()
     total_paths = models.BigIntegerField()
-    avg_distance = models.DecimalField(max_digits=1000, decimal_places=1000)
+    avg_distance = models.DecimalField(max_digits=1001, decimal_places=1000)
     min_distance = models.IntegerField()
     max_distance = models.IntegerField()
     class Meta:
