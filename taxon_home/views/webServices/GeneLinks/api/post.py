@@ -67,7 +67,7 @@ class PostAPI:
                     error += "uniquename: " + f.uniquename + ", name: " + f.name + ", organism: " + f.organism.common_name + "\n\n"
                 
                 raise Errors.NO_MATCHING_FEATURE.setCustom(error)
-            geneLink = GeneLink(tag=tag, feature=feature[0])
+            geneLink = GeneLink(tag=tag, feature=feature[0], user=self.user)
             geneLink.save()
         except DatabaseError as e:
             transaction.rollback()
