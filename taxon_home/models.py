@@ -2000,7 +2000,7 @@ class GeneLink(models.Model):
         return False
     
     def __unicode__(self):
-        return str(self.tag.description) + " and " + str(self.feature.uniquename)
+        return str(self.tag.name) + " and " + str(self.feature.uniquename)
     
 class PictureDefinitionTag(models.Model):
     picture = models.ForeignKey(Picture)
