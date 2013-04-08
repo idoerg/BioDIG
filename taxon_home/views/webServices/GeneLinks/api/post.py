@@ -44,15 +44,29 @@ class PostAPI:
                     feature = Feature.objects.filter(uniquename=uniqueName)
             
             if not feature:
-                error = ""
+                error = "Could not find a feature with the parameters: "
                 if name and organismId:
                     error += "name: " + name + ", organismId: " + organismId
                 if uniqueName:
-                    comma = ", " if error else ""
+                    comma = ", " if name and organismId else ""
                     error += comma + "uniqueName: " + uniqueName
                 
                 raise Errors.NO_MATCHING_FEATURE.setCustom(error)
-            geneLink = GeneLink(tag=tag, feature=feature)
+            elif len(feature) > 1:
+                error = "Multiple matches for parameters: "
+                if name and organismId:
+                    error += "name: " + name + ", organismId: " + organismId
+                if uniqueName:
+                    comma = ", " if name and organismId else ""
+                    error += comma + "uniqueName: " + uniqueName
+                    
+                error += "\n Responses: "
+                
+                for f in feature:
+                    error += "uniquename: " + f.uniquename + ", name: " + f.name + ", organism: " + f.organism.common_name + "\n"
+                
+                raise Errors.NO_MATCHING_FEATURE.setCustom(error)
+            geneLink = GeneLink(tag=tag, feature=feature[0])
             geneLink.save()
         except DatabaseError as e:
             transaction.rollback()
