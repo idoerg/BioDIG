@@ -18,7 +18,8 @@ class PostAPI:
         @param description: The description for this tag
         @param color: The color array for this tag
             format: [r, g, b]
-    '''    
+    '''
+    @transaction.commit_on_success 
     def createGeneLink(self, tagKey, name=None,  uniqueName=None, organismId=None, isKey=True):
         metadata = WebServiceObject()
         
@@ -44,15 +45,29 @@ class PostAPI:
                     feature = Feature.objects.filter(uniquename=uniqueName)
             
             if not feature:
-                error = ""
+                error = "Could not find a feature with the parameters: "
                 if name and organismId:
                     error += "name: " + name + ", organismId: " + organismId
                 if uniqueName:
-                    comma = ", " if error else ""
+                    comma = ", " if name and organismId else ""
                     error += comma + "uniqueName: " + uniqueName
                 
                 raise Errors.NO_MATCHING_FEATURE.setCustom(error)
-            geneLink = GeneLink(tag=tag, feature=feature)
+            elif len(feature) > 1:
+                error = "Multiple matches for parameters: "
+                if name and organismId:
+                    error += "name: " + name + ", organismId: " + organismId
+                if uniqueName:
+                    comma = ", " if name and organismId else ""
+                    error += comma + "uniqueName: " + uniqueName
+                    
+                error += "\n\n Responses: \n\n"
+                
+                for f in feature:
+                    error += "uniquename: " + f.uniquename + ", name: " + f.name + ", organism: " + f.organism.common_name + "\n\n"
+                
+                raise Errors.NO_MATCHING_FEATURE.setCustom(error)
+            geneLink = GeneLink(tag=tag, feature=feature[0], user=self.user)
             geneLink.save()
         except DatabaseError as e:
             transaction.rollback()
