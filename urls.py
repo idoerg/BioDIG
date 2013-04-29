@@ -44,11 +44,12 @@ urlpatterns += patterns('taxon_home.views.applications.registered',
     url(r'^administration/uploadImages/$', 'ImageUploader.Application.renderAction')
     #url(r'^administration/gbrowse_manager/genome_uploader/$', 'mycoplasma_home.views.genome_uploader'),
 )
-'''
+
 urlpatterns += patterns('taxon_home.views.applications.admin',
     # admin patterns for urls
+    url(r'^administration/customize/$', 'Customize.Application.renderAction')
 )
-'''
+
 
 urlpatterns += patterns('', 
     url(r'^admin/', include(admin.site.urls)),
