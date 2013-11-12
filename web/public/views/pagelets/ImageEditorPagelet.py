@@ -6,10 +6,10 @@
     Date: August 5, 2012
 '''
 from base.renderEngine.PageletBase import PageletBase
-from services.views.SearchGeneLinks.api.get import GetAPI as GeneLinkAPI
-from services.views.SearchTags.api.get import GetAPI as TagAPI
-from services.views.SearchTagGroups.api.get import GetAPI as TagGroupAPI
-from services.views.Images.api.get import GetAPI as ImageMetadataAPI
+from rest.v1.views.SearchGeneLinks.api.get import GetAPI as GeneLinkAPI
+from rest.v1.views.SearchTags.api.get import GetAPI as TagAPI
+from rest.v1.views.SearchTagGroups.api.get import GetAPI as TagGroupAPI
+from rest.v1.views.Images.api.get import GetAPI as ImageMetadataAPI
 import simplejson as json
 from base.models import Picture
 

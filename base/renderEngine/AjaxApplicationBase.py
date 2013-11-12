@@ -11,8 +11,9 @@ import time
 from django.core.cache import cache
 from WebServiceException import THROTTLED, WebServiceException
 from WebServiceObject import WebServiceObject
+from ApplicationBase import ApplicationBase
 
-class AjaxApplicationBase:
+class AjaxApplicationBase(ApplicationBase):
     '''
     
     '''
@@ -36,6 +37,8 @@ class AjaxApplicationBase:
         self.setApplicationLayout('base.html')
         
     def render(self, request):
+        self.tokenAuthentication(request)
+
         try:
             if hasattr(settings, 'RATE_LIMIT'):
                 self.throttle(request)

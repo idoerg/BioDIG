@@ -2,9 +2,9 @@ import base.util.ErrorConstants as Errors
 from base.models import TagGroup
 from base.renderEngine.WebServiceObject import WebServiceObject
 from django.core.exceptions import ObjectDoesNotExist
-from services.views.SearchGeneLinks.api.get import GetAPI as GeneLinkAPI
-from services.views.SearchTags.api.get import GetAPI as TagAPI
-from services.views.TagGroups.api.get import GetAPI as TagGroupAPI
+from rest.v1.views.SearchGeneLinks.api.get import GetAPI as GeneLinkAPI
+from rest.v1.views.SearchTags.api.get import GetAPI as TagAPI
+from rest.v1.views.TagGroups.api.get import GetAPI as TagGroupAPI
 
 
 class GetAPI:
