@@ -148,6 +148,8 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
     'web.public',
     'web.registered',
+    'rest.v1',
+    'rest.v2',
     'base'
 )
 
