@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.conf import settings
 
-urlpatterns = patterns('services.views',
+urlpatterns = patterns('rest.v1.views',
     url(r'^tags$', 'Tags.Application.renderAction'),
     url(r'^tagGroups$', 'TagGroups.Application.renderAction'),
     url(r'^geneLinks$', 'GeneLinks.Application.renderAction'),

@@ -13,6 +13,7 @@ urlpatterns = patterns('',
 )
 
 urlpatterns += patterns('',
-    url(r'^api/', include('services.urls')),
+    url(r'^api/', include('rest.v1.urls')),
+    url(r'^rest/', include('rest.urls')),
     url(r'', include('web.urls'))
 )
