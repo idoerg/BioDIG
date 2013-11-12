@@ -5,14 +5,14 @@
     Author: Andrew Oberlin
     Date: August 5, 2012
 '''
+
 from base.renderEngine.PageletBase import PageletBase
+import simplejson as json
 from services.views.SearchGeneLinks.api.get import GetAPI as GeneLinkAPI
 from services.views.SearchTags.api.get import GetAPI as TagAPI
 from services.views.SearchTagGroups.api.get import GetAPI as TagGroupAPI
 from services.views.Images.api.get import GetAPI as ImageMetadataAPI
-import simplejson as json
 from base.models import Picture
-
 from django.core.exceptions import ObjectDoesNotExist
 
 class ImageEditorPagelet(PageletBase):
@@ -24,11 +24,11 @@ class ImageEditorPagelet(PageletBase):
         Returns: Dictionary of arguments for rendering this pagelet
     '''
     def doProcessRender(self, request):
-        self.setLayout('public/imageEditor.html')
+        self.setLayout('admin/imageEditor.html')
         try:
             imageKey = request.GET.get('imageId', None)
             if (imageKey):
-                image = Picture.objects.get(pk__exact=imageKey, isPrivate=False)
+                image = Picture.objects.get(pk__exact=imageKey)
                 
                 # initialize tagging APIs
                 tagGroupAPI = TagGroupAPI(unlimited=True)

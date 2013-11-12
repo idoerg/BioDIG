@@ -4,7 +4,7 @@
 	Author: Andrew Oberlin
 	Date: July 23, 2012
 '''
-from web.renderEngine.PageletBase import PageletBase
+from base.renderEngine.PageletBase import PageletBase
 
 class FooterPagelet(PageletBase):	
 	'''

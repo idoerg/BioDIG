@@ -1,5 +1,5 @@
 import base.util.ErrorConstants as Errors
-import base.views.util.Util as Util
+import base.util.Util as Util
 import simplejson as json
 from get import GetAPI
 from post import PostAPI

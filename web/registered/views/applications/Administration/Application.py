@@ -5,7 +5,7 @@
 	Author: Andrew Oberlin
 	Date: August 14, 2012
 '''
-from web.renderEngine.RegisteredApplicationBase import RegisteredApplicationBase
+from base.renderEngine.RegisteredApplicationBase import RegisteredApplicationBase
 from web.registered.views.pagelets.NavBarPagelet import NavBarPagelet
 from web.registered.views.pagelets.WorkbenchPagelet import WorkbenchPagelet
 from web.public.views.pagelets.FooterPagelet import FooterPagelet

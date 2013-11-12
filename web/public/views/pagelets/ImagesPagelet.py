@@ -4,7 +4,7 @@
 	Author: Andrew Oberlin
 	Date: July 26, 2012
 '''
-from web.renderEngine.PageletBase import PageletBase
+from base.renderEngine.PageletBase import PageletBase
 from base.models import Picture
 
 class ImagesPagelet(PageletBase):

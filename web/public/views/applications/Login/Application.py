@@ -23,7 +23,7 @@ class Application(ApplicationBase):
 	def render(self, request):
 		self.doProcessRender(request)
 		return HttpResponseRedirect(
-			reverse('taxon_home.views.applications.public.Home.Application.renderAction')
+			reverse('web.public.views.applications.Home.Application.renderAction')
 		)
 
 

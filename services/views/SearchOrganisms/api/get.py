@@ -15,7 +15,10 @@ class GetAPI:
     def getOrganisms(self, organisms):
         metadata = WebServiceArray()
         candidates = []
-        
+       
+        if not candidates:
+            return metadata
+
         # search for each organism
         for organism in organisms:
             orgCandidates = Organism.objects.filter(common_name=organism)

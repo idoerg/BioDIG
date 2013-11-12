@@ -5,20 +5,20 @@
 	Author: Andrew Oberlin
 	Date: August 14, 2012
 '''
-from base.renderEngine.RegisteredApplicationBase import RegisteredApplicationBase
+from base.renderEngine.AdminApplicationBase import AdminApplicationBase
 from web.registered.views.pagelets.NavBarPagelet import NavBarPagelet
-from web.registered.views.pagelets.ImageUploaderPagelet import ImageUploaderPagelet
+from web.admin.views.pagelets.CustomizePagelet import CustomizePagelet
 from web.public.views.pagelets.FooterPagelet import FooterPagelet
 
-class Application(RegisteredApplicationBase):
+class Application(AdminApplicationBase):
 	def doProcessRender(self, request):
 		args = {
-			'title' : 'Image Manager'
+			'title' : 'Customize'
 		}
 		
 		self.setApplicationLayout('registered/base.html', args)
 		self.addPageletBinding('navBar', NavBarPagelet())
-		self.addPageletBinding('center-1', ImageUploaderPagelet())
+		self.addPageletBinding('center-1', CustomizePagelet())
 		self.addPageletBinding('footer', FooterPagelet())
 
 '''

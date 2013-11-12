@@ -4,7 +4,7 @@
 	Author: Andrew Oberlin
 	Date: January 31, 2013
 '''
-from web.renderEngine.PageletBase import PageletBase
+from base.renderEngine.PageletBase import PageletBase
 
 class AdvancedSearchPagelet(PageletBase):
 	'''
