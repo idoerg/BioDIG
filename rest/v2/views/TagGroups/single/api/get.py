@@ -1,7 +1,8 @@
 import base.util.ErrorConstants as Errors
 from base.models import TagGroup
 from django.core.exceptions import ObjectDoesNotExist
-from base.renderEngine.WebServiceObject import WebServiceObject
+from base.renderEngine.WebServiceObject import WebServiceObject, LimitDict
+from base.serializers import TagGroupSerializer
 
 class GetAPI:
     
@@ -28,14 +29,5 @@ class GetAPI:
         if not tagGroup.readPermissions(self.user):
             raise Errors.AUTHENTICATION
 
-        metadata.limitFields(self.fields)
-                
-        metadata.put('id', tagGroup.pk)
-        metadata.put('name', tagGroup.name)
-        metadata.put('user', tagGroup.user.username)
-        metadata.put('dateCreated', tagGroup.dateCreated.strftime("%Y-%m-%d %H:%M:%S"))
-        metadata.put('lastModified', tagGroup.lastModified.strftime("%Y-%m-%d %H:%M:%S"))
-        metadata.put('imageId', tagGroup.picture.pk)
-        metadata.put('isPrivate', tagGroup.isPrivate)
-        
+        metadata.setObject(LimitDict(self.fields, TagGroupSerializer(tagGroup).data))
         return metadata

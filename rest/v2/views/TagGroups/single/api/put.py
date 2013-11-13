@@ -1,8 +1,9 @@
 import base.util.ErrorConstants as Errors
 from base.models import TagGroup
 from django.core.exceptions import ObjectDoesNotExist
-from base.renderEngine.WebServiceObject import WebServiceObject
+from base.renderEngine.WebServiceObject import WebServiceObject, LimitDict
 from django.db import transaction, DatabaseError
+from base.serializers import TagGroupSerializer
 
 class PutAPI:
     
@@ -35,20 +36,11 @@ class PutAPI:
         if name:
             tagGroup.name = name
         
-        metadata.limitFields(self.fields)
         try:
             tagGroup.save()
         except DatabaseError as e:
             transaction.rollback()
             raise Errors.INTEGRITY_ERROR.setCustom(str(e))
         
-        # add new tag to response for success
-        metadata.put('id', tagGroup.pk)
-        metadata.put('name', tagGroup.name)
-        metadata.put('user', tagGroup.user.username)
-        metadata.put('dateCreated', tagGroup.dateCreated.strftime("%Y-%m-%d %H:%M:%S"))
-        metadata.put('lastModified', tagGroup.lastModified.strftime("%Y-%m-%d %H:%M:%S"))
-        metadata.put('imageId', tagGroup.picture.pk)
-        metadata.put('isPrivate', tagGroup.isPrivate)
-        
+        metadata.setObject(LimitDict(self.fields, TagGroupSerializer(tagGroup).data))
         return metadata

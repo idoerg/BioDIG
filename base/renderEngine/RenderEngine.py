@@ -9,7 +9,8 @@ from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.http import HttpResponse
 from django.conf import settings
-import simplejson as json
+import json
+from django.core.serializers.json import DjangoJSONEncoder
 
 class RenderEngine:
     '''
@@ -97,4 +98,4 @@ class RenderEngine:
         return HttpResponse(layout)
 
     def renderJson(self, request):
-        return HttpResponse(json.dumps(self.applicationLayout), status=self.status)
+        return HttpResponse(json.dumps(self.applicationLayout, cls=DjangoJSONEncoder), status=self.status)

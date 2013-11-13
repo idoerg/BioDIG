@@ -2,7 +2,7 @@ import base.util.ErrorConstants as Errors
 from base.models import TagGroup
 from django.core.exceptions import ObjectDoesNotExist
 from base.renderEngine.WebServiceObject import WebServiceArray, LimitDict
-
+from base.serializers import TagGroupSerializer
 import base.util.Util as Util
 
 class GetAPI:
@@ -50,17 +50,7 @@ class GetAPI:
             query = query[self.offset : self.offset+self.limit]
         
         for group in query:
-            metadata.put(
-                LimitDict(self.fields, {
-                    'id' : group.pk,
-                    'user' : group.user.username,
-                    'name' : group.name,
-                    'dateCreated' : group.dateCreated.strftime("%Y-%m-%d %H:%M:%S"),
-                    'lastModified' : group.lastModified.strftime("%Y-%m-%d %H:%M:%S"),
-                    'imageId' : group.picture.pk,
-                    'isPrivate' : group.isPrivate
-                })
-            )
+            metadata.put(LimitDict(self.fields, TagGroupSerializer(group).data))
         
         return metadata
     
