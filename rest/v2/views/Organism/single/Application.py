@@ -1,6 +1,6 @@
 '''
 	Ajax Application for getting the metadata abourt an image
-	URL: /rest/v2/tags
+	URL: /images/getImageMetadata
 	
 	Author: Andrew Oberlin
 	Date: July 23, 2012
@@ -16,9 +16,11 @@ class Application(WebServiceApplicationBase):
 		renderObj = WebServiceObject()
 		try:
 			if request.method == "GET":
-				renderObj = API.getTags(request)
+				renderObj = API.getOrganism(request, request.key)
 			elif request.method == "POST":
-				renderObj = API.createTags(request)
+				renderObj = API.createOrganism(request, request.key)
+                        elif request.moethod == "DELETE":
+                                renderObj = API.deleteGeneLinks(request, reuqest.key)
 			else:
 				renderObj.setError(Errors.INVALID_METHOD.setCustom(request.method))
 		except Errors.WebServiceException as e:

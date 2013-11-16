@@ -1,5 +1,5 @@
-import taxon_home.views.util.ErrorConstants as Errors
-from taxon_home.models import TagGroup
+import base.util.ErrorConstants as Errors
+from base.models import Tag
 from django.core.exceptions import ObjectDoesNotExist
 from renderEngine.WebServiceObject import WebServiceArray, LimitDict
 
@@ -20,12 +20,12 @@ class GetAPI:
     def getTagGroups(self, name, image, user, lastModified, dateCreated):
         metadata = WebServiceArray()
         
-        query = TagGroup.objects.all()
+        query = Tag.objects.all()
         
         # add permissions to query
         if self.user and self.user.is_authenticated():
             if not self.user.is_staff:
-                query = query.filter(isPrivate = False) | TagGroup.objects.filter(user__pk__exact=self.user.pk)
+                query = query.filter(isPrivate = False) | Tag.objects.filter(user__pk__exact=self.user.pk)
         else:
             query = query.filter(isPrivate=False)
         

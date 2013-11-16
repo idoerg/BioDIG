@@ -1,5 +1,5 @@
-import taxon_home.views.util.ErrorConstants as Errors
-import taxon_home.views.util.Util as Util
+import base.util.ErrorConstants as Errors
+import base.util.Util as Util
 from get import GetAPI
 from put import PutAPI
 from delete import DeleteAPI
@@ -10,16 +10,16 @@ from delete import DeleteAPI
     @param request: Django Request object to be used to parse the query
     @param key: Numeric key for the tag group being asked for
 '''
-def getOrganism(request, key):
-    if not key:
-        raise Errors.MISSING_PARAMETER.setCustom('id')
-    
+def getGeneLink(request, key):
     # read in optional parameters and initialize the API
     fields = Util.getDelimitedList(request.GET, 'fields')
     getAPI = GetAPI(request.user, fields)
+
+    if not key:
+        raise Errors.NO_TAG_GROUP_KEY
     
     # the key for lookup and the image it is attached to
-    return getAPI.getOrganism(key)
+    return getAPI.getGeneLink(key)
 
 '''
     Updates the tag group information as posted and returns the newly updated tag group information
@@ -27,24 +27,20 @@ def getOrganism(request, key):
     @param request: Django Request object to be used to parse the query
     @param key: Numeric key for the tag group that should be edited
 '''
-def updateOrganism(request, key):
+def updateGeneLink(request, key):
     if not key:
-        raise Errors.MISSING_PARAMETER.setCustom('id')
+        raise Errors.NO_TAG_GROUP_KEY
     
-    abbreviation = request.PUT.get('abbreviation', None)
-    genus = request.PUT.get('genus', None)
-    species = request.PUT.get('species', None)
-    commonName = request.PUT.get('commonName', None)
-    comment = request.PUT.get('comment', None)
+    name = request.PUT.get('name', None)
     
     # read in optional parameters and initialize the API
     fields = Util.getDelimitedList(request.PUT, 'fields')
     putAPI = PutAPI(request.user, fields)
     
-    if not (abbreviation or genus or species or commonName or comment):
+    if not name:
         raise Errors.NOT_MODIFIED
     
-    return putAPI.updateOrganism(key, abbreviation, genus, species, commonName, comment)
+    return putAPI.updateGeneLink(key, name)
 
 '''
     Deletes a tag group and returns the information for the tag group that was deleted
@@ -52,7 +48,7 @@ def updateOrganism(request, key):
     @param request: Django Request object to be used to parse the query
     @param key: Numeric key for the tag group that should be deleted
 '''
-def deleteOrganism(request, key):
+def deleteGeneLink(request, key):
     
     if not key:
         raise Errors.NO_TAG_GROUP_KEY
@@ -61,7 +57,7 @@ def deleteOrganism(request, key):
     fields = Util.getDelimitedList(request.DELETE, 'fields')
     
     deleteAPI = DeleteAPI(request.user, fields)
-    return deleteAPI.deleteTagGroup(key)
+    return deleteAPI.deleteGeneLink(key)
     
     
     

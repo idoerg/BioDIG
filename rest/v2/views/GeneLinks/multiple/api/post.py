@@ -1,5 +1,5 @@
-import taxon_home.views.util.ErrorConstants as Errors
-from taxon_home.models import Picture, TagGroup
+import base.util.ErrorConstants as Errors
+from base.models import Picture, TagGroup
 from django.core.exceptions import ObjectDoesNotExist
 from renderEngine.WebServiceObject import WebServiceObject
 from django.db import transaction, DatabaseError

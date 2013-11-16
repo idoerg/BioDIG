@@ -8,7 +8,7 @@ from post import PostAPI
     
     @param request: Django Request object to be used to parse the query
 '''
-def getTags(request):
+def getTagGroups(request):
     # read in optional parameters and initialize the API
     offset = Util.getInt(request.GET, 'offset', 0)
     limit = Util.getInt(request.GET, 'limit', 10)
@@ -21,13 +21,11 @@ def getTags(request):
     # read in parameters for limiting search
     lastModified = request.GET.get('lastModified', None)
     dateCreated = request.GET.get('dateCreated', None)
-    isPrivate = request.GET.get('isPrivate', None)
     user = Util.getDelimitedList(request.GET, 'user')
-    group = Util.getDelimitedList(request.GET, 'group')
-    color = Util.getDelimitedList(request.GET, 'color')
+    image = Util.getDelimitedList(request.GET, 'image')
     name = Util.getDelimitedList(request.GET, 'name')
     
-    return getAPI.getTags(name, color, group, dateCreated, lastModified, user, isPrivate)
+    return getAPI.getTagGroups(name, image, user, lastModified, dateCreated)
         
 
 '''
@@ -35,7 +33,7 @@ def getTags(request):
     
     @param request: Django Request object to be used to parse the query
 '''
-def createTag(request):
+def createTagGroup(request):
     imageKey = request.POST.get('imageId', None)
     if not imageKey:
         raise Errors.MISSING_PARAMETER.setCustom('imageId')

@@ -1,5 +1,5 @@
-import taxon_home.views.util.ErrorConstants as Errors
-import taxon_home.views.util.Util as Util
+import base.util.ErrorConstants as Errors
+import base.util.Util as Util
 from get import GetAPI
 from post import PostAPI
 
