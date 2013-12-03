@@ -1,9 +1,9 @@
 import base.util.ErrorConstants as Errors
 from base.models import TagGroup
 from django.core.exceptions import ObjectDoesNotExist
-from base.renderEngine.WebServiceObject import WebServiceArray, LimitDict
+from renderEngine.WebServiceObject import WebServiceArray, LimitDict
 
-import base.util.Util as Util
+import taxon_home.views.util.Util as Util
 
 class GetAPI:
     
@@ -17,10 +17,10 @@ class GetAPI:
     '''
         
     '''
-    def getTags(self, name, color, group, dateCreated, lastModified, user, isPrivate):
+    def getTagGroups(self, name, image, user, lastModified, dateCreated):
         metadata = WebServiceArray()
         
-        query = Tags.objects.all()
+        query = TagGroup.objects.all()
         
         # add permissions to query
         if self.user and self.user.is_authenticated():
@@ -32,9 +32,9 @@ class GetAPI:
         # if a name was given then we will filter by it
         if name: query = query.filter(name__in=name)
         
-        if color: query = query.filter(color__in=color)
+        if image: query = query.filter(picture__pk__in=image)
             
-        if group: query = query.filter(group__in=group)
+        if user: query = query.filter(user__pk__in=user)
             
         if lastModified:
             keyArgs = Util.getFilterByDate(lastModified, 'lastModified')
@@ -43,10 +43,6 @@ class GetAPI:
         if dateCreated:
             keyArgs = Util.getFilterByDate(dateCreated, 'dateCreated')
             query = query.filter(**keyArgs)
-            
-        if user: query = query.filter(user__pk__in=user)
-        
-        if isPrivate: query = query.filter(isPrivate__in=isPrivate)
             
         if self.unlimited:
             query = query[self.offset:]

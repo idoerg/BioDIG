@@ -5,9 +5,9 @@
 	Author: Andrew Oberlin
 	Date: July 23, 2012
 '''
-from renderEngine.AjaxApplicationBase import WebServiceApplicationBase
-from renderEngine.WebServiceObject import WebServiceObject
-import taxon_home.views.util.ErrorConstants as Errors
+from base.renderEngine.AjaxApplicationBase import WebServiceApplicationBase
+from base.renderEngine.WebServiceObject import WebServiceObject
+import base.util.ErrorConstants as Errors
 from django.views.decorators.csrf import csrf_exempt
 import api.API as API
 
@@ -16,11 +16,11 @@ class Application(WebServiceApplicationBase):
 		renderObj = WebServiceObject()
 		try:
 			if request.method == "GET":
-				renderObj = API.getTag(request, request.key)
-			elif request.method == "PUT":
-				renderObj = API.updateTag(request, request.key)
-			elif request.method == "DELETE":
-				renderObj = API.deleteTag(request, request.key)
+				renderObj = API.getTag(request, reuqest.key)
+			elif request.method == "POST":
+				renderObj = API.createTag(request, reuqest.key)
+                        elif request.method == "DELETE":
+                                renderObj = API.deleteTag(request, request.key)
 			else:
 				renderObj.setError(Errors.INVALID_METHOD.setCustom(request.method))
 		except Errors.WebServiceException as e:
@@ -34,6 +34,5 @@ class Application(WebServiceApplicationBase):
 	Used for mapping to the url in urls.py
 '''
 @csrf_exempt
-def renderAction(request, key):
-	request.key = key
+def renderAction(request):
 	return Application().render(request)
