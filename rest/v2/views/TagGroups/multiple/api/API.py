@@ -2,12 +2,26 @@ import base.util.ErrorConstants as Errors
 import base.util.Util as Util
 from get import GetAPI
 from post import PostAPI
+import biodigWSC.swagger.decorators.Operations as Operations
+import biodigWSC.swagger.decorators.Parameters as Params
+import biodigWSC.swagger.decorators.Types as Types
 
 '''
     Gets the information for a tag given its key
     
     @param request: Django Request object to be used to parse the query
 '''
+@Operations.Method(Operations.GET)
+@Operations.Nickname('getTagGroups')
+@Operations.Type('TagGroupSerializer')
+@Params.ParamType_Query('offset', Types.Integer)
+@Params.ParamType_Query('limit', Types.Integer)
+@Params.ParamType_Query('unlimited', Types.Boolean)
+@Params.ParamType_Query('fields', Types.String)
+@Params.ParamType_Query('lastModified', Types.Date)
+@Params.ParamType_Query('user', Types.String)
+@Params.ParamType_Query('image', Types.String)
+@Params.ParamType_Query('name', Types.String)
 def getTagGroups(request):
     # read in optional parameters and initialize the API
     offset = Util.getInt(request.GET, 'offset', 0)

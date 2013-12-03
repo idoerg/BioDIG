@@ -10,7 +10,10 @@ from base.renderEngine.WebServiceObject import WebServiceObject
 import base.util.ErrorConstants as Errors
 from django.views.decorators.csrf import csrf_exempt
 import api.API as API
+import biodigWSC.swagger.decorators.Applications as Applications
 
+@Applications.Path('/rest/v2/tagGroups')
+@Applications.Description('Responsible for creating and managing TagGroups')
 class Application(WebServiceApplicationBase):
 	def doProcessRender(self, request):
 		renderObj = WebServiceObject()
