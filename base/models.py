@@ -21,7 +21,8 @@ class Picture(models.Model):
     isPrivate = models.BooleanField(default=True)
     
     class Meta:
-        db_table = u'picture'    
+        db_table = u'picture'
+        app_label = u'BioDIG'
     
     def readPermissions(self, user):       
         # if the image is public then anyone can read it
@@ -76,6 +77,7 @@ class RecentlyViewedPicture(models.Model):
     class Meta:
         unique_together = ("picture", "user")
         db_table = u'recentlyviewedpicture'
+        app_label = u'BioDIG'
     
     def __unicode__(self):
         return (self.picture.imageName.name) + " viewed by " + self.user.username
@@ -90,6 +92,7 @@ class TagGroup(models.Model):
     class Meta:
         db_table = u'taggroup'
         unique_together = ('name', 'picture',)
+        app_label = u'BioDIG'
         
     def readPermissions(self, user):
         # if the tag group is public then anyone can read it
@@ -145,6 +148,7 @@ class TagColor(models.Model):
     blue = models.IntegerField()
     class Meta:
         db_table = u'tagcolor'
+        app_label = u'BioDIG'
     def __unicode__(self):
         return 'R: ' + str(self.red) + ', G: ' + str(self.green) + ', B: ' + str(self.blue)
 
@@ -158,6 +162,7 @@ class Tag(models.Model):
     isPrivate = models.BooleanField(default=True)
     class Meta:
         db_table = u'tag'
+        app_label = u'BioDIG'
         
     def readPermissions(self, user):
         # if the tag group is public then anyone can read it
@@ -214,6 +219,7 @@ class TagPoint(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'tagpoint'
+        app_label = u'BioDIG'
     def __unicode__(self):
         return "(" + str(self.pointX) + "," + str(self.pointY) + ") " + self.tag.name
         
@@ -222,6 +228,7 @@ class BlastUpload(models.Model):
     name = models.TextField()
     class Meta:
         db_table = u'blastupload'
+        app_label = u'BioDIG'
     def __unicode__(self):
         return self.name
 
@@ -230,6 +237,7 @@ class GenomeUpload(models.Model):
     name = models.TextField()
     class Meta:
         db_table = u'genomeupload'
+        app_label = u'BioDIG'
     def __unicode__(self):
         return self.name
         
@@ -238,6 +246,7 @@ class Landmark(models.Model):
     organism_id = models.IntegerField()
     class Meta:
         db_table = u'landmark'
+        app_label = u'BioDIG'
     def __unicode__(self):
         return self.name
 
@@ -261,6 +270,7 @@ class Tableinfo(models.Model):
     modification_date = models.DateField()
     class Meta:
         db_table = u'tableinfo'
+        app_label = u'BioDIG'
 
 class Db(models.Model):
     db_id = models.IntegerField(primary_key=True)
@@ -270,6 +280,7 @@ class Db(models.Model):
     url = models.CharField(max_length=255)
     class Meta:
         db_table = u'db'
+        app_label = u'BioDIG'
 
 class Dbxref(models.Model):
     dbxref_id = models.IntegerField(primary_key=True)
@@ -279,12 +290,14 @@ class Dbxref(models.Model):
     description = models.TextField()
     class Meta:
         db_table = u'dbxref'
+        app_label = u'BioDIG'
 
 class DbDbxrefCount(models.Model):
     name = models.CharField(max_length=255)
     num_dbxrefs = models.BigIntegerField()
     class Meta:
         db_table = u'db_dbxref_count'
+        app_label = u'BioDIG'
 
 class Cv(models.Model):
     cv_id = models.IntegerField(primary_key=True)
@@ -292,6 +305,7 @@ class Cv(models.Model):
     definition = models.TextField()
     class Meta:
         db_table = u'cv'
+        app_label = u'BioDIG'
         
 class Cvterm(models.Model):
     cvterm_id = models.IntegerField(primary_key=True)
@@ -303,6 +317,7 @@ class Cvterm(models.Model):
     is_relationshiptype = models.IntegerField()
     class Meta:
         db_table = u'cvterm'
+        app_label = u'BioDIG'
 
 class CvtermRelationship(models.Model):
     cvterm_relationship_id = models.IntegerField(primary_key=True)
@@ -311,6 +326,7 @@ class CvtermRelationship(models.Model):
     object = models.ForeignKey(Cvterm, related_name = "cvtermrelationship_object_set")
     class Meta:
         db_table = u'cvterm_relationship'
+        app_label = u'BioDIG'
 
 class Project(models.Model):
     project_id = models.IntegerField(primary_key=True)
@@ -318,6 +334,7 @@ class Project(models.Model):
     description = models.CharField(max_length=255)
     class Meta:
         db_table = u'project'
+        app_label = u'BioDIG'
 
 class Cvtermpath(models.Model):
     cvtermpath_id = models.IntegerField(primary_key=True)
@@ -328,12 +345,14 @@ class Cvtermpath(models.Model):
     pathdistance = models.IntegerField()
     class Meta:
         db_table = u'cvtermpath'
+        app_label = u'BioDIG'
 
 class CvLeaf(models.Model):
     cv_id = models.IntegerField()
     cvterm_id = models.IntegerField()
     class Meta:
         db_table = u'cv_leaf'
+        app_label = u'BioDIG'
 
 class Dbxrefprop(models.Model):
     dbxrefprop_id = models.IntegerField(primary_key=True)
@@ -343,6 +362,7 @@ class Dbxrefprop(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'dbxrefprop'
+        app_label = u'BioDIG'
 
 class Cvtermprop(models.Model):
     cvtermprop_id = models.IntegerField(primary_key=True)
@@ -352,6 +372,7 @@ class Cvtermprop(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'cvtermprop'
+        app_label = u'BioDIG'
 
 class Cvtermsynonym(models.Model):
     cvtermsynonym_id = models.IntegerField(primary_key=True)
@@ -360,6 +381,7 @@ class Cvtermsynonym(models.Model):
     type = models.ForeignKey(Cvterm, related_name = "cvtermsynonym_type_set")
     class Meta:
         db_table = u'cvtermsynonym'
+        app_label = u'BioDIG'
 
 class CommonAncestorCvterm(models.Model):
     cvterm1_id = models.IntegerField()
@@ -370,6 +392,7 @@ class CommonAncestorCvterm(models.Model):
     total_pathdistance = models.IntegerField()
     class Meta:
         db_table = u'common_ancestor_cvterm'
+        app_label = u'BioDIG'
 
 class CvtermDbxref(models.Model):
     cvterm_dbxref_id = models.IntegerField(primary_key=True)
@@ -378,6 +401,7 @@ class CvtermDbxref(models.Model):
     is_for_definition = models.IntegerField()
     class Meta:
         db_table = u'cvterm_dbxref'
+        app_label = u'BioDIG'
 
 class CommonDescendantCvterm(models.Model):
     cvterm1_id = models.IntegerField()
@@ -388,12 +412,14 @@ class CommonDescendantCvterm(models.Model):
     total_pathdistance = models.IntegerField()
     class Meta:
         db_table = u'common_descendant_cvterm'
+        app_label = u'BioDIG'
 
 class CvRoot(models.Model):
     cv_id = models.IntegerField()
     root_cvterm_id = models.IntegerField()
     class Meta:
         db_table = u'cv_root'
+        app_label = u'BioDIG'
 
 class StatsPathsToRoot(models.Model):
     cvterm_id = models.IntegerField()
@@ -403,18 +429,21 @@ class StatsPathsToRoot(models.Model):
     max_distance = models.IntegerField()
     class Meta:
         db_table = u'stats_paths_to_root'
+        app_label = u'BioDIG'
 
 class CvCvtermCount(models.Model):
     name = models.CharField(max_length=255)
     num_terms_excl_obs = models.BigIntegerField()
     class Meta:
         db_table = u'cv_cvterm_count'
+        app_label = u'BioDIG'
 
 class CvCvtermCountWithObs(models.Model):
     name = models.CharField(max_length=255)
     num_terms_incl_obs = models.BigIntegerField()
     class Meta:
         db_table = u'cv_cvterm_count_with_obs'
+        app_label = u'BioDIG'
 
 class CvLinkCount(models.Model):
     cv_name = models.CharField(max_length=255)
@@ -423,6 +452,7 @@ class CvLinkCount(models.Model):
     num_links = models.BigIntegerField()
     class Meta:
         db_table = u'cv_link_count'
+        app_label = u'BioDIG'
 
 class CvPathCount(models.Model):
     cv_name = models.CharField(max_length=255)
@@ -431,6 +461,7 @@ class CvPathCount(models.Model):
     num_paths = models.BigIntegerField()
     class Meta:
         db_table = u'cv_path_count'
+        app_label = u'BioDIG'
 
 class Pub(models.Model):
     pub_id = models.IntegerField(primary_key=True)
@@ -449,6 +480,7 @@ class Pub(models.Model):
     pubplace = models.CharField(max_length=255)
     class Meta:
         db_table = u'pub'
+        app_label = u'BioDIG'
 
 class PubRelationship(models.Model):
     pub_relationship_id = models.IntegerField(primary_key=True)
@@ -457,6 +489,7 @@ class PubRelationship(models.Model):
     type = models.ForeignKey(Cvterm)
     class Meta:
         db_table = u'pub_relationship'
+        app_label = u'BioDIG'
 
 class Pubprop(models.Model):
     pubprop_id = models.IntegerField(primary_key=True)
@@ -466,6 +499,7 @@ class Pubprop(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'pubprop'
+        app_label = u'BioDIG'
 
 class PubDbxref(models.Model):
     pub_dbxref_id = models.IntegerField(primary_key=True)
@@ -474,6 +508,7 @@ class PubDbxref(models.Model):
     is_current = models.BooleanField()
     class Meta:
         db_table = u'pub_dbxref'
+        app_label = u'BioDIG'
 
 class Pubauthor(models.Model):
     pubauthor_id = models.IntegerField(primary_key=True)
@@ -485,6 +520,7 @@ class Pubauthor(models.Model):
     suffix = models.CharField(max_length=100)
     class Meta:
         db_table = u'pubauthor'
+        app_label = u'BioDIG'
 
 
 class Organism(models.Model):
@@ -496,6 +532,7 @@ class Organism(models.Model):
     comment = models.TextField()
     class Meta:
         db_table = u'organism'
+        app_label = u'BioDIG'
     def __unicode__(self):
         return self.common_name
     
@@ -508,6 +545,7 @@ class OrganismWithImages(models.Model):
     comment = models.TextField()
     class Meta:
         db_table = u'organismwithimages'
+        app_label = u'BioDIG'
     def __unicode__(self):
         return self.common_name
     # READ ONLY MODEL
@@ -523,6 +561,7 @@ class OrganismWithGenome(models.Model):
     comment = models.TextField()
     class Meta:
         db_table = u'organismwithgenome'
+        app_label = u'BioDIG'
     def __unicode__(self):
         return self.common_name
     # READ ONLY MODEL
@@ -538,6 +577,7 @@ class OrganismWithTags(models.Model):
     comment = models.TextField()
     class Meta:
         db_table = u'organismwithtags'
+        app_label = u'BioDIG'
     def __unicode__(self):
         return self.common_name
     # READ ONLY MODEL
@@ -550,6 +590,7 @@ class OrganismDbxref(models.Model):
     dbxref = models.ForeignKey(Dbxref)
     class Meta:
         db_table = u'organism_dbxref'
+        app_label = u'BioDIG'
 
 class Feature(models.Model):
     feature_id = models.IntegerField(primary_key=True)
@@ -567,6 +608,7 @@ class Feature(models.Model):
     timelastmodified = models.DateTimeField()
     class Meta:
         db_table = u'feature'
+        app_label = u'BioDIG'
 
 class Featureloc(models.Model):
     featureloc_id = models.IntegerField(primary_key=True)
@@ -583,6 +625,7 @@ class Featureloc(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'featureloc'
+        app_label = u'BioDIG'
 
 class FeaturelocPub(models.Model):
     featureloc_pub_id = models.IntegerField(primary_key=True)
@@ -599,6 +642,7 @@ class Organismprop(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'organismprop'
+        app_label = u'BioDIG'
 
 class FeaturePub(models.Model):
     feature_pub_id = models.IntegerField(primary_key=True)
@@ -606,6 +650,7 @@ class FeaturePub(models.Model):
     pub = models.ForeignKey(Pub)
     class Meta:
         db_table = u'feature_pub'
+        app_label = u'BioDIG'
 
 class FeaturePubprop(models.Model):
     feature_pubprop_id = models.IntegerField(primary_key=True)
@@ -615,6 +660,7 @@ class FeaturePubprop(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'feature_pubprop'
+        app_label = u'BioDIG'
 
 class Featureprop(models.Model):
     featureprop_id = models.IntegerField(primary_key=True)
@@ -624,6 +670,7 @@ class Featureprop(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'featureprop'
+        app_label = u'BioDIG'
 
 class FeatureRelationship(models.Model):
     feature_relationship_id = models.IntegerField(primary_key=True)
@@ -634,6 +681,7 @@ class FeatureRelationship(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'feature_relationship'
+        app_label = u'BioDIG'
 
 class FeatureRelationshipPub(models.Model):
     feature_relationship_pub_id = models.IntegerField(primary_key=True)
@@ -641,6 +689,7 @@ class FeatureRelationshipPub(models.Model):
     pub = models.ForeignKey(Pub)
     class Meta:
         db_table = u'feature_relationship_pub'
+        app_label = u'BioDIG'
 
 class FeaturepropPub(models.Model):
     featureprop_pub_id = models.IntegerField(primary_key=True)
@@ -648,6 +697,7 @@ class FeaturepropPub(models.Model):
     pub = models.ForeignKey(Pub)
     class Meta:
         db_table = u'featureprop_pub'
+        app_label = u'BioDIG'
 
 class FeatureDbxref(models.Model):
     feature_dbxref_id = models.IntegerField(primary_key=True)
@@ -656,6 +706,7 @@ class FeatureDbxref(models.Model):
     is_current = models.BooleanField()
     class Meta:
         db_table = u'feature_dbxref'
+        app_label = u'BioDIG'
 
 class FeatureCvterm(models.Model):
     feature_cvterm_id = models.IntegerField(primary_key=True)
@@ -666,6 +717,7 @@ class FeatureCvterm(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'feature_cvterm'
+        app_label = u'BioDIG'
 
 class FeatureCvtermprop(models.Model):
     feature_cvtermprop_id = models.IntegerField(primary_key=True)
@@ -675,6 +727,7 @@ class FeatureCvtermprop(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'feature_cvtermprop'
+        app_label = u'BioDIG'
 
 class FeatureRelationshipprop(models.Model):
     feature_relationshipprop_id = models.IntegerField(primary_key=True)
@@ -684,6 +737,7 @@ class FeatureRelationshipprop(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'feature_relationshipprop'
+        app_label = u'BioDIG'
 
 class FeatureRelationshippropPub(models.Model):
     feature_relationshipprop_pub_id = models.IntegerField(primary_key=True)
@@ -691,6 +745,7 @@ class FeatureRelationshippropPub(models.Model):
     pub = models.ForeignKey(Pub)
     class Meta:
         db_table = u'feature_relationshipprop_pub'
+        app_label = u'BioDIG'
 
 class FeatureCvtermPub(models.Model):
     feature_cvterm_pub_id = models.IntegerField(primary_key=True)
@@ -698,6 +753,7 @@ class FeatureCvtermPub(models.Model):
     pub = models.ForeignKey(Pub)
     class Meta:
         db_table = u'feature_cvterm_pub'
+        app_label = u'BioDIG'
 
 class FeatureCvtermDbxref(models.Model):
     feature_cvterm_dbxref_id = models.IntegerField(primary_key=True)
@@ -705,6 +761,7 @@ class FeatureCvtermDbxref(models.Model):
     dbxref = models.ForeignKey(Dbxref)
     class Meta:
         db_table = u'feature_cvterm_dbxref'
+        app_label = u'BioDIG'
 
 class Synonym(models.Model):
     synonym_id = models.IntegerField(primary_key=True)
@@ -713,6 +770,7 @@ class Synonym(models.Model):
     synonym_sgml = models.CharField(max_length=255)
     class Meta:
         db_table = u'synonym'
+        app_label = u'BioDIG'
 
 class FeatureSynonym(models.Model):
     feature_synonym_id = models.IntegerField(primary_key=True)
@@ -723,12 +781,14 @@ class FeatureSynonym(models.Model):
     is_internal = models.BooleanField()
     class Meta:
         db_table = u'feature_synonym'
+        app_label = u'BioDIG'
 
 class TypeFeatureCount(models.Model):
     type = models.CharField(max_length=1024)
     num_features = models.BigIntegerField()
     class Meta:
         db_table = u'type_feature_count'
+        app_label = u'BioDIG'
 
 class ProteinCodingGene(models.Model):
     feature_id = models.IntegerField()
@@ -746,6 +806,7 @@ class ProteinCodingGene(models.Model):
     timelastmodified = models.DateTimeField()
     class Meta:
         db_table = u'protein_coding_gene'
+        app_label = u'BioDIG'
 
 class IntronCombinedView(models.Model):
     exon1_id = models.IntegerField()
@@ -758,6 +819,7 @@ class IntronCombinedView(models.Model):
     transcript_id = models.IntegerField()
     class Meta:
         db_table = u'intron_combined_view'
+        app_label = u'BioDIG'
 
 class IntronlocView(models.Model):
     exon1_id = models.IntegerField()
@@ -768,6 +830,7 @@ class IntronlocView(models.Model):
     srcfeature_id = models.IntegerField()
     class Meta:
         db_table = u'intronloc_view'
+        app_label = u'BioDIG'
 
 class Analysis(models.Model):
     analysis_id = models.IntegerField(primary_key=True)
@@ -782,6 +845,7 @@ class Analysis(models.Model):
     timeexecuted = models.DateTimeField()
     class Meta:
         db_table = u'analysis'
+        app_label = u'BioDIG'
 
 class Analysisfeature(models.Model):
     analysisfeature_id = models.IntegerField(primary_key=True)
@@ -793,6 +857,7 @@ class Analysisfeature(models.Model):
     identity = models.FloatField()
     class Meta:
         db_table = u'analysisfeature'
+        app_label = u'BioDIG'
 
 class Analysisfeatureprop(models.Model):
     analysisfeatureprop_id = models.IntegerField(primary_key=True)
@@ -802,6 +867,7 @@ class Analysisfeatureprop(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'analysisfeatureprop'
+        app_label = u'BioDIG'
 
 class Analysisprop(models.Model):
     analysisprop_id = models.IntegerField(primary_key=True)
@@ -811,6 +877,7 @@ class Analysisprop(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'analysisprop'
+        app_label = u'BioDIG'
 
 class Phenotype(models.Model):
     phenotype_id = models.IntegerField(primary_key=True)
@@ -822,6 +889,7 @@ class Phenotype(models.Model):
     assay = models.ForeignKey(Cvterm, related_name = "phenotype_assay_set")
     class Meta:
         db_table = u'phenotype'
+        app_label = u'BioDIG'
 
 class PhenotypeCvterm(models.Model):
     phenotype_cvterm_id = models.IntegerField(primary_key=True)
@@ -830,6 +898,7 @@ class PhenotypeCvterm(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'phenotype_cvterm'
+        app_label = u'BioDIG'
 
 class FeaturePhenotype(models.Model):
     feature_phenotype_id = models.IntegerField(primary_key=True)
@@ -837,6 +906,7 @@ class FeaturePhenotype(models.Model):
     phenotype = models.ForeignKey(Phenotype)
     class Meta:
         db_table = u'feature_phenotype'
+        app_label = u'BioDIG'
 
 class Environment(models.Model):
     environment_id = models.IntegerField(primary_key=True)
@@ -844,6 +914,7 @@ class Environment(models.Model):
     description = models.TextField()
     class Meta:
         db_table = u'environment'
+        app_label = u'BioDIG'
 
 class Genotype(models.Model):
     genotype_id = models.IntegerField(primary_key=True)
@@ -852,6 +923,7 @@ class Genotype(models.Model):
     description = models.CharField(max_length=255)
     class Meta:
         db_table = u'genotype'
+        app_label = u'BioDIG'
 
 class EnvironmentCvterm(models.Model):
     environment_cvterm_id = models.IntegerField(primary_key=True)
@@ -859,6 +931,7 @@ class EnvironmentCvterm(models.Model):
     cvterm = models.ForeignKey(Cvterm)
     class Meta:
         db_table = u'environment_cvterm'
+        app_label = u'BioDIG'
 
 class FeatureGenotype(models.Model):
     feature_genotype_id = models.IntegerField(primary_key=True)
@@ -870,6 +943,7 @@ class FeatureGenotype(models.Model):
     cvterm = models.ForeignKey(Cvterm)
     class Meta:
         db_table = u'feature_genotype'
+        app_label = u'BioDIG'
 
 class Phenstatement(models.Model):
     phenstatement_id = models.IntegerField(primary_key=True)
@@ -880,6 +954,7 @@ class Phenstatement(models.Model):
     pub = models.ForeignKey(Pub)
     class Meta:
         db_table = u'phenstatement'
+        app_label = u'BioDIG'
 
 class PhenotypeComparison(models.Model):
     phenotype_comparison_id = models.IntegerField(primary_key=True)
@@ -893,6 +968,7 @@ class PhenotypeComparison(models.Model):
     organism = models.ForeignKey(Organism)
     class Meta:
         db_table = u'phenotype_comparison'
+        app_label = u'BioDIG'
 
 class Phendesc(models.Model):
     phendesc_id = models.IntegerField(primary_key=True)
@@ -903,6 +979,7 @@ class Phendesc(models.Model):
     pub = models.ForeignKey(Pub)
     class Meta:
         db_table = u'phendesc'
+        app_label = u'BioDIG'
 
 class PhenotypeComparisonCvterm(models.Model):
     phenotype_comparison_cvterm_id = models.IntegerField(primary_key=True)
@@ -912,6 +989,7 @@ class PhenotypeComparisonCvterm(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'phenotype_comparison_cvterm'
+        app_label = u'BioDIG'
 
 class Featuremap(models.Model):
     featuremap_id = models.IntegerField(primary_key=True)
@@ -920,6 +998,7 @@ class Featuremap(models.Model):
     unittype = models.ForeignKey(Cvterm)
     class Meta:
         db_table = u'featuremap'
+        app_label = u'BioDIG'
 
 class Featurerange(models.Model):
     featurerange_id = models.IntegerField(primary_key=True)
@@ -932,6 +1011,7 @@ class Featurerange(models.Model):
     rangestr = models.CharField(max_length=255)
     class Meta:
         db_table = u'featurerange'
+        app_label = u'BioDIG'
 
 class Featurepos(models.Model):
     featurepos_id = models.IntegerField(primary_key=True)
@@ -941,6 +1021,7 @@ class Featurepos(models.Model):
     mappos = models.FloatField()
     class Meta:
         db_table = u'featurepos'
+        app_label = u'BioDIG'
 
 class Phylotree(models.Model):
     phylotree_id = models.IntegerField(primary_key=True)
@@ -951,6 +1032,7 @@ class Phylotree(models.Model):
     comment = models.TextField()
     class Meta:
         db_table = u'phylotree'
+        app_label = u'BioDIG'
 
 class Phylonode(models.Model):
     phylonode_id = models.IntegerField(primary_key=True)
@@ -964,6 +1046,7 @@ class Phylonode(models.Model):
     distance = models.FloatField()
     class Meta:
         db_table = u'phylonode'
+        app_label = u'BioDIG'
 
 class PhylonodeDbxref(models.Model):
     phylonode_dbxref_id = models.IntegerField(primary_key=True)
@@ -971,6 +1054,7 @@ class PhylonodeDbxref(models.Model):
     dbxref = models.ForeignKey(Dbxref)
     class Meta:
         db_table = u'phylonode_dbxref'
+        app_label = u'BioDIG'
 
 class FeaturemapPub(models.Model):
     featuremap_pub_id = models.IntegerField(primary_key=True)
@@ -978,6 +1062,7 @@ class FeaturemapPub(models.Model):
     pub = models.ForeignKey(Pub)
     class Meta:
         db_table = u'featuremap_pub'
+        app_label = u'BioDIG'
 
 class PhylotreePub(models.Model):
     phylotree_pub_id = models.IntegerField(primary_key=True)
@@ -985,6 +1070,7 @@ class PhylotreePub(models.Model):
     pub = models.ForeignKey(Pub)
     class Meta:
         db_table = u'phylotree_pub'
+        app_label = u'BioDIG'
 
 class PhylonodePub(models.Model):
     phylonode_pub_id = models.IntegerField(primary_key=True)
@@ -992,6 +1078,7 @@ class PhylonodePub(models.Model):
     pub = models.ForeignKey(Pub)
     class Meta:
         db_table = u'phylonode_pub'
+        app_label = u'BioDIG'
 
 class PhylonodeOrganism(models.Model):
     phylonode_organism_id = models.IntegerField(primary_key=True)
@@ -999,6 +1086,7 @@ class PhylonodeOrganism(models.Model):
     organism = models.ForeignKey(Organism)
     class Meta:
         db_table = u'phylonode_organism'
+        app_label = u'BioDIG'
 
 class Phylonodeprop(models.Model):
     phylonodeprop_id = models.IntegerField(primary_key=True)
@@ -1008,6 +1096,7 @@ class Phylonodeprop(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'phylonodeprop'
+        app_label = u'BioDIG'
 
 
 class Contact(models.Model):
@@ -1017,6 +1106,7 @@ class Contact(models.Model):
     description = models.CharField(max_length=255)
     class Meta:
         db_table = u'contact'
+        app_label = u'BioDIG'
 
 class ContactRelationship(models.Model):
     contact_relationship_id = models.IntegerField(primary_key=True)
@@ -1025,6 +1115,7 @@ class ContactRelationship(models.Model):
     object = models.ForeignKey(Contact, related_name = "contact_relationship_object_set")
     class Meta:
         db_table = u'contact_relationship'
+        app_label = u'BioDIG'
 
 class PhylonodeRelationship(models.Model):
     phylonode_relationship_id = models.IntegerField(primary_key=True)
@@ -1035,6 +1126,7 @@ class PhylonodeRelationship(models.Model):
     phylotree = models.ForeignKey(Phylotree)
     class Meta:
         db_table = u'phylonode_relationship'
+        app_label = u'BioDIG'
 
 class Expression(models.Model):
     expression_id = models.IntegerField(primary_key=True)
@@ -1043,6 +1135,7 @@ class Expression(models.Model):
     description = models.TextField()
     class Meta:
         db_table = u'expression'
+        app_label = u'BioDIG'
 
 class ExpressionCvterm(models.Model):
     expression_cvterm_id = models.IntegerField(primary_key=True)
@@ -1052,6 +1145,7 @@ class ExpressionCvterm(models.Model):
     cvterm_type = models.ForeignKey(Cvterm, related_name = "expression_cvterm_cvterm_type_set")
     class Meta:
         db_table = u'expression_cvterm'
+        app_label = u'BioDIG'
 
 class ExpressionCvtermprop(models.Model):
     expression_cvtermprop_id = models.IntegerField(primary_key=True)
@@ -1061,6 +1155,7 @@ class ExpressionCvtermprop(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'expression_cvtermprop'
+        app_label = u'BioDIG'
 
 class Expressionprop(models.Model):
     expressionprop_id = models.IntegerField(primary_key=True)
@@ -1070,6 +1165,7 @@ class Expressionprop(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'expressionprop'
+        app_label = u'BioDIG'
 
 class FeatureExpression(models.Model):
     feature_expression_id = models.IntegerField(primary_key=True)
@@ -1078,6 +1174,7 @@ class FeatureExpression(models.Model):
     pub = models.ForeignKey(Pub)
     class Meta:
         db_table = u'feature_expression'
+        app_label = u'BioDIG'
 
 class ExpressionPub(models.Model):
     expression_pub_id = models.IntegerField(primary_key=True)
@@ -1085,6 +1182,7 @@ class ExpressionPub(models.Model):
     pub = models.ForeignKey(Pub)
     class Meta:
         db_table = u'expression_pub'
+        app_label = u'BioDIG'
 
 class FeatureExpressionprop(models.Model):
     feature_expressionprop_id = models.IntegerField(primary_key=True)
@@ -1094,6 +1192,7 @@ class FeatureExpressionprop(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'feature_expressionprop'
+        app_label = u'BioDIG'
 
 class Eimage(models.Model):
     eimage_id = models.IntegerField(primary_key=True)
@@ -1102,6 +1201,7 @@ class Eimage(models.Model):
     image_uri = models.CharField(max_length=255)
     class Meta:
         db_table = u'eimage'
+        app_label = u'BioDIG'
 
 class ExpressionImage(models.Model):
     expression_image_id = models.IntegerField(primary_key=True)
@@ -1109,6 +1209,7 @@ class ExpressionImage(models.Model):
     eimage = models.ForeignKey(Eimage)
     class Meta:
         db_table = u'expression_image'
+        app_label = u'BioDIG'
 
 class Mageml(models.Model):
     mageml_id = models.IntegerField(primary_key=True)
@@ -1116,6 +1217,7 @@ class Mageml(models.Model):
     mage_ml = models.TextField()
     class Meta:
         db_table = u'mageml'
+        app_label = u'BioDIG'
 
 class Magedocumentation(models.Model):
     magedocumentation_id = models.IntegerField(primary_key=True)
@@ -1125,6 +1227,7 @@ class Magedocumentation(models.Model):
     mageidentifier = models.TextField()
     class Meta:
         db_table = u'magedocumentation'
+        app_label = u'BioDIG'
 
 class Channel(models.Model):
     channel_id = models.IntegerField(primary_key=True)
@@ -1132,6 +1235,7 @@ class Channel(models.Model):
     definition = models.TextField()
     class Meta:
         db_table = u'channel'
+        app_label = u'BioDIG'
 
 class Protocol(models.Model):
     protocol_id = models.IntegerField(primary_key=True)
@@ -1145,6 +1249,7 @@ class Protocol(models.Model):
     softwaredescription = models.TextField()
     class Meta:
         db_table = u'protocol'
+        app_label = u'BioDIG'
 
 class Protocolparam(models.Model):
     protocolparam_id = models.IntegerField(primary_key=True)
@@ -1156,6 +1261,7 @@ class Protocolparam(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'protocolparam'
+        app_label = u'BioDIG'
 
 class Arraydesign(models.Model):
     arraydesign_id = models.IntegerField(primary_key=True)
@@ -1178,6 +1284,7 @@ class Arraydesign(models.Model):
     num_sub_rows = models.IntegerField()
     class Meta:
         db_table = u'arraydesign'
+        app_label = u'BioDIG'
 
 class Arraydesignprop(models.Model):
     arraydesignprop_id = models.IntegerField(primary_key=True)
@@ -1187,6 +1294,7 @@ class Arraydesignprop(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'arraydesignprop'
+        app_label = u'BioDIG'
 
 class Assay(models.Model):
     assay_id = models.IntegerField(primary_key=True)
@@ -1201,6 +1309,7 @@ class Assay(models.Model):
     description = models.TextField()
     class Meta:
         db_table = u'assay'
+        app_label = u'BioDIG'
 
 class AssayProject(models.Model):
     assay_project_id = models.IntegerField(primary_key=True)
@@ -1208,6 +1317,7 @@ class AssayProject(models.Model):
     project = models.ForeignKey(Project)
     class Meta:
         db_table = u'assay_project'
+        app_label = u'BioDIG'
 
 class Assayprop(models.Model):
     assayprop_id = models.IntegerField(primary_key=True)
@@ -1217,6 +1327,7 @@ class Assayprop(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'assayprop'
+        app_label = u'BioDIG'
 
 class Biomaterial(models.Model):
     biomaterial_id = models.IntegerField(primary_key=True)
@@ -1227,6 +1338,7 @@ class Biomaterial(models.Model):
     description = models.TextField()
     class Meta:
         db_table = u'biomaterial'
+        app_label = u'BioDIG'
 
 class BiomaterialDbxref(models.Model):
     biomaterial_dbxref_id = models.IntegerField(primary_key=True)
@@ -1234,6 +1346,7 @@ class BiomaterialDbxref(models.Model):
     dbxref = models.ForeignKey(Dbxref)
     class Meta:
         db_table = u'biomaterial_dbxref'
+        app_label = u'BioDIG'
 
 class BiomaterialRelationship(models.Model):
     biomaterial_relationship_id = models.IntegerField(primary_key=True)
@@ -1242,6 +1355,7 @@ class BiomaterialRelationship(models.Model):
     object = models.ForeignKey(Biomaterial, related_name = "biomaterial_relationship_object_set")
     class Meta:
         db_table = u'biomaterial_relationship'
+        app_label = u'BioDIG'
 
 class Biomaterialprop(models.Model):
     biomaterialprop_id = models.IntegerField(primary_key=True)
@@ -1251,6 +1365,7 @@ class Biomaterialprop(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'biomaterialprop'
+        app_label = u'BioDIG'
 
 class Treatment(models.Model):
     treatment_id = models.IntegerField(primary_key=True)
@@ -1261,6 +1376,7 @@ class Treatment(models.Model):
     name = models.TextField()
     class Meta:
         db_table = u'treatment'
+        app_label = u'BioDIG'
 
 class BiomaterialTreatment(models.Model):
     biomaterial_treatment_id = models.IntegerField(primary_key=True)
@@ -1271,6 +1387,7 @@ class BiomaterialTreatment(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'biomaterial_treatment'
+        app_label = u'BioDIG'
 
 class AssayBiomaterial(models.Model):
     assay_biomaterial_id = models.IntegerField(primary_key=True)
@@ -1280,6 +1397,7 @@ class AssayBiomaterial(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'assay_biomaterial'
+        app_label = u'BioDIG'
 
 class Acquisition(models.Model):
     acquisition_id = models.IntegerField(primary_key=True)
@@ -1291,6 +1409,7 @@ class Acquisition(models.Model):
     uri = models.TextField()
     class Meta:
         db_table = u'acquisition'
+        app_label = u'BioDIG'
 
 class AcquisitionRelationship(models.Model):
     acquisition_relationship_id = models.IntegerField(primary_key=True)
@@ -1301,6 +1420,7 @@ class AcquisitionRelationship(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'acquisition_relationship'
+        app_label = u'BioDIG'
 
 class Acquisitionprop(models.Model):
     acquisitionprop_id = models.IntegerField(primary_key=True)
@@ -1310,6 +1430,7 @@ class Acquisitionprop(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'acquisitionprop'
+        app_label = u'BioDIG'
 
 class Quantification(models.Model):
     quantification_id = models.IntegerField(primary_key=True)
@@ -1322,6 +1443,7 @@ class Quantification(models.Model):
     uri = models.TextField()
     class Meta:
         db_table = u'quantification'
+        app_label = u'BioDIG'
 
 class Quantificationprop(models.Model):
     quantificationprop_id = models.IntegerField(primary_key=True)
@@ -1331,6 +1453,7 @@ class Quantificationprop(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'quantificationprop'
+        app_label = u'BioDIG'
 
 class QuantificationRelationship(models.Model):
     quantification_relationship_id = models.IntegerField(primary_key=True)
@@ -1339,6 +1462,7 @@ class QuantificationRelationship(models.Model):
     object = models.ForeignKey(Quantification, related_name = "quantification_relationship_object_set")
     class Meta:
         db_table = u'quantification_relationship'
+        app_label = u'BioDIG'
 
 class Control(models.Model):
     control_id = models.IntegerField(primary_key=True)
@@ -1351,6 +1475,7 @@ class Control(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'control'
+        app_label = u'BioDIG'
 
 class Element(models.Model):
     element_id = models.IntegerField(primary_key=True)
@@ -1360,6 +1485,7 @@ class Element(models.Model):
     dbxref = models.ForeignKey(Dbxref)
     class Meta:
         db_table = u'element'
+        app_label = u'BioDIG'
 
 class Elementresult(models.Model):
     elementresult_id = models.IntegerField(primary_key=True)
@@ -1368,6 +1494,7 @@ class Elementresult(models.Model):
     signal = models.FloatField()
     class Meta:
         db_table = u'elementresult'
+        app_label = u'BioDIG'
 
 class ElementRelationship(models.Model):
     element_relationship_id = models.IntegerField(primary_key=True)
@@ -1378,6 +1505,7 @@ class ElementRelationship(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'element_relationship'
+        app_label = u'BioDIG'
 
 class Study(models.Model):
     study_id = models.IntegerField(primary_key=True)
@@ -1388,6 +1516,7 @@ class Study(models.Model):
     description = models.TextField()
     class Meta:
         db_table = u'study'
+        app_label = u'BioDIG'
 
 class StudyAssay(models.Model):
     study_assay_id = models.IntegerField(primary_key=True)
@@ -1395,6 +1524,7 @@ class StudyAssay(models.Model):
     assay = models.ForeignKey(Assay)
     class Meta:
         db_table = u'study_assay'
+        app_label = u'BioDIG'
 
 class ElementresultRelationship(models.Model):
     elementresult_relationship_id = models.IntegerField(primary_key=True)
@@ -1405,6 +1535,7 @@ class ElementresultRelationship(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'elementresult_relationship'
+        app_label = u'BioDIG'
 
 class Studydesign(models.Model):
     studydesign_id = models.IntegerField(primary_key=True)
@@ -1412,6 +1543,7 @@ class Studydesign(models.Model):
     description = models.TextField()
     class Meta:
         db_table = u'studydesign'
+        app_label = u'BioDIG'
 
 class Studydesignprop(models.Model):
     studydesignprop_id = models.IntegerField(primary_key=True)
@@ -1421,6 +1553,7 @@ class Studydesignprop(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'studydesignprop'
+        app_label = u'BioDIG'
 
 class Studyprop(models.Model):
     studyprop_id = models.IntegerField(primary_key=True)
@@ -1430,6 +1563,7 @@ class Studyprop(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'studyprop'
+        app_label = u'BioDIG'
 
 class StudypropFeature(models.Model):
     studyprop_feature_id = models.IntegerField(primary_key=True)
@@ -1438,6 +1572,7 @@ class StudypropFeature(models.Model):
     type = models.ForeignKey(Cvterm)
     class Meta:
         db_table = u'studyprop_feature'
+        app_label = u'BioDIG'
 
 class Studyfactor(models.Model):
     studyfactor_id = models.IntegerField(primary_key=True)
@@ -1447,6 +1582,7 @@ class Studyfactor(models.Model):
     description = models.TextField()
     class Meta:
         db_table = u'studyfactor'
+        app_label = u'BioDIG'
 
 class Studyfactorvalue(models.Model):
     studyfactorvalue_id = models.IntegerField(primary_key=True)
@@ -1457,6 +1593,7 @@ class Studyfactorvalue(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'studyfactorvalue'
+        app_label = u'BioDIG'
 
 class Stock(models.Model):
     stock_id = models.IntegerField(primary_key=True)
@@ -1469,6 +1606,7 @@ class Stock(models.Model):
     is_obsolete = models.BooleanField()
     class Meta:
         db_table = u'stock'
+        app_label = u'BioDIG'
 
 class StockPub(models.Model):
     stock_pub_id = models.IntegerField(primary_key=True)
@@ -1476,6 +1614,7 @@ class StockPub(models.Model):
     pub = models.ForeignKey(Pub)
     class Meta:
         db_table = u'stock_pub'
+        app_label = u'BioDIG'
 
 class StockRelationship(models.Model):
     stock_relationship_id = models.IntegerField(primary_key=True)
@@ -1486,6 +1625,7 @@ class StockRelationship(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'stock_relationship'
+        app_label = u'BioDIG'
 
 class StockRelationshipPub(models.Model):
     stock_relationship_pub_id = models.IntegerField(primary_key=True)
@@ -1502,6 +1642,7 @@ class Stockprop(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'stockprop'
+        app_label = u'BioDIG'
 
 class StockpropPub(models.Model):
     stockprop_pub_id = models.IntegerField(primary_key=True)
@@ -1509,6 +1650,7 @@ class StockpropPub(models.Model):
     pub = models.ForeignKey(Pub)
     class Meta:
         db_table = u'stockprop_pub'
+        app_label = u'BioDIG'
 
 class StockDbxref(models.Model):
     stock_dbxref_id = models.IntegerField(primary_key=True)
@@ -1517,6 +1659,7 @@ class StockDbxref(models.Model):
     is_current = models.BooleanField()
     class Meta:
         db_table = u'stock_dbxref'
+        app_label = u'BioDIG'
 
 class StockCvterm(models.Model):
     stock_cvterm_id = models.IntegerField(primary_key=True)
@@ -1525,6 +1668,7 @@ class StockCvterm(models.Model):
     pub = models.ForeignKey(Pub)
     class Meta:
         db_table = u'stock_cvterm'
+        app_label = u'BioDIG'
 
 class StockGenotype(models.Model):
     stock_genotype_id = models.IntegerField(primary_key=True)
@@ -1532,6 +1676,7 @@ class StockGenotype(models.Model):
     genotype = models.ForeignKey(Genotype)
     class Meta:
         db_table = u'stock_genotype'
+        app_label = u'BioDIG'
 
 class Stockcollection(models.Model):
     stockcollection_id = models.IntegerField(primary_key=True)
@@ -1541,6 +1686,7 @@ class Stockcollection(models.Model):
     uniquename = models.TextField()
     class Meta:
         db_table = u'stockcollection'
+        app_label = u'BioDIG'
 
 class StockcollectionStock(models.Model):
     stockcollection_stock_id = models.IntegerField(primary_key=True)
@@ -1548,6 +1694,7 @@ class StockcollectionStock(models.Model):
     stock = models.ForeignKey(Stock)
     class Meta:
         db_table = u'stockcollection_stock'
+        app_label = u'BioDIG'
 
 class Stockcollectionprop(models.Model):
     stockcollectionprop_id = models.IntegerField(primary_key=True)
@@ -1557,6 +1704,7 @@ class Stockcollectionprop(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'stockcollectionprop'
+        app_label = u'BioDIG'
 
 class Library(models.Model):
     library_id = models.IntegerField(primary_key=True)
@@ -1569,6 +1717,7 @@ class Library(models.Model):
     timelastmodified = models.DateTimeField()
     class Meta:
         db_table = u'library'
+        app_label = u'BioDIG'
 
 class Libraryprop(models.Model):
     libraryprop_id = models.IntegerField(primary_key=True)
@@ -1578,6 +1727,7 @@ class Libraryprop(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'libraryprop'
+        app_label = u'BioDIG'
 
 class LibrarypropPub(models.Model):
     libraryprop_pub_id = models.IntegerField(primary_key=True)
@@ -1585,6 +1735,7 @@ class LibrarypropPub(models.Model):
     pub = models.ForeignKey(Pub)
     class Meta:
         db_table = u'libraryprop_pub'
+        app_label = u'BioDIG'
 
 class LibrarySynonym(models.Model):
     library_synonym_id = models.IntegerField(primary_key=True)
@@ -1595,6 +1746,7 @@ class LibrarySynonym(models.Model):
     is_internal = models.BooleanField()
     class Meta:
         db_table = u'library_synonym'
+        app_label = u'BioDIG'
 
 class LibraryPub(models.Model):
     library_pub_id = models.IntegerField(primary_key=True)
@@ -1602,6 +1754,7 @@ class LibraryPub(models.Model):
     pub = models.ForeignKey(Pub)
     class Meta:
         db_table = u'library_pub'
+        app_label = u'BioDIG'
 
 class LibraryFeature(models.Model):
     library_feature_id = models.IntegerField(primary_key=True)
@@ -1609,6 +1762,7 @@ class LibraryFeature(models.Model):
     feature = models.ForeignKey(Feature)
     class Meta:
         db_table = u'library_feature'
+        app_label = u'BioDIG'
 
 class LibraryCvterm(models.Model):
     library_cvterm_id = models.IntegerField(primary_key=True)
@@ -1617,6 +1771,7 @@ class LibraryCvterm(models.Model):
     pub = models.ForeignKey(Pub)
     class Meta:
         db_table = u'library_cvterm'
+        app_label = u'BioDIG'
 
 class LibraryDbxref(models.Model):
     library_dbxref_id = models.IntegerField(primary_key=True)
@@ -1625,6 +1780,7 @@ class LibraryDbxref(models.Model):
     is_current = models.BooleanField()
     class Meta:
         db_table = u'library_dbxref'
+        app_label = u'BioDIG'
 
 class CellLine(models.Model):
     cell_line_id = models.IntegerField(primary_key=True)
@@ -1635,6 +1791,7 @@ class CellLine(models.Model):
     timelastmodified = models.DateTimeField()
     class Meta:
         db_table = u'cell_line'
+        app_label = u'BioDIG'
 
 class CellLineFeature(models.Model):
     cell_line_feature_id = models.IntegerField(primary_key=True)
@@ -1643,6 +1800,7 @@ class CellLineFeature(models.Model):
     pub = models.ForeignKey(Pub)
     class Meta:
         db_table = u'cell_line_feature'
+        app_label = u'BioDIG'
 
 class CellLineprop(models.Model):
     cell_lineprop_id = models.IntegerField(primary_key=True)
@@ -1652,6 +1810,7 @@ class CellLineprop(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'cell_lineprop'
+        app_label = u'BioDIG'
 
 class CellLinepropPub(models.Model):
     cell_lineprop_pub_id = models.IntegerField(primary_key=True)
@@ -1659,6 +1818,7 @@ class CellLinepropPub(models.Model):
     pub = models.ForeignKey(Pub)
     class Meta:
         db_table = u'cell_lineprop_pub'
+        app_label = u'BioDIG'
 
 class CellLineRelationship(models.Model):
     cell_line_relationship_id = models.IntegerField(primary_key=True)
@@ -1667,6 +1827,7 @@ class CellLineRelationship(models.Model):
     type = models.ForeignKey(Cvterm)
     class Meta:
         db_table = u'cell_line_relationship'
+        app_label = u'BioDIG'
 
 class CellLineDbxref(models.Model):
     cell_line_dbxref_id = models.IntegerField(primary_key=True)
@@ -1675,6 +1836,7 @@ class CellLineDbxref(models.Model):
     is_current = models.BooleanField()
     class Meta:
         db_table = u'cell_line_dbxref'
+        app_label = u'BioDIG'
 
 class CellLineSynonym(models.Model):
     cell_line_synonym_id = models.IntegerField(primary_key=True)
@@ -1685,6 +1847,7 @@ class CellLineSynonym(models.Model):
     is_internal = models.BooleanField()
     class Meta:
         db_table = u'cell_line_synonym'
+        app_label = u'BioDIG'
 
 class CellLineCvterm(models.Model):
     cell_line_cvterm_id = models.IntegerField(primary_key=True)
@@ -1694,6 +1857,7 @@ class CellLineCvterm(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'cell_line_cvterm'
+        app_label = u'BioDIG'
 
 class CellLineCvtermprop(models.Model):
     cell_line_cvtermprop_id = models.IntegerField(primary_key=True)
@@ -1703,12 +1867,14 @@ class CellLineCvtermprop(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'cell_line_cvtermprop'
+        app_label = u'BioDIG'
 
 class FeatureDisjoint(models.Model):
     subject_id = models.IntegerField()
     object_id = models.IntegerField()
     class Meta:
         db_table = u'feature_disjoint'
+        app_label = u'BioDIG'
 
 class FeatureUnion(models.Model):
     subject_id = models.IntegerField()
@@ -1720,6 +1886,7 @@ class FeatureUnion(models.Model):
     fmax = models.IntegerField()
     class Meta:
         db_table = u'feature_union'
+        app_label = u'BioDIG'
 
 class CellLinePub(models.Model):
     cell_line_pub_id = models.IntegerField(primary_key=True)
@@ -1727,6 +1894,7 @@ class CellLinePub(models.Model):
     pub = models.ForeignKey(Pub)
     class Meta:
         db_table = u'cell_line_pub'
+        app_label = u'BioDIG'
 
 class FeatureIntersection(models.Model):
     subject_id = models.IntegerField()
@@ -1738,6 +1906,7 @@ class FeatureIntersection(models.Model):
     fmax = models.IntegerField()
     class Meta:
         db_table = u'feature_intersection'
+        app_label = u'BioDIG'
 
 class FeatureDifference(models.Model):
     subject_id = models.IntegerField()
@@ -1748,6 +1917,7 @@ class FeatureDifference(models.Model):
     strand = models.IntegerField()
     class Meta:
         db_table = u'feature_difference'
+        app_label = u'BioDIG'
 
 class FeatureDistance(models.Model):
     subject_id = models.IntegerField()
@@ -1758,6 +1928,7 @@ class FeatureDistance(models.Model):
     distance = models.IntegerField()
     class Meta:
         db_table = u'feature_distance'
+        app_label = u'BioDIG'
 
 class CellLineLibrary(models.Model):
     cell_line_library_id = models.IntegerField(primary_key=True)
@@ -1766,6 +1937,7 @@ class CellLineLibrary(models.Model):
     pub = models.ForeignKey(Pub)
     class Meta:
         db_table = u'cell_line_library'
+        app_label = u'BioDIG'
 
 class Gff3View(models.Model):
     feature_id = models.IntegerField()
@@ -1782,6 +1954,7 @@ class Gff3View(models.Model):
     organism_id = models.IntegerField()
     class Meta:
         db_table = u'gff3view'
+        app_label = u'BioDIG'
 
 class AllFeatureNames(models.Model):
     feature_id = models.IntegerField()
@@ -1789,6 +1962,7 @@ class AllFeatureNames(models.Model):
     organism_id = models.IntegerField()
     class Meta:
         db_table = u'all_feature_names'
+        app_label = u'BioDIG'
 
 class Dfeatureloc(models.Model):
     featureloc_id = models.IntegerField()
@@ -1805,6 +1979,7 @@ class Dfeatureloc(models.Model):
     rank = models.IntegerField()
     class Meta:
         db_table = u'dfeatureloc'
+        app_label = u'BioDIG'
 
 class FType(models.Model):
     feature_id = models.IntegerField()
@@ -1819,6 +1994,7 @@ class FType(models.Model):
     timelastmodified = models.DateTimeField()
     class Meta:
         db_table = u'f_type'
+        app_label = u'BioDIG'
 
 class FnrType(models.Model):
     feature_id = models.IntegerField()
@@ -1833,6 +2009,7 @@ class FnrType(models.Model):
     timelastmodified = models.DateTimeField()
     class Meta:
         db_table = u'fnr_type'
+        app_label = u'BioDIG'
 
 class FLoc(models.Model):
     feature_id = models.IntegerField()
@@ -1843,6 +2020,7 @@ class FLoc(models.Model):
     strand = models.SmallIntegerField()
     class Meta:
         db_table = u'f_loc'
+        app_label = u'BioDIG'
 
 class FpKey(models.Model):
     feature_id = models.IntegerField()
@@ -1850,30 +2028,35 @@ class FpKey(models.Model):
     value = models.TextField()
     class Meta:
         db_table = u'fp_key'
+        app_label = u'BioDIG'
 
 class FeatureMeets(models.Model):
     subject_id = models.IntegerField()
     object_id = models.IntegerField()
     class Meta:
         db_table = u'feature_meets'
+        app_label = u'BioDIG'
 
 class FeatureMeetsOnSameStrand(models.Model):
     subject_id = models.IntegerField()
     object_id = models.IntegerField()
     class Meta:
         db_table = u'feature_meets_on_same_strand'
+        app_label = u'BioDIG'
 
 class FeatureContains(models.Model):
     subject_id = models.IntegerField()
     object_id = models.IntegerField()
     class Meta:
         db_table = u'feature_contains'
+        app_label = u'BioDIG'
 
 class FeaturesetMeets(models.Model):
     subject_id = models.IntegerField()
     object_id = models.IntegerField()
     class Meta:
         db_table = u'featureset_meets'
+        app_label = u'BioDIG'
 
 class MaterializedView(models.Model):
     materialized_view_id = models.IntegerField()
@@ -1888,6 +2071,7 @@ class MaterializedView(models.Model):
     special_index = models.TextField()
     class Meta:
         db_table = u'materialized_view'
+        app_label = u'BioDIG'
 
 class GffSortTmp(models.Model):
     refseq = models.CharField(max_length=4000)
@@ -1897,6 +2081,7 @@ class GffSortTmp(models.Model):
     row_id = models.IntegerField(primary_key=True)
     class Meta:
         db_table = u'gff_sort_tmp'
+        app_label = u'BioDIG'
 
 class GffMeta(models.Model):
     name = models.CharField(max_length=100)
@@ -1904,6 +2089,7 @@ class GffMeta(models.Model):
     starttime = models.DateTimeField()
     class Meta:
         db_table = u'gff_meta'
+        app_label = u'BioDIG'
 
 class OrthologGraph(models.Model):
     ortholog_graph_id = models.IntegerField(primary_key=True)
@@ -1911,6 +2097,7 @@ class OrthologGraph(models.Model):
     feature_b = models.ForeignKey(Feature, db_column='feature_b', related_name = "ortholog_graph_feature_b_set")
     class Meta:
         db_table = u'ortholog_graph'
+        app_label = u'BioDIG'
 
 class TmpGffLoadCache(models.Model):
     feature_id = models.IntegerField()
@@ -1919,6 +2106,7 @@ class TmpGffLoadCache(models.Model):
     organism_id = models.IntegerField()
     class Meta:
         db_table = u'tmp_gff_load_cache'
+        app_label = u'BioDIG'
 
 class TmpCdsHandler(models.Model):
     cds_row_id = models.IntegerField(primary_key=True)
@@ -1930,6 +2118,7 @@ class TmpCdsHandler(models.Model):
     object = models.TextField()
     class Meta:
         db_table = u'tmp_cds_handler'
+        app_label = u'BioDIG'
 
 class TmpCdsHandlerRelationship(models.Model):
     rel_row_id = models.IntegerField(primary_key=True)
@@ -1938,6 +2127,7 @@ class TmpCdsHandlerRelationship(models.Model):
     grandparent_id = models.CharField(max_length=1024)
     class Meta:
         db_table = u'tmp_cds_handler_relationship'
+        app_label = u'BioDIG'
 
 ### ------------------------------- ###
 #   Gene Links to link the Two DB's   #
@@ -1952,6 +2142,7 @@ class GeneLink(models.Model):
     isPrivate = models.BooleanField(default=True)
     class Meta:
         db_table = u'genelink'
+        app_label = u'BioDIG'
         unique_together = ('tag', 'feature')
     
     def readPermissions(self, user):
@@ -2007,5 +2198,6 @@ class PictureDefinitionTag(models.Model):
     organism = models.ForeignKey(Organism)
     class Meta:
         db_table = u'picturedefinitiontag'
+        app_label = u'BioDIG'
     def __unicode__(self):
         return ", ".join((str(self.picture.imageName), str(self.organism.common_name)))
