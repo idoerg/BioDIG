@@ -5,9 +5,9 @@
 	Author: Andrew Oberlin
 	Date: July 23, 2012
 '''
-from renderEngine.AjaxApplicationBase import WebServiceApplicationBase
-from renderEngine.WebServiceObject import WebServiceObject
-import taxon_home.views.util.ErrorConstants as Errors
+from base.renderEngine.AjaxApplicationBase import WebServiceApplicationBase
+from base.renderEngine.WebServiceObject import WebServiceObject
+import base.util.ErrorConstants as Errors
 from django.views.decorators.csrf import csrf_exempt
 import api.API as API
 
@@ -16,9 +16,11 @@ class Application(WebServiceApplicationBase):
 		renderObj = WebServiceObject()
 		try:
 			if request.method == "GET":
-				renderObj = API.getTagGroups(request)
+				renderObj = API.getGeneLinks(request, request.key)
 			elif request.method == "POST":
-				renderObj = API.createTagGroup(request)
+				renderObj = API.createGeneLinks(request, request.key)
+                        elif request.method == "DELETE":
+                                renderObj = API.deleteGeneLinks(request, request.key)
 			else:
 				renderObj.setError(Errors.INVALID_METHOD.setCustom(request.method))
 		except Errors.WebServiceException as e:

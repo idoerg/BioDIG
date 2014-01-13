@@ -1,5 +1,5 @@
 import base.util.ErrorConstants as Errors
-from base.models import Tag
+from base.models import GeneLink
 from django.core.exceptions import ObjectDoesNotExist
 from renderEngine.WebServiceObject import WebServiceObject
 
@@ -10,32 +10,31 @@ class GetAPI:
         self.fields = fields
     
     '''
-        Gets all the tags in the database that are private
+        Gets all the geneLinks in the database that are private
     '''
-    def getTag(self, tagKey, isKey=True):
+    def getGeneLink(self, geneLinkKey, isKey=True):
         metadata = WebServiceObject()
         
         try:            
             if (isKey):
-                tag = Tag.objects.get(pk__exact=tagKey)
+                geneLink = GeneLink.objects.get(pk__exact=geneLinkKey)
             else:
-                tag = tagKey
+                geneLink = geneLinkKey
         except (ObjectDoesNotExist, ValueError):
             raise Errors.INVALID_TAG_GROUP_KEY
         except Exception:
             raise Errors.INTERNAL_ERROR
         
-        if not tag.readPermissions(self.user):
+        if not geneLink.readPermissions(self.user):
             raise Errors.AUTHENTICATION
 
         metadata.limitFields(self.fields)
                 
-        metadata.put('name', tag.name)
-        metadata.put('color', tag.color)
-        metadata.put('group', tag.group)
-        metadata.put('dateCreated', tag.dateCreated.strftime("%Y-%m-%d %H:%M:%S"))
-        metadata.put('lastModified', tag.lastModified.strftime("%Y-%m-%d %H:%M:%S"))
-        metadata.put('user', tag.user)
-        metadata.put('isPrivate', tag.isPrivate)
+        metadata.put('tag', geneLink.pk)
+        metadata.put('feature', geneLink.feature)
+        metadata.put('dateCreated', geneLink.dateCreated.strftime("%Y-%m-%d %H:%M:%S"))
+        metadata.put('lastModified', geneLink.lastModified.strftime("%Y-%m-%d %H:%M:%S"))
+        metadata.put('user', geneLink.user)
+        metadata.put('isPrivate', geneLink.isPrivate)
         
         return metadata
