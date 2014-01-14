@@ -5,8 +5,8 @@ Created on Nov 3, 2013
 '''
 from models import TagGroup
 from rest_framework import serializers
-import biodigWSC.swagger.decorators.Models as Models
-import biodigWSC.swagger.decorators.Types as Types
+import biodig.swagger.decorators.Models as Models
+import biodig.swagger.decorators.Types as Types
 
 @Models.Property('id', Types.Integer)
 @Models.Property('name', Types.String)

@@ -11,7 +11,7 @@ class TagGroupList(APIView):
        searching through the TagGroups.
     '''
 
-    def get(self, request)
+    def get(self, request):
         '''
             Method for getting multiple TagGroups either thorugh search
             or general listing.
