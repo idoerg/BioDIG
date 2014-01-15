@@ -8,14 +8,6 @@ class DateTimeRangeField(Field):
         'invalid_range' : 'A date filter was given with action "range" with less than two dates.',
         'invalid_date' : 'A date filter was given with incorrect date format. Please use iso-8601.'
     }
-    
-    
-    def __init__(self, *args, **kwargs):
-        '''
-            Constructs a DateTimeRangeField the same way that
-            one would construct a Field
-        '''
-        super(Field, self).__init__(*args, **kwargs)
         
     def to_python(self, value):
         '''
