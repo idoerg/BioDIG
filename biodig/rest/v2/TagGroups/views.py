@@ -20,7 +20,7 @@ class TagGroupList(APIView):
         if not form.is_valid():
             raise BadRequestException()
 
-        return Response(form.submit())
+        return Response(form.submit(request))
 
     def post(self, request):
         '''
@@ -33,7 +33,7 @@ class TagGroupList(APIView):
         if not form.is_valid():
             raise BadRequestException()
 
-        return Response(form.submit())
+        return Response(form.submit(request))
 
 
 class TagGroupSingle(APIView):
@@ -54,7 +54,7 @@ class TagGroupSingle(APIView):
         if not form.is_valid():
             raise BadRequestException()
 
-        return Response(form.submit())
+        return Response(form.submit(request))
 
     def put(self, request, tag_group_id):
         '''
@@ -68,7 +68,7 @@ class TagGroupSingle(APIView):
         if not form.is_valid():
             raise BadRequestException()
 
-        return Response(form.submit())
+        return Response(form.submit(request))
 
     def delete(self, request, tag_group_id):
         '''
@@ -81,4 +81,4 @@ class TagGroupSingle(APIView):
         if not form.is_valid():
             raise BadRequestException()
 
-        return Response(form.submit())
+        return Response(form.submit(request))
