@@ -42,11 +42,11 @@ class MultiGetForm(forms.Form):
             query = query.filter(isPrivate=False)
         
         # if a name was given then we will filter by it
-        if self.cleaned_data['name']: query = query.filter(name__in=self.cleaned_data['name'])
+        if self.cleaned_data['name']: query = query.filter(name__exact=self.cleaned_data['name'])
         
-        if self.cleaned_data['image']: query = query.filter(picture__pk__in=self.cleaned_data['image'])
+        if self.cleaned_data['image']: query = query.filter(picture__pk__exact=self.cleaned_data['image'])
             
-        if self.cleaned_data['user']: query = query.filter(user__pk__in=self.cleaned_data['user'])
+        if self.cleaned_data['user']: query = query.filter(user__pk__exact=self.cleaned_data['user'])
             
         if self.cleaned_data['lastModified']:
             query = query.filter(**self.cleaned_data['lastModified'].filterParams())
