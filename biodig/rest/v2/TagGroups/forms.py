@@ -49,10 +49,10 @@ class MultiGetForm(forms.Form):
         if self.cleaned_data['user']: query = query.filter(user__pk__exact=self.cleaned_data['user'])
             
         if self.cleaned_data['lastModified']:
-            query = query.filter(**self.cleaned_data['lastModified'].filterParams())
+            query = query.filter(**self.cleaned_data['lastModified'].filterParams('lastModified'))
             
         if self.cleaned_data['dateCreated']:
-            query = query.filter(**self.cleaned_data['dateCreated'].filterParams())
+            query = query.filter(**self.cleaned_data['dateCreated'].filterParams('dateCreated'))
             
         if not self.cleaned_data['limit'] or self.cleaned_data['limit'] < 0:
             query = query[self.cleaned_data['offset']:]
