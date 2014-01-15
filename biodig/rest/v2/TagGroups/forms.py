@@ -8,7 +8,7 @@
 '''
 from django import forms
 from biodig.base.models import TagGroup
-from biodig.base.util import Util
+from biodig.base import forms as bioforms
 from biodig.base.serializers import TagGroupSerializer
 
 class MultiGetForm(forms.Form):
@@ -16,8 +16,8 @@ class MultiGetForm(forms.Form):
     offset = forms.IntegerField(required=False)
     limit = forms.IntegerField(required=False)
     # Tag Group filters
-    lastModified = Util.DateTimeRangeField(required=False)
-    dateCreated = Util.DateTimeRangeField(required=False)
+    lastModified = bioforms.DateTimeRangeField(required=False)
+    dateCreated = bioforms.DateTimeRangeField(required=False)
     user = forms.IntegerField(required=False)
     image = forms.IntegerField(required=False)
     name = forms.CharField(required=False)
