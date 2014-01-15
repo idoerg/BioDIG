@@ -1,5 +1,6 @@
 *.pyc
 .project
+.settings
 .pydevproject
 .DS_STORE
 .viminfo

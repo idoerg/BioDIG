@@ -1,9 +1,8 @@
 from biodig.base.exceptions import BadRequestException
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
 
-from biodig.rest.v2.TagGroups.forms import MultiGetForm, PostForm, PutForm, SingleGetForm
+from biodig.rest.v2.TagGroups.forms import MultiGetForm, PostForm, PutForm, DeleteForm, SingleGetForm
 
 class TagGroupList(APIView):
     '''
@@ -13,7 +12,7 @@ class TagGroupList(APIView):
 
     def get(self, request):
         '''
-            Method for getting multiple TagGroups either thorugh search
+            Method for getting multiple TagGroups either through search
             or general listing.
         '''
         form = MultiGetForm(request.QUERY_PARAMS)
@@ -50,7 +49,7 @@ class TagGroupSingle(APIView):
         '''
         params = { key : val for key, val in request.QUERY_PARAMS }
         params['id'] = tag_group_id
-        form = MultiGetForm(params)
+        form = SingleGetForm(params)
         
         if not form.is_valid():
             raise BadRequestException()

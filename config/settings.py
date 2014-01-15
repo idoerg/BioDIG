@@ -187,6 +187,8 @@ LOGGING = {
 }
 
 REST_FRAMEWORK = {
+    'PAGINATE_BY': 10,
+    'MAX_PAGINATE_BY': 25,
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
