@@ -7,9 +7,9 @@
     @author: Andrew Oberlin
 '''
 from django import forms
-from biodig.base.models import TagGroup, Picture
+from biodig.base.models import Tag, TagGroup, Picture
 from biodig.base import forms as bioforms
-from biodig.base.serializers import TagGroupSerializer
+from biodig.base.serializers import TagSerializer
 from biodig.base.exceptions import ImageDoesNotExist, DatabaseIntegrity, TagGroupDoesNotExist
 from rest_framework.exceptions import PermissionDenied
 from django.db import transaction, DatabaseError

@@ -2,9 +2,9 @@ from biodig.base.exceptions import BadRequestException
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from biodig.rest.v2.TagGroups.forms import MultiGetForm, PostForm, PutForm, DeleteForm, SingleGetForm
+from biodig.rest.v2.Tags.forms import MultiGetForm, PostForm, PutForm, DeleteForm, SingleGetForm
 
-class TagGroupList(APIView):
+class TagList(APIView):
     '''
        Class for rendering the view for creating TagGroups and
        searching through the TagGroups.
@@ -36,7 +36,7 @@ class TagGroupList(APIView):
         return Response(form.submit(request))
 
 
-class TagGroupSingle(APIView):
+class TagSingle(APIView):
     '''
        Class for rendering the view for getting a TagGroup, deleting a TagGroup
        and updating a TagGroup. 

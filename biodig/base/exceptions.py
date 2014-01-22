@@ -12,7 +12,14 @@ class ImageDoesNotExist(APIException):
         Image does not exist error.
     '''
     status_code = 404
-    detail = "The image key provided does not refer to an image in this database."
+    detail = "The image id provided does not refer to an image in this database."
+    
+class TagGroupDoesNotExist(APIException):
+    '''
+        Tag Group does not exist error.
+    '''
+    status_code = 404
+    detail = "The tag group id provided does not refer to a tag group in this database."
     
 class DatabaseIntegrity(APIException):
     '''

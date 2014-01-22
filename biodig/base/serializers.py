@@ -3,7 +3,7 @@ Created on Nov 3, 2013
 
 @author: Andrew Oberlin
 '''
-from models import TagGroup
+from models import TagGroup, Tag
 from rest_framework import serializers
 import biodig.swagger.decorators.Models as Models
 import biodig.swagger.decorators.Types as Types
@@ -17,7 +17,24 @@ import biodig.swagger.decorators.Types as Types
 @Models.Property('isPrivate', Types.Boolean)
 class TagGroupSerializer(serializers.ModelSerializer):
     image = serializers.PrimaryKeyRelatedField(source='picture')
+    owner = serializers.PrimaryKeyRelatedField(source='user')
     
     class Meta:
         model = TagGroup
         fields = ('id', 'name', 'image', 'user', 'dateCreated', 'lastModified', 'isPrivate')
+        
+        
+@Models.Property('id', Types.Integer)
+@Models.Property('name', Types.String)
+@Models.Property('group', Types.Integer)
+@Models.Property('owner', Types.Integer)
+@Models.Property('color', Types.String)
+@Models.Property('dateCreated', Types.Date)
+@Models.Property('lastModified', Types.Date)
+@Models.Property('isPrivate', Types.Boolean)
+class TagSerializer(serializers.ModelSerializer):
+    owner = serializers.PrimaryKeyRelatedField(source='user')
+    
+    class Meta:
+        model = Tag
+        fields = ('id', 'name', 'color', 'group', 'user', 'dateCreated', 'lastModified', 'isPrivate')
