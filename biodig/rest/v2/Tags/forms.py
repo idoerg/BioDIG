@@ -1,8 +1,8 @@
 '''
     This file holds all of the forms for the cleaning and validation of
-    the parameters being used for Tag Groups.
+    the parameters being used for Tags.
     
-    Created on January 13, 2013
+    Created on February 10, 2013
 
     @author: Andrew Oberlin
 '''
@@ -19,11 +19,12 @@ class MultiGetForm(forms.Form):
     # Query Parameters
     offset = forms.IntegerField(required=False)
     limit = forms.IntegerField(required=False)
-    # Tag Group filters
+    # Tag filters
     lastModified = bioforms.DateTimeRangeField(required=False)
     dateCreated = bioforms.DateTimeRangeField(required=False)
     user = forms.IntegerField(required=False)
-    image = forms.IntegerField(required=False)
+    tag_group_id = forms.IntegerField(required=True)
+    image_id = forms.IntegerField(required=True)
     name = forms.CharField(required=False)
 
     def clean(self):
@@ -33,73 +34,81 @@ class MultiGetForm(forms.Form):
 
     def submit(self, request):
         '''
-            Submits the form for getting multiple TagGroups
+            Submits the form for getting multiple Tags
             once the form has cleaned the input data.
         '''
-        query = TagGroup.objects.all()
+        qbuild = bioforms.QueryBuilder(Tag)
+        
+        # find the tag group that contains the tag
+        try:
+            group = TagGroup.objects.get(pk__exact=self.cleaned_data['tag_group_id'], picture__exact=self.cleaned_data['image_id'])
+            
+            # check tag group permissions
+            if not group.readPermissions(request.user):
+                raise PermissionDenied()
+            
+            qbuild.filter('group', group, match='')
+        except (TagGroup.DoesNotExist, ValueError):
+            raise TagGroupDoesNotExist()
         
         # add permissions to query
         if request.user and request.user.is_authenticated():
             if not request.user.is_staff:
-                query = query.filter(isPrivate = False) | TagGroup.objects.filter(user__pk__exact=request.user.pk)
+                qbuild.q = qbuild().filter(isPrivate = False) | Tag.objects.filter(user__pk__exact=request.user.pk)
         else:
-            query = query.filter(isPrivate=False)
+            qbuild.q = qbuild().filter(isPrivate=False)
         
-        # if a name was given then we will filter by it
-        if self.cleaned_data['name']: query = query.filter(name__exact=self.cleaned_data['name'])
-        
-        if self.cleaned_data['image']: query = query.filter(picture__pk__exact=self.cleaned_data['image'])
-            
-        if self.cleaned_data['user']: query = query.filter(user__pk__exact=self.cleaned_data['user'])
-            
-        if self.cleaned_data['lastModified']:
-            query = query.filter(**self.cleaned_data['lastModified'].filterParams('lastModified'))
-            
-        if self.cleaned_data['dateCreated']:
-            query = query.filter(**self.cleaned_data['dateCreated'].filterParams('dateCreated'))
+        filterkeys = ['name', 'user', 'lastModified', 'dateCreated']
+        for key in filterkeys:
+            qbuild.filter(key, self.cleaned_data[key])
             
         if not self.cleaned_data['limit'] or self.cleaned_data['limit'] < 0:
-            query = query[self.cleaned_data['offset']:]
+            qbuild.q = qbuild()[self.cleaned_data['offset']:]
         else:
-            query = query[self.cleaned_data['offset'] : self.cleaned_data['offset']+self.cleaned_data['limit']]
+            qbuild.q = qbuild()[self.cleaned_data['offset'] : self.cleaned_data['offset']+self.cleaned_data['limit']]
 
-        return TagGroupSerializer(query, many=True).data
+        return TagSerializer(qbuild(), many=True).data
 
 class PostForm(forms.Form):
-    image = forms.IntegerField(required=True)
+    image_id = forms.IntegerField(required=True)
+    tag_group_id = forms.IntegerField(required=True)
     name = forms.CharField(required=True)
+    points = bioforms.JsonField(required=True)
+    color = bioforms.JsonField(required=True)
 
     def clean(self):
         '''
             Cleans the data and checks to see if the image id is
             a valid input.
         '''
-        if self.cleaned_data['image'] < 0: raise ValidationError("The given image id is incorrect.")
+        if self.cleaned_data['image_id'] < 0: raise ValidationError("The given image id is incorrect.")
+        if self.cleaned_data['tag_group_id'] < 0: raise ValidationError("The given tag group id is incorrect.")
         return self.cleaned_data
     
     @transaction.commit_on_success
     def submit(self, request):
         '''
-            Submits the form for creating a TagGroup
+            Submits the form for creating a Tag
             once the form has cleaned the input data.
         '''
         try:
-            image = Picture.objects.get(pk__exact=self.cleaned_data['image'])
-        except (Picture.DoesNotExist, ValueError):
-            raise ImageDoesNotExist()
-        
-        if not image.writePermissions(request.user):
-            raise PermissionDenied()
+            group = TagGroup.objects.get(pk__exact=self.cleaned_data['tag_group_id'], picture__exact=self.cleaned_data['image_id'])
+            
+            # check tag group permissions
+            if not group.writePermissions(request.user):
+                raise PermissionDenied()
+        except (TagGroup.DoesNotExist, ValueError):
+            raise TagGroupDoesNotExist()
         
         # start saving the new tag now that it has passed all tests
-        tagGroup = TagGroup(name=self.cleaned_data['name'], picture=image, user=request.user)
+        tag = Tag()
         try:
-            tagGroup.save()
+            tag.save()
         except DatabaseError:
             transaction.rollback()
             raise DatabaseIntegrity()
 
-        return TagGroupSerializer(tagGroup).data
+        return TagSerializer(tag).data
 
 class DeleteForm(forms.Form):
     tag_group_id = forms.IntegerField(required=True)
@@ -126,7 +135,7 @@ class DeleteForm(forms.Form):
         if not group.writePermissions(request.user):
             raise PermissionDenied()
        
-        serialized = TagGroupSerializer(group).data
+        serialized = TagSerializer(group).data
 
         try:
             group.delete()
@@ -149,7 +158,7 @@ class PutForm(forms.Form):
     @transaction.commit_on_success
     def submit(self, request):
         '''
-            Submits the form for updating a TagGroup
+            Submits the form for updating a Tag
             once the form has cleaned the input data.
         '''
         try:
@@ -170,7 +179,7 @@ class PutForm(forms.Form):
             transaction.rollback()
             raise DatabaseIntegrity()
 
-        return TagGroupSerializer(group).data
+        return TagSerializer(group).data
 
 class SingleGetForm(forms.Form):
     tag_group_id = forms.IntegerField(required=True)
@@ -184,7 +193,7 @@ class SingleGetForm(forms.Form):
 
     def submit(self, request):
         '''
-            Submits the form for getting a TagGroup
+            Submits the form for getting a Tag
             once the form has cleaned the input data.
         '''
         try:
@@ -195,4 +204,4 @@ class SingleGetForm(forms.Form):
         if not group.readPermissions(request.user):
             raise PermissionDenied()
 
-        return TagGroupSerializer(group).data
+        return TagSerializer(group).data

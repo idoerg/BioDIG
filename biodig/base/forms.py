@@ -1,8 +1,39 @@
 from django.forms import Field
 from django.core.exceptions import ValidationError
 import dateutil.parser
+import json
+
+class QueryBuilder:
+    '''
+        Used to build a proper filter for a given input after the
+        data has been cleaned in a Django Form.
+    '''
+    
+    def __init__(self, model):
+        '''
+            Creates a query builder for the given model. Calling the made
+            QueryBuilder at any point will give you back the assembled query.
+        
+            @param model: The model on which to make the query.
+        '''
+        self.q = model.objects.all()
+    
+    def __call__(self):
+        return self.q
+    
+    def filter(self, field, value, match='__exact'):
+        if value:
+            if isinstance(value, DateRange):
+                keyargs = value.filterParams(field)
+            else:
+                keyargs = { field + match : value }
+            self.q = self.q.filter(**keyargs)
 
 class DateTimeRangeField(Field):
+    '''
+        Field for creating a date time range meaning before a date, after a date,
+        or between dates.
+    '''
     default_error_messages = {
         'invalid' : 'Enter a date range.',
         'invalid_range' : 'A date filter was given with action "range" with less than two dates.',
@@ -70,3 +101,24 @@ class DateRange:
                 paramName + '__month' : self.start.month,
                 paramName + '__day' : self.start.day
             }
+            
+            
+class JsonField(Field):
+    '''
+        Field for creating a an object from json when receiving it encoded.
+    '''
+    default_error_messages = {
+        'invalid' : 'Please provide valid json format'
+    }
+    
+    def to_python(self, value):
+        '''
+            Converts this value if possible to a python object.
+        '''
+        if value in self.empty_values:
+            return None
+        try:
+            return json.loads(value)
+        except ValueError:
+            raise ValidationError(message=self.error_messages['invalid'], code='invalid')
+    

@@ -23,7 +23,7 @@ class MultiGetForm(forms.Form):
     lastModified = bioforms.DateTimeRangeField(required=False)
     dateCreated = bioforms.DateTimeRangeField(required=False)
     user = forms.IntegerField(required=False)
-    image = forms.IntegerField(required=False)
+    image_id = forms.IntegerField(required=True)
     name = forms.CharField(required=False)
 
     def clean(self):
@@ -36,37 +36,28 @@ class MultiGetForm(forms.Form):
             Submits the form for getting multiple TagGroups
             once the form has cleaned the input data.
         '''
-        query = TagGroup.objects.all()
+        qbuild = bioforms.QueryBuilder(TagGroup)
         
         # add permissions to query
         if request.user and request.user.is_authenticated():
             if not request.user.is_staff:
-                query = query.filter(isPrivate = False) | TagGroup.objects.filter(user__pk__exact=request.user.pk)
+                qbuild.q = qbuild().filter(isPrivate = False) | TagGroup.objects.filter(user__pk__exact=request.user.pk)
         else:
-            query = query.filter(isPrivate=False)
+            qbuild.q = qbuild().filter(isPrivate=False)
         
-        # if a name was given then we will filter by it
-        if self.cleaned_data['name']: query = query.filter(name__exact=self.cleaned_data['name'])
-        
-        if self.cleaned_data['image']: query = query.filter(picture__pk__exact=self.cleaned_data['image'])
-            
-        if self.cleaned_data['user']: query = query.filter(user__pk__exact=self.cleaned_data['user'])
-            
-        if self.cleaned_data['lastModified']:
-            query = query.filter(**self.cleaned_data['lastModified'].filterParams('lastModified'))
-            
-        if self.cleaned_data['dateCreated']:
-            query = query.filter(**self.cleaned_data['dateCreated'].filterParams('dateCreated'))
+        filterkeys = ['name', 'image_id', 'user', 'lastModified', 'dateCreated']
+        for key in filterkeys:
+            qbuild.filter(key, self.cleaned_data[key])
             
         if not self.cleaned_data['limit'] or self.cleaned_data['limit'] < 0:
-            query = query[self.cleaned_data['offset']:]
+            qbuild.q = qbuild()[self.cleaned_data['offset']:]
         else:
-            query = query[self.cleaned_data['offset'] : self.cleaned_data['offset']+self.cleaned_data['limit']]
+            qbuild.q = qbuild()[self.cleaned_data['offset'] : self.cleaned_data['offset']+self.cleaned_data['limit']]
 
-        return TagGroupSerializer(query, many=True).data
+        return TagGroupSerializer(qbuild(), many=True).data
 
 class PostForm(forms.Form):
-    image = forms.IntegerField(required=True)
+    image_id = forms.IntegerField(required=True)
     name = forms.CharField(required=True)
 
     def clean(self):
@@ -74,7 +65,7 @@ class PostForm(forms.Form):
             Cleans the data and checks to see if the image id is
             a valid input.
         '''
-        if self.cleaned_data['image'] < 0: raise ValidationError("The given image id is incorrect.")
+        if self.cleaned_data['image_id'] < 0: raise ValidationError("The given image id is incorrect.")
         return self.cleaned_data
     
     @transaction.commit_on_success
@@ -84,7 +75,7 @@ class PostForm(forms.Form):
             once the form has cleaned the input data.
         '''
         try:
-            image = Picture.objects.get(pk__exact=self.cleaned_data['image'])
+            image = Picture.objects.get(pk__exact=self.cleaned_data['image_id'])
         except (Picture.DoesNotExist, ValueError):
             raise ImageDoesNotExist()
         
@@ -102,12 +93,14 @@ class PostForm(forms.Form):
         return TagGroupSerializer(tagGroup).data
 
 class DeleteForm(forms.Form):
+    image_id = forms.IntegerField(required=True)
     tag_group_id = forms.IntegerField(required=True)
 
     def clean(self):
         '''
             Cleans the data for this form to normalize parameters.
         '''
+        if self.cleaned_data['image_id'] < 0: raise ValidationError("The given image id is incorrect.")
         if self.cleaned_data['tag_group_id'] < 0: raise ValidationError("The given tag group id is incorrect.")
         return self.cleaned_data
     
@@ -119,7 +112,7 @@ class DeleteForm(forms.Form):
         '''
         
         try:
-            group = TagGroup.objects.get(pk__exact=self.cleaned_data['tag_group_id'])
+            group = TagGroup.objects.get(pk__exact=self.cleaned_data['tag_group_id'], picture__exact=self.cleaned_data['image_id'])
         except (TagGroup.DoesNotExist, ValueError):
             raise TagGroupDoesNotExist()
         
@@ -137,12 +130,14 @@ class DeleteForm(forms.Form):
         return serialized
 
 class PutForm(forms.Form):
+    image_id = forms.IntegerField(required=True)
     tag_group_id = forms.IntegerField(required=True)
 
     def clean(self):
         '''
             Cleans the data for this form to normalize parameters.
         '''
+        if self.cleaned_data['image_id'] < 0: raise ValidationError("The given image id is incorrect.")
         if self.cleaned_data['tag_group_id'] < 0: raise ValidationError("The given tag group id is incorrect.")
         return self.cleaned_data
 
@@ -153,7 +148,7 @@ class PutForm(forms.Form):
             once the form has cleaned the input data.
         '''
         try:
-            group = TagGroup.objects.get(pk__exact=self.cleaned_data['tag_group_id'])
+            group = TagGroup.objects.get(pk__exact=self.cleaned_data['tag_group_id'], picture__exact=self.cleaned_data['image_id'])
         except (TagGroup.DoesNotExist, ValueError):
             raise TagGroupDoesNotExist()
         
@@ -173,12 +168,14 @@ class PutForm(forms.Form):
         return TagGroupSerializer(group).data
 
 class SingleGetForm(forms.Form):
+    image_id = forms.IntegerField(required=True)
     tag_group_id = forms.IntegerField(required=True)
 
     def clean(self):
         '''
             Cleans the data for this form to normalize parameters.
         '''
+        if self.cleaned_data['image_id'] < 0: raise ValidationError("The given image id is incorrect.")
         if self.cleaned_data['tag_group_id'] < 0: raise ValidationError("The given tag group id is incorrect.")
         return self.cleaned_data
 
@@ -188,7 +185,7 @@ class SingleGetForm(forms.Form):
             once the form has cleaned the input data.
         '''
         try:
-            group = TagGroup.objects.get(pk__exact=self.cleaned_data['tag_group_id'])
+            group = TagGroup.objects.get(pk__exact=self.cleaned_data['tag_group_id'], picture__exact=self.cleaned_data['image_id'])
         except (TagGroup.DoesNotExist, ValueError):
             raise TagGroupDoesNotExist()
 

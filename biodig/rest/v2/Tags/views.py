@@ -6,13 +6,13 @@ from biodig.rest.v2.Tags.forms import MultiGetForm, PostForm, PutForm, DeleteFor
 
 class TagList(APIView):
     '''
-       Class for rendering the view for creating TagGroups and
-       searching through the TagGroups.
+       Class for rendering the view for creating Tags and
+       searching through the Tags.
     '''
 
     def get(self, request):
         '''
-            Method for getting multiple TagGroups either through search
+            Method for getting multiple Tags either through search
             or general listing.
         '''
         form = MultiGetForm(request.QUERY_PARAMS)
@@ -24,7 +24,7 @@ class TagList(APIView):
 
     def post(self, request):
         '''
-            Method for creating a new TagGroup.
+            Method for creating a new Tag.
         '''
         params = { key : val for key, val in request.DATA }
         params.update(request.QUERY_PARAMS)
@@ -38,17 +38,17 @@ class TagList(APIView):
 
 class TagSingle(APIView):
     '''
-       Class for rendering the view for getting a TagGroup, deleting a TagGroup
-       and updating a TagGroup. 
+       Class for rendering the view for getting a Tag, deleting a Tag
+       and updating a Tag. 
     '''
 
-    def get(self, request, tag_group_id):
+    def get(self, request, tag_id):
         '''
-            Method for getting multiple TagGroups either thorugh search
+            Method for getting multiple Tags either through search
             or general listing.
         '''
         params = { key : val for key, val in request.QUERY_PARAMS }
-        params['tag_group_id'] = tag_group_id
+        params['tag_id'] = tag_id
         form = SingleGetForm(params)
         
         if not form.is_valid():
@@ -56,13 +56,13 @@ class TagSingle(APIView):
 
         return Response(form.submit(request))
 
-    def put(self, request, tag_group_id):
+    def put(self, request, tag_id):
         '''
             Method for updating a TagGroup's information.
         '''
-        params = { key : val for key, val in request.QUERY_PARAMS }
+        params = { key : val for key, val in request.DATA }
         params.update(request.DATA)
-        params['tag_group_id'] = tag_group_id
+        params['tag_id'] = tag_id
         form = PutForm(params)
         
         if not form.is_valid():
@@ -70,12 +70,12 @@ class TagSingle(APIView):
 
         return Response(form.submit(request))
 
-    def delete(self, request, tag_group_id):
+    def delete(self, request, tag_id):
         '''
             Method for deleting a a TagGroup.
         '''
         params = { key : val for key, val in request.QUERY_PARAMS }
-        params['tag_group_id'] = tag_group_id
+        params['tag_id'] = tag_id
         form = DeleteForm(params)
         
         if not form.is_valid():
