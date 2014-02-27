@@ -45,9 +45,14 @@ class MultiGetForm(forms.Form):
         else:
             qbuild.q = qbuild().filter(isPrivate=False)
         
-        filterkeys = ['name', 'image_id', 'user', 'lastModified', 'dateCreated']
-        for key in filterkeys:
-            qbuild.filter(key, self.cleaned_data[key])
+        filterkeys = {
+            'name' : 'name', 'user' : 'user',
+            'lastModified' : 'lastModified',
+            'dateCreated' : 'dateCreated',
+            'picture' : 'image_id'
+        }
+        for buildkey, key in filterkeys:
+            qbuild.filter(buildkey, self.cleaned_data[key])
             
         if not self.cleaned_data['limit'] or self.cleaned_data['limit'] < 0:
             qbuild.q = qbuild()[self.cleaned_data['offset']:]
