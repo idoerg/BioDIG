@@ -15,7 +15,7 @@ class TagGroupList(APIView):
             Method for getting multiple TagGroups either through search
             or general listing.
         '''
-        params = { key : val for key, val in request.QUERY_PARAMS }
+        params = { key : val for key, val in request.QUERY_PARAMS.iteritems() }
         params['image_id'] = image_id
         form = MultiGetForm(params)
         
@@ -28,7 +28,7 @@ class TagGroupList(APIView):
         '''
             Method for creating a new TagGroup.
         '''
-        params = { key : val for key, val in request.DATA }
+        params = { key : val for key, val in request.DATA.iteritems() }
         params.update(request.QUERY_PARAMS)
         params['image_id'] = image_id
         form = PostForm(params)
@@ -50,7 +50,7 @@ class TagGroupSingle(APIView):
             Method for getting multiple TagGroups either thorugh search
             or general listing.
         '''
-        params = { key : val for key, val in request.QUERY_PARAMS }
+        params = { key : val for key, val in request.QUERY_PARAMS.iteritems() }
         params['image_id'] = image_id
         params['tag_group_id'] = tag_group_id
         form = SingleGetForm(params)
@@ -64,7 +64,7 @@ class TagGroupSingle(APIView):
         '''
             Method for updating a TagGroup's information.
         '''
-        params = { key : val for key, val in request.DATA }
+        params = { key : val for key, val in request.DATA.iteritems() }
         params.update(request.DATA)
         params['image_id'] = image_id
         params['tag_group_id'] = tag_group_id
@@ -79,7 +79,7 @@ class TagGroupSingle(APIView):
         '''
             Method for deleting a a TagGroup.
         '''
-        params = { key : val for key, val in request.QUERY_PARAMS }
+        params = { key : val for key, val in request.QUERY_PARAMS.iteritems() }
         params['image_id'] = image_id
         params['tag_group_id'] = tag_group_id
         form = DeleteForm(params)
