@@ -51,7 +51,7 @@ class MultiGetForm(forms.Form):
             'dateCreated' : 'dateCreated',
             'picture' : 'image_id'
         }
-        for buildkey, key in filterkeys:
+        for buildkey, key in filterkeys.iteritems():
             qbuild.filter(buildkey, self.cleaned_data[key])
             
         if not self.cleaned_data['limit'] or self.cleaned_data['limit'] < 0:
