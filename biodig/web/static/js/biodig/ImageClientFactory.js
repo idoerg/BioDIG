@@ -136,12 +136,38 @@ define(['jquery', 'URLBuilder'], function($, URLBuilder) {
      *  @param altText: The new altText for the image.
     **/
     ImageClient.prototype.update = function(id, description, altText) {
+    	try {
+    		this.validator.update(id, description, altText);
+    	}
+    	catch (e) {
+    		return $.Deferred(function(deferredObj) {
+                deferredObj.reject(e);
+            }).promise();
+    	}
     	
+    	var data = {};
+    	if (description) data['description'] = description;
+    	if (altText) data['altText'] = altText;
+    	
+    	return $.Deferred(function(deferredObj) {
+    		$.ajax({
+    			url: this.url + id,
+    			method: 'PUT',
+    			data: data,
+    			success: function(data) {
+    				deferredObj.resolve(data);
+    			},
+    			error: function(jqXHR, textStatus, errorThrown) {
+                    var e = $.parseJSON(jqXHR.responseText);
+                    deferredObj.reject(e);
+                }
+    		});
+    	}).promise();
     };
 
     // default settings for an ImageClient
     var settings = {
-
+        url: '/rest/v2/images/'
     };
 
     var ImageClientFactory = {
