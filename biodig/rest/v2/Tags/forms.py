@@ -23,9 +23,11 @@ class MultiGetForm(forms.Form):
     lastModified = bioforms.DateTimeRangeField(required=False)
     dateCreated = bioforms.DateTimeRangeField(required=False)
     user = forms.IntegerField(required=False)
-    tag_group_id = forms.IntegerField(required=True)
-    image_id = forms.IntegerField(required=True)
     name = forms.CharField(required=False)
+    
+    # Path Parameters
+    image_id = forms.IntegerField(required=True)
+    tag_group_id = forms.IntegerField(required=True)
 
     def clean(self):
         if not self.cleaned_data['offset']: self.cleaned_data['offset'] = 0

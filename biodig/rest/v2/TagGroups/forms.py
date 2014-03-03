@@ -93,7 +93,8 @@ class PostForm(forms.Form):
             raise PermissionDenied()
         
         # start saving the new tag now that it has passed all tests
-        tagGroup = TagGroup(name=self.cleaned_data['name'], picture=image, user=request.user)
+        isPrivate = not request.user.is_staff
+        tagGroup = TagGroup(name=self.cleaned_data['name'], picture=image, user=request.user, isPrivate=isPrivate)
         try:
             tagGroup.save()
         except DatabaseError:
