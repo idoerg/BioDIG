@@ -19,12 +19,14 @@ class MultiGetForm(forms.Form):
     # Query Parameters
     offset = forms.IntegerField(required=False)
     limit = forms.IntegerField(required=False)
-    # Tag Group filters
+    # Tag Group filters (Query)
     lastModified = bioforms.DateTimeRangeField(required=False)
     dateCreated = bioforms.DateTimeRangeField(required=False)
     user = forms.IntegerField(required=False)
-    image_id = forms.IntegerField(required=True)
     name = forms.CharField(required=False)
+
+    # Path Parameters
+    image_id = forms.IntegerField(required=True) 
 
     def clean(self):
         if not self.cleaned_data['offset']: self.cleaned_data['offset'] = 0
@@ -62,7 +64,10 @@ class MultiGetForm(forms.Form):
         return TagGroupSerializer(qbuild(), many=True).data
 
 class PostForm(forms.Form):
+    # Path Parameters
     image_id = forms.IntegerField(required=True)
+    
+    # POST (data section) Body Parameters
     name = forms.CharField(required=True)
 
     def clean(self):
@@ -98,6 +103,7 @@ class PostForm(forms.Form):
         return TagGroupSerializer(tagGroup).data
 
 class DeleteForm(forms.Form):
+    # Path Parameters
     image_id = forms.IntegerField(required=True)
     tag_group_id = forms.IntegerField(required=True)
 
@@ -135,6 +141,7 @@ class DeleteForm(forms.Form):
         return serialized
 
 class PutForm(forms.Form):
+    # Path Parameters
     image_id = forms.IntegerField(required=True)
     tag_group_id = forms.IntegerField(required=True)
 
@@ -173,6 +180,7 @@ class PutForm(forms.Form):
         return TagGroupSerializer(group).data
 
 class SingleGetForm(forms.Form):
+    # Path Parameters
     image_id = forms.IntegerField(required=True)
     tag_group_id = forms.IntegerField(required=True)
 
