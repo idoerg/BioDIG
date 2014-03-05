@@ -125,7 +125,28 @@ define(['jquery', 'URLBuilder'], function($, URLBuilder) {
      *  @param id: The id of the image.
     **/
     ImageClient.prototype.get = function(id) {
-
+    	try {
+    		this.validator.get(id);
+    	}
+    	catch (e) {
+    		return $.Deferred(function(deferredObj) {
+    			deferredObj.reject(e);
+    		});
+    	}
+    	
+    	return $.Deferred(function(deferredObj) {
+    		$.ajax({
+    			url: this.url + id,
+    			method: 'GET',
+    			success: function(data, textStatus, jqXHR) {
+                    deferredObj.resolve(data);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    var e = $.parseJSON(jqXHR.responseText);
+                    deferredObj.reject(e);
+                }
+    		});
+    	}).promise();
     };
     
     /**
