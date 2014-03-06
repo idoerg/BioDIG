@@ -51,7 +51,7 @@ USE_TZ = True
 
 # THE ALIAS FOR THE WEBSITE
 # (change depending on devo server/gamma/prod)
-SITE_URL = '/'
+SITE_URL = '/web/'
 
 # Marks the projects current directory to allow it to be moved
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__)) + '/'
@@ -73,7 +73,7 @@ STATIC_ROOT = PROJECT_PATH + 'static/'
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = SITE_URL + 'static/'
+STATIC_URL = '/static/'
 
 # URL prefix for admin static files -- CSS, JavaScript and images.
 # Make sure to use a trailing slash.
@@ -85,7 +85,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    PROJECT_PATH + '../web/static',
+    PROJECT_PATH + '../biodig/web/static',
 )
 
 # List of finder classes that know how to find static files in
