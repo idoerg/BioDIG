@@ -1,0 +1,40 @@
+.left_container {
+	display: inline-block;
+	width: 660px;
+	padding: 10px;
+	border: 1px solid #CCCCCC;
+	height: 800px;
+}
+
+.right_container {
+	display: inline-block;
+	float: right;
+	width: 250px;
+	padding: 10px;
+	border: 1px solid #CCCCCC;
+	height: 800px;
+}
+
+div#mycoplasma_selector_menu {
+	height: 750px;
+	overflow-y: scroll;
+	width: auto;
+	margin-right: 10px;
+}
+
+div#search_selected {
+	width: auto;
+	height: auto;
+	border-bottom: 1px solid #CCCCCC;
+	margin-bottom: 15px;
+	padding: 5px;
+}
+
+#helpBox {
+	font-size: 13px;
+	width: 700px;
+}
+
+.organismInfoImg {
+	height: 20px;
+}

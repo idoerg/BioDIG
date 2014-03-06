@@ -73,7 +73,7 @@ STATIC_ROOT = PROJECT_PATH + 'static/'
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = SITE_URL + 'static/OLD/'
+STATIC_URL = SITE_URL + 'static/'
 
 # URL prefix for admin static files -- CSS, JavaScript and images.
 # Make sure to use a trailing slash.
