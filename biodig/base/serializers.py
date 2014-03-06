@@ -3,10 +3,19 @@ Created on Nov 3, 2013
 
 @author: Andrew Oberlin
 '''
-from models import TagGroup, Tag
+from models import Picture, TagGroup, Tag
 from rest_framework import serializers
 import biodig.swagger.decorators.Models as Models
 import biodig.swagger.decorators.Types as Types
+
+class ImageSerializer(serializers.ModelSerializer):
+    url = serializers.FileField(source='imageName')
+    owner = serializers.PrimaryKeyRelatedField(source='user')
+    dateCreated = serializers.DateTimeField(source='uploadDate')
+    
+    class Meta:
+        model = Picture
+        fields = ('id', 'description', 'imageName', 'thumbnail', 'user', 'uploadDate', 'altText')
 
 @Models.Property('id', Types.Integer)
 @Models.Property('name', Types.String)
