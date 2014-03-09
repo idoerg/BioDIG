@@ -12,8 +12,10 @@ from django.dispatch.dispatcher import receiver
 
 class Picture(models.Model):
     description = models.TextField(blank=True, null=True)
-    imageName = models.ImageField(upload_to="pictures/")
-    thumbnail = models.ImageField(upload_to="thumbnails/")
+    #imageName = models.ImageField(upload_to="pictures/")
+    #thumbnail = models.ImageField(upload_to="thumbnails/")
+    imageName = models.CharField(max_length=256)
+    thumbnail = models.CharField(max_length=256)
     publication = models.CharField(max_length=50, blank=True, null=True)
     altText = models.TextField(blank=True, null=True)
     user = models.ForeignKey(User)

@@ -10,10 +10,16 @@ from django import forms
 from biodig.base.models import Picture
 from biodig.base import forms as bioforms
 from biodig.base.serializers import ImageSerializer
-from biodig.base.exceptions import ImageDoesNotExist, DatabaseIntegrity
+from biodig.base.exceptions import ImageDoesNotExist, DatabaseIntegrity,\
+    BadRequestException, NotImplementedException
 from rest_framework.exceptions import PermissionDenied
 from django.db import transaction, DatabaseError
 from django.core.exceptions import ValidationError
+import importlib
+from django.conf import settings
+import time
+import os
+ImageEngine = importlib.import_module(settings.IMAGE_ENGINE)
 
 class MultiGetForm(forms.Form):
     # Query Parameters
@@ -60,7 +66,7 @@ class PostForm(forms.Form):
     # POST (data section) Body Parameters
     description = forms.CharField(required=True)
     altText = forms.CharField(required=True)
-    image = forms.ImageField(required=True)
+    image = forms.FileField(required=True)
     
     @transaction.commit_on_success
     def submit(self, request):
@@ -68,9 +74,39 @@ class PostForm(forms.Form):
             Submits the form for creating a Image
             once the form has cleaned the input data.
         '''
-        
+        imageEngine = ImageEngine()
+        image = self.cleaned_data['image']
+        if imageEngine.validate(image):
+            raise BadRequestException()
 
-        return ImageSerializer(tagGroup).data
+        now = str(time.time())
+        originalFilename = os.path.join(
+            os.path.join(
+                settings.MEDIA_ROOT, os.path.join('cache', 'pictures')
+            ), 
+            now + image.name
+        )
+    
+        # writes the chunks in the file upload to the cache file
+        with open(originalFilename, 'wb+') as destination:
+            for chunk in image.chunks():
+                destination.write(chunk)
+
+        normalizedFilename = imageEngine.normalize(originalFilename)
+        thumbnailFilename = imageEngine.thumbnail(normalizedFilename)
+        imageURL = imageEngine.saveImage(normalizedFilename)
+        thumbnailURL = imageEngine.saveThumbnail(thumbnailFilename)
+        
+        upload = Picture(imageName=imageURL, thumbnail=thumbnailURL, user=self.user, isPrivate=(not request.user.is_staff))
+        try:
+            upload.save()
+        except DatabaseError:
+            transaction.rollback()
+            os.remove(normalizedFilename)
+            os.remove(thumbnailFilename)
+            raise DatabaseIntegrity()
+
+        return ImageSerializer(upload).data
 
 class DeleteForm(forms.Form):
     # Path Parameters
@@ -88,27 +124,10 @@ class DeleteForm(forms.Form):
     @transaction.commit_on_success
     def submit(self, request):
         '''
-            Submits the form for deleting a TagGroup
+            Submits the form for deleting a Image
             once the form has cleaned the input data.
         '''
-        
-        try:
-            group = TagGroup.objects.get(pk__exact=self.cleaned_data['tag_group_id'], picture__exact=self.cleaned_data['image_id'])
-        except (TagGroup.DoesNotExist, ValueError):
-            raise TagGroupDoesNotExist()
-        
-        if not group.writePermissions(request.user):
-            raise PermissionDenied()
-       
-        serialized = TagGroupSerializer(group).data
-
-        try:
-            group.delete()
-        except DatabaseError:
-            transaction.rollback()
-            raise DatabaseIntegrity()
-        
-        return serialized
+        raise NotImplementedException()
 
 class PutForm(forms.Form):
     # Path Parameters
@@ -126,28 +145,10 @@ class PutForm(forms.Form):
     @transaction.commit_on_success
     def submit(self, request):
         '''
-            Submits the form for updating a TagGroup
+            Submits the form for updating a Image
             once the form has cleaned the input data.
         '''
-        try:
-            group = TagGroup.objects.get(pk__exact=self.cleaned_data['tag_group_id'], picture__exact=self.cleaned_data['image_id'])
-        except (TagGroup.DoesNotExist, ValueError):
-            raise TagGroupDoesNotExist()
-        
-        if not group.writePermissions(request.user):
-            raise PermissionDenied()
-        
-        # update the name
-        if self.cleaned_data['name']:
-            group.name = self.cleaned_data['name']
-        
-        try:
-            group.save()
-        except DatabaseError:
-            transaction.rollback()
-            raise DatabaseIntegrity()
-
-        return TagGroupSerializer(group).data
+        raise NotImplementedException()
 
 class SingleGetForm(forms.Form):
     # Path Parameters
@@ -164,15 +165,7 @@ class SingleGetForm(forms.Form):
 
     def submit(self, request):
         '''
-            Submits the form for getting a TagGroup
+            Submits the form for getting a Image
             once the form has cleaned the input data.
         '''
-        try:
-            group = TagGroup.objects.get(pk__exact=self.cleaned_data['tag_group_id'], picture__exact=self.cleaned_data['image_id'])
-        except (TagGroup.DoesNotExist, ValueError):
-            raise TagGroupDoesNotExist()
-
-        if not group.readPermissions(request.user):
-            raise PermissionDenied()
-
-        return TagGroupSerializer(group).data
+        raise NotImplementedException()

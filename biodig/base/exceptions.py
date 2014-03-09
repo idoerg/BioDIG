@@ -27,3 +27,10 @@ class DatabaseIntegrity(APIException):
     '''
     status_code = 500
     detail = 'An error occurred while trying to write to the database.'
+    
+class NotImplementedException(APIException):
+    '''
+        An error to throw when a form/view has not been implemented yet.
+    '''
+    status_code = 404
+    detail = 'This method has not been implemented, and is thus missing.'

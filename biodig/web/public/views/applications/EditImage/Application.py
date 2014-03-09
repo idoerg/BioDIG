@@ -16,12 +16,8 @@ class Application(ApplicationBase):
 		args = {}
 		self.addPageletBinding('navBar', NavBarPagelet(addHelpButton=True))
 		
-		if (request.user.is_authenticated() and request.user.is_staff):
-			args['title'] = 'Image Editor'
-			self.addPageletBinding('center-1', AdminPagelet())
-		else:
-			args['title'] = 'Image Viewer'
-			self.addPageletBinding('center-1', PublicPagelet())
+		args['title'] = 'Image Viewer'
+		self.addPageletBinding('center-1', PublicPagelet())
 			
 		self.setApplicationLayout('public/base.html', args)
 			

@@ -13,6 +13,7 @@ from django.conf import settings
 import time
 
 def handleUpload(upload):
+    # gets the original file name and sets up the new location in the tmp
     now = str(time.time())
     originalFileName = os.path.join(
         os.path.join(
@@ -21,29 +22,33 @@ def handleUpload(upload):
         now + upload.name
     )
     
+    # writes the chunks in the file upload to the cache file
     destination = open(originalFileName, 'wb+')
     for chunk in upload.chunks():
         destination.write(chunk)
     destination.close()
     
+    
     imageFile = PILImage.open(open(originalFileName, 'rb'))  
 
+    # saves the file as a PNG
     thumbfile = cStringIO.StringIO()
     imageFile.save(thumbfile, 'PNG')
-
-
+    
     imageHash = hashlib.md5(thumbfile.getvalue()).hexdigest()
     
+    # changes the name of the image in the tmp to its new name
     filename = os.path.join(
         os.path.join(
             settings.MEDIA_ROOT, os.path.join('cache', 'pictures')
         ), 
         now + imageHash + '.png'
     )
-    
+
     imageFile.save(open(filename, 'wb+'), 'PNG')
     os.remove(originalFileName)
     
+    # gets the name of the thumbnail when it is changed
     thumbnailName = os.path.join(
         os.path.join(
             settings.MEDIA_ROOT, os.path.join('cache', 'thumbnails')
@@ -51,6 +56,7 @@ def handleUpload(upload):
         now + imageHash + '.png'
     )
     
+    # changes the size of the thumbnail and saves it
     size = (125, 125)
     imageFile.thumbnail(size, PILImage.ANTIALIAS)
     imageFile.save(open(thumbnailName, 'wb+'), 'PNG')
