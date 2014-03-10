@@ -23,7 +23,7 @@ class Application(ApplicationBase):
 	def render(self, request):
 		self.doProcessRender(request)
 		return HttpResponseRedirect(
-			reverse('web.public.views.applications.Home.Application.renderAction')
+			reverse('biodig.web.public.views.applications.Home.Application.renderAction')
 		)
 
 
