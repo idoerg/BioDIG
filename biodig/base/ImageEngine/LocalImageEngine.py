@@ -13,28 +13,33 @@ class LocalImageEngine(ImageEngine):
         Saves the image and thumbnail in the media directory
         under thumbnails and pictures.
     '''
-    images = os.path.join(settings.MEDIA_ROOT, 'pictures')
-    thumbnails = os.path.join(settings.MEDIA_ROOT, 'thumbnails')
+    IMAGES_ROOT = os.path.join(settings.MEDIA_ROOT, 'pictures')
+    THUMBNAILS_ROOT = os.path.join(settings.MEDIA_ROOT, 'thumbnails')
+    
+    IMAGES_URL = settings.MEDIA_URL + 'pictures/'
+    THUMBNAILS_URL = settings.MEDIA_URL + 'thumbnails/'
     
     def __init__(self):
         '''
             Creates the necessary directories for the images and
             thumbnails to be placed in.
         '''
-        if not os.path.isdir(LocalImageEngine.images):
-            os.mkdir(LocalImageEngine.images)
+        if not os.path.isdir(LocalImageEngine.IMAGES_ROOT):
+            os.mkdir(LocalImageEngine.IMAGES_ROOT)
         
-        if not os.path.isdir(LocalImageEngine.thumbnails):
-            os.mkdir(LocalImageEngine.thumbnails)
+        if not os.path.isdir(LocalImageEngine.THUMBNAILS_ROOT):
+            os.mkdir(LocalImageEngine.THUMBNAILS_ROOT)
     
     def saveImage(self, image):
-        newloc = os.path.join(LocalImageEngine.images, os.path.basename(image))
+        base = os.path.basename(image)
+        newloc = os.path.join(LocalImageEngine.IMAGES_ROOT, base)
         os.rename(image, newloc)
-        return settings.MEDIA_URL + newloc
+        return LocalImageEngine.IMAGES_URL + base
     
     def saveThumbnail(self, thumbnail):
-        newloc = os.path.join(LocalImageEngine.images, os.path.basename(thumbnail))
+        base = os.path.basename(thumbnail)
+        newloc = os.path.join(LocalImageEngine.images, base)
         os.rename(thumbnail, newloc)
-        return settings.MEDIA_URL + newloc
+        return LocalImageEngine.THUMBNAILS_URL + base
     
         
