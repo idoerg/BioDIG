@@ -146,6 +146,9 @@ class PutForm(forms.Form):
     image_id = forms.IntegerField(required=True)
     tag_group_id = forms.IntegerField(required=True)
 
+    # Data Body Parameters
+    name = forms.CharField(required=True)
+
     def clean(self):
         '''
             Cleans the data for this form to normalize parameters.
