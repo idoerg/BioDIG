@@ -87,10 +87,11 @@ class ImageEngine(object):
         return name
     
     @abstractmethod
-    def saveImage(self, image):
+    def save_image(self, image):
         '''
             Saves the given image and thumbnail to the storage
-            place and returns the url.
+            place and returns the url. Should also delete the
+            temporary file at the location in the image parameter.
             
             @param image: The image file location to save.
             @return: The URL of the image's save location.
@@ -98,12 +99,34 @@ class ImageEngine(object):
         pass
     
     @abstractmethod
-    def saveThumbnail(self, thumbnail):
+    def save_thumbnail(self, thumbnail):
         '''
             Saves the given thumbnail to the storage
-            place and returns the url.
+            place and returns the url. Should also delete the
+            temprorary file at the location in the thumbnail
+            parameter.
             
             @param thumbnail: The thumbnail file location to save.
             @return: The URL of the thumbnail's save location.
+        '''
+        pass
+
+    @abstractmethod
+    def delete_image(self, image):
+        '''
+            Deletes the given image from the storage system.
+
+            @param image: The URL for the image to delete.
+            @throws MissingFile: If the file to delete was not located correctly. 
+        '''
+        pass
+
+    @abstractmethod
+    def delete_thumbnail(self, thumbnail):
+        '''
+            Deletes the given thumbnail from the storage system.
+
+            @param thumbnail: The URL for the thumbnail to delete.
+            @throws MissingFile: If the file to delete was not located correctly.
         '''
         pass

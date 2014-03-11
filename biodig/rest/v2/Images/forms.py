@@ -19,6 +19,7 @@ import importlib
 from django.conf import settings
 import time
 import os
+from biodig.base.imageengine.exceptions import MissingFile
 
 def load_class(full_class_string):
     """
@@ -110,8 +111,8 @@ class PostForm(forms.Form):
 
         normalizedFilename = imageEngine.normalize(originalFilename)
         thumbnailFilename = imageEngine.thumbnail(normalizedFilename)
-        imageURL = imageEngine.saveImage(normalizedFilename)
-        thumbnailURL = imageEngine.saveThumbnail(thumbnailFilename)
+        imageURL = imageEngine.save_image(normalizedFilename)
+        thumbnailURL = imageEngine.save_thumbnail(thumbnailFilename)
         
         upload = Picture(imageName=imageURL, thumbnail=thumbnailURL, user=request.user,
             description=self.cleaned_data['description'], altText=self.cleaned_data['altText'],
@@ -129,15 +130,13 @@ class PostForm(forms.Form):
 class DeleteForm(forms.Form):
     # Path Parameters
     image_id = forms.IntegerField(required=True)
-    tag_group_id = forms.IntegerField(required=True)
 
-    def clean(self):
+    def clean_image_id(self):
         '''
             Cleans the data for this form to normalize parameters.
         '''
         if self.cleaned_data['image_id'] < 0: raise ValidationError("The given image id is incorrect.")
-        if self.cleaned_data['tag_group_id'] < 0: raise ValidationError("The given tag group id is incorrect.")
-        return self.cleaned_data
+        return self.cleaned_data['image_id']
     
     @transaction.commit_on_success
     def submit(self, request):
@@ -145,19 +144,49 @@ class DeleteForm(forms.Form):
             Submits the form for deleting a Image
             once the form has cleaned the input data.
         '''
-        raise NotImplementedException()
+        try:
+            image = Picture.objects.get(pk__exact=self.cleaned_data['image_id'])
+            if not request.user.is_staff and image.isPrivate and image.user != request.user:
+                raise PermissionDenied()
+        except Picture.DoesNotExist:
+            raise ImageDoesNotExist()
+
+        imageEngine = ImageEngine()
+
+        try:
+            image.delete()
+            try:
+                imageEngine.delete_image(image.imageName)
+            except MissingFile:
+                # a MissingFile error here means it cannot find the file to delete
+                # which is not a problem since we were deleting it anyway
+                pass
+            try:
+                imageEngine.delete_thumbnail(image.thumbnail)
+            except MissingFile:
+                # a MissingFile error here means it cannot find the file to delete
+                # which is not a problem since we were deleting it anyway
+                pass
+        except DatabaseError:
+            transaction.rollback()
+            raise DatabaseIntegrity()
+
+        return ImageSerializer(image).data
+
 
 class PutForm(forms.Form):
     # Path Parameters
     image_id = forms.IntegerField(required=True)
-    tag_group_id = forms.IntegerField(required=True)
+
+    # Data Body Parameters
+    description = forms.CharField(required=False)
+    altText = forms.CharField(required=False)
 
     def clean(self):
         '''
             Cleans the data for this form to normalize parameters.
         '''
         if self.cleaned_data['image_id'] < 0: raise ValidationError("The given image id is incorrect.")
-        if self.cleaned_data['tag_group_id'] < 0: raise ValidationError("The given tag group id is incorrect.")
         return self.cleaned_data
 
     @transaction.commit_on_success
@@ -166,24 +195,45 @@ class PutForm(forms.Form):
             Submits the form for updating a Image
             once the form has cleaned the input data.
         '''
-        raise NotImplementedException()
+        image = Picture.objects.get(pk__exact=self.cleaned_data['image_id'])
+        if not request.user.is_staff and image.isPrivate and image.user != request.user:
+            raise PermissionDenied()
+
+        if self.cleaned_data['description']:
+            image.description = description
+        if self.cleaned_data['altText']:
+            image.altText = altText
+
+        try:
+            image.save()
+        except DatabaseError:
+            transaction.rollback()
+            raise DatabaseIntegrity()
+
+        return ImageSerializer(image).data 
 
 class SingleGetForm(forms.Form):
     # Path Parameters
     image_id = forms.IntegerField(required=True)
-    tag_group_id = forms.IntegerField(required=True)
 
-    def clean(self):
+    def clean_image_id(self):
         '''
             Cleans the data for this form to normalize parameters.
         '''
         if self.cleaned_data['image_id'] < 0: raise ValidationError("The given image id is incorrect.")
-        if self.cleaned_data['tag_group_id'] < 0: raise ValidationError("The given tag group id is incorrect.")
-        return self.cleaned_data
+        return self.cleaned_data['image_id']
 
     def submit(self, request):
         '''
             Submits the form for getting a Image
             once the form has cleaned the input data.
         '''
-        raise NotImplementedException()
+        try:
+            image = Picture.objects.get(pk__exact=self.cleaned_data['image_id'])
+            # check permissions
+            if not request.user.is_staff and image.isPrivate and image.user != request.user:
+                raise PermissionDenied()
+        except Picture.DoesNotExist:
+            raise ImageDoesNotExist()
+
+        return ImageSerializer(image).data

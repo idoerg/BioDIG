@@ -65,11 +65,6 @@ class Picture(models.Model):
     def __unicode__(self):
         return str(self.imageName)
 
-@receiver(pre_delete, sender=Picture)
-def Picture_Delete(sender, instance, **kwargs):
-    instance.imageName.delete(False)
-    instance.thumbnail.delete(False)
-    
 class RecentlyViewedPicture(models.Model):
     picture = models.ForeignKey(Picture)
     user = models.ForeignKey(User)

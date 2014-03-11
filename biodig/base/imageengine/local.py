@@ -5,6 +5,7 @@ Created on Mar 5, 2014
 '''
 
 from biodig.base.imageengine.engine import ImageEngine
+from biodig.base.imageengine.exceptions import MissingFile
 import os
 from django.conf import settings
 
@@ -30,16 +31,34 @@ class LocalImageEngine(ImageEngine):
         if not os.path.isdir(LocalImageEngine.THUMBNAILS_ROOT):
             os.mkdir(LocalImageEngine.THUMBNAILS_ROOT)
     
-    def saveImage(self, image):
+    def save_image(self, image):
         base = os.path.basename(image)
         newloc = os.path.join(LocalImageEngine.IMAGES_ROOT, base)
         os.rename(image, newloc)
         return LocalImageEngine.IMAGES_URL + base
     
-    def saveThumbnail(self, thumbnail):
+    def save_thumbnail(self, thumbnail):
         base = os.path.basename(thumbnail)
         newloc = os.path.join(LocalImageEngine.THUMBNAILS_ROOT, base)
         os.rename(thumbnail, newloc)
         return LocalImageEngine.THUMBNAILS_URL + base
     
-        
+    def delete_image(self, image):
+        # strip off the prefix of MEDIA_URL from the image URL
+        image = image.replace(settings.MEDIA_URL, '', 1)
+        # add the root prefix for the file's location
+        image = os.path.join(settings.MEDIA_ROOT, image)
+        try:    # remove the file
+            os.remove(image)
+        except OSError:
+            raise MissingFile()
+
+    def delete_thumbnail(self, thumbnail):
+        # strip off the prefix of MEDIA_URL from the image URL
+        thumbnail = thumbnail.replace(settings.MEDIA_URL, '', 1)
+        # add the root prefix for the file's location
+        thumbnail = os.path.join(settings.MEDIA_ROOT, thumbnail)
+        try:    # remove the file
+            os.remove(thumbnail)
+        except OSError:
+            raise MissingFile()

@@ -37,9 +37,7 @@ class ImageList(APIView):
         form = PostForm(request.DATA, request.FILES)
 
         if not form.is_valid():
-            e = BadRequestException()
-            e.detail = request.FILES.has_key('image')
-            raise e
+            raise BadRequestException()
 
         return Response(form.submit(request))
 
@@ -55,23 +53,19 @@ class ImageSingle(APIView):
             Method for getting multiple Images either through search
             or general listing.
         '''
-        params = { key : val for key, val in request.QUERY_PARAMS.iteritems() }
-        params['image_id'] = image_id
-        form = SingleGetForm(params)
+        form = SingleGetForm({ 'image_id' : image_id })
         
         if not form.is_valid():
-            raise BadRequestException()
-
+            e = BadRequestException()
+            e.detail = image_id
+            raise e
         return Response(form.submit(request))
 
-    def put(self, request, image_id, tag_group_id):
+    def put(self, request, image_id):
         '''
             Method for updating a Image's information.
         '''
-        params = { key : val for key, val in request.DATA.iteritems() }
-        params.update(request.DATA)
-        params['image_id'] = image_id
-        form = PutForm(params)
+        form = PutForm(request.DATA, { 'image_id' : image_id })
         
         if not form.is_valid():
             raise BadRequestException()
@@ -82,9 +76,7 @@ class ImageSingle(APIView):
         '''
             Method for deleting a a Image.
         '''
-        params = { key : val for key, val in request.QUERY_PARAMS.iteritems() }
-        params['image_id'] = image_id
-        form = DeleteForm(params)
+        form = DeleteForm({ 'image_id' : image_id })
         
         if not form.is_valid():
             raise BadRequestException()
