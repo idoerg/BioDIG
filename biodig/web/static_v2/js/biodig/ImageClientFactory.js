@@ -64,10 +64,12 @@ define(['jquery', 'URLBuilderFactory'], function($, URLBuilderFactory) {
                 deferredObj.reject(e);
             }).promise();
         }
+        
+        var self = this;
 
         return $.Deferred(function(deferredObj) {
             $.ajax({
-                url: this.url,
+                url: self.url,
                 method: 'POST',
                 data: {
                     image: imageData,
@@ -134,9 +136,11 @@ define(['jquery', 'URLBuilderFactory'], function($, URLBuilderFactory) {
     		});
     	}
     	
+       var self = this;
+
     	return $.Deferred(function(deferredObj) {
     		$.ajax({
-    			url: this.url + id,
+    			url: self.url + id,
     			method: 'GET',
     			success: function(data, textStatus, jqXHR) {
                     deferredObj.resolve(data);
@@ -170,9 +174,11 @@ define(['jquery', 'URLBuilderFactory'], function($, URLBuilderFactory) {
     	if (description) data['description'] = description;
     	if (altText) data['altText'] = altText;
     	
+        var self = this;
+
     	return $.Deferred(function(deferredObj) {
     		$.ajax({
-    			url: this.url + id,
+    			url: self.url + id,
     			method: 'PUT',
     			data: data,
     			success: function(data) {

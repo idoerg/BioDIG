@@ -12,7 +12,7 @@ from rest_framework.response import Response
 
 from biodig.rest.v2.Images.forms import MultiGetForm, PostForm, PutForm, DeleteForm, SingleGetForm
 
-class ImagesList(APIView):
+class ImageList(APIView):
     '''
        Class for rendering the view for creating Images and
        searching through the Images.
