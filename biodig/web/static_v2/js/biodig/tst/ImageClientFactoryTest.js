@@ -11,7 +11,7 @@ require.config({
         }
     },
     paths: {
-        jquery: '/static_v2/js/lib/jquery/1.10.2/jquery.min',
+        jquery: '/static_v2/js/lib/jquery-1.11.0.min',
         underscore: '/static_v2/js/lib/underscore.min',
         bootstrap: '/static_v2/js/lib/bootstrap.min',
         URLBuilderFactory: '/static_v2/js/biodig/URLBuilderFactory',
