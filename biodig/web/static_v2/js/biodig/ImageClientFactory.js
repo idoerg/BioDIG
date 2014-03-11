@@ -1,4 +1,4 @@
-define(['jquery', 'URLBuilder'], function($, URLBuilder) {
+define(['jquery', 'URLBuilderFactory'], function($, URLBuilderFactory) {
 
     /**
      *  Validator for the image client.
