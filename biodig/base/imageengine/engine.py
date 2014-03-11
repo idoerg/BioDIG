@@ -73,7 +73,9 @@ class ImageEngine(object):
             os.mkdir(outdir)
         
         # make the name of the file for the thumbnail
-        name = os.path.join(outdir, os.path.basename(image))
+        base, extension = os.path.splitext(os.path.basename(image))
+        base = base + ".thumb" + extension
+        name = os.path.join(outdir, base)
         
         with open(image, 'rb') as ifHandle:
             imagefile = PIL.Image.open(ifHandle)
