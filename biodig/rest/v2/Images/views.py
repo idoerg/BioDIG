@@ -34,12 +34,12 @@ class ImageList(APIView):
         '''
             Method for creating a new Image.
         '''
-        params = { key : val for key, val in request.DATA.iteritems() }
-        params.update(request.QUERY_PARAMS)
-        form = PostForm(params)
+        form = PostForm(request.DATA, request.FILES)
 
         if not form.is_valid():
-            raise BadRequestException()
+            e = BadRequestException()
+            e.detail = request.FILES.has_key('image')
+            raise e
 
         return Response(form.submit(request))
 

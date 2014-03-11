@@ -103,7 +103,7 @@ PAGELET_LAYOUT_DIR = 'pagelets/'
 APPLICATION_LAYOUT_DIR = 'applications/'
 
 # The Image Storage Engine used to save the images
-IMAGE_ENGINE = 'biodig.base.imageengine.LocalImageEngine'
+IMAGE_ENGINE = 'biodig.base.imageengine.local.LocalImageEngine'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'u9)@z86=@r_3_*m=&kzx$=7z9&4+(x#+1$g16v6p!z333&hak='

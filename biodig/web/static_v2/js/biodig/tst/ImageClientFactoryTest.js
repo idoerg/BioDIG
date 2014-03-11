@@ -24,7 +24,10 @@ var dependencies = [
 ];
 
 require(dependencies, function($, ImageClientFactory) {
-    var client = ImageClientFactory.getInstance({ url : '/web/rest/v2/images/' });
+    var client = ImageClientFactory.getInstance({
+        url : '/web/rest/v2/images/',
+        token: '25445d6f583a0db07ceb2a8a0b4fbba027d887bc'
+    });
 
     $('#CreateImageForm  button[name=submitButton]').on('click', function() {
         var files = $('#CreateImageForm input[name=image]')[0].files;
@@ -37,7 +40,7 @@ require(dependencies, function($, ImageClientFactory) {
         reader.onload = function(evt) {
             var description = $('#CreateImageForm input[name=description]').val();
             var altText = $('#CreateImageForm input[name=altText]').val();
-            $.when(client.create(evt.target.result, description, altText))
+            $.when(client.create(files[0], description, altText))
                 .done(function(image) {
                     console.log(image);
                 })

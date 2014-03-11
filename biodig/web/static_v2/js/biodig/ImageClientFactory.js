@@ -38,6 +38,8 @@ define(['jquery', 'URLBuilderFactory'], function($, URLBuilderFactory) {
             this.url += '/';
         }
 
+        this.token = opts.token || null;
+
         this.validator = ValidatorFactory.getInstance();
     }
 
@@ -66,16 +68,26 @@ define(['jquery', 'URLBuilderFactory'], function($, URLBuilderFactory) {
         }
         
         var self = this;
+        // Add the Authorization Header only if the token is set
+        var addAuthToken = this.token ?
+            function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Token ' + self.token) ;
+            } :
+            function(xhr) {};
 
         return $.Deferred(function(deferredObj) {
+            var formData = new FormData();
+            formData.append('image', imageData);
+            formData.append('description', description);
+            formData.append('altText', altText);
+
             $.ajax({
                 url: self.url,
                 method: 'POST',
-                data: {
-                    image: imageData,
-                    description: description,
-                    altText: altText
-                },
+                beforeSend: addAuthToken,
+                contentType: false,
+                processData: false,
+                data: formData,
                 success: function(data, textStatus, jqXHR) {
                     deferredObj.resolve(data);
                 },
@@ -106,9 +118,18 @@ define(['jquery', 'URLBuilderFactory'], function($, URLBuilderFactory) {
     		urlBuilder.addQuery(key, val, URLBuilderFactory.NOT_EMPTY);
     	});
     	
+        // Add the Authorization Header only if the token is set
+        var self = this;
+        var addAuthToken = this.token ?
+            function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Token ' + self.token) ;
+            } :
+            function(xhr) {};
+
     	return $.Deferred(function(deferredObj) {
     		$.ajax({
     			url: urlBuilder.complete(),
+                beforeSend: addAuthToken,
     			method: 'GET',
     			success: function(data, textStatus, jqXHR) {
                     deferredObj.resolve(data);
@@ -137,11 +158,18 @@ define(['jquery', 'URLBuilderFactory'], function($, URLBuilderFactory) {
     	}
     	
        var self = this;
+       // Add the Authorization Header only if the token is set
+        var addAuthToken = this.token ?
+            function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Token ' + self.token) ;
+            } :
+            function(xhr) {};
 
     	return $.Deferred(function(deferredObj) {
     		$.ajax({
     			url: self.url + id,
-    			method: 'GET',
+    			beforeSend: addAuthToken,
+                method: 'GET',
     			success: function(data, textStatus, jqXHR) {
                     deferredObj.resolve(data);
                 },
@@ -175,10 +203,17 @@ define(['jquery', 'URLBuilderFactory'], function($, URLBuilderFactory) {
     	if (altText) data['altText'] = altText;
     	
         var self = this;
+        // Add the Authorization Header only if the token is set
+        var addAuthToken = this.token ?
+            function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Token ' + self.token) ;
+            } :
+            function(xhr) {};
 
     	return $.Deferred(function(deferredObj) {
     		$.ajax({
     			url: self.url + id,
+                beforeSend: addAuthToken,
     			method: 'PUT',
     			data: data,
     			success: function(data) {
@@ -194,7 +229,8 @@ define(['jquery', 'URLBuilderFactory'], function($, URLBuilderFactory) {
 
     // default settings for an ImageClient
     var settings = {
-        url: '/rest/v2/images/'
+        url: '/rest/v2/images/',
+        token: null
     };
 
     var ImageClientFactory = {

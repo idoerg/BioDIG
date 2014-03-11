@@ -4,7 +4,7 @@ Created on Mar 5, 2014
 @author: Andrew Oberlin
 '''
 
-from biodig.base.ImageEngine import ImageEngine
+from biodig.base.imageengine.engine import ImageEngine
 import os
 from django.conf import settings
 
@@ -38,7 +38,7 @@ class LocalImageEngine(ImageEngine):
     
     def saveThumbnail(self, thumbnail):
         base = os.path.basename(thumbnail)
-        newloc = os.path.join(LocalImageEngine.images, base)
+        newloc = os.path.join(LocalImageEngine.THUMBNAILS_ROOT, base)
         os.rename(thumbnail, newloc)
         return LocalImageEngine.THUMBNAILS_URL + base
     

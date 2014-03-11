@@ -63,7 +63,7 @@ class Picture(models.Model):
         return False
     
     def __unicode__(self):
-        return str(self.imageName.name)
+        return str(self.imageName)
 
 @receiver(pre_delete, sender=Picture)
 def Picture_Delete(sender, instance, **kwargs):

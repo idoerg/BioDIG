@@ -19,7 +19,21 @@ import importlib
 from django.conf import settings
 import time
 import os
-ImageEngine = importlib.import_module(settings.IMAGE_ENGINE)
+
+def load_class(full_class_string):
+    """
+    dynamically load a class from a string
+    """
+
+    class_data = full_class_string.split(".")
+    module_path = ".".join(class_data[:-1])
+    class_str = class_data[-1]
+
+    module = importlib.import_module(module_path)
+    # Finally, we retrieve the Class
+    return getattr(module, class_str)
+
+ImageEngine = load_class(settings.IMAGE_ENGINE)
 
 class MultiGetForm(forms.Form):
     # Query Parameters
@@ -76,8 +90,6 @@ class PostForm(forms.Form):
         '''
         imageEngine = ImageEngine()
         image = self.cleaned_data['image']
-        if imageEngine.validate(image):
-            raise BadRequestException()
 
         now = str(time.time())
         originalFilename = os.path.join(
@@ -92,12 +104,18 @@ class PostForm(forms.Form):
             for chunk in image.chunks():
                 destination.write(chunk)
 
+        if not imageEngine.validate(originalFilename):
+            os.remove(originalFilename)
+            raise BadRequestException()
+
         normalizedFilename = imageEngine.normalize(originalFilename)
         thumbnailFilename = imageEngine.thumbnail(normalizedFilename)
         imageURL = imageEngine.saveImage(normalizedFilename)
         thumbnailURL = imageEngine.saveThumbnail(thumbnailFilename)
         
-        upload = Picture(imageName=imageURL, thumbnail=thumbnailURL, user=self.user, isPrivate=(not request.user.is_staff))
+        upload = Picture(imageName=imageURL, thumbnail=thumbnailURL, user=request.user,
+            description=self.cleaned_data['description'], altText=self.cleaned_data['altText'],
+            isPrivate=(not request.user.is_staff))
         try:
             upload.save()
         except DatabaseError:

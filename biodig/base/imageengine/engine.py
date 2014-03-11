@@ -29,7 +29,7 @@ class ImageEngine(object):
             @param image: The filename of the image to analyze.
             @return: True if the file is a valid image.
         '''
-        filetype = imghdr.what(image.file)
+        filetype = imghdr.what(image)
         return filetype and filetype in ImageEngine.formats
     
     def normalize(self, image):
@@ -42,12 +42,11 @@ class ImageEngine(object):
             @return: The location of the normalized file.
         '''
         directory, _ = os.path.split(image)
-        name = os.path.join(directory, uuid.uuid1() + ".png")
+        name = os.path.join(directory, str(uuid.uuid1()) + ".png")
         with open(image, 'rb') as ifHandle:
             imagefile = PIL.Image.open(ifHandle)
             with open(name, 'wb+') as normalizedfile:
                 imagefile.save(normalizedfile, 'PNG')
-            imagefile.close()
         os.remove(image)
         
         return name
@@ -70,7 +69,8 @@ class ImageEngine(object):
             outdir = os.path.join(upper, 'thumbnails')
         
         # try to make the thumbnails directory if it doesn't exist
-        os.mkdir(outdir)
+        if not os.path.isdir(outdir):
+            os.mkdir(outdir)
         
         # make the name of the file for the thumbnail
         name = os.path.join(outdir, os.path.basename(image))
@@ -81,7 +81,6 @@ class ImageEngine(object):
                 size = (125, 125)
                 imagefile.thumbnail(size, PIL.Image.ANTIALIAS)
                 imagefile.save(thumb, 'PNG')
-            imagefile.close()
         
         return name
     
