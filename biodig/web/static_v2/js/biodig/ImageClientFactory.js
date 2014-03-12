@@ -21,6 +21,9 @@ define(['jquery', 'URLBuilderFactory'], function($, URLBuilderFactory) {
                 	if (!id || isNan(id)) throw { validation_error : 'The id is not a valid positive number' }
                 	
                 	if (!description && !altText) throw { validation_error : 'No changes have been made to this image' }
+                },
+                delete: function(id) {
+                    if (!id || isNan(id)) throw { validation_error : 'The id is not a valid positive number' }
                 }
             }
         }
@@ -92,8 +95,12 @@ define(['jquery', 'URLBuilderFactory'], function($, URLBuilderFactory) {
                     deferredObj.resolve(data);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    var e = $.parseJSON(jqXHR.responseText);
-                    deferredObj.reject(e);
+                    try {
+                        var e = $.parseJSON(jqXHR.responseText);
+                        deferredObj.reject(e);
+                    catch (e) {
+                        deferredObj.reject({ detail: 'An unidentified error occurred with the server.'});
+                    }
                 }
             });
         }).promise();
@@ -135,8 +142,12 @@ define(['jquery', 'URLBuilderFactory'], function($, URLBuilderFactory) {
                     deferredObj.resolve(data);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    var e = $.parseJSON(jqXHR.responseText);
-                    deferredObj.reject(e);
+                    try {
+                        var e = $.parseJSON(jqXHR.responseText);
+                        deferredObj.reject(e);
+                    catch (e) {
+                        deferredObj.reject({ detail: 'An unidentified error occurred with the server.'});
+                    }
                 }
     		});
     	}).promise();
@@ -174,8 +185,12 @@ define(['jquery', 'URLBuilderFactory'], function($, URLBuilderFactory) {
                     deferredObj.resolve(data);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    var e = $.parseJSON(jqXHR.responseText);
-                    deferredObj.reject(e);
+                    try {
+                        var e = $.parseJSON(jqXHR.responseText);
+                        deferredObj.reject(e);
+                    catch (e) {
+                        deferredObj.reject({ detail: 'An unidentified error occurred with the server.'});
+                    }
                 }
     		});
     	}).promise();
@@ -220,12 +235,53 @@ define(['jquery', 'URLBuilderFactory'], function($, URLBuilderFactory) {
     				deferredObj.resolve(data);
     			},
     			error: function(jqXHR, textStatus, errorThrown) {
-                    var e = $.parseJSON(jqXHR.responseText);
-                    deferredObj.reject(e);
+                    try {
+                        var e = $.parseJSON(jqXHR.responseText);
+                        deferredObj.reject(e);
+                    catch (e) {
+                        deferredObj.reject({ detail: 'An unidentified error occurred with the server.'});
+                    }
                 }
     		});
     	}).promise();
     };
+
+    ImageClient.prototype.delete = function(id) {
+        try {
+            this.validator.delete(id);
+        }
+        catch (e) {
+            return $.Deferred(function(deferredObj) {
+                deferredObj.reject(e);
+            }).promise();
+        }
+
+        var addAuthToken = this.token ?
+            function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Token ' + self.token) ;
+            } :
+            function(xhr) {};
+
+        return $.Deferred(function(deferredObj) {
+            $.ajax({
+                url: self.url + id,
+                beforeSend: addAuthToken,
+                method: 'DELETE',
+                data: data,
+                success: function(data) {
+                    deferredObj.resolve(data);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    try {
+                        var e = $.parseJSON(jqXHR.responseText);
+                        deferredObj.reject(e);
+                    catch (e) {
+                        deferredObj.reject({ detail: 'An unidentified error occurred with the server.'});
+                    }
+                }
+            });
+        }).promise();
+    }
 
     // default settings for an ImageClient
     var settings = {
