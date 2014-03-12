@@ -3,38 +3,45 @@ from django.conf import settings
 
 import boto
 from boto.s3.key import Key
+import time
+import os
 
 class S3ImageEngine(ImageEngine):
     AWS_ACCESS_KEY = settings.AWS_ACCESS_KEY
     AWS_SECRET_KEY = settings.AWS_SECRET_KEY
     
-    THUMBNAIL_BUCKET = settings.THUMBNAIL_BUCKET_NAME if hasattr(settings, 'THUMBNAIL_BUCKET_NAME') else 'thumbnail'
-    IMAGE_BUCKET = settings.IMAGE_BUCKET_NAME if hasattr(settings, 'IMAGE_BUCKET_NAME') else 'images'
+    THUMBNAIL_BUCKET = settings.THUMBNAIL_BUCKET_NAME
+    IMAGE_BUCKET = settings.IMAGE_BUCKET_NAME
+
+    URL_FORMAT = "https://s3.amazonaws.com/{0}/{1}"
 
     def save(self, image, bucketname):
         conn = boto.connect_s3(S3ImageEngine.AWS_ACCESS_KEY, S3ImageEngine.AWS_SECRET_KEY)
 
-        bucket = conn.create_bucket(bucketname, location=boto.s3.connection.Location.DEFAULT)
+        bucket = conn.lookup(bucketname)
+        if bucket is None:
+            bucket = conn.create_bucket(bucketname, location=boto.s3.connection.Location.DEFAULT)
 
         k = Key(bucket)
         k.key = os.path.basename(image)
         k.set_contents_from_filename(image)
-
-        url = k.generate_url(expires=None, query_auth=False)
-
+        k.set_acl('public-read')
+        k.make_public()
         conn.close()
 
-        return url
+        return S3ImageEngine.URL_FORMAT.format(bucketname, k.key)
 
     def delete(self, image, bucketname):
         conn = boto.connect_s3(S3ImageEngine.AWS_ACCESS_KEY, S3ImageEngine.AWS_SECRET_KEY)
 
-        bucket = conn.create_bucket(bucketname, location=boto.s3.connection.Location.DEFAULT)
+        bucket = conn.lookup(bucketname)
+        if bucket is None:
+            return # no bucket means no delete necessary
 
         k = Key(bucket)
         k.key = os.path.basename(image)
 
-        b.delete_key(k)
+        bucket.delete_key(k)
 
         conn.close()
 
