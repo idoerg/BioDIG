@@ -12,7 +12,7 @@ from rest_framework.response import Response
 
 from biodig.rest.v2.Images.forms import MultiGetForm, PostForm, PutForm, DeleteForm, SingleGetForm
 
-class ImagesList(APIView):
+class ImageList(APIView):
     '''
        Class for rendering the view for creating Images and
        searching through the Images.
@@ -34,9 +34,7 @@ class ImagesList(APIView):
         '''
             Method for creating a new Image.
         '''
-        params = { key : val for key, val in request.DATA.iteritems() }
-        params.update(request.QUERY_PARAMS)
-        form = PostForm(params)
+        form = PostForm(request.DATA, request.FILES)
 
         if not form.is_valid():
             raise BadRequestException()
@@ -55,23 +53,21 @@ class ImageSingle(APIView):
             Method for getting multiple Images either through search
             or general listing.
         '''
-        params = { key : val for key, val in request.QUERY_PARAMS.iteritems() }
-        params['image_id'] = image_id
-        form = SingleGetForm(params)
+        form = SingleGetForm({ 'image_id' : image_id })
         
         if not form.is_valid():
-            raise BadRequestException()
-
+            e = BadRequestException()
+            e.detail = image_id
+            raise e
         return Response(form.submit(request))
 
-    def put(self, request, image_id, tag_group_id):
+    def put(self, request, image_id):
         '''
             Method for updating a Image's information.
         '''
         params = { key : val for key, val in request.DATA.iteritems() }
-        params.update(request.DATA)
         params['image_id'] = image_id
-        form = PutForm(params)
+        form = PutForm(request.DATA, { 'image_id' : image_id })
         
         if not form.is_valid():
             raise BadRequestException()
@@ -82,9 +78,7 @@ class ImageSingle(APIView):
         '''
             Method for deleting a a Image.
         '''
-        params = { key : val for key, val in request.QUERY_PARAMS.iteritems() }
-        params['image_id'] = image_id
-        form = DeleteForm(params)
+        form = DeleteForm({ 'image_id' : image_id })
         
         if not form.is_valid():
             raise BadRequestException()

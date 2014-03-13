@@ -1,9 +1,10 @@
 <html>
     <head>
-    
+        <link rel="stylesheet" type="text/css" href="/static_v2/css/bootstrap/bootstrap.min.css" />
     </head>
     <body>
-        <form id="imageForm">
+        <form id="CreateImageForm">
+            
             <div>
                 <label for="description">Description</label><input type="text" name="description" />
             </div>
@@ -13,12 +14,12 @@
             <div>
                 <label for="image">Image</label><input type="file" name="image" />
             </div>
-            <button name="submitButton">Submit</button>
+            <button type="button" name="submitButton">Submit</button>
         </form>
         <div>
             <h2>Results</h2>
         </div>
     </body>
     <script type="text/javascript" data-main="/static_v2/js/biodig/tst/ImageClientFactoryTest"
-        src="/static_v2/js/require.js"></script>
+        src="/static_v2/js/lib/require.js"></script>
 </html>

@@ -1,0 +1,2 @@
+class MissingFile(Exception):
+    pass

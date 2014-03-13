@@ -103,7 +103,13 @@ PAGELET_LAYOUT_DIR = 'pagelets/'
 APPLICATION_LAYOUT_DIR = 'applications/'
 
 # The Image Storage Engine used to save the images
-IMAGE_ENGINE = 'biodig.base.imageengine.LocalImageEngine'
+IMAGE_ENGINE = 'biodig.base.imageengine.local.LocalImageEngine'
+#IMAGE_ENGINE = 'biodig.base.imageengine.s3.S3ImageEngine'
+# S3 Specific Settings
+#AWS_ACCESS_KEY = 'AKIAIUWVT2PC6J3FXNYA'
+#AWS_SECRET_KEY = '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'
+#IMAGE_BUCKET_NAME = 'biodig-images-test1'
+#THUMBNAIL_BUCKET_NAME = 'biodig-thumbnails-test1'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'u9)@z86=@r_3_*m=&kzx$=7z9&4+(x#+1$g16v6p!z333&hak='

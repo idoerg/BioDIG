@@ -29,7 +29,7 @@ class ImageEngine(object):
             @param image: The filename of the image to analyze.
             @return: True if the file is a valid image.
         '''
-        filetype = imghdr.what(image.file)
+        filetype = imghdr.what(image)
         return filetype and filetype in ImageEngine.formats
     
     def normalize(self, image):
@@ -42,12 +42,11 @@ class ImageEngine(object):
             @return: The location of the normalized file.
         '''
         directory, _ = os.path.split(image)
-        name = os.path.join(directory, uuid.uuid1() + ".png")
+        name = os.path.join(directory, str(uuid.uuid1()) + ".png")
         with open(image, 'rb') as ifHandle:
             imagefile = PIL.Image.open(ifHandle)
             with open(name, 'wb+') as normalizedfile:
                 imagefile.save(normalizedfile, 'PNG')
-            imagefile.close()
         os.remove(image)
         
         return name
@@ -70,10 +69,13 @@ class ImageEngine(object):
             outdir = os.path.join(upper, 'thumbnails')
         
         # try to make the thumbnails directory if it doesn't exist
-        os.mkdir(outdir)
+        if not os.path.isdir(outdir):
+            os.mkdir(outdir)
         
         # make the name of the file for the thumbnail
-        name = os.path.join(outdir, os.path.basename(image))
+        base, extension = os.path.splitext(os.path.basename(image))
+        base = base + ".thumb" + extension
+        name = os.path.join(outdir, base)
         
         with open(image, 'rb') as ifHandle:
             imagefile = PIL.Image.open(ifHandle)
@@ -81,15 +83,15 @@ class ImageEngine(object):
                 size = (125, 125)
                 imagefile.thumbnail(size, PIL.Image.ANTIALIAS)
                 imagefile.save(thumb, 'PNG')
-            imagefile.close()
         
         return name
     
     @abstractmethod
-    def saveImage(self, image):
+    def save_image(self, image):
         '''
             Saves the given image and thumbnail to the storage
-            place and returns the url.
+            place and returns the url. Should also delete the
+            temporary file at the location in the image parameter.
             
             @param image: The image file location to save.
             @return: The URL of the image's save location.
@@ -97,12 +99,34 @@ class ImageEngine(object):
         pass
     
     @abstractmethod
-    def saveThumbnail(self, thumbnail):
+    def save_thumbnail(self, thumbnail):
         '''
             Saves the given thumbnail to the storage
-            place and returns the url.
+            place and returns the url. Should also delete the
+            temprorary file at the location in the thumbnail
+            parameter.
             
             @param thumbnail: The thumbnail file location to save.
             @return: The URL of the thumbnail's save location.
+        '''
+        pass
+
+    @abstractmethod
+    def delete_image(self, image):
+        '''
+            Deletes the given image from the storage system.
+
+            @param image: The URL for the image to delete.
+            @throws MissingFile: If the file to delete was not located correctly. 
+        '''
+        pass
+
+    @abstractmethod
+    def delete_thumbnail(self, thumbnail):
+        '''
+            Deletes the given thumbnail from the storage system.
+
+            @param thumbnail: The URL for the thumbnail to delete.
+            @throws MissingFile: If the file to delete was not located correctly.
         '''
         pass
