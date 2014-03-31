@@ -10,7 +10,7 @@ body {
         
 #navbar {
 	display: block;
-	height: 30px;
+	height: 32px;
 	border-top: 2px solid black;
 	margin: 0 auto;
 	width: 100%;
@@ -201,7 +201,6 @@ li.logged_in_title_left a:hover {
 
 #helpButton span {
 	font-size: 12px;
-    vertical-align: super;
     color: white;
 }
 

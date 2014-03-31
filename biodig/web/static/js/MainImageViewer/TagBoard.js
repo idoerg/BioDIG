@@ -66,6 +66,10 @@ TagBoard.prototype.getSelectedTags = function() {
 	return tags;
 };
 
+TagBoard.prototype.getTopSelectedTag = function() {
+    return this.visibleShapes[0].tag;
+};
+
 TagBoard.prototype.addTag = function(color, points, description, tagGroupKey, callback, errorCallback) {
 	var group = this.tagGroups[tagGroupKey];
 	var tag = new Tag(null, color, points, description, [], this.imageMetadata.id, this.siteUrl, group);
@@ -193,18 +197,33 @@ TagBoard.prototype.polyOnClick = function(event) {
 	this.locked = !this.locked;
 	// locking click makes a popup dialog that asks to
 	// visit the corresponding image
-	if (!this.locked) {
+	if (this.locked) {
 		var imageClick = $('#imageClickModal');
 		
 		// gets all the tags selected and chooses the first one
 		// as the selected tag
-		var tag = this.getSelectedTags()[0];
+		var tag = this.getTopSelectedTag();
 		// Description is the image id to go to next
 		var nextImage = tag.getDescription();
-		
-		console.log('Next Image: ' + nextImage);
-		
-		imageClick.modal('show');
+    
+        var self = this;		
+
+        $.ajax({
+            url: this.siteUrl + 'api/images?id=' + nextImage,
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                var preview = imageClick.find('.modal-image-preview').empty();
+                preview.append($('<img />', {
+                    src: data.thumbnail
+                }));
+                imageClick.find('.modal-success-btn').on('click', function() {
+                    window.location = self.siteUrl + 'images/editor?imageId=' + nextImage;
+                });
+                
+                imageClick.modal('show');
+            }
+        });		
 	}
 };
 

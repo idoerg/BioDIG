@@ -46,37 +46,39 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}css/dialog.css" type="text/css" />
 	<link rel="stylesheet" href="{{ STATIC_URL }}css/dialog.css" type="text/css" />
 </head>
-<div class="left_container">
-	<img id="main_image" src="/web/media/pictures/66719_10151553217243652_1179241411_n.jpg" alt="Phylogenetic Tree" title="Phylogenetic Tree" />
-</div>
-<div class="right_container">
-	<div id="search_selected">
-		<div style="display: inline-block; margin-right: 15px;">
-			<label>Image</label><input id="searchImages" name="searchImages" type="checkbox" checked="checked" value="true" />
-			<label>Genome</label><input id="searchGenomes" name="searchGenomes" type="checkbox" checked="checked" value="true" />
-		</div>
-		<div style="display: inline-block;">
-			<button class="search_button" style="background-image: none; color: white;">Go</button>
-		</div>
-	</div>           
-	<div id="mycoplasma_selector_menu">
-		<ol id="selectable">
-		{% for organism in all_mycoplasma %}
-			<li class="ui-widget-content" id="{{organism.pk}}">
-				<span>{{organism.common_name}}</span>
-				{% if organism.pk|inList:all_genomes %}
-				<img class="organismInfoImg" style="height:18px" src="{{ STATIC_URL }}images/dnaIcon.png" />
-				{% endif %}
-				{% if organism.pk|inList:all_images %}
-				<img class="organismInfoImg" src="{{ STATIC_URL }}images/imageIcon.png" />
-				{% endif %}
-				{% if organism.pk|inList:all_tags %}
-				<img class="organismInfoImg" style="height: 25px; margin-left: -5px; vertical-align: bottom;" src="{{ STATIC_URL }}images/tag.png" />
-				{% endif %}
-			</li>
-		{% endfor %}
-		</ol>
-	</div>
+<div class="row page_container">
+    <div class="col-sm-9">
+	    <img id="main_image" src="/web/media/pictures/66719_10151553217243652_1179241411_n.jpg" alt="Phylogenetic Tree" title="Phylogenetic Tree" />
+    </div>
+    <div class="col-sm-3">
+	    <div id="search_selected">
+		    <div style="display: inline-block; margin-right: 15px;">
+			    <label>Image</label><input id="searchImages" name="searchImages" type="checkbox" checked="checked" value="true" />
+			    <label>Genome</label><input id="searchGenomes" name="searchGenomes" type="checkbox" checked="checked" value="true" />
+		    </div>
+		    <div style="display: inline-block;">
+			    <button class="search_button" style="background-image: none; color: white;">Go</button>
+		    </div>
+	    </div>           
+	    <div id="mycoplasma_selector_menu">
+		    <ol id="selectable">
+		    {% for organism in all_mycoplasma %}
+		    	<li class="ui-widget-content" id="{{organism.pk}}">
+		    		<span>{{organism.common_name}}</span>
+		    		{% if organism.pk|inList:all_genomes %}
+		    		<img class="organismInfoImg" style="height:18px" src="{{ STATIC_URL }}images/dnaIcon.png" />
+			    	{% endif %}
+			    	{% if organism.pk|inList:all_images %}
+		    		<img class="organismInfoImg" src="{{ STATIC_URL }}images/imageIcon.png" />
+	    			{% endif %}
+    				{% if organism.pk|inList:all_tags %}
+				    <img class="organismInfoImg" style="height: 25px; margin-left: -5px; vertical-align: bottom;" src="{{ STATIC_URL }}images/tag.png" />
+				    {% endif %}
+			    </li>
+		    {% endfor %}
+		    </ol>
+	    </div>
+    </div>
 </div>
 <div id="helpBox">
 	<div>
@@ -112,14 +114,16 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="imageClickModalLabel">Modal title</h4>
+        <h4 class="modal-title" id="imageClickModalLabel">Move to Beetle's Part</h4>
       </div>
       <div class="modal-body">
-        ...
+        <div class="modal-image-preview">
+          
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Next Image</button>
+        <button type="button" class="modal-success-btn btn btn-primary">Next Image</button>
       </div>
     </div>
   </div>
@@ -199,7 +203,6 @@
     
     var taggingDataClient = new TaggingDataClient();
     var getImageClient = new ImageClient();
-    $('#imageClickModal').modal();
     var key = 3;
     
     getImageClient.call(key, function(data, textStatus, jqXHR) {
@@ -211,7 +214,7 @@
                 imagesUrl: '{{ STATIC_URL }}images/',
                 siteUrl: '{{ SITE_URL }}',
                 alreadyLoaded: true,
-                originalWidth: 660
+                originalWidth: $('#main_image').parent().width()
             });
         });
     });

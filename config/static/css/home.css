@@ -15,6 +15,10 @@
 	height: 800px;
 }
 
+.page_container {
+    padding: 10px;
+}
+
 div#mycoplasma_selector_menu {
 	height: 750px;
 	overflow-y: scroll;
