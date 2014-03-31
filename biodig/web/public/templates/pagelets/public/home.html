@@ -14,15 +14,38 @@
 	</style>
 	<![endif]-->
 	
-	<script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/zoomable.js"></script>
-	<link rel="stylesheet" href="{{ STATIC_URL }}css/zoomable.css" type="text/css" />
-	
-	<script type="text/javascript" src="{{ STATIC_URL }}js/DialogUI/PageBlock.js"></script>
-	<script type="text/javascript" src="{{ STATIC_URL }}js/DialogUI/HelpDialog.js"></script>
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/zoomable.css"></link>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/taggable.css"></link>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/menu.css"></link>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/downloadify/swfobject.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/downloadify/downloadify.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/JSZip/jszip.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/JSZip/jszip-deflate.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/kineticjs/kinetic-v3.10.0.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/zoomable.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/tagViewingUI/TaggableUtil.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/tagViewingUI/GeneLink.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/tagViewingUI/Tag.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/tagViewingUI/TagGroup.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/MainImageViewer/TagBoard.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/MainImageViewer/DrawingAPI.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/MenuUI/MenuItem.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/MenuUI/MenuSection.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/MenuUI/Menu.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/DialogUI/PageBlock.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/DataFile/CachedXmlDataFile.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/DataFile/CachedJsonDataFile.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/tagViewingUI/DownloadImageDataDialog.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/tagViewingUI/ChangeCurrentTagGroupsDialog.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/MainImageViewer/TaggerUI.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/MainImageViewer/main.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/DialogUI/HelpDialog.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/webServiceClient/WebServiceClient.js"></script>
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/dialog.css" type="text/css" />
 	<link rel="stylesheet" href="{{ STATIC_URL }}css/dialog.css" type="text/css" />
 </head>
 <div class="left_container">
-	<img id="phylogenetic_tree" src="{{ STATIC_URL }}images/mycoplasma_tree_lowRes.png" alt="Phylogenetic Tree" title="Phylogenetic Tree" />
+	<img id="main_image" src="{{ STATIC_URL }}images/mycoplasma_tree_lowRes.png" alt="Phylogenetic Tree" title="Phylogenetic Tree" />
 </div>
 <div class="right_container">
 	<div id="search_selected">
@@ -81,6 +104,24 @@
 		<div style="padding-left: 10px;"><img class="organismInfoImg" style="height: 25px; margin-left: -5px; vertical-align: bottom;" src="{{ STATIC_URL }}images/tag.png" />: Species / strain's images are tagged (visually linked to genes).</div>
 	</div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="imageClickModal" tabindex="-1" role="dialog" aria-labelledby="imageClickModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="imageClickModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Next Image</button>
+      </div>
+    </div>
+  </div>
+</div>
 <style>
 	#selectable .ui-selecting { background: paleblue; cursor: pointer;}
 	#selectable .ui-selected { background: #AAAAAA; color: white; }
@@ -88,6 +129,31 @@
 	#selectable li { margin: 3px; padding: 0.4em; font-size: 15; border-bottom: 1px solid #CCCCCC;}
     #selectable li:hover { cursor: pointer; }
 </style>
+<script type="text/javascript">
+    function ImageClient() {
+        this.client = new WebServiceClient('{{ SITE_URL }}api/images');
+    };
+
+    ImageClient.prototype.call = function(imageKey, callback) {
+        var args = {
+            id: imageKey
+        };
+        
+        this.client.call(args, callback);
+    };
+
+    function TaggingDataClient() {
+        this.tagGroupClient = new WebServiceClient('{{ SITE_URL }}api/aggregate/tagGroups/search');
+    };
+
+    TaggingDataClient.prototype.call = function(imageKey, callback) {
+        var args = {
+            imageId: imageKey
+        };
+        
+        this.tagGroupClient.call(args, callback);
+    };
+</script>
 <script>
     $(function() {
 	    $( "#selectable" ).selectable();
@@ -129,11 +195,22 @@
         form.submit();
     });
     
-    $('#phylogenetic_tree').zoomable({
-    	originalHeight: 800,
-    	originalWidth: 660,
-    	actualImageSrc: '{{ STATIC_URL }}images/mycoplasma_tree_hiRes.png'
+    var taggingDataClient = new TaggingDataClient();
+    var getImageClient = new ImageClient();
+    var key = 1;
+    
+    getImageClient.call(key, function(data, textStatus, jqXHR) {
+        taggingDataClient.call(key, function(tagGroups) {
+            $('#main_image').tagViewer({
+                originalData: tagGroups,
+                imageMetadata: data,
+                //parent: $('#left_container'),
+                imagesUrl: '{{ STATIC_URL }}images/',
+                siteUrl: '{{ SITE_URL }}'
+            });
+        });
     });
+    
     var contents = $('#helpBox');
     var helpDialog = new HelpDialog(new PageBlock(), 'Homepage', contents.show());
     
