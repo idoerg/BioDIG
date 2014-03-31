@@ -7,7 +7,7 @@
 }
 
 .right_container {
-	display: inline-block;
+	display: inline-table;
 	float: right;
 	width: 250px;
 	padding: 10px;

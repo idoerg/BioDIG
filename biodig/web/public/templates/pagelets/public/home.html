@@ -17,6 +17,8 @@
 	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/zoomable.css"></link>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/taggable.css"></link>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/menu.css"></link>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap/bootstrap.min.css"></link>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/MainImageViewer/bootstrap.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/downloadify/swfobject.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/downloadify/downloadify.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/JSZip/jszip.js"></script>
@@ -45,7 +47,7 @@
 	<link rel="stylesheet" href="{{ STATIC_URL }}css/dialog.css" type="text/css" />
 </head>
 <div class="left_container">
-	<img id="main_image" src="{{ STATIC_URL }}images/mycoplasma_tree_lowRes.png" alt="Phylogenetic Tree" title="Phylogenetic Tree" />
+	<img id="main_image" src="/web/media/pictures/66719_10151553217243652_1179241411_n.jpg" alt="Phylogenetic Tree" title="Phylogenetic Tree" />
 </div>
 <div class="right_container">
 	<div id="search_selected">
@@ -197,7 +199,8 @@
     
     var taggingDataClient = new TaggingDataClient();
     var getImageClient = new ImageClient();
-    var key = 1;
+    $('#imageClickModal').modal();
+    var key = 3;
     
     getImageClient.call(key, function(data, textStatus, jqXHR) {
         taggingDataClient.call(key, function(tagGroups) {
@@ -206,7 +209,9 @@
                 imageMetadata: data,
                 //parent: $('#left_container'),
                 imagesUrl: '{{ STATIC_URL }}images/',
-                siteUrl: '{{ SITE_URL }}'
+                siteUrl: '{{ SITE_URL }}',
+                alreadyLoaded: true,
+                originalWidth: 660
             });
         });
     });
