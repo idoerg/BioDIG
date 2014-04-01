@@ -7,13 +7,14 @@
     @author: Andrew Oberlin
 '''
 from django import forms
-from biodig.base.models import Tag, TagGroup, Picture
+from biodig.base.models import Tag, TagColor, TagPoint, TagGroup, Picture
 from biodig.base import forms as bioforms
 from biodig.base.serializers import TagSerializer
 from biodig.base.exceptions import ImageDoesNotExist, DatabaseIntegrity, TagGroupDoesNotExist
 from rest_framework.exceptions import PermissionDenied
 from django.db import transaction, DatabaseError
 from django.core.exceptions import ValidationError
+import numbers
 
 class MultiGetForm(forms.Form):
     # Query Parameters
@@ -78,14 +79,42 @@ class PostForm(forms.Form):
     points = bioforms.JsonField(required=True)
     color = bioforms.JsonField(required=True)
 
-    def clean(self):
+    def clean_image_id(self):
         '''
-            Cleans the data and checks to see if the image id is
-            a valid input.
+            Checks that the image_id is a positive integer.
         '''
         if self.cleaned_data['image_id'] < 0: raise ValidationError("The given image id is incorrect.")
+        return self.cleaned_data['image_id']
+
+    def clean_tag_group_id(self):
+        '''
+            Checks that the tag_group_id is a positive number..
+        '''
         if self.cleaned_data['tag_group_id'] < 0: raise ValidationError("The given tag group id is incorrect.")
-        return self.cleaned_data
+        return self.cleaned_data['tag_group_id']
+
+    def clean_points(self):
+        '''
+            Checks that the JSONField produced the correct structure for each
+            point.
+        '''
+        # check that the points are an array
+        if not isinstance(self.cleaned_data['points'], list):
+            raise ValidationError("A valid JSON array should be given for points parameter") 
+
+        # check if points array is 2 points or more in length
+        if len(self.cleaned_data['points']) < 2:
+            raise ValidationError("List of points should be at least length two")
+
+        for point in self.cleaned_data['points']:
+            if 'x' not in point or 'y' not in point:
+                raise ValidationError("Each point should be given as a dictionary with keys x and y")
+            if not isinstance(point['x'], numbers.Number):
+                raise ValidationError("The x-value of a point must be a number")
+            if not isinstance(point['y'], numbers.Number):
+                raise ValidationError("The y-value of a point must be a number")
+
+        return self.cleaned_data['points']
     
     @transaction.commit_on_success
     def submit(self, request):
@@ -102,15 +131,27 @@ class PostForm(forms.Form):
         except (TagGroup.DoesNotExist, ValueError):
             raise TagGroupDoesNotExist()
         
+        # create tag points
+        points = []
+        for counter, point in enumerate(self.cleaned_data['points']):
+            points.append(TagPoint(pointX=float(point['x']), pointY=float(point['y']), rank=counter+1))
+
+        # create the tag's color
+        color = self.cleaned_data['color']
+        color = TagColor.objects.get_or_create(red=int(color['R']), green=int(color['G']), blue=int(color['B']))[0]
+
         # start saving the new tag now that it has passed all tests
-        tag = Tag()
+        tag = Tag(name=self.cleaned_data['name'], color=color, group=group, user=request.user)
         try:
             tag.save()
+            for point in points:
+                point.tag = tag
+                point.save()
         except DatabaseError:
             transaction.rollback()
             raise DatabaseIntegrity()
 
-        return TagSerializer(tag).data
+        return TagSerializer(tag, points).data
 
 class DeleteForm(forms.Form):
     tag_group_id = forms.IntegerField(required=True)
