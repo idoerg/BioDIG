@@ -21,6 +21,13 @@ class TagGroupDoesNotExist(APIException):
     status_code = 404
     detail = "The tag group id provided does not refer to a tag group in this database."
     
+class TagDoesNotExist(APIException):
+    '''
+        Tag does not exist error.
+    '''
+    status_code = 404
+    detail = "The tag id provided does not refer to a tag in this database."
+    
 class DatabaseIntegrity(APIException):
     '''
         An error occurred while trying to write to the database.
