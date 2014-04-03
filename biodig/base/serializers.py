@@ -3,7 +3,7 @@ Created on Nov 3, 2013
 
 @author: Andrew Oberlin
 '''
-from models import Picture, TagGroup, Tag, TagPoint
+from models import Picture, TagGroup, Tag, TagPoint, TagColor
 from rest_framework import serializers
 import biodig.swagger.decorators.Models as Models
 import biodig.swagger.decorators.Types as Types
@@ -48,6 +48,7 @@ class TagSerializer:
                 
             
 
+
 class TagPointSerializer(serializers.ModelSerializer):
     x = serializers.FloatField(source='pointX')
     y = serializers.FloatField(source='pointY')
@@ -56,17 +57,19 @@ class TagPointSerializer(serializers.ModelSerializer):
         model = TagPoint
         fields = ('x', 'y', 'rank')
 
-@Models.Property('id', Types.Integer)
-@Models.Property('name', Types.String)
-@Models.Property('group', Types.Integer)
-@Models.Property('owner', Types.Integer)
-@Models.Property('color', Types.String)
-@Models.Property('dateCreated', Types.Date)
-@Models.Property('lastModified', Types.Date)
-@Models.Property('isPrivate', Types.Boolean)
+class TagColorSerializer(serializers.ModelSerializer):
+    r = serializers.IntegerField(source='red')
+    g = serializers.IntegerField(source='green')
+    b = serializers.IntegerField(source='blue')
+
+    class Meta:
+        model = TagColor
+        fields = ('r', 'g', 'b')
+
 class SecretTagSerializer(serializers.ModelSerializer):
     owner = serializers.PrimaryKeyRelatedField(source='user')
-    
+    color = TagColorSerializer()
+
     class Meta:
         model = Tag
         fields = ('id', 'name', 'color', 'group', 'owner', 'dateCreated', 'lastModified', 'isPrivate')

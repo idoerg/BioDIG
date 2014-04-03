@@ -68,15 +68,16 @@ class TagSingle(APIView):
             Method for updating a TagGroup's information.
         '''
         params = { key : val for key, val in request.DATA.iteritems() }
-        params.update(request.DATA)
+        params.update(request.QUERY_PARAMS)
         params['tag_id'] = tag_id
         params['image_id'] = image_id
         params['tag_group_id'] = tag_group_id
         form = PutForm(params)
         
         if not form.is_valid():
-            raise BadRequestException()
-
+            e = BadRequestException()
+            e.detail = form.errors
+            raise e
         return Response(form.submit(request))
 
     def delete(self, request, image_id, tag_group_id, tag_id):

@@ -119,6 +119,6 @@ class JsonField(Field):
             return None
         try:
             return json.loads(value)
-        except ValueError:
+        except Exception:
             raise ValidationError(message=self.error_messages['invalid'], code='invalid')
     

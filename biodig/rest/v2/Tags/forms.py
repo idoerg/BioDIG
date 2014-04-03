@@ -70,7 +70,7 @@ class FormCleaningUtil:
         if not isinstance(data['color'], dict):
             raise ValidationError("A valid JSON dictionary should be given for color parameter")
         color = {}
-        accepted = { 'R', 'G', 'B' }
+        accepted = { 'r', 'g', 'b' }
         for key, val in data['color'].iteritems():
             if key in accepted:
                 if not isinstance(val, int) or val < 0 or val > 255:
@@ -180,7 +180,7 @@ class PostForm(forms.Form):
 
         # create the tag's color
         color = self.cleaned_data['color']
-        color = TagColor.objects.get_or_create(red=int(color['R']), green=int(color['G']), blue=int(color['B']))[0]
+        color = TagColor.objects.get_or_create(red=int(color['r']), green=int(color['g']), blue=int(color['b']))[0]
 
         # start saving the new tag now that it has passed all tests
         tag = Tag(name=self.cleaned_data['name'], color=color, group=group, user=request.user)
@@ -217,13 +217,13 @@ class DeleteForm(forms.Form):
         '''
         try:
             group = TagGroup.objects.get(pk__exact=self.cleaned_data['tag_group_id'], picture__exact=self.cleaned_data['image_id'])
-            if not request.user.is_staff() and group.user != request.user:
+            if not request.user.is_staff and group.user != request.user:
                 raise PermissionDenied()
         except (TagGroup.DoesNotExist, ValueError):
             raise TagGroupDoesNotExist()
         try:
             tag = Tag.objects.get(pk__exact=self.cleaned_data['tag_id'], group=group)
-            if not request.user.is_staff() and tag.user != request.user:
+            if not request.user.is_staff and tag.user != request.user:
                 raise PermissionDenied()
         except Tag.DoesNotExist:
             raise TagDoesNotExist()
@@ -271,13 +271,13 @@ class PutForm(forms.Form):
         '''
         try:
             group = TagGroup.objects.get(pk__exact=self.cleaned_data['tag_group_id'], picture__exact=self.cleaned_data['image_id'])
-            if not request.user.is_staff() and group.user != request.user:
+            if not request.user.is_staff and group.user != request.user:
                 raise PermissionDenied()
         except (TagGroup.DoesNotExist, ValueError):
             raise TagGroupDoesNotExist()
         try:
             tag = Tag.objects.get(pk__exact=self.cleaned_data['tag_id'], group=group)
-            if not request.user.is_staff() and tag.user != request.user:
+            if not request.user.is_staff and tag.user != request.user:
                 raise PermissionDenied()
         except Tag.DoesNotExist:
             raise TagDoesNotExist()
@@ -288,7 +288,7 @@ class PutForm(forms.Form):
             if self.cleaned_data['color']:
                 # update color
                 color = self.cleaned_data['color']
-                color = TagColor.objects.get_or_create(red=int(color['R']), green=int(color['G']), blue=int(color['B']))[0]
+                color = TagColor.objects.get_or_create(red=int(color['r']), green=int(color['g']), blue=int(color['b']))[0]
                 tag.color = color
                 changed = True
             
@@ -339,13 +339,13 @@ class SingleGetForm(forms.Form):
         '''
         try:
             group = TagGroup.objects.get(pk__exact=self.cleaned_data['tag_group_id'], picture__exact=self.cleaned_data['image_id'])
-            if group.isPrivate and not request.user.is_staff() and group.user != request.user:
+            if group.isPrivate and not request.user.is_staff and group.user != request.user:
                 raise PermissionDenied()
         except (TagGroup.DoesNotExist, ValueError):
             raise TagGroupDoesNotExist()
         try:
             tag = Tag.objects.get(pk__exact=self.cleaned_data['tag_id'], group=group)
-            if tag.isPrivate and not request.user.is_staff() and tag.user != request.user:
+            if tag.isPrivate and not request.user.is_staff and tag.user != request.user:
                 raise PermissionDenied()
         except Tag.DoesNotExist:
             raise TagDoesNotExist()
