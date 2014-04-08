@@ -1,5 +1,5 @@
 import biodig.base.util.ErrorConstants as Errors
-from biodig.base.models import GeneLink, Tag, TagGroup, Picture
+from biodig.base.models import GeneLink, Tag, TagGroup, Image
 from django.core.exceptions import ObjectDoesNotExist
 from biodig.base.renderEngine.WebServiceObject import WebServiceArray, LimitDict
 
@@ -146,9 +146,9 @@ class GetAPI:
         metadata = WebServiceArray()
         
         if self.user and self.user.is_authenticated():
-            images = Picture.objects.filter(isPrivate=False) | Picture.objects.filter(user__exact=self.user, isPrivate=True)
+            images = Image.objects.filter(isPrivate=False) | Picture.objects.filter(user__exact=self.user, isPrivate=True)
         else:
-            images = Picture.objects.filter(isPrivate=False)
+            images = Image.objects.filter(isPrivate=False)
             
         tagGroups = TagGroup.objects.filter(picture__in=images)
                 

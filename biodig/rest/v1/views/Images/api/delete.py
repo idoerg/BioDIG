@@ -1,5 +1,5 @@
 import biodig.base.util.ErrorConstants as Errors
-from biodig.base.models import Picture, PictureDefinitionTag
+from biodig.base.models import Image, ImageOrganism
 from django.core.exceptions import ObjectDoesNotExist
 from biodig.base.renderEngine.WebServiceObject import WebServiceObject
 from django.db import transaction, DatabaseError
@@ -26,7 +26,7 @@ class DeleteAPI:
         
         try:
             if isKey:
-                image = Picture.objects.get(pk__exact=imageKey) 
+                image = Image.objects.get(pk__exact=imageKey) 
             else:
                 image = imageKey
         except (ObjectDoesNotExist, ValueError):
@@ -37,7 +37,7 @@ class DeleteAPI:
             raise Errors.AUTHENTICATION
         
         if not self.fields or 'organisms' in self.fields:
-            defTags = PictureDefinitionTag.objects.filter(picture__exact=image)
+            defTags = ImageOrganism.objects.filter(picture__exact=image)
             
             for tag in defTags:
                 try:

@@ -5,7 +5,7 @@
 	Author: Andrew Oberlin
 	Date: July 23, 2012
 '''
-from biodig.base.models import Picture
+from biodig.base.models import Image
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseNotFound
 from django.core.servers.basehttp import FileWrapper
@@ -26,10 +26,10 @@ def renderAction(request, *args, **kwargs):
 		if request.user.is_staff:
 			authorized = True
 		else:
-			authorized = Picture.objects.get(imageName=query).readPermissions(request.user)
+			authorized = Image.objects.get(imageName=query).readPermissions(request.user)
 	else:
 		try:
-			authorized = not Picture.objects.get(imageName=query).isPrivate
+			authorized = not Image.objects.get(imageName=query).isPrivate
 		except Exception:
 			return HttpResponseNotFound()
 	

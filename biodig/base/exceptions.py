@@ -13,7 +13,14 @@ class ImageDoesNotExist(APIException):
     '''
     status_code = 404
     detail = "The image id provided does not refer to an image in this database."
-    
+
+class ImageOrganismDoesNotExist(APIException):
+    '''
+        ImageOrganism does not exist error.
+    '''
+    status_code = 404
+    detail = "The organism_id provided is not associated with the image_id provided in this database."
+
 class TagGroupDoesNotExist(APIException):
     '''
         Tag Group does not exist error.

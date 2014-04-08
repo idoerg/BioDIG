@@ -1,5 +1,5 @@
 import biodig.base.util.ErrorConstants as Errors
-from biodig.base.models import Picture, PictureDefinitionTag, RecentlyViewedPicture
+from biodig.base.models import Image, ImageOrganism, RecentlyViewedPicture
 from django.core.exceptions import ObjectDoesNotExist
 from biodig.base.renderEngine.WebServiceObject import WebServiceObject
 
@@ -24,7 +24,7 @@ class GetAPI:
         
         try:
             if (isKey):
-                image = Picture.objects.get(pk__exact=imageKey) 
+                image = Image.objects.get(pk__exact=imageKey) 
             else:
                 image = imageKey
         except (ObjectDoesNotExist, ValueError):
@@ -34,7 +34,7 @@ class GetAPI:
             raise Errors.AUTHENTICATION
         
         if not self.fields or 'organisms' in self.fields:
-            defTags = PictureDefinitionTag.objects.filter(picture__exact=image)
+            defTags = ImageOrganism.objects.filter(picture__exact=image)
             
             for tag in defTags:
                 organisms.append({

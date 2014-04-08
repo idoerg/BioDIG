@@ -5,7 +5,7 @@
 	Date: July 26, 2012
 '''
 from biodig.base.renderEngine.PageletBase import PageletBase
-from biodig.base.models import Picture
+from biodig.base.models import Image
 
 class ImagesPagelet(PageletBase):
 	'''
@@ -19,7 +19,7 @@ class ImagesPagelet(PageletBase):
 		self.setLayout('public/images.html')
 	
 		limit = 15
-		numPics = Picture.objects.all().count()
+		numPics = Image.objects.all().count()
 		pages = numPics/limit + 1
 		# sets the number of pictures to display in a row of the picture table generated
 

@@ -3,7 +3,7 @@ Created on Nov 3, 2013
 
 @author: Andrew Oberlin
 '''
-from models import Picture, TagGroup, Tag, TagPoint, TagColor
+from models import Image, TagGroup, Tag, TagPoint, TagColor, Organism
 from rest_framework import serializers
 import biodig.swagger.decorators.Models as Models
 import biodig.swagger.decorators.Types as Types
@@ -14,16 +14,24 @@ class ImageSerializer(serializers.ModelSerializer):
     dateCreated = serializers.DateTimeField(source='uploadDate')
     
     class Meta:
-        model = Picture
+        model = Image
         fields = ('id', 'description', 'url', 'thumbnail', 'owner', 'dateCreated', 'altText')
 
-@Models.Property('id', Types.Integer)
-@Models.Property('name', Types.String)
-@Models.Property('image', Types.Integer)
-@Models.Property('owner', Types.Integer)
-@Models.Property('dateCreated', Types.Date)
-@Models.Property('lastModified', Types.Date)
-@Models.Property('isPrivate', Types.Boolean)
+class ImageOrganismSerializer:
+    def __init__(self, imageOrg, many=False):
+        if not many:
+            self.data = OrganismSerializer(imageOrg.organism, many=many).data
+        else:
+            self.data = OrganismSerializer([org.organism for org in imageOrg], many=many).data
+
+class OrganismSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(source='organism_id')
+
+    class Meta:
+        model = Organism
+        fields = ('id', 'common_name', 'genus', 'species', 'abbreviation')
+
+
 class TagGroupSerializer(serializers.ModelSerializer):
     image = serializers.PrimaryKeyRelatedField(source='picture')
     owner = serializers.PrimaryKeyRelatedField(source='user')
@@ -46,8 +54,6 @@ class TagSerializer:
                 tag['points'] = TagPointSerializer(points, many=True).data
                 self.data[index] = tag
                 
-            
-
 
 class TagPointSerializer(serializers.ModelSerializer):
     x = serializers.FloatField(source='pointX')

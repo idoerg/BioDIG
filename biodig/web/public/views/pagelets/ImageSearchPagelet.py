@@ -5,7 +5,7 @@
     Date: August 21, 2012
 '''
 from biodig.base.renderEngine.PageletBase import PageletBase
-from biodig.base.models import PictureDefinitionTag
+from biodig.base.models import ImageOrganism
 
 class ImageSearchPagelet(PageletBase):
     '''
@@ -35,7 +35,7 @@ class ImageSearchPagelet(PageletBase):
         
         for candidate in self.searchParams['candidates']:
             for match in candidate:
-                numImages = PictureDefinitionTag.objects.filter(organism__exact=match.pk).count()
+                numImages = ImageOrganism.objects.filter(organism__exact=match.pk).count()
                 pages = numImages/limit + 1
                 candidateInfo.append((match.common_name, match.abbreviation, str(match.pk), pages, numImages))
     

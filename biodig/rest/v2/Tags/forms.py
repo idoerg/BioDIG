@@ -7,7 +7,7 @@
     @author: Andrew Oberlin
 '''
 from django import forms
-from biodig.base.models import Tag, TagColor, TagPoint, TagGroup, Picture
+from biodig.base.models import Tag, TagColor, TagPoint, TagGroup
 from biodig.base import forms as bioforms
 from biodig.base.serializers import TagSerializer
 from biodig.base.exceptions import TagDoesNotExist, DatabaseIntegrity, TagGroupDoesNotExist

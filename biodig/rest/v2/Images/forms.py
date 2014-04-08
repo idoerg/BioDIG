@@ -7,7 +7,7 @@
     @author: Andrew Oberlin
 '''
 from django import forms
-from biodig.base.models import Picture
+from biodig.base.models import Image
 from biodig.base import forms as bioforms
 from biodig.base.serializers import ImageSerializer
 from biodig.base.exceptions import ImageDoesNotExist, DatabaseIntegrity,\
@@ -36,6 +36,20 @@ def load_class(full_class_string):
 
 ImageEngine = load_class(settings.IMAGE_ENGINE)
 
+class FormCleaningUtil:
+    @staticmethod
+    def clean_organisms(data):
+        '''
+            Cleans an array of organisms appearing in the image.
+            This should be a list of integers.
+        '''
+        if not isinstance(data, list):
+            raise ValidationError("Organisms should be in a list form")
+
+        for org in organisms:
+            if not isinstance(org, int) or org < 0:
+                raise ValidationError("The organisms list should contain only positive integers")
+
 class MultiGetForm(forms.Form):
     # Query Parameters
     offset = forms.IntegerField(required=False)
@@ -54,12 +68,12 @@ class MultiGetForm(forms.Form):
             Submits the form for getting multiple TagGroups
             once the form has cleaned the input data.
         '''
-        qbuild = bioforms.QueryBuilder(Picture)
+        qbuild = bioforms.QueryBuilder(Image)
         
         # add permissions to query
         if request.user and request.user.is_authenticated():
             if not request.user.is_staff:
-                qbuild.q = qbuild().filter(isPrivate = False) | Picture.objects.filter(user__pk__exact=request.user.pk)
+                qbuild.q = qbuild().filter(isPrivate = False) | Image.objects.filter(user__pk__exact=request.user.pk)
         else:
             qbuild.q = qbuild().filter(isPrivate=False)
         
@@ -82,7 +96,11 @@ class PostForm(forms.Form):
     description = forms.CharField(required=True)
     altText = forms.CharField(required=True)
     image = forms.FileField(required=True)
-    
+    organisms = bioforms.JsonField(required=False)
+
+    def clean_organisms(self):
+        return FormCleaningUtil.clean_organisms(self.cleaned_data) if self.cleaned_data['organisms'] else None
+
     @transaction.commit_on_success
     def submit(self, request):
         '''
@@ -114,7 +132,7 @@ class PostForm(forms.Form):
         imageURL = imageEngine.save_image(normalizedFilename)
         thumbnailURL = imageEngine.save_thumbnail(thumbnailFilename)
         
-        upload = Picture(imageName=imageURL, thumbnail=thumbnailURL, user=request.user,
+        upload = Image(imageName=imageURL, thumbnail=thumbnailURL, user=request.user,
             description=self.cleaned_data['description'], altText=self.cleaned_data['altText'],
             isPrivate=(not request.user.is_staff))
         try:
@@ -145,10 +163,10 @@ class DeleteForm(forms.Form):
             once the form has cleaned the input data.
         '''
         try:
-            image = Picture.objects.get(pk__exact=self.cleaned_data['image_id'])
+            image = Image.objects.get(pk__exact=self.cleaned_data['image_id'])
             if not request.user.is_staff and image.isPrivate and image.user != request.user:
                 raise PermissionDenied()
-        except Picture.DoesNotExist:
+        except Image.DoesNotExist:
             raise ImageDoesNotExist()
 
         imageEngine = ImageEngine()
@@ -195,7 +213,7 @@ class PutForm(forms.Form):
             Submits the form for updating a Image
             once the form has cleaned the input data.
         '''
-        image = Picture.objects.get(pk__exact=self.cleaned_data['image_id'])
+        image = Image.objects.get(pk__exact=self.cleaned_data['image_id'])
         if not request.user.is_staff and image.isPrivate and image.user != request.user:
             raise PermissionDenied()
 
@@ -229,11 +247,11 @@ class SingleGetForm(forms.Form):
             once the form has cleaned the input data.
         '''
         try:
-            image = Picture.objects.get(pk__exact=self.cleaned_data['image_id'])
+            image = Image.objects.get(pk__exact=self.cleaned_data['image_id'])
             # check permissions
             if not request.user.is_staff and image.isPrivate and image.user != request.user:
                 raise PermissionDenied()
-        except Picture.DoesNotExist:
+        except Image.DoesNotExist:
             raise ImageDoesNotExist()
 
         return ImageSerializer(image).data

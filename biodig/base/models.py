@@ -10,7 +10,7 @@ from datetime import datetime
 from django.db.models.signals import pre_delete
 from django.dispatch.dispatcher import receiver
 
-class Picture(models.Model):
+class Image(models.Model):
     description = models.TextField(blank=True, null=True)
     #imageName = models.ImageField(upload_to="pictures/")
     #thumbnail = models.ImageField(upload_to="thumbnails/")
@@ -66,7 +66,7 @@ class Picture(models.Model):
         return str(self.imageName)
 
 class RecentlyViewedPicture(models.Model):
-    picture = models.ForeignKey(Picture)
+    picture = models.ForeignKey(Image)
     user = models.ForeignKey(User)
     lastDateViewed = models.DateTimeField()
     def save(self, *args, **kwargs):
@@ -83,7 +83,7 @@ class RecentlyViewedPicture(models.Model):
 
 class TagGroup(models.Model):
     name = models.TextField()
-    picture = models.ForeignKey(Picture)
+    picture = models.ForeignKey(Image)
     dateCreated = models.DateTimeField(auto_now_add=True, editable=False)
     lastModified = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User)
@@ -2396,12 +2396,13 @@ class GeneLink(models.Model):
     def __unicode__(self):
         return str(self.tag.name) + " and " + str(self.feature.uniquename)
     
-class PictureDefinitionTag(models.Model):
-    picture = models.ForeignKey(Picture)
+class ImageOrganism(models.Model):
+    picture = models.ForeignKey(Image)
     organism = models.ForeignKey(Organism)
     class Meta:
+        unique_together = ("picture", "organism")
         db_table = u'picturedefinitiontag'
         app_label = u'base'
-
+    
     def __unicode__(self):
         return ", ".join((str(self.picture.imageName), str(self.organism.common_name)))

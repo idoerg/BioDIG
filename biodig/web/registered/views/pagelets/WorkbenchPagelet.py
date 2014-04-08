@@ -5,7 +5,7 @@
     Date: July 23, 2012
 '''
 from biodig.base.renderEngine.PageletBase import PageletBase
-from biodig.base.models import Picture, RecentlyViewedPicture, Tag, TagGroup, GeneLink
+from biodig.base.models import Image, RecentlyViewedPicture, Tag, TagGroup, GeneLink
 
 class WorkbenchPagelet(PageletBase):
     '''
@@ -18,7 +18,7 @@ class WorkbenchPagelet(PageletBase):
     def doProcessRender(self, request):
         self.setLayout('registered/workbench.html')
 
-        userImages = Picture.objects.filter(user__exact=request.user)
+        userImages = Image.objects.filter(user__exact=request.user)
 
         myImages = []
                 

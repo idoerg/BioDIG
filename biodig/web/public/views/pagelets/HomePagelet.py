@@ -5,7 +5,7 @@
     Date: July 23, 2012
 '''
 from biodig.base.renderEngine.PageletBase import PageletBase
-from biodig.base.models import Organism, Feature, PictureDefinitionTag, TagGroup, Tag
+from biodig.base.models import Organism, Feature, ImageOrganism, TagGroup, Tag
 
 class HomePagelet(PageletBase):
     '''
@@ -24,13 +24,12 @@ class HomePagelet(PageletBase):
         #allTags = OrganismWithTags.objects.values_list('organism_id', flat=True).order_by('organism_id')
         
         allGenomes = list(Feature.objects.values_list('organism', flat=True).distinct())
-        allImages = list(PictureDefinitionTag.objects.values_list('organism', flat=True).distinct())
+        allImages = list(ImageOrganism.objects.values_list('organism', flat=True).distinct())
         if not allImages:
             allTags = []
         else:
-            allTags = Tags.object.values_list('group', flat=True).distinct().values_list('picture').distinct()
-            allTags = list(PictureDefinitionTag.objects.filter(picture__in=allTags).values_list('organism').distinct())
-        
+            allTaggedImages = TagGroup.objects.filter(pk__in=Tag.objects.all().values_list('group')).values_list('picture').distinct()
+            allTags = list(ImageOrganism.objects.filter(picture__in=allTaggedImages).values_list('organism').distinct())
         return {
             'all_mycoplasma' : allMycoplasma,
             'all_genomes' : allGenomes,

@@ -7,7 +7,7 @@
     @author: Andrew Oberlin
 '''
 from django import forms
-from biodig.base.models import TagGroup, Picture
+from biodig.base.models import TagGroup, Image
 from biodig.base import forms as bioforms
 from biodig.base.serializers import TagGroupSerializer
 from biodig.base.exceptions import ImageDoesNotExist, DatabaseIntegrity, TagGroupDoesNotExist
@@ -85,8 +85,8 @@ class PostForm(forms.Form):
             once the form has cleaned the input data.
         '''
         try:
-            image = Picture.objects.get(pk__exact=self.cleaned_data['image_id'])
-        except (Picture.DoesNotExist, ValueError):
+            image = Image.objects.get(pk__exact=self.cleaned_data['image_id'])
+        except (Image.DoesNotExist, ValueError):
             raise ImageDoesNotExist()
         
         if not image.writePermissions(request.user):
