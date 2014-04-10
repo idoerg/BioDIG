@@ -9,7 +9,7 @@
 from django import forms
 from biodig.base.models import Image, TagGroup, Tag, GeneLink, Feature
 from biodig.base import forms as bioforms
-from biodig.base.serializers import GeneLinkSerializer
+from biodig.base.serializers import GeneLinkSerializer, FeatureSerializer
 from biodig.base.exceptions import ImageDoesNotExist, GeneLinkDoesNotExist, TagDoesNotExist, DatabaseIntegrity, TagGroupDoesNotExist
 from rest_framework.exceptions import PermissionDenied
 from django.db import transaction, DatabaseError

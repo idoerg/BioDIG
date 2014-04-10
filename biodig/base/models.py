@@ -2406,3 +2406,36 @@ class ImageOrganism(models.Model):
     
     def __unicode__(self):
         return ", ".join((str(self.picture.imageName), str(self.organism.common_name)))
+
+class PublicationRequest(models.Model):
+    '''
+        Requests made to publish a part of the data
+        from a registered user.
+    '''
+    GENE_LINK = "GeneLink"
+    IMAGE = "Image"
+    TAG_GROUP = "TagGroup"
+    TAG = "Tag"
+    REQUEST_TYPE_CHOICES = (
+        (GENE_LINK, "Gene Link"),
+        (TAG, "Tag"),
+        (TAG_GROUP, "Tag Group"),
+        (IMAGE, "Image")
+    )
+    type = models.CharField(choices=REQUEST_TYPE_CHOICES)
+    target = models.IntegerField()
+    fulfilled = models.BooleanField(default=False)
+    user = models.ForeignKey(User)
+    dateCreated = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("type", "target")
+        db_table = u'publicationrequest'
+        app_label = u'base'
+
+    def __unicode__(self):
+        return str(self.type) + " Request: " + str(self.target)
+    
+    @staticmethod
+    def get_model_class(type):
+        return globals()[type]

@@ -79,3 +79,24 @@ class SecretTagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = ('id', 'name', 'color', 'group', 'owner', 'dateCreated', 'lastModified', 'isPrivate')
+
+class GeneLinkSerializer(serializers.ModelSerializer):
+    owner = serializers.PrimaryKeyRelatedField(source='user')
+    feature = FeatureSerializer()
+
+    class Meta:
+        model = GeneLink
+        fields = ('id', 'feature', 'tag', 'dateCreated', 'lastModified', 'owner')
+
+class FeatureTypeField(serializers.RelatedField):
+    def to_native(self, value):
+        return str(value.type.name)
+
+class FeatureSerializer(serializers.ModelSerializer):
+    type = FeatureTypeField()
+    class Meta:
+        model = Feature
+        fields = ('name', 'uniquename', 'type')
+    
+    
+    
