@@ -16,7 +16,7 @@ require.config({
         underscore: 'lib/underscore.min',
         bootstrap: 'lib/bootstrap.min',
         settings: 'lib/settings',
-        jquery_ui: 'lib/jquery-ui-1.8.21.min',
+        jquery_ui: 'lib/jquery-ui-1.10.4.min',
         text: 'lib/require-text'
     }
 });
