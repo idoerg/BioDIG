@@ -6,6 +6,7 @@ require.config({
             }
         },
         bootstrap: ['jquery'],
+        jquery_ui: ['jquery'],
         underscore : {
             exports : '_'
         }
@@ -14,16 +15,18 @@ require.config({
         jquery: 'lib/jquery-1.11.0.min',
         underscore: 'lib/underscore.min',
         bootstrap: 'lib/bootstrap.min',
-        settings: 'lib/settings'
+        settings: 'lib/settings',
+        jquery_ui: 'lib/jquery-ui-1.8.21.min',
+        text: 'lib/require-text'
     }
 });
 
 var deps = [
-    'jquery', 'settings', 'biodig/ui/ZoomableUI',
-    'text!biodig/js/tmpl/helpbox.html', 'bootstrap'
+    'jquery', 'underscore', 'settings', 'biodig/ui/ZoomableUI',
+    'text!biodig/tmpl/helpbox.html', 'bootstrap', 'jquery_ui'
 ];
 
-require(deps, function($, bootstrap, Settings, ZoomableUI, HelpBox) {
+require(deps, function($, _, settings, ZoomableUI, HelpBox) {
 
     $(function() {
         $( "#selectable" ).selectable();
@@ -71,7 +74,7 @@ require(deps, function($, bootstrap, Settings, ZoomableUI, HelpBox) {
         actualImageSrc: settings.STATIC_URL + 'images/mycoplasma_tree_hiRes.png'
     });
 
-    var helpDialog = $(HelpBox);
+    var helpDialog = $(_.template(HelpBox)(settings));
 
     $('#helpButton').click(function() {
         var box = $(helpDialog.attr('id'));
@@ -79,7 +82,7 @@ require(deps, function($, bootstrap, Settings, ZoomableUI, HelpBox) {
             box.modal('show');
         }
         else {
-            helpDialog.appendTo($('body')).modal('open');
+            helpDialog.appendTo($('body')).modal();
         }
     });
 });

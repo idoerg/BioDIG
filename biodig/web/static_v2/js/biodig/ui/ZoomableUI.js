@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'text!biodig/tmpl/zoomable.html'], function($, _, ZoomableTmpl) {
+define(['jquery', 'underscore', 'text!biodig/tmpl/zoomable.html', 'jquery_ui'], function($, _, ZoomableTmpl) {
 
     var ZoomableUIHelper = {
         uuid4: function() {
@@ -15,7 +15,7 @@ define(['jquery', 'underscore', 'text!biodig/tmpl/zoomable.html'], function($, _
                 id = ZoomableUIHelper.uuid4();
                 $img.attr('id', id);
             }
-            $img.parent().append(template(id));
+            $img.parent().append(template({ id : id }));
 
             // uses the jQueryUI slider plugin to create the controls as a slider
             $('#' + id + '-zoomable-slider').slider({
@@ -148,7 +148,7 @@ define(['jquery', 'underscore', 'text!biodig/tmpl/zoomable.html'], function($, _
         this.$image.addClass('zoomable-src');
         this.$image.parent().addClass('zoomable-parent');
 
-        this.template = _template($(ZoomableTmpl).html());
+        this.template = _.template($(ZoomableTmpl).html());
 
         var self = this;
 

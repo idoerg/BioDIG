@@ -3,7 +3,7 @@ Created on Nov 3, 2013
 
 @author: Andrew Oberlin
 '''
-from models import Image, TagGroup, Tag, TagPoint, TagColor, Organism
+from models import Image, TagGroup, Tag, TagPoint, TagColor, GeneLink, Organism, Feature
 from rest_framework import serializers
 import biodig.swagger.decorators.Models as Models
 import biodig.swagger.decorators.Types as Types
@@ -80,14 +80,6 @@ class SecretTagSerializer(serializers.ModelSerializer):
         model = Tag
         fields = ('id', 'name', 'color', 'group', 'owner', 'dateCreated', 'lastModified', 'isPrivate')
 
-class GeneLinkSerializer(serializers.ModelSerializer):
-    owner = serializers.PrimaryKeyRelatedField(source='user')
-    feature = FeatureSerializer()
-
-    class Meta:
-        model = GeneLink
-        fields = ('id', 'feature', 'tag', 'dateCreated', 'lastModified', 'owner')
-
 class FeatureTypeField(serializers.RelatedField):
     def to_native(self, value):
         return str(value.type.name)
@@ -97,6 +89,12 @@ class FeatureSerializer(serializers.ModelSerializer):
     class Meta:
         model = Feature
         fields = ('name', 'uniquename', 'type')
-    
-    
-    
+
+class GeneLinkSerializer(serializers.ModelSerializer):
+    owner = serializers.PrimaryKeyRelatedField(source='user')
+    feature = FeatureSerializer()
+
+    class Meta:
+        model = GeneLink
+        fields = ('id', 'feature', 'tag', 'dateCreated', 'lastModified', 'owner')
+

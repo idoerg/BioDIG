@@ -2420,7 +2420,7 @@ class PublicationJob(models.Model):
         (REQUESTED, "Requested"),
         (COMPLETED, "Completed")
     )
-    status = models.CharField(choices=JOB_STATUS_CHOICES, default=PublicationJob.REQUESTED)
+    status = models.CharField(choices=JOB_STATUS_CHOICES, max_length=10, default=REQUESTED)
     target = models.ForeignKey(Image)
     user = models.ForeignKey(User)
     dateCreated = models.DateTimeField(auto_now_add=True)
