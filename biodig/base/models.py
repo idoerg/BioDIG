@@ -21,37 +21,37 @@ class Image(models.Model):
     user = models.ForeignKey(User)
     uploadDate = models.DateTimeField(auto_now_add=True)
     isPrivate = models.BooleanField(default=True)
-    
+
     class Meta:
         db_table = u'picture'
         app_label = u'base'
 
-    
-    def readPermissions(self, user):       
+
+    def readPermissions(self, user):
         # if the image is public then anyone can read it
         if not self.isPrivate:
             return True
-        
+
         exists = user and user.is_authenticated()
-        # user exists and is an admin so they get read permissions 
+        # user exists and is an admin so they get read permissions
         # no matter what
         if exists and user.is_staff:
             return True
-        
+
         # check to see if user exists, if so do they have permissions?
         if exists:
             return self.user == user
-        
+
         return False
-    
-    def writePermissions(self, user):        
+
+    def writePermissions(self, user):
         exists = user and user.is_authenticated()
-        # user exists and is an admin so they get write permissions 
+        # user exists and is an admin so they get write permissions
         # no matter what
         if exists and user.is_staff:
             return True
-        
-        # check to see if user exists, if not then they do not 
+
+        # check to see if user exists, if not then they do not
         # have write permissions
         if exists:
             # if the image is public then anyone can write to it
@@ -59,9 +59,9 @@ class Image(models.Model):
                 return True
             # check user permissions on a private image
             return self.user == user
-        
+
         return False
-    
+
     def __unicode__(self):
         return str(self.imageName)
 
@@ -77,7 +77,7 @@ class RecentlyViewedPicture(models.Model):
         db_table = u'recentlyviewedpicture'
         app_label = u'base'
 
-    
+
     def __unicode__(self):
         return (self.picture.imageName.name) + " viewed by " + self.user.username
 
@@ -93,42 +93,42 @@ class TagGroup(models.Model):
         unique_together = ('name', 'picture',)
         app_label = u'base'
 
-        
+
     def readPermissions(self, user):
         # if the tag group is public then anyone can read it
         if not self.isPrivate:
             return True
-        
+
         exists = user and user.is_authenticated()
-        # user exists and is an admin so they get read permissions 
+        # user exists and is an admin so they get read permissions
         # no matter what
         if exists and user.is_staff:
             return True
-        
+
         # need read permissions on the picture to have read permissions
         # on one of its tag groups
         if not self.picture.readPermissions(user):
             return False
-        
+
         # check to see if user exists, if so do they have permissions?
         if exists:
             return self.user == user
-        
+
         return False
-    
+
     def writePermissions(self, user):
         exists = user and user.is_authenticated()
-        # user exists and is an admin so they get write permissions 
+        # user exists and is an admin so they get write permissions
         # no matter what
         if exists and user.is_staff:
             return True
-        
+
         # need write permissions on the picture to have write permissions
         # on one of its tag groups
         if not self.picture.writePermissions(user):
             return False
-        
-        # check to see if user exists, if not then they do not 
+
+        # check to see if user exists, if not then they do not
         # have write permissions
         if exists:
             # if the image is public then anyone can write to it
@@ -136,9 +136,9 @@ class TagGroup(models.Model):
                 return True
             # check user permissions on a private image
             return self.user == user
-        
+
         return False
-    
+
     def __unicode__(self):
         return self.name
 
@@ -165,42 +165,42 @@ class Tag(models.Model):
         db_table = u'tag'
         app_label = u'base'
 
-        
+
     def readPermissions(self, user):
         # if the tag group is public then anyone can read it
         if not self.isPrivate:
             return True
-        
+
         exists = user and user.is_authenticated()
-        # user exists and is an admin so they get read permissions 
+        # user exists and is an admin so they get read permissions
         # no matter what
         if exists and user.is_staff:
             return True
-        
+
         # need read permissions on the tag group to have read permissions
         # on one of its tags
         if not self.group.readPermissions(user):
             return False
-        
+
         # check to see if user exists, if so do they have permissions?
         if exists:
             return self.user == user
-        
+
         return False
-    
+
     def writePermissions(self, user):
         exists = user and user.is_authenticated()
-        # user exists and is an admin so they get write permissions 
+        # user exists and is an admin so they get write permissions
         # no matter what
         if exists and user.is_staff:
             return True
-        
+
         # need write permissions on the picture to have write permissions
         # on one of its tag groups
         if not self.group.writePermissions(user):
             return False
-        
-        # check to see if user exists, if not then they do not 
+
+        # check to see if user exists, if not then they do not
         # have write permissions
         if exists:
             # if the image is public then anyone can write to it
@@ -208,12 +208,12 @@ class Tag(models.Model):
                 return True
             # check user permissions on a private image
             return self.user == user
-        
+
         return False
-        
+
     def __unicode__(self):
         return self.name
-    
+
 class TagPoint(models.Model):
     tag = models.ForeignKey(Tag)
     pointX = models.FloatField()
@@ -225,7 +225,7 @@ class TagPoint(models.Model):
 
     def __unicode__(self):
         return "(" + str(self.pointX) + "," + str(self.pointY) + ") " + self.tag.name
-        
+
 class BlastUpload(models.Model):
     fasta_file = models.FileField(upload_to="fasta_files/")
     name = models.TextField()
@@ -245,7 +245,7 @@ class GenomeUpload(models.Model):
 
     def __unicode__(self):
         return self.name
-        
+
 class Landmark(models.Model):
     name = models.CharField(max_length=10)
     organism_id = models.IntegerField()
@@ -318,7 +318,7 @@ class Cv(models.Model):
 
         app_label = u'base'
 
-        
+
 class Cvterm(models.Model):
     cvterm_id = models.IntegerField(primary_key=True)
     cv = models.ForeignKey(Cv)
@@ -571,7 +571,7 @@ class Organism(models.Model):
 
     def __unicode__(self):
         return self.common_name
-    
+
 class OrganismWithImages(models.Model):
     organism_id = models.IntegerField(primary_key=True)
     abbreviation = models.CharField(max_length=255)
@@ -589,7 +589,7 @@ class OrganismWithImages(models.Model):
     # READ ONLY MODEL
     def save(self, **kwargs):
         raise NotImplementedError
-    
+
 class OrganismWithGenome(models.Model):
     organism_id = models.IntegerField(primary_key=True)
     abbreviation = models.CharField(max_length=255)
@@ -607,7 +607,7 @@ class OrganismWithGenome(models.Model):
     # READ ONLY MODEL
     def save(self, **kwargs):
         raise NotImplementedError
-    
+
 class OrganismWithTags(models.Model):
     organism_id = models.IntegerField(primary_key=True)
     abbreviation = models.CharField(max_length=255)
@@ -2347,42 +2347,42 @@ class GeneLink(models.Model):
         app_label = u'base'
 
         unique_together = ('tag', 'feature')
-    
+
     def readPermissions(self, user):
         # if the tag group is public then anyone can read it
         if not self.isPrivate:
             return True
-        
+
         exists = user and user.is_authenticated()
-        # user exists and is an admin so they get read permissions 
+        # user exists and is an admin so they get read permissions
         # no matter what
         if exists and user.is_staff:
             return True
-        
+
         # need read permissions on the tag to have read permissions
         # on one of its gene links
         if not self.tag.readPermissions(user):
             return False
-        
+
         # check to see if user exists, if so do they have permissions?
         if exists:
             return self.user == user
-        
+
         return False
-    
+
     def writePermissions(self, user):
         exists = user and user.is_authenticated()
-        # user exists and is an admin so they get write permissions 
+        # user exists and is an admin so they get write permissions
         # no matter what
         if exists and user.is_staff:
             return True
-        
+
         # need write permissions on the picture to have write permissions
         # on one of its tag groups
         if not self.tag.writePermissions(user):
             return False
-        
-        # check to see if user exists, if not then they do not 
+
+        # check to see if user exists, if not then they do not
         # have write permissions
         if exists:
             # if the image is public then anyone can write to it
@@ -2390,12 +2390,12 @@ class GeneLink(models.Model):
                 return True
             # check user permissions on a private image
             return self.user == user
-        
+
         return False
-    
+
     def __unicode__(self):
         return str(self.tag.name) + " and " + str(self.feature.uniquename)
-    
+
 class ImageOrganism(models.Model):
     picture = models.ForeignKey(Image)
     organism = models.ForeignKey(Organism)
@@ -2403,39 +2403,31 @@ class ImageOrganism(models.Model):
         unique_together = ("picture", "organism")
         db_table = u'picturedefinitiontag'
         app_label = u'base'
-    
+
     def __unicode__(self):
         return ", ".join((str(self.picture.imageName), str(self.organism.common_name)))
 
-class PublicationRequest(models.Model):
+class PublicationJob(models.Model):
     '''
         Requests made to publish a part of the data
         from a registered user.
     '''
-    GENE_LINK = "GeneLink"
-    IMAGE = "Image"
-    TAG_GROUP = "TagGroup"
-    TAG = "Tag"
-    REQUEST_TYPE_CHOICES = (
-        (GENE_LINK, "Gene Link"),
-        (TAG, "Tag"),
-        (TAG_GROUP, "Tag Group"),
-        (IMAGE, "Image")
+    RUNNING = "Running"
+    REQUESTED = "Requested"
+    COMPLETED = "Completed"
+    JOB_STATUS_CHOICES = (
+        (RUNNING, "Running"),
+        (REQUESTED, "Requested"),
+        (COMPLETED, "Completed")
     )
-    type = models.CharField(choices=REQUEST_TYPE_CHOICES)
-    target = models.IntegerField()
-    fulfilled = models.BooleanField(default=False)
+    status = models.CharField(choices=JOB_STATUS_CHOICES, default=PublicationJob.REQUESTED)
+    target = models.ForeignKey(Image)
     user = models.ForeignKey(User)
     dateCreated = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ("type", "target")
         db_table = u'publicationrequest'
         app_label = u'base'
 
     def __unicode__(self):
-        return str(self.type) + " Request: " + str(self.target)
-    
-    @staticmethod
-    def get_model_class(type):
-        return globals()[type]
+        return str(self.type) + " Job: " + str(self.target) + " is " + str(self.status)

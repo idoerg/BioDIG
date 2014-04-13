@@ -1,0 +1,43 @@
+<div class="modal fade" id="helpBox" tabindex="-1" role="dialog" aria-labelledby="helpBoxLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="helpBoxLabel">Help Box</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <p>
+                        <!-- TODO: Make this message customizable -->
+                        MyDIG – the <b>My</b>coplasma <b>D</b>atabase of <b>I</b>mages and <b>G</b>enomes contains genomes of all publicly available Mycoplasma.
+                        It also contains a growing collection of images. Some of those images are gene-tagged, i.e. regions of those images are linked to specific genes.
+                        In this way,  you can view the genotype-phenotype connections between cellular and subcellular structures in Mycoplasma, and the genes associated with them.
+                        This database is still being populated. The MyDIG database is constructed using the BioDIG set of tools for annotating linking biological image and genomic information.
+                    </p>
+                </div>
+                <div>
+                    <!-- TODO: Make this email customizable -->
+                    Feedback is welcome. Please email Andrew Oberlin <a href="mailto:oberliat@miamioh.edu?Subject=BioDIG">oberliat@miamioh.edu</a> with any comments you may have.
+                </div>
+                <br />
+                <div>
+                    <div>To get started:</div>
+                    <br />
+                    <div style="padding-left: 10px;">1. Select one or more species from the right-hand menu, using ctrl-rightclick</div>
+                    <div style="padding-left: 10px;">2. In the checkboxes on top, check whether you want to view images, genomes or both.</div>
+                    <div style="padding-left: 10px;">3. Click “go” when ready </div>
+                    <div style="padding-left: 10px;">4. You will be taken to the image & genomes viewer</div>
+                    <br />
+                    <div>The letters next to the species' names indicate the following:</div>
+                    <br />
+                    <div style="padding-left: 10px;"><img class="organismInfoImg" style="height:18px" src="{{ STATIC_URL }}images/dnaIcon.png" />: Species  / strain has a full or partial genomes</div>
+                    <div style="padding-left: 10px;"><img class="organismInfoImg" src="{{ STATIC_URL }}images/imageIcon.png" />: Species / strain has images</div>
+                    <div style="padding-left: 10px;"><img class="organismInfoImg" style="height: 25px; margin-left: -5px; vertical-align: bottom;" src="{{ STATIC_URL }}images/tag.png" />: Species / strain's images are tagged (visually linked to genes).</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
