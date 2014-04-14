@@ -46,7 +46,7 @@ define(deps, function($, _, TaggableTmpl) {
                 'mode': 'registered' // registered or public
             };
 
-            $.extends(defaults, opts);
+            $.extend(defaults, opts);
 
             return new TaggableImage(selector, defaults);
         },
