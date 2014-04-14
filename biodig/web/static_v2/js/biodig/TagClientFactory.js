@@ -13,52 +13,57 @@ define(['jquery','URLBuilder'], function($, URLBuilder) {
         return content;
      };
 
- 
 
     /**
-     *  Validator for a TagGroup client.
+     *  Validator for a Tag client.
     **/
     var ValidatorFactory = {
         getInstance: function() {
             // validator
             return {
                 create: function(name) {
-                    if (!name) throw { detail : 'Not a valid name' }
+                    if (!name) throw { validation_error : 'Not a valid name' }
                 },
-                get: function(TagGroupid) {
-                	if (!TagGroupid || isNaN(TagGroupid)) throw { detail : 'The id is not a valid positive number' }
+                get: function(TagId) {
+                	if (!TagId || isNaN(TagId)) throw { validation_error : 'The id is not a valid positive number' }
                 },
 		list: function(opts) {
-                	if (!opts['owner'] || isNaN(opts['owner'])) throw { detail : 'The ow is not a valid positive number' }
-			if (!opts['name']) throw { detail : 'Not a valid name' }
+                	if (!opts['owner'] || isNaN(opts['owner'])) throw { validation_error : 'The ow is not a valid positive number' }
+			if (!opts['name']) throw { validation_error : 'Not a valid name' }
+			if (!opts['offset'] || isNaN(opts['offset'])) throw { validation_error : 'Offset is not a pos num' }
+			if (!opts['limit'] || isNaN(opts['limit'])) throw { validation_error : 'Limit is not a pos num' }
                 },
-		update: function(TagGroupId) {
-                           if (!TagGroupId || isNaN(TagGroupId)) throw { detail : 'The id is not a valid positive number' }
+		update: function(TagId) {
+                           if (!TagId || isNaN(TagId)) throw { validation_error : 'The id is not a valid positive number' }
                 }
             }
         }
     };
-    
+
+
     /**
-     *  TagGroupClient constructor that takes in the options
+     *  TagClient constructor that takes in the options
      *  such as url.
      *  
      *  @param opts: The options to customize this client.
     **/
-    function TagGroupClient(opts) {
+    function TagClient(opts) {
         if (! ('image_id' in opts)){
-            throw { message : 'Image ID is necessary for TagGroup Client use' };
+            throw { detail : 'Image ID is necessary for Tag Client use' };
         }
+	if (! ('tagId' in opts)){
+            throw { detail : 'Tag ID is necessary for Tag Client use' };
+        }
+        this.url = opts.url.format(opts.image_id,opts.tagId);
 
-        this.url = opts.url.format(opts.image_id);
 	if (this.url[this.url.length -1] != '/') {
             this.url += '/';
 	}
         this.validator = ValidatorFactory.getInstance();
         this.token= opts.token || null;
-    }
+    }    
 
-    TagGroupClient.prototype.create = function(name) {
+    TagClient.prototype.create = function(name,points,color) {
         try {
     		this.validator.create(name);
     	}
@@ -82,7 +87,9 @@ define(['jquery','URLBuilder'], function($, URLBuilder) {
                 beforeSend : addAuthToken,
                 dataType : 'json',
                 data : {
-                    name: name
+                    name: name,
+		    points: JSON.stringify(points,null,2),
+		    color: JSON.stringify(color,null,2)
                 },
                 success : function(data) {
                     deferredObj.resolve(data);
@@ -95,8 +102,8 @@ define(['jquery','URLBuilder'], function($, URLBuilder) {
 
         }).promise();
     };
-    
-    TagGroupClient.prototype.get = function(id) {
+   
+    TagClient.prototype.get = function(id) {
         try {
     		this.validator.get(id);
     	}
@@ -127,9 +134,9 @@ define(['jquery','URLBuilder'], function($, URLBuilder) {
             });
 
         }).promise();
-    };
+    };    
 
-    TagGroupClient.prototype.list = function(opts) {
+    TagClient.prototype.list = function(opts) {
         try {
     		this.validator.list(opts);
     	}
@@ -168,9 +175,9 @@ define(['jquery','URLBuilder'], function($, URLBuilder) {
     	}).promise();
     };
 
-   TagGroupClient.prototype.update = function(TagGroupId) {
+   TagClient.prototype.update = function(TagId) {
     	try {
-    		this.validator.update(TagGroupId);
+    		this.validator.update(TagId);
     	}
     	catch (e) {
     		return $.Deferred(function(deferredObj) {
@@ -189,7 +196,7 @@ define(['jquery','URLBuilder'], function($, URLBuilder) {
     	
     	return $.Deferred(function(deferredObj) {
     		$.ajax({
-    			url: self.url + TagGroupId,
+    			url: self.url + TagId,
     			method: 'PUT',
                         beforeSend : addAuthToken,
     			data: data,
@@ -206,14 +213,14 @@ define(['jquery','URLBuilder'], function($, URLBuilder) {
 
 
     var settings = {
-        url : '/rest/v2/images/{0}/tagGroups/'
+        url : '/rest/v2/images/{0}/tagGroups/{1}/tags/'
     };
 
-    var TagGroupClientFactory = {
+    var TagClientFactory = {
         getInstance : function(opts) {
-            return new TagGroupClient($.extend({}, settings, opts));
+            return new TagClient($.extend({}, settings, opts));
         }
     };
 
-    return TagGroupClientFactory;
+    return TagClientFactory;
 });

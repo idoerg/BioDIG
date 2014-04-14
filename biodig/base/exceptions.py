@@ -5,67 +5,67 @@ class BadRequestException(APIException):
         Bad Request Exception.
     '''
     status_code = 400
-    detail = "A Bad Request was made for the API. Revise input parameters."
+    default_detail = "A Bad Request was made for the API. Revise input parameters."
     
 class ImageDoesNotExist(APIException):
     '''
         Image does not exist error.
     '''
     status_code = 404
-    detail = "The image id provided does not refer to an image in this database."
+    default_detail = "The image id provided does not refer to an image in this database."
 
 class ImageOrganismDoesNotExist(APIException):
     '''
         ImageOrganism does not exist error.
     '''
     status_code = 404
-    detail = "The organism_id provided is not associated with the image_id provided in this database."
+    default_detail = "The organism_id provided is not associated with the image_id provided in this database."
 
 class TagGroupDoesNotExist(APIException):
     '''
         Tag Group does not exist error.
     '''
     status_code = 404
-    detail = "The tag group id provided does not refer to a tag group in this database."
+    default_detail = "The tag group id provided does not refer to a tag group in this database."
     
 class TagDoesNotExist(APIException):
     '''
         Tag does not exist error.
     '''
     status_code = 404
-    detail = "The tag id provided does not refer to a tag in this database."
+    default_detail = "The tag id provided does not refer to a tag in this database."
 
 class GeneLinkDoesNotExist(APIException):
     '''
         Gene Link does not exist error.
     '''
     status_code = 404
-    detail = "The gene link id provided does not refer to a gene link in this database."
+    default_detail = "The gene link id provided does not refer to a gene link in this database."
 
 class FeatureDoesNotExist(APIException):
     '''
         Feature does not exist error.
     '''
     status_code = 404
-    detail = "The information provided did not match any feature in this database."
+    default_detail = "The information provided did not match any feature in this database."
 
 class FeatureTypeDoesNotExist(APIException):
     '''
         Feature type does not exist error.
     '''
     status_code = 404
-    detail = "The type indicated for the feature does not exist in this database or is invalid."
+    default_detail = "The type indicated for the feature does not exist in this database or is invalid."
 
 class SequenceCvDoesNotExist(APIException):
     '''
         Sequence Cv does not exist error.
     '''
     status_code = 404
-    detail = "The sequence controlled vocabulary does not seem to be installed in Chado. Please consult your system administrator."
+    default_detail = "The sequence controlled vocabulary does not seem to be installed in Chado. Please consult your system administrator."
 
 class MultipleFeaturesReturned(APIException):
     def __init__(self, data):
-        self.detail = data
+        self.default_detail = data
 
     '''
         Error for when multiple features are returned when adding a gene link.
@@ -77,11 +77,11 @@ class DatabaseIntegrity(APIException):
         An error occurred while trying to write to the database.
     '''
     status_code = 500
-    detail = 'An error occurred while trying to write to the database.'
+    default_detail = 'An error occurred while trying to write to the database.'
     
 class NotImplementedException(APIException):
     '''
         An error to throw when a form/view has not been implemented yet.
     '''
     status_code = 404
-    detail = 'This method has not been implemented, and is thus missing.'
+    default_detail = 'This method has not been implemented, and is thus missing.'

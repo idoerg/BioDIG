@@ -36,8 +36,9 @@ class TagList(APIView):
         form = PostForm(params)
 
         if not form.is_valid():
-            raise BadRequestException()
-
+            e = BadRequestException()
+            e.detail = str(form.errors)
+            raise e
         return Response(form.submit(request))
 
 

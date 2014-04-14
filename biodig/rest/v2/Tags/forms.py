@@ -189,9 +189,9 @@ class PostForm(forms.Form):
             for point in points:
                 point.tag = tag
                 point.save()
-        except DatabaseError:
+        except DatabaseError as e:
             transaction.rollback()
-            raise DatabaseIntegrity()
+            raise DatabaseIntegrity(detail=str(e))
 
         return TagSerializer(tag, points).data
 

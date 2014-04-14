@@ -1,0 +1,42 @@
+<html>
+    <head>
+
+    </head>
+    <body>
+        <form id="PostTagForm">
+            Enter Name: <input id="pn" type="text" name="name" />
+            Enter X1: <input id="X1" type="integer" name="X1" />	 
+            Enter Y1: <input id="Y1" type="integer" name="Y1" /> 
+	    Enter X2: <input id="X2" type="integer" name="X2" />
+	    Enter Y2: <input id="Y2" type="integer" name="Y2" /> 
+            Enter R: <input id="R" type="integer" name="r" /> 
+	    Enter G: <input id="G" type="integer" name="g" />
+	    Enter B: <input id="B" type="integer" name="b" />  
+            <button type="button" id="p">POST</button><br>
+            <br>
+	</form>
+        <form id="GetTagForm">
+            Enter Tag Group Id: <input id="t" type="integer" name="TagId" />
+            <button type="button" id="g">GET</button><br>
+            <br>
+        </form>
+        <form id="ListForm">
+	    Enter Offset: <input id="off" type="integer" name="offset" /><br>
+            Enter Limit: <input id="lim" type="integer" name="limit" /><br>
+            Enter Owner: <input id="u" type="integer" name="owner" /><br>
+            Enter Name: <input id="ngm" type="text" name="name"/><br>
+            Enter Last Modified: <input id="l_m" type="date" name="ldate" /><br>
+            Enter Date Created: <input id="d_c" type="date" name="cdate" /><br>
+
+            <button type="button" id="l">GET MULTIPLE</button><br>
+            <br>
+        </form>
+         <form id="UpdateForm">    
+            Enter Tag Group Id: <input id="t_u" type="text" name="TagId" />
+            <button type="button" id="u">UPDATE</button>
+            <br>
+        </form>
+    </body>
+    <script type="text/javascript" data-main="/static_v2/js/biodig/tst/TagClientFactoryTest" src="/static_v2/js/lib/require.js">
+    </script>
+</html>
