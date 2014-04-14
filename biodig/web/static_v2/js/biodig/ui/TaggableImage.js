@@ -24,9 +24,9 @@ define(deps, function($, _, TaggableTmpl) {
         this.$contents = $(_.template(TaggableTmpl)());
 
         // define the three sections of the UI
-        this.$left = this.$contents.children('.taggable-left');
-        this.$right = this.$contents.children('.taggable-right');
-        this.$toolbar = this.$contents.children('.toolbar-container');
+        this.$left = this.$contents.find('.taggable-left');
+        this.$right = this.$contents.find('.taggable-right');
+        this.$toolbar = this.$contents.find('.toolbar-container');
 
         this.features = [];
 
