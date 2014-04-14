@@ -1,5 +1,5 @@
 var deps = [
-    'jquery', 'underscore', 'settings', 'lib/util', 'biodig/clients/ImageClientFactory',
+    'jquery', 'underscore', 'settings', 'lib/util', 'biodig/clients/ImageClient',
     'text!biodig/tmpl/imagecell.html', 'text!biodig/tmpl/imagetable.html'
 ];
 
