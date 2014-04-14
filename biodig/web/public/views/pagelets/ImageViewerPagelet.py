@@ -6,7 +6,7 @@
     Date: August 5, 2012
 '''
 from biodig.base.renderEngine.PageletBase import PageletBase
-from django.core.exceptions import ObjectDoesNotExist
+from biodig.base.models import Image
 
 class ImageViewerPagelet(PageletBase):
     def __init__(self, image_id):
