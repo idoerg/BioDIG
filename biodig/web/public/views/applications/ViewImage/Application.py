@@ -8,15 +8,15 @@
 from biodig.base.renderEngine.ApplicationBase import ApplicationBase
 from biodig.web.public.views.pagelets.NavBarPagelet import NavBarPagelet
 from biodig.web.public.views.pagelets.FooterPagelet import FooterPagelet
-from biodig.web.public.views.pagelets.ImageViewerPagelet import ImageViewerPagelet as PublicPagelet
+from biodig.web.public.views.pagelets.ImageViewerPagelet import ImageViewerPagelet
 
 class Application(ApplicationBase):
-	def doProcessRender(self, request):
+	def doProcessRender(self, request, image_id):
 		args = {}
 		self.addPageletBinding('navBar', NavBarPagelet(addHelpButton=True))
 
 		args['title'] = 'Image Viewer'
-		self.addPageletBinding('center-1', PublicPagelet())
+		self.addPageletBinding('center-1', ImageViewerPagelet(image_id))
 
 		self.setApplicationLayout('public/base.html', args)
 
@@ -27,5 +27,4 @@ class Application(ApplicationBase):
 	Used for mapping to the url in urls.py
 '''
 def renderAction(request, image_id):
-	request.GET['image_id'] = image_id
-	return Application().render(request)
+	return Application().render(request, image_id)

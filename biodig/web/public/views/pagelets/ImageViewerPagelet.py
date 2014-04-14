@@ -9,6 +9,10 @@ from biodig.base.renderEngine.PageletBase import PageletBase
 from django.core.exceptions import ObjectDoesNotExist
 
 class ImageViewerPagelet(PageletBase):
+    def __init__(self, image_id):
+        self.image_id = image_id
+
+
     '''
         Renders the center of the home page
 
@@ -19,7 +23,7 @@ class ImageViewerPagelet(PageletBase):
     def doProcessRender(self, request):
         self.setLayout('public/imageviewer.html')
         try:
-            image = Image.objects.get(pk__exact=request.GET['image_id'])
+            image = Image.objects.get(pk__exact=self.image_id)
         except Image.DoesNotExist:
             self.setLayout('public/404Media.html')
             return {}
