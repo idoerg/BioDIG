@@ -1,4 +1,4 @@
-define(['jquery', 'URLBuilderFactory'], function($, URLBuilderFactory) {
+define(['jquery', 'settings', 'biodig/clients/URLBuilderFactory'], function($, settings, URLBuilderFactory) {
 
     /**
      *  Validator for the image client.
@@ -98,6 +98,7 @@ define(['jquery', 'URLBuilderFactory'], function($, URLBuilderFactory) {
                     try {
                         var e = $.parseJSON(jqXHR.responseText);
                         deferredObj.reject(e);
+                    }
                     catch (e) {
                         deferredObj.reject({ detail: 'An unidentified error occurred with the server.'});
                     }
@@ -145,6 +146,7 @@ define(['jquery', 'URLBuilderFactory'], function($, URLBuilderFactory) {
                     try {
                         var e = $.parseJSON(jqXHR.responseText);
                         deferredObj.reject(e);
+                    }
                     catch (e) {
                         deferredObj.reject({ detail: 'An unidentified error occurred with the server.'});
                     }
@@ -188,6 +190,7 @@ define(['jquery', 'URLBuilderFactory'], function($, URLBuilderFactory) {
                     try {
                         var e = $.parseJSON(jqXHR.responseText);
                         deferredObj.reject(e);
+                    }
                     catch (e) {
                         deferredObj.reject({ detail: 'An unidentified error occurred with the server.'});
                     }
@@ -238,6 +241,7 @@ define(['jquery', 'URLBuilderFactory'], function($, URLBuilderFactory) {
                     try {
                         var e = $.parseJSON(jqXHR.responseText);
                         deferredObj.reject(e);
+                    }
                     catch (e) {
                         deferredObj.reject({ detail: 'An unidentified error occurred with the server.'});
                     }
@@ -275,6 +279,7 @@ define(['jquery', 'URLBuilderFactory'], function($, URLBuilderFactory) {
                     try {
                         var e = $.parseJSON(jqXHR.responseText);
                         deferredObj.reject(e);
+                    }
                     catch (e) {
                         deferredObj.reject({ detail: 'An unidentified error occurred with the server.'});
                     }
@@ -285,7 +290,7 @@ define(['jquery', 'URLBuilderFactory'], function($, URLBuilderFactory) {
 
     // default settings for an ImageClient
     var settings = {
-        url: '/rest/v2/images/',
+        url: settings.SITE_URL + 'rest/v2/images/',
         token: null
     };
 

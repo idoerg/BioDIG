@@ -51,7 +51,7 @@ USE_TZ = True
 
 # THE ALIAS FOR THE WEBSITE
 # (change depending on devo server/gamma/prod)
-SITE_URL = '/web/'
+SITE_URL = '/'
 
 # Marks the projects current directory to allow it to be moved
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__)) + '/'

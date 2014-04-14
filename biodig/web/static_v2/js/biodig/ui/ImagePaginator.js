@@ -30,7 +30,7 @@ define(deps, function($, _, settings, util, ImageClient, ImageCell, ImageTable) 
             // setup the toPage section
             paginator.$pagination.find('.numbers_holder > input').keyup(function(e) {
                 if(e.keyCode == 13) { // presses enter to go to page
-                    if (isNaN($(this).val() || $(this).val() - 1 < 0) {
+                    if (isNaN($(this).val()) || $(this).val() - 1 < 0) {
                         console.log("The input to the pagination is invalid with value: " +
                             $(this).val());
                         return;
@@ -45,12 +45,12 @@ define(deps, function($, _, settings, util, ImageClient, ImageCell, ImageTable) 
             if (imgRatio > containerRatio) {
                 $img.css('width', $container.width());
                 var topVal = ($container.height() - $img.height())/2;
-                $img.css('top', topVal);
+                $img.css('margin-top', topVal);
             }
             else if (imgRatio < containerRatio) {
                 $img.css('height', $container.height());
                 var leftVal = ($container.width() - $img.width())/2;
-                $img.css('left', leftVal);
+                $img.css('margin-left', leftVal);
             }
         }
     };
@@ -62,15 +62,16 @@ define(deps, function($, _, settings, util, ImageClient, ImageCell, ImageTable) 
         this.limit = opts.limit;
         this.currentPage = opts.currentPage;
         this.imagesPerRow = opts.imagesPerRow;
+        this.totalImages = opts.totalImages;
         this.urlkey = opts.useActualImages ? 'url' : 'thumbnail';
 
         this.imageClient = ImageClient.getInstance();
 
         // add the table to hold all the image cells
-        this.$container.empty().append(ImageTable);
+        this.$container.empty().append(_.template(ImageTable)(opts));
 
-        this.$table = this.$container.find('.image-table > table > tbody');
-        this.$pagination = this.$container.find('.image-table > .image-pagination');
+        this.$table = this.$container.find('.image-paginator > .image-table');
+        this.$pagination = this.$container.find('.image-paginator > .image-pagination');
         this.imageCellTemplate = _.template(ImageCell);
 
         ImagePaginatorHelper.setupControls(this);
@@ -104,19 +105,33 @@ define(deps, function($, _, settings, util, ImageClient, ImageCell, ImageTable) 
     ImagePaginator.prototype.renderPage = function(images, index) {
         var self = this;
         this.currentPage = index;
-        this.$pagination.find('.numbers_holder > input').val(this.currentPage);
+        this.$pagination.find('.numbers_holder > input').val(this.currentPage + 1);
+        this.$pagination.find('.first-image').text(this.currentPage * this.limit + 1);
+        this.$pagination.find('.last-image').text(this.currentPage * this.limit + images.length);
         self.$table.empty();
 
-        var tr;
+        if (images.length == 0) {
+            self.renderError({ detail : "You've hit the end of our image list!" });
+            return;
+        }
+
+        var row;
         $.each(images, function(index, image) {
             if (index % self.imagesPerRow == 0) {
-                tr = $('<tr />').appendTo(self.$table);
+                row = $('<div />').appendTo(self.$table);
             }
 
-            image['url'] = image[urlkey];
-            image['width'] = (100.0 / this.imagesPerRow) + "%";
-
-            tr.appendTo(self.imageCellTemplate(image));
+            image['url'] = image[self.urlkey];
+            image['width'] = self.$table.width() / self.imagesPerRow - 6;
+            image['height'] = image['width'] * 0.90 + "px";
+            image['width'] = image['width'] + "px";
+            $.extend(image, settings);
+            var imageCell = $(self.imageCellTemplate(image));
+            var imageEl = imageCell.find('img');
+            imageEl.load(function() {
+                ImagePaginatorHelper.fit(imageCell.find('img'), imageCell.find('.image-container'));
+            });
+            row.append(imageCell);
         });
     };
 
@@ -130,7 +145,7 @@ define(deps, function($, _, settings, util, ImageClient, ImageCell, ImageTable) 
         create: function(selector, opts) {
             var defaults = {
                 'limit' : 20,
-                'currentPage' : 1,
+                'currentPage' : 0,
                 'imagesPerRow' : 5,
                 'useActualImages' : false
             };

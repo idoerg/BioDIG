@@ -22,9 +22,9 @@ require.config({
 });
 
 var deps = [
-    'biodig/ui/ImagePaginator'
+    'jquery', 'biodig/ui/ImagePaginator'
 ];
 
-require(deps, function(settings, ImagePaginator) {
-    ImagePaginator.create('#images-container', { totalImages: $('input#totalImages').val() });
+require(deps, function($, ImagePaginator) {
+    ImagePaginator.create('#images-container', { totalImages: parseInt($('input#totalImages').val()) });
 });

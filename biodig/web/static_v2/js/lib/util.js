@@ -56,4 +56,6 @@ define(['jquery'], function($) {
 
         return xml;
     };
+
+    return Util;
 });

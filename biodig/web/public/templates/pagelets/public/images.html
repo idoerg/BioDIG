@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}css/images.css" type="text/css" />
 </head>
 <div id="images-container" style="height: 100%;"></div>
-<input type="hidden">{{ totalImages }}</input>
+<input id="totalImages" type="hidden" value="{{ totalImages }}"></input>
 <script type="text/javascript">
     var require = {
         baseUrl: '{{ STATIC_URL }}js/'

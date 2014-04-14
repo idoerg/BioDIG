@@ -20,12 +20,12 @@ class ImagesPagelet(PageletBase):
 
 		if request.user and request.user.is_authenticated(): # apply user's permissions
 			if request.user.is_staff:
-				totalImages = Images.objects.all().count()
+				totalImages = Image.objects.all().count()
 			else:
-				images = Images.objects.filter(isPrivate=False) || Images.objects.filter(user=request.user)
+				images = Image.objects.filter(isPrivate=False) | Image.objects.filter(user=request.user)
 				totalImages = images.count()
 		else:
-			totalImages = Images.objects.filter(isPrivate=False).count()
+			totalImages = Image.objects.filter(isPrivate=False).count()
 
 		return {
 			'totalImages' : totalImages

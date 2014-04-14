@@ -1,9 +1,9 @@
 define([], function() {
 
     return {
-        SITE_URL : '/web/',
-        STATIC_URL : '/web/static_v2/',
-        MEDIA_URL : '/web/media/'
+        SITE_URL : '/',
+        STATIC_URL : '/static_v2/',
+        MEDIA_URL : '/media/'
     };
 
 });

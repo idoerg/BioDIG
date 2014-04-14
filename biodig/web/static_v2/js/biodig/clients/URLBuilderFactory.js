@@ -17,7 +17,7 @@ define(['jquery'], function($) {
 		var index = 0;
 		$.each(this.queryParams, function(key, val) {
 			urlArr.push(index == 0 ? "?" : "&");
-			urlArr.push(encodeURIComponent(key), '=', encodeURIComponent(value));
+			urlArr.push(encodeURIComponent(key), '=', encodeURIComponent(val));
 			index++;
 		});
 		
