@@ -1,0 +1,25 @@
+{% load template_tags %}
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/zoomable.css"></link>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/taggable.css"></link>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/menu.css"></link>
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/dialog.css" type="text/css" />
+	<style>
+		#helpBox {
+			font-size: 13px;
+			width: 700px;
+		}
+	</style>
+</head>
+<body>
+    <div id="image_container">
+        <img id="target-image" data-image-pk="{{ image.pk }}" src="{{ image.imageName }}" alt="{{ image.altText }}"></img>
+    </div>
+</body>
+<script type="text/javascript">
+    var require = {
+        baseUrl: '{{ STATIC_URL }}js/'
+    };
+</script>
+<script type="text/javascript" data-main="{{ STATIC_URL }}js/biodig/pages/imageviewer.js"
+    src="{{ STATIC_URL }}js/lib/require.js"></script>
