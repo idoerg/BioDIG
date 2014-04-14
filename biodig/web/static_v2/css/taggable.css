@@ -1,3 +1,14 @@
+.taggable-left {
+	border: 1px solid #CCCCCC;
+	display: inline-block;
+}
+
+.taggable-right {
+	border: 1px solid #CCCCCC;
+	display: inline-block;
+	float: right;
+}
+
 .drawing-board {
 	display: block;
 	position: absolute;
@@ -129,7 +140,7 @@ th {
 }
 
 .geneLinksMenu {
-	display: none;	
+	display: none;
 }
 
 .page-block {
@@ -168,7 +179,7 @@ th {
 }
 
 .tagging-menu-box > div {
-	padding: 5px;	
+	padding: 5px;
 }
 
 .tagging-menu-box-title {
@@ -217,11 +228,11 @@ th {
 }
 
 .tagging-dialog-title .close-button {
-	float: right;	
+	float: right;
 }
 
 .tagging-dialog-title .close-button {
-	cursor: pointer;	
+	cursor: pointer;
 }
 
 .tagging-dialog-contents {
@@ -238,7 +249,7 @@ th {
 	text-align: left;
 }
 
-.organismTitle {
+.organism-title {
 	border-bottom: 1px solid #CCCCCC;
     font-size: 23px;
     font-variant: small-caps;
@@ -246,18 +257,18 @@ th {
     text-align: center;
 }
 
-.speciesInfo table {
+.image-metadata table {
 	border: 1px solid #CCCCCC;
     margin-bottom: 10px;
     margin-top: 10px;
     width: 100%;
 }
 
-.speciesInfo table tbody tr.even {
+.tag-list table tbody tr.even {
 	background-color: Lavender;
 }
 
-.speciesInfo table tbody tr td {
+.tag-list table tbody tr td {
 	padding-bottom: 2px;
     padding-left: 5px;
     padding-top: 2px;
@@ -271,7 +282,7 @@ th {
 	padding-right: 20px;
 }
 
-.geneLinksInfoTitle {
+.tag-list-title {
 	border-bottom: 1px solid #CCCCCC;
     display: block;
     font-size: 22px;
@@ -281,11 +292,11 @@ th {
     display: none;
 }
 
-.geneLinksInfo table {
+.tag-list table {
     width: 100%;
 }
 
-.geneLinksInfo table tbody tr td {
+.tag-list table tbody tr td {
 	padding-bottom: 2px;
     padding-left: 5px;
     padding-top: 2px;
@@ -301,11 +312,11 @@ th {
 	text-align: center;
 }
 
-.geneLinksInfo table tbody tr.even {
+.tag-list table tbody tr.even {
 	background-color: Lavender;
 }
 
-.tagInfoContainer {
+.tag-list-container {
 	overflow-y: auto;
 }
 

@@ -14,7 +14,7 @@
 	width: 560px;
 	height: 500px;
 	background-repeat: no-repeat;
-	background-size: auto auto; 
+	background-size: auto auto;
 	position: relative;
 	background: url("http://wan1.mbi.muohio.edu/dome/static_site/images/dark-area.png") repeat-x scroll left top #3C3C3C;
 }
@@ -23,17 +23,6 @@
 	width: 350px;
 	height: 500px;
 	padding: 10px;
-}
-
-.zoomable-left {
-	border: 1px solid #CCCCCC;
-	display: inline-block;
-}
-
-.zoomable-right {
-	border: 1px solid #CCCCCC;
-	display: inline-block;
-	float: right;
 }
 
 .zoomable-slider-container {
@@ -74,4 +63,3 @@
 	cursor: pointer;
 	background-color: #CCCCCC;
 }
-
