@@ -1,4 +1,4 @@
-      
+
 img.imageDisplay {
 	border: 1px solid black;
 }
@@ -12,7 +12,7 @@ div.description {
 	color: white;
 }
 
-td.table_cell {
+.table-cell {
 	vertical-align: top;
 	width: 180px;
 	border: 1px solid black;
@@ -53,7 +53,7 @@ td.table_cell {
 }
 
 .pagination-control {
-	float: right;	
+	float: right;
 }
 
 .pagination-control:hover {

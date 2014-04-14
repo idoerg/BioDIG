@@ -70,6 +70,7 @@ define(deps, function($, _, settings, util, ImageClient, ImageCell, ImageTable) 
         // add the table to hold all the image cells
         this.$container.empty().append(_.template(ImageTable)(opts));
 
+        this.$alert = this.$container.find('.image-paginator > .error-message-container > .alert');
         this.$table = this.$container.find('.image-paginator > .image-table');
         this.$pagination = this.$container.find('.image-paginator > .image-pagination');
         this.imageCellTemplate = _.template(ImageCell);
@@ -137,6 +138,8 @@ define(deps, function($, _, settings, util, ImageClient, ImageCell, ImageTable) 
 
     ImagePaginator.prototype.renderError = function(error) {
         console.error(error.detail);
+        this.$alert.children('.alert-message').empty().text(error.detail);
+        this.$alert.removeClass('hidden').addClass('show');
     };
 
 
