@@ -39,7 +39,8 @@ define(deps, function($, _, TaggableTmpl) {
             if (!ACCEPTED_MODES[opts.mode]) opts.mode = ACCEPTED_MODES.REGISTERED;
         }
 
-        this.$container.empty().append(this.$contents);
+        this.$container.find('*').not(this.$image).remove();
+        this.$container.prepend(this.$contents);
         // relocate the image to the left side
         this.$left.append(this.$image);
     }
