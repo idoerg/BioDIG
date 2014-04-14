@@ -71,6 +71,10 @@ define(deps, function($, _, settings, util, ImageClient, ImageCell, ImageTable) 
         this.$container.empty().append(_.template(ImageTable)(opts));
 
         this.$alert = this.$container.find('.image-paginator > .error-message-container > .alert');
+        var self = this;
+        this.$alert.children('.close').on('click', function() {
+            self.$alert.removeClass('show').addClass('hidden');
+        });
         this.$table = this.$container.find('.image-paginator > .image-table');
         this.$pagination = this.$container.find('.image-paginator > .image-pagination');
         this.imageCellTemplate = _.template(ImageCell);
