@@ -1,0 +1,28 @@
+<div class="image-table">
+    <div class="error-message-container"></div>
+    <table cellspacing="0">
+        <thead></thead>
+        <tbody><tbody>
+    </table>
+    <div class="image-pagination">
+        <div style="float:left">
+            Showing <span class="first-image">1</span>-<span class="last-image"><%= limit %>
+            </span> of <span class="num-images"><%= totalImages %></span>
+        </div>
+        <div class="last pagination-control">
+            <span>&gt;&gt;</span>
+        </div>
+        <div class="next pagination-control">
+            <span>&gt;</span>
+        </div>
+        <div class="numbers_holder" style="float:right;">
+            <input type="text" value="<%= currentPage + 1 %>"/>
+        </div>
+        <div class="previous pagination-control">
+            <span>&lt;</span>
+        </div>
+        <div class="first pagination-control">
+            <span>&lt;&lt;</span>
+        </div>
+    </div>
+</div>
