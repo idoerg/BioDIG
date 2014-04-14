@@ -110,6 +110,7 @@ define(deps, function($, _, settings, util, ImageClient, ImageCell, ImageTable) 
         this.$pagination.find('.first-image').text(this.currentPage * this.limit + 1);
         this.$pagination.find('.last-image').text(this.currentPage * this.limit + images.length);
         self.$table.empty();
+        self.$alert.removeClass('show').addClass('hidden');
 
         if (images.length == 0) {
             self.renderError({ detail : "You've hit the end of our image list!" });

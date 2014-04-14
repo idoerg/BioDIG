@@ -30,6 +30,10 @@ div.description {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e0e0e0', endColorstr='#444444',GradientType=0 ); /* IE6-9 */
 }
 
+.error-message-container {
+    width: 90%;
+}
+
 .image-container {
     background-color: #292828;
 }
