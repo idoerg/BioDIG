@@ -39,5 +39,5 @@ require(deps, function($, _, settings, TaggableImage, HelpBox) {
         }
     });
 
-    TaggableImage.create('#target-image');
+    TaggableImage.create('#target-image', { mode : TaggableImage.MODES.PUBLIC });
 });

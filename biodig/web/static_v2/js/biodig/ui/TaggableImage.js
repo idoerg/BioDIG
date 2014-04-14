@@ -2,6 +2,11 @@ var deps = ['jquery', 'underscore', 'text!biodig/tmpl/taggable.html'];
 
 define(deps, function($, _, TaggableTmpl) {
 
+    var ACCEPTED_MODES = {
+        REGISTERED: 'REGISTERED',
+        PUBLIC: 'PUBLIC'
+    };
+
     function TaggableImage(selector, opts) {
         // check to see if features were directly requested
         // otherwise use the "mode" to determine the feature set
@@ -31,8 +36,7 @@ define(deps, function($, _, TaggableTmpl) {
             };
         }
         else {
-            if (!accepted_modes[opts.mode]) opts.mode = 'registered';
-
+            if (!ACCEPTED_MODES[opts.mode]) opts.mode = ACCEPTED_MODES.REGISTERED;
         }
 
         this.$container.empty().append(this.$contents);
@@ -50,9 +54,6 @@ define(deps, function($, _, TaggableTmpl) {
 
             return new TaggableImage(selector, defaults);
         },
-        MODES: {
-            REGISTERED: 'registered',
-            PUBLIC: 'public'
-        }
+        MODES: ACCEPTED_MODES
     }
 });
