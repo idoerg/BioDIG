@@ -22,7 +22,10 @@ class Application(ApplicationBase):
 
 		self.addPageletBinding('footer', FooterPagelet())
 
-
+	def render(self, request, image_id):
+		self.tokenAuthentication(request)
+		self.doProcessRender(request, image_id)
+		return self.renderEngine.render(request)
 '''
 	Used for mapping to the url in urls.py
 '''
