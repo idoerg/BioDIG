@@ -29,5 +29,5 @@ class ImageViewerPagelet(PageletBase):
             return {}
 
         return {
-            image: image
+            'image' : image
         }
