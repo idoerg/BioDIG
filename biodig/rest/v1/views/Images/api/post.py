@@ -1,5 +1,5 @@
 import biodig.base.util.ErrorConstants as Errors
-from biodig.base.models import Picture, PictureDefinitionTag, Organism
+from biodig.base.models import Image, ImageOrganism, Organism
 from biodig.base.renderEngine.WebServiceObject import WebServiceObject
 from django.db import transaction, DatabaseError
 from PIL import Image as PILImage
@@ -87,9 +87,9 @@ class PostAPI:
         
         
         if self.user.is_staff:
-            upload = Picture(user=self.user, isPrivate=False, imageName=wrappedFile.file, thumbnail=thumbnailFile.file)
+            upload = Image(user=self.user, isPrivate=False, imageName=wrappedFile.file, thumbnail=thumbnailFile.file)
         else:
-            upload = Picture(user=self.user, isPrivate=True, imageName=wrappedFile.file, thumbnail=thumbnailFile.file)            
+            upload = Image(user=self.user, isPrivate=True, imageName=wrappedFile.file, thumbnail=thumbnailFile.file)            
         
         try:
             upload.save()
@@ -110,7 +110,7 @@ class PostAPI:
             newOrganisms = Organism.objects.filter(organism_id__in=organisms)
             newDefTags = []
             for newOrg in newOrganisms:
-                newDefTags.append(PictureDefinitionTag(picture=upload, organism=newOrg))
+                newDefTags.append(ImageOrganism(picture=upload, organism=newOrg))
             try:
                 for newTag in newDefTags:
                     newTag.save()

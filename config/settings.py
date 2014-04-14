@@ -51,7 +51,7 @@ USE_TZ = True
 
 # THE ALIAS FOR THE WEBSITE
 # (change depending on devo server/gamma/prod)
-SITE_URL = '/web/'
+SITE_URL = '/'
 
 # Marks the projects current directory to allow it to be moved
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__)) + '/'
@@ -73,7 +73,7 @@ STATIC_ROOT = PROJECT_PATH + 'static/'
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = SITE_URL + 'static/'
+STATIC_URL = SITE_URL + 'static_v2/'
 
 # URL prefix for admin static files -- CSS, JavaScript and images.
 # Make sure to use a trailing slash.
@@ -157,7 +157,6 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
     'biodig.web.public',
     'biodig.web.registered',
-    'biodig.rest.v1',
     'biodig.rest.v2',
     'biodig.base'
 )

@@ -1,5 +1,5 @@
 import biodig.base.util.ErrorConstants as Errors
-from biodig.base.models import Picture, PictureDefinitionTag, Organism
+from biodig.base.models import Image, ImageOrganism, Organism
 from django.core.exceptions import ObjectDoesNotExist
 from biodig.base.renderEngine.WebServiceObject import WebServiceObject
 from django.db import transaction, DatabaseError
@@ -27,7 +27,7 @@ class PutAPI:
         
         try:
             if isKey:
-                image = Picture.objects.get(pk__exact=imageKey) 
+                image = Image.objects.get(pk__exact=imageKey) 
             else:
                 image = imageKey
         
@@ -37,7 +37,7 @@ class PutAPI:
         if not image.writePermissions(self.user):
             raise Errors.AUTHENTICATION
 
-        defTags = PictureDefinitionTag.objects.filter(picture__exact=image)
+        defTags = ImageOrganism.objects.filter(picture__exact=image)
         
         organismField = not self.fields or 'organisms' in self.fields
         
@@ -45,7 +45,7 @@ class PutAPI:
             newOrganisms = Organism.objects.filter(organism_id__in=organisms)
             newDefTags = []
             for newOrg in newOrganisms:
-                newDefTags.append(PictureDefinitionTag(picture=image, organism=newOrg))
+                newDefTags.append(ImageOrganism(picture=image, organism=newOrg))
             try:
                 defTags.delete()
                 for newTag in newDefTags:

@@ -11,7 +11,6 @@ urlpatterns = patterns('',
 )
 
 urlpatterns += patterns('',
-    url(r'^api/', include('biodig.rest.v1.urls')),
     url(r'^rest/', include('biodig.rest.urls')),
     url(r'', include('biodig.web.urls'))
 )

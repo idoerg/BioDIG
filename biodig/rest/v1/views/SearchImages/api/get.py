@@ -1,4 +1,4 @@
-from biodig.base.models import Picture, PictureDefinitionTag
+from biodig.base.models import Image, ImageOrganism
 from biodig.base.renderEngine.WebServiceObject import WebServiceArray, WebServiceObject, LimitDict
 from biodig.base.renderEngine.WebServiceException import WebServiceException
 from biodig.rest.v1.views.Images.api.get import GetAPI as ImageMetadataAPI
@@ -25,18 +25,18 @@ class GetAPI:
         metadata = WebServiceObject()
         
         if self.user and self.user.is_authenticated():
-            allowedImages = Picture.objects.filter(isPrivate=False) | Picture.objects.filter(user__exact=self.user, isPrivate=True) 
+            allowedImages = Image.objects.filter(isPrivate=False) | Picture.objects.filter(user__exact=self.user, isPrivate=True) 
         else:
-            allowedImages = Picture.objects.filter(isPrivate=False)
+            allowedImages = Image.objects.filter(isPrivate=False)
         
         defTags = []    
         
         if self.unlimited:
             for orgId in organismId:
-                defTags.append(PictureDefinitionTag.objects.filter(organism__exact=orgId, picture__in=allowedImages)[self.offset:])
+                defTags.append(ImageOrganism.objects.filter(organism__exact=orgId, picture__in=allowedImages)[self.offset:])
         else:
             for orgId in organismId:
-                defTags.append(PictureDefinitionTag.objects.filter(organism__exact=orgId, picture__in=allowedImages)[self.offset:self.offset + self.limit])   
+                defTags.append(ImageOrganism.objects.filter(organism__exact=orgId, picture__in=allowedImages)[self.offset:self.offset + self.limit])   
 
         closedSet = {}
         imageMetadata = {}
@@ -88,14 +88,14 @@ class GetAPI:
         
         if self.user and self.user.is_authenticated():
             if self.unlimited:
-                allowedImages = (Picture.objects.filter(isPrivate=False) | Picture.objects.filter(user__exact=self.user, isPrivate=True))[self.offset:]
+                allowedImages = (Image.objects.filter(isPrivate=False) | Image.objects.filter(user__exact=self.user, isPrivate=True))[self.offset:]
             else:
-                allowedImages = (Picture.objects.filter(isPrivate=False) | Picture.objects.filter(user__exact=self.user, isPrivate=True))[self.offset:self.offset+self.limit]
+                allowedImages = (Image.objects.filter(isPrivate=False) | Image.objects.filter(user__exact=self.user, isPrivate=True))[self.offset:self.offset+self.limit]
         else:
             if self.unlimited:
-                allowedImages = Picture.objects.filter(isPrivate=False)[self.offset:]
+                allowedImages = Image.objects.filter(isPrivate=False)[self.offset:]
             else:
-                allowedImages = Picture.objects.filter(isPrivate=False)[self.offset:self.offset+self.limit]
+                allowedImages = Image.objects.filter(isPrivate=False)[self.offset:self.offset+self.limit]
         
         imageMetadataAPI = ImageMetadataAPI(self.user, self.fields)
         

@@ -13,7 +13,14 @@ class ImageDoesNotExist(APIException):
     '''
     status_code = 404
     detail = "The image id provided does not refer to an image in this database."
-    
+
+class ImageOrganismDoesNotExist(APIException):
+    '''
+        ImageOrganism does not exist error.
+    '''
+    status_code = 404
+    detail = "The organism_id provided is not associated with the image_id provided in this database."
+
 class TagGroupDoesNotExist(APIException):
     '''
         Tag Group does not exist error.
@@ -21,6 +28,50 @@ class TagGroupDoesNotExist(APIException):
     status_code = 404
     detail = "The tag group id provided does not refer to a tag group in this database."
     
+class TagDoesNotExist(APIException):
+    '''
+        Tag does not exist error.
+    '''
+    status_code = 404
+    detail = "The tag id provided does not refer to a tag in this database."
+
+class GeneLinkDoesNotExist(APIException):
+    '''
+        Gene Link does not exist error.
+    '''
+    status_code = 404
+    detail = "The gene link id provided does not refer to a gene link in this database."
+
+class FeatureDoesNotExist(APIException):
+    '''
+        Feature does not exist error.
+    '''
+    status_code = 404
+    detail = "The information provided did not match any feature in this database."
+
+class FeatureTypeDoesNotExist(APIException):
+    '''
+        Feature type does not exist error.
+    '''
+    status_code = 404
+    detail = "The type indicated for the feature does not exist in this database or is invalid."
+
+class SequenceCvDoesNotExist(APIException):
+    '''
+        Sequence Cv does not exist error.
+    '''
+    status_code = 404
+    detail = "The sequence controlled vocabulary does not seem to be installed in Chado. Please consult your system administrator."
+
+class MultipleFeaturesReturned(APIException):
+    def __init__(self, data):
+        self.detail = data
+
+    '''
+        Error for when multiple features are returned when adding a gene link.
+    '''
+    status_code = 404
+
 class DatabaseIntegrity(APIException):
     '''
         An error occurred while trying to write to the database.

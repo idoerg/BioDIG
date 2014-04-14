@@ -10,24 +10,29 @@ class TagList(APIView):
        searching through the Tags.
     '''
 
-    def get(self, request):
+    def get(self, request, image_id, tag_group_id):
         '''
             Method for getting multiple Tags either through search
             or general listing.
         '''
-        form = MultiGetForm(request.QUERY_PARAMS)
+        params = { key : val for key, val in request.QUERY_PARAMS.iteritems() }
+        params['image_id'] = image_id
+        params['tag_group_id'] = tag_group_id
+        form = MultiGetForm(params)
         
         if not form.is_valid():
             raise BadRequestException()
 
         return Response(form.submit(request))
 
-    def post(self, request):
+    def post(self, request, image_id, tag_group_id):
         '''
             Method for creating a new Tag.
         '''
-        params = { key : val for key, val in request.DATA }
+        params = { key : val for key, val in request.DATA.iteritems() }
         params.update(request.QUERY_PARAMS)
+        params['image_id'] = image_id
+        params['tag_group_id'] = tag_group_id
         form = PostForm(params)
 
         if not form.is_valid():
@@ -42,13 +47,15 @@ class TagSingle(APIView):
        and updating a Tag. 
     '''
 
-    def get(self, request, tag_id):
+    def get(self, request, image_id, tag_group_id, tag_id):
         '''
             Method for getting multiple Tags either through search
             or general listing.
         '''
-        params = { key : val for key, val in request.QUERY_PARAMS }
+        params = { key : val for key, val in request.QUERY_PARAMS.iteritems() }
         params['tag_id'] = tag_id
+        params['image_id'] = image_id
+        params['tag_group_id'] = tag_group_id
         form = SingleGetForm(params)
         
         if not form.is_valid():
@@ -56,26 +63,31 @@ class TagSingle(APIView):
 
         return Response(form.submit(request))
 
-    def put(self, request, tag_id):
+    def put(self, request, image_id, tag_group_id, tag_id):
         '''
             Method for updating a TagGroup's information.
         '''
-        params = { key : val for key, val in request.DATA }
-        params.update(request.DATA)
+        params = { key : val for key, val in request.DATA.iteritems() }
+        params.update(request.QUERY_PARAMS)
         params['tag_id'] = tag_id
+        params['image_id'] = image_id
+        params['tag_group_id'] = tag_group_id
         form = PutForm(params)
         
         if not form.is_valid():
-            raise BadRequestException()
-
+            e = BadRequestException()
+            e.detail = form.errors
+            raise e
         return Response(form.submit(request))
 
-    def delete(self, request, tag_id):
+    def delete(self, request, image_id, tag_group_id, tag_id):
         '''
             Method for deleting a a TagGroup.
         '''
-        params = { key : val for key, val in request.QUERY_PARAMS }
+        params = { key : val for key, val in request.QUERY_PARAMS.iteritems() }
         params['tag_id'] = tag_id
+        params['image_id'] = image_id
+        params['tag_group_id'] = tag_group_id
         form = DeleteForm(params)
         
         if not form.is_valid():

@@ -12,7 +12,7 @@ from biodig.rest.v1.views.SearchGeneLinks.api.get import GetAPI as GeneLinkAPI
 from biodig.rest.v1.views.SearchTags.api.get import GetAPI as TagAPI
 from biodig.rest.v1.views.SearchTagGroups.api.get import GetAPI as TagGroupAPI
 from biodig.rest.v1.views.Images.api.get import GetAPI as ImageMetadataAPI
-from biodig.base.models import Picture
+from biodig.base.models import Image
 from django.core.exceptions import ObjectDoesNotExist
 
 class ImageEditorPagelet(PageletBase):
@@ -28,7 +28,7 @@ class ImageEditorPagelet(PageletBase):
         try:
             imageKey = request.GET.get('imageId', None)
             if (imageKey):
-                image = Picture.objects.get(pk__exact=imageKey)
+                image = Image.objects.get(pk__exact=imageKey)
                 
                 # initialize tagging APIs
                 tagGroupAPI = TagGroupAPI(unlimited=True)
