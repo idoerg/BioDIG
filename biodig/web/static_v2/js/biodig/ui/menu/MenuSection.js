@@ -1,9 +1,9 @@
 var deps = [
-    'jquery', 'biodig/ui/menu/MenuItem', 'lib/util',
+    'jquery', 'underscore', 'biodig/ui/menu/MenuItem', 'lib/util',
     'text!biodig/tmpl/menu-section.html', 'jquery_ui'
 ];
 
-define(deps, function($, MenuItem, MenuSectionTmpl) {
+define(deps, function($, _, MenuItem, MenuSectionTmpl) {
 
     var MenuSectionTemplate = _.template(MenuSectionTmpl);
 
