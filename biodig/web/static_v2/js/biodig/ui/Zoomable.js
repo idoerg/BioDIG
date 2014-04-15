@@ -193,7 +193,7 @@ define(['jquery', 'underscore', 'text!biodig/tmpl/zoomable.html', 'jquery_ui'], 
             var settings = {
                 height: 500,
                 width: 560,
-                alreadyLoaded: false
+                alreadyLoaded: true
             };
 
             $.extend(settings, opts);
