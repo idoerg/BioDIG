@@ -36,7 +36,7 @@ define(deps, function($, _, Item, util, SectionTmpl) {
 
     Section.prototype.item = function(key, text, icon) {
         if (!this.menuDict[key] && text) {
-            this.addItem(key, MenuItem.create(text, icon));
+            this.addItem(key, Item.create(text, icon));
         }
         return this.menuDict[key];
     };

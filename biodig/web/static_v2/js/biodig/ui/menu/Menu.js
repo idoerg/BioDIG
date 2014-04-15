@@ -1,4 +1,4 @@
-define(['biodig/ui/menu/Section'], function(MenuSection) {
+define(['biodig/ui/menu/Section'], function(Section) {
     function Menu(toolbar) {
         this.menuBar = toolbar;
         this.sections = {};
@@ -6,7 +6,7 @@ define(['biodig/ui/menu/Section'], function(MenuSection) {
 
     Menu.prototype.section = function(key, text, icon) {
         if (!this.sections[key] && text) {
-            this.addSection(key, MenuSection.create(text, icon));
+            this.addSection(key, Section.create(text, icon));
         }
         return this.sections[key];
     };
