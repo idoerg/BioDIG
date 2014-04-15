@@ -146,7 +146,7 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, DialogManag
             this.menu.section('tagGroups').item('changeVisibleTagGroups').click(function() {
                 $.when(self.imageDao.tagGroups())
                     .done(function(tagGroups) {
-                        self.dialogs.dialog('ChangeVisibleTagGroups').show(tagGroups);
+                        self.dialogs.dialog('ChangeVisibleTagGroups').show({'tagGroups' : tagGroups});
                     })
                     .fail(function(e) {
                         console.error(e.detail);
