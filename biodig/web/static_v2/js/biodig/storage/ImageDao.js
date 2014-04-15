@@ -9,6 +9,7 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient) {
         this.image_id = image_id;
         this.imageClient = ImageClient.create();
         this.tagGroupClient = TagGroupClient.create({ 'image_id' : image_id });
+        this.imageOrganismClient = ImageOrganismClient.create({ 'image_id' : image_id });
 
         this.organisms_cache = null;
         this.tagGroups_cache = null;
@@ -19,7 +20,7 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient) {
         var self = this;
         if (this.metadata_cache == null) {
             return $.Deferred(function(deferred_obj) {
-                $.when(ImageClient.get(self.image_id))
+                $.when(self.imageClient.get(self.image_id))
                     .done(function(metadata) {
                         self.metadata_cache = metadata;
                         deferred_obj.resolve(metadata);
@@ -40,7 +41,7 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient) {
         var self = this;
         if (this.organisms_cache == null) {
             return $.Deferred(function(deferred_obj) {
-                $.when(ImageOrganismClient.list())
+                $.when(self.imageOrganismClient.list())
                     .done(function(organisms) {
                         self.organisms_cache = organisms;
                         deferred_obj.resolve(organisms);
@@ -61,7 +62,7 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient) {
         var self = this;
         if (this.tagGroups_cache == null) {
             return $.Deferred(function(deferred_obj) {
-                $.when(TagGroupClient.list())
+                $.when(self.tagGroupClient.list())
                     .done(function(tagGroups) {
                         // add the tags section into the tag groups
                         // object to be checked later and switch to
