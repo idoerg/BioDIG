@@ -1,4 +1,5 @@
 require.config({
+    waitSeconds: 200,
     shim: {
         jquery: {
             init: function() {
