@@ -113,6 +113,7 @@ define(deps, function($, settings, URLBuilderFactory, util) {
      *               offset: The number of entries to skip before listing.
     **/
     ImageOrganismClient.prototype.list = function(opts) {
+        if (!opts) opts = {};
     	var urlBuilder = URLBuilderFactory.newBuilder(this.url);
     	$.each(opts, function(key, val) {
     		urlBuilder.addQuery(key, val, URLBuilderFactory.NOT_EMPTY);

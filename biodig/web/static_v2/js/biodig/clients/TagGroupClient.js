@@ -18,8 +18,12 @@ define(deps, function($, URLBuilder, settings, util) {
                     if (!tagGroupId || isNaN(TagGroupid)) throw { detail : 'The id is not a valid positive number' }
                 },
                 list: function(opts) {
-                    if (!opts['owner'] || isNaN(opts['owner'])) throw { detail : 'The ow is not a valid positive number' }
-                    if (!opts['name']) throw { detail : 'Not a valid name' }
+                    if ('owner' in opts) {
+                        if (!opts['owner'] || isNaN(opts['owner'])) throw { detail : 'The ow is not a valid positive number' }
+                    }
+                    if ('name' in opts) {
+                        if (!opts['name']) throw { detail : 'Not a valid name' }
+                    }
                 },
                 update: function(tagGroupId) {
                     if (!tagGroupId || isNaN(TagGroupId)) throw { detail : 'The id is not a valid positive number' }
@@ -131,6 +135,7 @@ define(deps, function($, URLBuilder, settings, util) {
 
     TagGroupClient.prototype.list = function(opts) {
         try {
+            if (!opts) opts = {};
             this.validator.list(opts);
         }
         catch (e) {
@@ -140,6 +145,7 @@ define(deps, function($, URLBuilder, settings, util) {
         }
 
         var urlBuilder = URLBuilder.newBuilder(this.url);
+        if (!opts)
         $.each(opts, function(key, val) {
             urlBuilder.addQuery(key, val, URLBuilder.NOT_EMPTY);
         });
