@@ -1,5 +1,5 @@
 var deps = [
-    'jquery', 'underscore', 'lib/util', 'biodig/ui/dialogs/DynamicDialog.js',
+    'jquery', 'underscore', 'lib/util', 'biodig/ui/dialogs/DynamicDialog',
     'text!biodig/tmpl/taggable/dialogs/change-visible-tag-groups.html',
     'text!biodig/tmpl/taggable/dialogs/download-metadata.html'
 ];
