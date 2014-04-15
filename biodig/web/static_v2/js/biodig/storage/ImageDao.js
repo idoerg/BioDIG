@@ -59,6 +59,7 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient) {
     };
 
     ImageDao.prototype.tagGroups = function(opts) {
+        if (!opts) opts = {};
         var self = this;
         if (this.tagGroups_cache == null) {
             return $.Deferred(function(deferred_obj) {
