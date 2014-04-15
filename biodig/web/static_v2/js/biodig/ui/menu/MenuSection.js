@@ -3,7 +3,7 @@ var deps = [
     'text!biodig/tmpl/menu-section.html', 'jquery_ui'
 ];
 
-define(deps, function($, _, MenuItem, MenuSectionTmpl) {
+define(deps, function($, _, MenuItem, util, MenuSectionTmpl) {
 
     var MenuSectionTemplate = _.template(MenuSectionTmpl);
 
