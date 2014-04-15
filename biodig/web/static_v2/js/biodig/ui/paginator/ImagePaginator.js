@@ -65,7 +65,7 @@ define(deps, function($, _, settings, util, ImageClient, ImageCell, ImageTable) 
         this.totalImages = opts.totalImages;
         this.urlkey = opts.useActualImages ? 'url' : 'thumbnail';
 
-        this.imageClient = ImageClient.getInstance();
+        this.imageClient = ImageClient.create();
 
         // add the table to hold all the image cells
         this.$container.empty().append(_.template(ImageTable)(opts));

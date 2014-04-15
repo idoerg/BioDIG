@@ -1,12 +1,13 @@
 var deps = [
     'jquery', 'underscore', 'biodig/ui/zoomable/Zoomable', 'biodig/ui/taggable/TagBoard',
-    'biodig/storage/ImageDao', 'biodig/ui/taggable/ImageMenu', 'lib/util',
-    'text!biodig/tmpl/taggable/structure.html', 'text!biodig/tmpl/taggable/image-metadata.html',
+    'biodig/storage/ImageDao', 'biodig/ui/taggable/ImageMenu', 'biodig/ui/taggable/DialogManager',
+    'lib/util', 'text!biodig/tmpl/taggable/structure.html',
+    'text!biodig/tmpl/taggable/image-metadata.html',
 
 ];
 
-define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, util, TaggableTmpl,
-    MetadataTmpl) {
+define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, DialogManager, util,
+    TaggableTmpl, MetadataTmpl) {
 
     var ACCEPTED_MODES = {
         REGISTERED: 'REGISTERED',
