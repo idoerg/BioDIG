@@ -20,7 +20,7 @@ define(['jquery'], function($) {
     Util.format = function() {
         var content = arguments[0];
         for (var i=1; i < arguments.length; i++) {
-             var replacement = '{' + i - 1 + '}';
+             var replacement = '{' + (i - 1) + '}';
              content = content.replace(replacement, arguments[i]);
         }
         return content;

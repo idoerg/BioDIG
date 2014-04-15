@@ -15,15 +15,15 @@ define(['jquery', 'lib/settings', 'biodig/clients/URLBuilderFactory'], function(
                     if (!altText) throw { validation_error : 'The alternate text for this image is empty' }
                 },
                 get: function(id) {
-                	if (!id || isNan(id)) throw { validation_error : 'The id is not a valid positive number' }
+                	if (!id || isNaN(id)) throw { validation_error : 'The id is not a valid positive number' }
                 },
                 update: function(id, description, altText) {
-                	if (!id || isNan(id)) throw { validation_error : 'The id is not a valid positive number' }
+                	if (!id || isNaN(id)) throw { validation_error : 'The id is not a valid positive number' }
 
                 	if (!description && !altText) throw { validation_error : 'No changes have been made to this image' }
                 },
                 delete: function(id) {
-                    if (!id || isNan(id)) throw { validation_error : 'The id is not a valid positive number' }
+                    if (!id || isNaN(id)) throw { validation_error : 'The id is not a valid positive number' }
                 }
             }
         }
