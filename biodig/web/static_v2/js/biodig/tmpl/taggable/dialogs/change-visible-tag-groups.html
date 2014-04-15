@@ -1,0 +1,18 @@
+<div>
+    <% _.each(tagGroups, function(tagGroup, index) { %>
+        <% if (index % 2 == 0) { %>
+        <div class="row">
+        <% } %>
+            <div class="col-sm-6">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" data-tag-group-id="<%= tagGroup.id %>"
+                            <% if (tagGroup.visible) { %> checked="checked" <% } %> />
+                        <span><%= tagGroup.name %></span>
+                    </label>
+                </div>
+        <% if (index % 2 == 0) { %>
+        </div>
+        <% } %>
+    <% }) %>
+</div>

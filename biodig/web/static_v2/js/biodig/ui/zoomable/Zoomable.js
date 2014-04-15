@@ -1,23 +1,17 @@
 var deps = [
-    'jquery', 'underscore', 'text!biodig/tmpl/zoomable/structure.html',
-    'jquery_ui'
+    'jquery', 'underscore', 'lib/util',
+    'text!biodig/tmpl/zoomable/structure.html', 'jquery_ui'
 ];
 
-define(deps, function($, _, ZoomableTmpl) {
+define(deps, function($, _, util, ZoomableTmpl) {
 
     var ZoomableUIHelper = {
-        uuid4: function() {
-            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-                return v.toString(16);
-            });
-        },
         createStructure: function($img, template, options) {
             $img.off('load');
             // renders the zoomable template, structural
             var id = $img.attr('id');
             if (!id) {
-                id = ZoomableUIHelper.uuid4();
+                id = util.uuid4();
                 $img.attr('id', id);
             }
             $img.parent().append(template({ id : id }));

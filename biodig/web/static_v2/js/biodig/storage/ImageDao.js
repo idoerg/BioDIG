@@ -57,7 +57,7 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient) {
         }
     };
 
-    ImageDao.prototype.tagGroups = function() {
+    ImageDao.prototype.tagGroups = function(opts) {
         var self = this;
         if (this.tagGroups_cache == null) {
             return $.Deferred(function(deferred_obj) {
@@ -69,11 +69,17 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient) {
                         var groups = {};
                         $.each(tagGroups, function(index, tagGroup) {
                             tagGroup['tags'] = null;
+                            tagGroup['visible'] = false;
                             groups[tagGroup.id] = tagGroup;
                         });
 
                         self.tagGroups_cache = groups;
-                        deferred_obj.resolve(groups);
+                        if (opts.visible === true) {
+                            deferred_object.resolve({});
+                        }
+                        else {
+                            deferred_obj.resolve(groups);
+                        }
                     })
                     .fail(function(e) {
                         deferred_obj.reject(e);
@@ -82,7 +88,18 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient) {
         }
         else {
             return $.Deferred(function(deferred_obj) {
-                resolve(self.organisms_cache);
+                var groups = self.tagGroups_cache;
+                if (opts.visible === true || opts.visible === false) {
+                    var filter = {};
+                    $.each(groups, function(id, group) {
+                        if (group.visible === opts.visible) {
+                            filter[id] = group;
+                        }
+                    });
+                    groups = filter;
+                }
+
+                resolve(groups);
             }).promise();
         }
     };

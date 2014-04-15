@@ -52,7 +52,7 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, util, Tagga
         this.tagBoard = TagBoard.create(this.$image, opts);
 
         // create the public dialog boxes
-        this.dialogs = DialogManager.create()
+        this.dialogs = DialogManager.create();
 
         // create the image data manager for storing the current internal
         // state of the image's data
@@ -96,11 +96,15 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, util, Tagga
 
         // optionally install the registered features
         if (opts.mode == ACCEPTED_MODES.REGISTERED) {
-            // creates a canvas with methods for drawing tags
-            //this.drawingBoard = DrawingBoard.create(this.$image);
-            //this.drawingUI = DrawingUI.create('hidden');
+            // tells the dialog manager that the registered user dialogs
+            // are required, so all dialog related functions are loaded here
+            $.when(this.dialogs.loadRegistered()).done(function() {
+                // creates a canvas with methods for drawing tags
+                //this.drawingBoard = DrawingBoard.create(this.$image);
+                //this.drawingUI = DrawingUI.create('hidden');
 
-            //util.scope(this, TaggableImageHelper.addRegisteredControls).call();
+                //util.scope(this, TaggableImageHelper.addRegisteredControls).call();
+            });
         }
     }
 
@@ -110,18 +114,24 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, util, Tagga
 
             // toggles the visibility of the tags for the currently selected tag groups
             this.menu.section('tools').item('toggleTags').click(function() {
-                $.when(self.imageDao.tags(self.tagBoard.currentTagGroups))
-                    .done(function(tags) {
-                        self.tagBoard.draw(tags);
+                $.when(self.imageDao.tagGroups({ visible: true }))
+                    .done(function(tagGroups) {
+                        $.when(self.imageDao.tags(tagGroups))
+                            .done(function(tags) {
+                                self.tagBoard.draw(tags);
+                            })
+                            .fail(function(e) {
+                                console.error(e.detail);
+                            });
                     })
                     .fail(function(e) {
                         console.error(e.detail);
-                    });
+                    })
             });
 
             // shows the download dialog for downloading image metadata
             this.menu.section('tools').item('download').click(function() {
-                self.dialogs.show('download');
+                self.dialogs.dialog('DownloadMetadata').show();
             });
 
             this.menu.section('tools').item('zoomIn').click(function() {
@@ -133,7 +143,13 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, util, Tagga
             });
 
             this.menu.section('tagGroups').item('changeVisibleGroups').click(function() {
-                self.dialogs.show('changeVisibleGroups');
+                $.when(self.imageDao.tagGroups())
+                    .done(function(tagGroups) {
+                        self.dialogs.dialog('ChangeVisibleGroups').show(tagGroups);
+                    })
+                    .fail(function(e) {
+                        console.error(e.detail);
+                    });
             });
         },
         addRegisteredControls: function() {

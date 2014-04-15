@@ -17,16 +17,21 @@ define(['jquery'], function($) {
     /**
      *  Sprintf
     **/
-    Util.prototype.format = function()
-     {
+    Util.format = function() {
         var content = arguments[0];
-        for (var i=1; i < arguments.length; i++)
-        {
+        for (var i=1; i < arguments.length; i++) {
              var replacement = '{' + i - 1 + '}';
              content = content.replace(replacement, arguments[i]);
         }
         return content;
-     };
+    };
+
+    Util.uuid4 = function() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+            return v.toString(16);
+        });
+    };
 
     Util.convertObjectToXml = function(obj) {
         var xml = '<?xml version="1.0" encoding="UTF-8"?>' + Util.endL;
