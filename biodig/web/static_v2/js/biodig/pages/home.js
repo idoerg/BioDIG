@@ -22,8 +22,8 @@ require.config({
 });
 
 var deps = [
-    'jquery', 'underscore', 'settings', 'biodig/ui/Zoomable',
-    'text!biodig/tmpl/helpbox.html', 'bootstrap', 'jquery_ui'
+    'jquery', 'underscore', 'settings', 'biodig/ui/zoomable/Zoomable',
+    'text!biodig/tmpl/helpbox/home.html', 'bootstrap', 'jquery_ui'
 ];
 
 require(deps, function($, _, settings, ZoomableUI, HelpBox) {

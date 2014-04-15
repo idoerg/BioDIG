@@ -14,6 +14,20 @@ define(['jquery'], function($) {
         };
     };
 
+    /**
+     *  Sprintf
+    **/
+    Util.prototype.format = function()
+     {
+        var content = arguments[0];
+        for (var i=1; i < arguments.length; i++)
+        {
+             var replacement = '{' + i - 1 + '}';
+             content = content.replace(replacement, arguments[i]);
+        }
+        return content;
+     };
+
     Util.convertObjectToXml = function(obj) {
         var xml = '<?xml version="1.0" encoding="UTF-8"?>' + Util.endL;
 

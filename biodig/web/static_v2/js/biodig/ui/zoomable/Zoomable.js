@@ -1,4 +1,9 @@
-define(['jquery', 'underscore', 'text!biodig/tmpl/zoomable.html', 'jquery_ui'], function($, _, ZoomableTmpl) {
+var deps = [
+    'jquery', 'underscore', 'text!biodig/tmpl/zoomable/structure.html',
+    'jquery_ui'
+];
+
+define(deps, function($, _, ZoomableTmpl) {
 
     var ZoomableUIHelper = {
         uuid4: function() {

@@ -22,11 +22,11 @@ require.config({
 });
 
 var deps = [
-    'jquery', 'underscore', 'lib/settings', 'biodig/ui/TaggableImage',
-    'text!biodig/tmpl/imageviewer-helpbox.html', 'bootstrap', 'jquery_ui'
+    'jquery', 'underscore', 'lib/settings', 'biodig/ui/taggable/Taggable',
+    'text!biodig/tmpl/helpbox/imageviewer.html', 'bootstrap', 'jquery_ui'
 ];
 
-require(deps, function($, _, settings, TaggableImage, HelpBox) {
+require(deps, function($, _, settings, Taggable, HelpBox) {
     var helpDialog = $(_.template(HelpBox).call(settings));
 
     $('#helpButton').click(function() {
@@ -39,5 +39,5 @@ require(deps, function($, _, settings, TaggableImage, HelpBox) {
         }
     });
 
-    TaggableImage.create('#target-image', { mode : TaggableImage.MODES.PUBLIC });
+    Taggable.create('#target-image', { mode : TaggableImage.MODES.PUBLIC });
 });

@@ -1,10 +1,12 @@
 var deps = [
-    'jquery', 'underscore', 'biodig/ui/Zoomable', 'biodig/ui/TagBoard',
-    'biodig/storage/ImageDao', 'biodig/ui/ImageMenu',
-    'lib/util', 'text!biodig/tmpl/taggable.html'
+    'jquery', 'underscore', 'biodig/ui/zoomable/Zoomable', 'biodig/ui/taggable/TagBoard',
+    'biodig/storage/ImageDao', 'biodig/ui/taggable/ImageMenu', 'lib/util',
+    'text!biodig/tmpl/taggable/structure.html', 'text!biodig/tmpl/taggable/image-metadata.html',
+
 ];
 
-define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, util, TaggableTmpl) {
+define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, util, TaggableTmpl,
+    MetadataTmpl) {
 
     var ACCEPTED_MODES = {
         REGISTERED: 'REGISTERED',
@@ -12,6 +14,7 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, util, Tagga
     };
 
     var TaggableTemplate = _.template(TaggableTmpl);
+    var MetadataTemplate = _.template(MetadataTmpl);
 
     function TaggableImage(selector, opts) {
         // check to see if features were directly requested
@@ -48,12 +51,47 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, util, Tagga
         this.zoomable = Zoomable.create(this.image, opts);
         this.tagBoard = TagBoard.create(this.$image, opts);
 
+        // create the public dialog boxes
+        this.dialogs = DialogManager.create()
+
         // create the image data manager for storing the current internal
         // state of the image's data
         this.imageDao = ImageDao.create(this.image_id);
 
         // creates the correct menu for the given mode
         this.menu = ImageMenu.create(this.$toolbar, opts.mode);
+
+        var self = this;
+
+        // create the right side of the taggable interface
+
+        // the title of the right side is determined by the list of organisms
+        // on the image
+        $.when(this.imageDao.organisms())
+            .done(function(organisms) {
+                if (organisms) {
+                    var organisms_text = []
+                    $.each(organisms, function(index, organism) {
+                        organisms_text.push(organism.common_name);
+                    });
+                    self.$right.find('organism-title').text(", ".join(organisms_text));
+                }
+                else {
+                    self.$right.find('organism-title').text("No Organisms Added");
+                }
+            })
+            .fail(function(e) {
+                console.error(e.detail);
+            });
+
+        $.when(this.imageDao.metadata())
+            .done(function(metadata) {
+                self.$right.find('.image-metadata').append($(MetadataTmpl(metadata)));
+            })
+            .fail(function(e) {
+                console.error(e.detail);
+            });
+
         util.scope(this, TaggableImageHelper.addPublicControls).call();
 
         // optionally install the registered features

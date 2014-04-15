@@ -1,21 +1,21 @@
 var deps = [
-    'jquery', 'underscore', 'biodig/ui/menu/MenuItem', 'lib/util',
-    'text!biodig/tmpl/menu-section.html', 'jquery_ui'
+    'jquery', 'underscore', 'biodig/ui/menu/Item', 'lib/util',
+    'text!biodig/tmpl/menu/section.html', 'jquery_ui'
 ];
 
-define(deps, function($, _, MenuItem, util, MenuSectionTmpl) {
+define(deps, function($, _, Item, util, SectionTmpl) {
 
-    var MenuSectionTemplate = _.template(MenuSectionTmpl);
+    var SectionTemplate = _.template(SectionTmpl);
 
     /**
-        Constructor of a MenuSection.
+        Constructor of a Section.
 
-        @param text: The text for the MenuSection.
+        @param text: The text for the Section.
         @param icon: Optional. Either the class for a span which represents an icon
                      or img[src] indicating the icon is an image with the source in
                      the brackets.
     **/
-    function MenuSection(text, icon) {
+    function Section(text, icon) {
         this.menuItems = [];
         this.menuDict = {};
 
@@ -29,37 +29,37 @@ define(deps, function($, _, MenuItem, util, MenuSectionTmpl) {
             iconType = "span"; // icon is simply the class of a span
         }
 
-        this.$ui = $(MenuSectionTemplate({ 'text': text, 'icon': icon, 'iconType': iconType }));
+        this.$ui = $(SectionTemplate({ 'text': text, 'icon': icon, 'iconType': iconType }));
 
         this.$menu = this.$ui.find('.toolbar-menu');
     };
 
-    MenuSection.prototype.item = function(key, text, icon) {
+    Section.prototype.item = function(key, text, icon) {
         if (!this.menuDict[key] && text) {
             this.addItem(key, MenuItem.create(text, icon));
         }
         return this.menuDict[key];
     };
 
-    MenuSection.prototype.addItem = function(key, item) {
+    Section.prototype.addItem = function(key, item) {
         this.menuItems.push(item);
         this.menuDict[key] = item;
         this.$menu.append(item.ui());
     };
 
-    MenuSection.prototype.mouseover = function() {
+    Section.prototype.mouseover = function() {
         this.$menu.show();
         this.$ui.off('mouseover');
         this.$ui.on('mouseout', util.scope(this, this.mouseout));
     };
 
-    MenuSection.prototype.mouseout = function() {
+    Section.prototype.mouseout = function() {
         this.$menu.hide();
         this.$ui.off('mouseout');
         this.$ui.on('mouseover', util.scope(this, this.mouseover));
     };
 
-    MenuSection.prototype.ui = function() {
+    Section.prototype.ui = function() {
         this.$menu.menu();
         this.$ui.on('mouseover', util.scope(this, this.mouseover));
         return this.$ui;
@@ -67,7 +67,7 @@ define(deps, function($, _, MenuItem, util, MenuSectionTmpl) {
 
     return {
         create: function(text, icon) {
-            return new MenuSection(text, icon);
+            return new Section(text, icon);
         }
     }
 });

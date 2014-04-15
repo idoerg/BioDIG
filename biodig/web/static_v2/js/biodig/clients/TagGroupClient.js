@@ -1,19 +1,8 @@
-define(['jquery','URLBuilder'], function($, URLBuilder) {
-    /**
-     *  Sprintf
-    **/
-    String.prototype.format = function()
-     {
-        var content = this;
-        for (var i=0; i < arguments.length; i++)
-        {
-             var replacement = '{' + i + '}';
-             content = content.replace(replacement, arguments[i]); 
-        }
-        return content;
-     };
+var deps = [
+    'jquery','URLBuilder', 'lib/settings', 'lib/util'
+]
 
- 
+define(deps, function($, URLBuilder, settings, util) {
 
     /**
      *  Validator for a TagGroup client.
@@ -25,49 +14,50 @@ define(['jquery','URLBuilder'], function($, URLBuilder) {
                 create: function(name) {
                     if (!name) throw { detail : 'Not a valid name' }
                 },
-                get: function(TagGroupid) {
-                	if (!TagGroupid || isNaN(TagGroupid)) throw { detail : 'The id is not a valid positive number' }
+                get: function(tagGroupId) {
+                    if (!tagGroupId || isNaN(TagGroupid)) throw { detail : 'The id is not a valid positive number' }
                 },
-		list: function(opts) {
-                	if (!opts['owner'] || isNaN(opts['owner'])) throw { detail : 'The ow is not a valid positive number' }
-			if (!opts['name']) throw { detail : 'Not a valid name' }
+                list: function(opts) {
+                    if (!opts['owner'] || isNaN(opts['owner'])) throw { detail : 'The ow is not a valid positive number' }
+                    if (!opts['name']) throw { detail : 'Not a valid name' }
                 },
-		update: function(TagGroupId) {
-                           if (!TagGroupId || isNaN(TagGroupId)) throw { detail : 'The id is not a valid positive number' }
+                update: function(tagGroupId) {
+                    if (!tagGroupId || isNaN(TagGroupId)) throw { detail : 'The id is not a valid positive number' }
                 }
             }
         }
     };
-    
+
     /**
      *  TagGroupClient constructor that takes in the options
      *  such as url.
-     *  
+     *
      *  @param opts: The options to customize this client.
     **/
     function TagGroupClient(opts) {
         if (! ('image_id' in opts)){
-            throw { message : 'Image ID is necessary for TagGroup Client use' };
+            throw { detail : 'Image ID is necessary for TagGroup Client use' };
         }
 
-        this.url = opts.url.format(opts.image_id);
-	if (this.url[this.url.length -1] != '/') {
+        this.url = util.format(opts.url, opts.image_id);
+        if (this.url[this.url.length -1] != '/') {
             this.url += '/';
-	}
+        }
+
         this.validator = ValidatorFactory.getInstance();
-        this.token= opts.token || null;
+        this.token = opts.token || null;
     }
 
     TagGroupClient.prototype.create = function(name) {
         try {
-    		this.validator.create(name);
-    	}
-    	catch (e) {
-    		return $.Deferred(function(deferredObj) {
+            this.validator.create(name);
+        }
+        catch (e) {
+            return $.Deferred(function(deferredObj) {
                 deferredObj.reject(e);
             }).promise();
-    	}
-    	var self=this;
+        }
+        var self = this;
         // Add the Authorization Header only if the token is set
         var addAuthToken = this.token ?
             function (xhr) {
@@ -88,23 +78,28 @@ define(['jquery','URLBuilder'], function($, URLBuilder) {
                     deferredObj.resolve(data);
                 },
                 error : function(jqXHR, textStatus, errorThrown) {
-                    var e = $.parseJSON(jqXHR.responseText); 
-                    deferredObj.reject(e);
+                    try {
+                        var e = $.parseJSON(jqXHR.responseText);
+                        deferredObj.reject(e);
+                    }
+                    catch (e) {
+                        deferredObj.reject({ detail: 'An unidentified error occurred with the server.'});
+                    }
                 }
             });
 
         }).promise();
     };
-    
+
     TagGroupClient.prototype.get = function(id) {
         try {
-    		this.validator.get(id);
-    	}
-    	catch (e) {
-    		return $.Deferred(function(deferredObj) {
+            this.validator.get(id);
+        }
+        catch (e) {
+            return $.Deferred(function(deferredObj) {
                 deferredObj.reject(e);
             }).promise();
-    	}
+        }
         var self=this;
         var addAuthToken = this.token ?
             function (xhr) {
@@ -121,8 +116,13 @@ define(['jquery','URLBuilder'], function($, URLBuilder) {
                     deferredObj.resolve(data);
                 },
                 error : function(jqXHR, textStatus, errorThrown) {
-                    var e = $.parseJSON(jqXHR.responseText); 
-                    deferredObj.reject(e);
+                    try {
+                        var e = $.parseJSON(jqXHR.responseText);
+                        deferredObj.reject(e);
+                    }
+                    catch (e) {
+                        deferredObj.reject({ detail: 'An unidentified error occurred with the server.'});
+                    }
                 }
             });
 
@@ -131,18 +131,18 @@ define(['jquery','URLBuilder'], function($, URLBuilder) {
 
     TagGroupClient.prototype.list = function(opts) {
         try {
-    		this.validator.list(opts);
-    	}
-    	catch (e) {
-    		return $.Deferred(function(deferredObj) {
+            this.validator.list(opts);
+        }
+        catch (e) {
+            return $.Deferred(function(deferredObj) {
                 deferredObj.reject(e);
             }).promise();
-    	}
+        }
 
-    	var urlBuilder = URLBuilder.newBuilder(this.url);
-    	$.each(opts, function(key, val) {
-    		urlBuilder.addQuery(key, val, URLBuilder.NOT_EMPTY);
-    	});
+        var urlBuilder = URLBuilder.newBuilder(this.url);
+        $.each(opts, function(key, val) {
+            urlBuilder.addQuery(key, val, URLBuilder.NOT_EMPTY);
+        });
         var self=this;
         var addAuthToken = this.token ?
             function (xhr) {
@@ -150,68 +150,77 @@ define(['jquery','URLBuilder'], function($, URLBuilder) {
             } :
             function(xhr) {};
 
-  	
-  	return $.Deferred(function(deferredObj) {
-    		$.ajax({
-    			url: urlBuilder.complete(),
-    			method: 'GET',
+
+        return $.Deferred(function(deferredObj) {
+            $.ajax({
+                url: urlBuilder.complete(),
+                method: 'GET',
                         beforeSend : addAuthToken,
-    			success: function(data, textStatus, jqXHR) {
+                success: function(data, textStatus, jqXHR) {
                     deferredObj.resolve(data);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    var e = $.parseJSON(jqXHR.responseText);
-                    deferredObj.reject(e);
+                    try {
+                        var e = $.parseJSON(jqXHR.responseText);
+                        deferredObj.reject(e);
+                    }
+                    catch (e) {
+                        deferredObj.reject({ detail: 'An unidentified error occurred with the server.'});
+                    }
                 }
-    	   });
-           
-    	}).promise();
+           });
+        }).promise();
     };
 
-   TagGroupClient.prototype.update = function(TagGroupId) {
-    	try {
-    		this.validator.update(TagGroupId);
-    	}
-    	catch (e) {
-    		return $.Deferred(function(deferredObj) {
+    TagGroupClient.prototype.update = function(TagGroupId) {
+        try {
+            this.validator.update(TagGroupId);
+        }
+        catch (e) {
+            return $.Deferred(function(deferredObj) {
                 deferredObj.reject(e);
             }).promise();
-    	}
-    	var self=this;
+        }
+        var self=this;
         var addAuthToken = this.token ?
             function (xhr) {
                 xhr.setRequestHeader('Authorization', 'Token ' + self.token) ;
             } :
             function(xhr) {};
-    	var data = {
+        var data = {
             name : name
         };
-    	
-    	return $.Deferred(function(deferredObj) {
-    		$.ajax({
-    			url: self.url + TagGroupId,
-    			method: 'PUT',
-                        beforeSend : addAuthToken,
-    			data: data,
-    			success: function(data) {
-    				deferredObj.resolve(data);
-    			},
-    			error: function(jqXHR, textStatus, errorThrown) {
-                    var e = $.parseJSON(jqXHR.responseText);
-                    deferredObj.reject(e);
+
+        return $.Deferred(function(deferredObj) {
+            $.ajax({
+                url: self.url + TagGroupId,
+                method: 'PUT',
+                beforeSend : addAuthToken,
+                data: data,
+                success: function(data) {
+                    deferredObj.resolve(data);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    try {
+                        var e = $.parseJSON(jqXHR.responseText);
+                        deferredObj.reject(e);
+                    }
+                    catch (e) {
+                        deferredObj.reject({ detail: 'An unidentified error occurred with the server.'});
+                    }
                 }
-    		});
-    	}).promise();
+            });
+        }).promise();
     };
 
 
-    var settings = {
-        url : '/rest/v2/images/{0}/tagGroups/'
+    var defaults = {
+        url : settings.SITE_URL + 'rest/v2/images/{0}/tagGroups/'
     };
 
     var TagGroupClientFactory = {
-        getInstance : function(opts) {
-            return new TagGroupClient($.extend({}, settings, opts));
+        create : function(opts) {
+            return new TagGroupClient($.extend({}, defaults, opts));
         }
     };
 

@@ -1,4 +1,4 @@
-define(['biodig/ui/menu/MenuSection'], function(MenuSection) {
+define(['biodig/ui/menu/Section'], function(MenuSection) {
     function Menu(toolbar) {
         this.menuBar = toolbar;
         this.sections = {};

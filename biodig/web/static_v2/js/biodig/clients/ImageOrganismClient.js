@@ -1,4 +1,9 @@
-define(['jquery', 'lib/settings', 'biodig/clients/URLBuilderFactory'], function($, settings, URLBuilderFactory) {
+var deps  [
+    'jquery', 'lib/settings', 'biodig/clients/URLBuilderFactory',
+    'lib/util'
+];
+
+define(deps, function($, settings, URLBuilderFactory, util) {
 
     /**
      *  Validator for the image client.
@@ -7,42 +12,33 @@ define(['jquery', 'lib/settings', 'biodig/clients/URLBuilderFactory'], function(
         getInstance: function() {
             // validator
             return {
-                create: function(imageData, description, altText) {
-                    if (!imageData) throw { validation_error : 'Image data was empty or null' }
-
-                    if (!description) throw { validation_error : 'The description of the image was empty' }
-
-                    if (!altText) throw { validation_error : 'The alternate text for this image is empty' }
+                create: function(organism_id) {
+                    if (!organism_id || isNan(organism_id)) throw { detail : 'The organism_id is not a valid positive number' }
                 },
-                get: function(id) {
-                	if (!id || isNan(id)) throw { validation_error : 'The id is not a valid positive number' }
-                },
-                update: function(id, description, altText) {
-                	if (!id || isNan(id)) throw { validation_error : 'The id is not a valid positive number' }
-
-                	if (!description && !altText) throw { validation_error : 'No changes have been made to this image' }
-                },
-                delete: function(id) {
-                    if (!id || isNan(id)) throw { validation_error : 'The id is not a valid positive number' }
+                delete: function(organism_id) {
+                    if (!organism_id || isNan(organism_id)) throw { detail : 'The organism_id is not a valid positive number' }
                 }
             }
         }
     };
 
     /**
-     *  Image Client constructor that takes in the options
+     *  ImageOrganism Client constructor that takes in the options
      *  such as url.
      *
      *  @param opts: The options to customize this client.
     **/
-    function ImageClient(opts) {
-        this.url = opts.url;
-        if (this.url[this.url.length - 1] != '/') {
+    function ImageOrganismClient(opts) {
+        if (! ('image_id' in opts)){
+            throw { detail : 'Image ID is necessary for ImageOrganism Client use' };
+        }
+
+        this.url = util.format(opts.url, opts.image_id);
+        if (this.url[this.url.length -1] != '/') {
             this.url += '/';
         }
 
         this.token = opts.token || null;
-
         this.validator = ValidatorFactory.getInstance();
     }
 
@@ -60,9 +56,9 @@ define(['jquery', 'lib/settings', 'biodig/clients/URLBuilderFactory'], function(
      *  @return A deferred object that will enact the correct server action
      *          to create the image.
     **/
-    ImageClient.prototype.create = function(imageData, description, altText) {
+    ImageOrganismClient.prototype.create = function(organism_id) {
         try {
-            this.validator.create(imageData, description, altText);
+            this.validator.create(organism_id);
         }
         catch (e) {
             return $.Deferred(function(deferredObj) {
@@ -79,18 +75,14 @@ define(['jquery', 'lib/settings', 'biodig/clients/URLBuilderFactory'], function(
             function(xhr) {};
 
         return $.Deferred(function(deferredObj) {
-            var formData = new FormData();
-            formData.append('image', imageData);
-            formData.append('description', description);
-            formData.append('altText', altText);
-
             $.ajax({
                 url: self.url,
                 method: 'POST',
                 beforeSend: addAuthToken,
-                contentType: false,
-                processData: false,
-                data: formData,
+                dataType: 'json',
+                data: {
+                    'organism_id' : organism_id
+                },
                 success: function(data, textStatus, jqXHR) {
                     deferredObj.resolve(data);
                 },
@@ -120,7 +112,7 @@ define(['jquery', 'lib/settings', 'biodig/clients/URLBuilderFactory'], function(
      *  			 limit: The number of entries to retrieve.
      *               offset: The number of entries to skip before listing.
     **/
-    ImageClient.prototype.list = function(opts) {
+    ImageOrganismClient.prototype.list = function(opts) {
     	var urlBuilder = URLBuilderFactory.newBuilder(this.url);
     	$.each(opts, function(key, val) {
     		urlBuilder.addQuery(key, val, URLBuilderFactory.NOT_EMPTY);
@@ -156,101 +148,12 @@ define(['jquery', 'lib/settings', 'biodig/clients/URLBuilderFactory'], function(
     };
 
     /**
-     *  Gets a single image given the id.
-     *
-     *  @param id: The id of the image.
-    **/
-    ImageClient.prototype.get = function(id) {
-    	try {
-    		this.validator.get(id);
-    	}
-    	catch (e) {
-    		return $.Deferred(function(deferredObj) {
-    			deferredObj.reject(e);
-    		});
-    	}
-
-       var self = this;
-       // Add the Authorization Header only if the token is set
-        var addAuthToken = this.token ?
-            function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Token ' + self.token) ;
-            } :
-            function(xhr) {};
-
-    	return $.Deferred(function(deferredObj) {
-    		$.ajax({
-    			url: self.url + id,
-    			beforeSend: addAuthToken,
-                method: 'GET',
-    			success: function(data, textStatus, jqXHR) {
-                    deferredObj.resolve(data);
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    try {
-                        var e = $.parseJSON(jqXHR.responseText);
-                        deferredObj.reject(e);
-                    }
-                    catch (e) {
-                        deferredObj.reject({ detail: 'An unidentified error occurred with the server.'});
-                    }
-                }
-    		});
-    	}).promise();
-    };
-
-    /**
-     *  Updates the given image with the description and altText, which
+     *  Deletes the given organism from image with the description and altText, which
      *  are optional.
      *
      *  @param description: The new description of the image.
-     *  @param altText: The new altText for the image.
     **/
-    ImageClient.prototype.update = function(id, description, altText) {
-    	try {
-    		this.validator.update(id, description, altText);
-    	}
-    	catch (e) {
-    		return $.Deferred(function(deferredObj) {
-                deferredObj.reject(e);
-            }).promise();
-    	}
-
-    	var data = {};
-    	if (description) data['description'] = description;
-    	if (altText) data['altText'] = altText;
-
-        var self = this;
-        // Add the Authorization Header only if the token is set
-        var addAuthToken = this.token ?
-            function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Token ' + self.token) ;
-            } :
-            function(xhr) {};
-
-    	return $.Deferred(function(deferredObj) {
-    		$.ajax({
-    			url: self.url + id,
-                beforeSend: addAuthToken,
-    			method: 'PUT',
-    			data: data,
-    			success: function(data) {
-    				deferredObj.resolve(data);
-    			},
-    			error: function(jqXHR, textStatus, errorThrown) {
-                    try {
-                        var e = $.parseJSON(jqXHR.responseText);
-                        deferredObj.reject(e);
-                    }
-                    catch (e) {
-                        deferredObj.reject({ detail: 'An unidentified error occurred with the server.'});
-                    }
-                }
-    		});
-    	}).promise();
-    };
-
-    ImageClient.prototype.delete = function(id) {
+    ImageOrganismClient.prototype.delete = function(organism_id) {
         try {
             this.validator.delete(id);
         }
@@ -268,7 +171,7 @@ define(['jquery', 'lib/settings', 'biodig/clients/URLBuilderFactory'], function(
 
         return $.Deferred(function(deferredObj) {
             $.ajax({
-                url: self.url + id,
+                url: self.url + organism_id,
                 beforeSend: addAuthToken,
                 method: 'DELETE',
                 data: data,
@@ -290,18 +193,16 @@ define(['jquery', 'lib/settings', 'biodig/clients/URLBuilderFactory'], function(
 
     // default settings for an ImageClient
     var defaults = {
-        url: settings.SITE_URL + 'rest/v2/images/',
+        url: settings.SITE_URL + 'rest/v2/images/{0}/organisms/',
         token: null
     };
 
-    var ImageClientFactory = {
+    return {
         /**
          *  Creates an instance of the Image Client.
         **/
         create: function(opts) {
-            return new ImageClient($.extend({}, defaults, opts));
+            return new ImageOrganismClient($.extend({}, defaults, opts));
         }
     };
-
-    return ImageClientFactory;
 });

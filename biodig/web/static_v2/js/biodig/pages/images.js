@@ -22,7 +22,7 @@ require.config({
 });
 
 var deps = [
-    'jquery', 'biodig/ui/ImagePaginator'
+    'jquery', 'biodig/ui/paginator/ImagePaginator'
 ];
 
 require(deps, function($, ImagePaginator) {

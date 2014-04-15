@@ -1,6 +1,6 @@
 var deps = [
     'jquery', 'underscore', 'biodig/ui/menu/Menu',
-    'biodig/ui/menu/MenuSection', 'biodig/ui/menu/MenuItem', 'lib/settings'
+    'biodig/ui/menu/Section', 'biodig/ui/menu/Item', 'lib/settings'
 ];
 
 define(deps, function($, _, Menu, MenuSection, MenuItem, settings) {

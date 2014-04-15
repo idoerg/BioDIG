@@ -1,20 +1,20 @@
 var deps = [
-    'jquery', 'underscore', 'text!biodig/tmpl/menu-item.html'
+    'jquery', 'underscore', 'text!biodig/tmpl/menu/item.html'
 ];
 
-define(deps, function($, _, MenuItemTmpl) {
+define(deps, function($, _, ItemTmpl) {
 
-    var MenuItemTemplate = _.template(MenuItemTmpl);
+    var ItemTemplate = _.template(ItemTmpl);
 
     /**
-        Constructor of a MenuItem.
+        Constructor of a Item.
 
-        @param text: The text for the MenuItem.
+        @param text: The text for the Item.
         @param icon: Optional. Either the class for a span which represents an icon
                      or img[src] indicating the icon is an image with the source in
                      the brackets.
     **/
-    function MenuItem(text, icon) {
+    function Item(text, icon) {
         var iconType;
         icon = $.trim(icon);
         if (icon.substring(0, 3) == "img") {
@@ -25,20 +25,20 @@ define(deps, function($, _, MenuItemTmpl) {
             iconType = "span"; // icon is simply the class of a span
         }
 
-        this.$ui = $(MenuItemTemplate({ 'text': text, 'icon': icon, 'iconType': iconType }));
+        this.$ui = $(ItemTemplate({ 'text': text, 'icon': icon, 'iconType': iconType }));
     };
 
-    MenuItem.prototype.click = function(callback) {
+    Item.prototype.click = function(callback) {
         this.$ui.click(callback);
     };
 
-    MenuItem.prototype.ui = function() {
+    Item.prototype.ui = function() {
         return this.$ui;
     };
 
     return {
         create: function(text, icon) {
-            return new MenuItem(text, icon);
+            return new Item(text, icon);
         }
     }
 })
