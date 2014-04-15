@@ -1,0 +1,18 @@
+<div class="toolbar-section-container <%= name %>-section">
+    <div class="toolbar-section">
+        <% if (typeof icon !== "undefined") {
+                if (iconType == "img") {
+        %>
+        <img class="toolbar-section-icon" src="<%= icon %>"></img>
+        <%      }
+                else {
+        %>
+        <span class="toolbar-section-icon <%= icon %>"></span>
+        <%
+                }
+            }
+        %>
+        <span class="toolbar-section-text"><%= text %></span>
+    </div>
+    <ul class="toolbar-menu"></ul>
+</div>
