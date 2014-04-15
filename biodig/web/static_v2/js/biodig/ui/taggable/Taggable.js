@@ -143,10 +143,10 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, DialogManag
                 self.zoomable.zoom(-1);
             });
 
-            this.menu.section('tagGroups').item('changeVisibleGroups').click(function() {
+            this.menu.section('tagGroups').item('changeVisibleTagGroups').click(function() {
                 $.when(self.imageDao.tagGroups())
                     .done(function(tagGroups) {
-                        self.dialogs.dialog('ChangeVisibleGroups').show(tagGroups);
+                        self.dialogs.dialog('ChangeVisibleTagGroups').show(tagGroups);
                     })
                     .fail(function(e) {
                         console.error(e.detail);

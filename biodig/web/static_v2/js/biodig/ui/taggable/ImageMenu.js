@@ -21,7 +21,7 @@ define(deps, function($, _, Menu, MenuSection, MenuItem, settings) {
             // create the tag groups menu section
             var tagGroups = menu.section('tagGroups', 'Tag Groups', 'img[' + settings.STATIC_URL +
                 'images/tagGroupIcon.png]');
-            tagGroups.item('changeVisibleGroups', 'Change Visible Tag Groups',
+            tagGroups.item('changeVisibleTagGroups', 'Change Visible Tag Groups',
                 'ui-icon ui-icon-pencil');
 
             return menu;
