@@ -94,8 +94,8 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, util, Tagga
                 self.zoomable.zoom(-1);
             });
 
-            this.menu.section('tagGroups').item('changeCurrentGroups').click(function() {
-                self.dialogs.show('changeCurrentGroups');
+            this.menu.section('tagGroups').item('changeVisibleGroups').click(function() {
+                self.dialogs.show('changeVisibsleGroups');
             });
         },
         addRegisteredControls: function() {
