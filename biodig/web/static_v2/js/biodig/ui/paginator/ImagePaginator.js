@@ -1,6 +1,6 @@
 var deps = [
-    'jquery', 'underscore', 'settings', 'lib/util', 'biodig/clients/ImageClient',
-    'text!biodig/tmpl/imagecell.html', 'text!biodig/tmpl/imagetable.html'
+    'jquery', 'underscore', 'lib/settings', 'lib/util', 'biodig/clients/ImageClient',
+    'text!biodig/tmpl/paginator/imagecell.html', 'text!biodig/tmpl/paginator/imagetable.html'
 ];
 
 define(deps, function($, _, settings, util, ImageClient, ImageCell, ImageTable) {
