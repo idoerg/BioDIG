@@ -29,6 +29,12 @@
 	display: inline-block;
 }
 
+.info-container {
+	width: 360px;
+	height: 520px;
+	padding: 10px;
+}
+
 .change-color {
 	border: 1px solid black;
 	vertical-align: top;
