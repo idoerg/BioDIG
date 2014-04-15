@@ -58,7 +58,7 @@
     height: 15px;
     margin-right: 5px;
     vertical-align: middle;
-	position: absolute !important;
+	position: static !important;
 }
 
 .toolbar-menu-text {
