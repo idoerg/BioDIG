@@ -25,7 +25,7 @@ define(deps, function($, _, MenuItemTmpl) {
             iconType = "span"; // icon is simply the class of a span
         }
 
-        this.$ui = $(MenuItemTemplate.call({ text: text, icon: icon, iconType: iconType }));
+        this.$ui = $(MenuItemTemplate.call({ 'text': text, 'icon': icon, 'iconType': iconType }));
     };
 
     MenuItem.prototype.click = function(callback) {
