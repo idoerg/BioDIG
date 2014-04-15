@@ -1,5 +1,4 @@
 require.config({
-    waitSeconds: 200,
     shim: {
         jquery: {
             init: function() {
@@ -28,7 +27,7 @@ var deps = [
 ];
 
 require(deps, function($, _, settings, TaggableImage, HelpBox) {
-    var helpDialog = $(_.template(HelpBox)(settings));
+    var helpDialog = $(_.template(HelpBox).call(settings));
 
     $('#helpButton').click(function() {
         var box = $(helpDialog.attr('id'));
