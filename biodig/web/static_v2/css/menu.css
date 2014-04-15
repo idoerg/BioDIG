@@ -22,7 +22,6 @@
 .toolbar-section-text {
 	font-family: Times New Roman;
 	font-size: 14px;
-	vertical-align: super;
 	display: inline-block;
 }
 
@@ -30,7 +29,7 @@
 	background-color: #CCCCCC;
 	padding-top: 3px;
 	padding-bottom: 1px;
-	height: 25px;
+	height: 30px;
 	border-top: 1px solid #DFDFDF;
 	border-bottom: 1px solid #CBCBCB;
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#EEEEEE), to(#CCCCCC));
@@ -59,6 +58,7 @@
     height: 15px;
     margin-right: 5px;
     vertical-align: middle;
+	position: !important absolute;
 }
 
 .toolbar-menu-text {
