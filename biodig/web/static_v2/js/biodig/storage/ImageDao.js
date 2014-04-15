@@ -32,7 +32,7 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient) {
         }
         else {
             return $.Deferred(function(deferred_obj) {
-                resolve(self.metadata_cache);
+                deferred_obj.resolve(self.metadata_cache);
             }).promise();
         }
     };
@@ -53,7 +53,7 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient) {
         }
         else {
             return $.Deferred(function(deferred_obj) {
-                resolve(self.organisms_cache);
+                deferred_obj.resolve(self.organisms_cache);
             }).promise();
         }
     };
@@ -101,7 +101,7 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient) {
                     groups = filter;
                 }
 
-                resolve(groups);
+                deferred_obj.resolve(groups);
             }).promise();
         }
     };
