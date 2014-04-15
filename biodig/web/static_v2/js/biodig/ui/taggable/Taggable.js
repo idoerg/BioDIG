@@ -70,15 +70,15 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, DialogManag
         // on the image
         $.when(this.imageDao.organisms())
             .done(function(organisms) {
-                if (organisms) {
+                if (organisms.length > 0) {
                     var organisms_text = []
                     $.each(organisms, function(index, organism) {
                         organisms_text.push(organism.common_name);
                     });
-                    self.$right.find('organism-title').text(", ".join(organisms_text));
+                    self.$right.find('.organism-title').text(", ".join(organisms_text));
                 }
                 else {
-                    self.$right.find('organism-title').text("No Organisms Added");
+                    self.$right.find('.organism-title').text("No Organisms Added");
                 }
             })
             .fail(function(e) {
@@ -87,7 +87,7 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, DialogManag
 
         $.when(this.imageDao.metadata())
             .done(function(metadata) {
-                self.$right.find('.image-metadata').append($(MetadataTmpl(metadata)));
+                self.$right.find('.image-metadata').append($(MetadataTemplate(metadata)));
             })
             .fail(function(e) {
                 console.error(e.detail);
