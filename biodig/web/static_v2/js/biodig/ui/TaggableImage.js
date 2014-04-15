@@ -11,6 +11,8 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, util, Tagga
         PUBLIC: 'PUBLIC'
     };
 
+    var TaggableTemplate = _.template(TaggableTmpl);
+
     function TaggableImage(selector, opts) {
         // check to see if features were directly requested
         // otherwise use the "mode" to determine the feature set
@@ -25,7 +27,7 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, util, Tagga
 
         // sets up the UI for the taggable plugin initially
         this.$container = this.$image.parent();
-        this.$contents = $(_.template(TaggableTmpl)());
+        this.$contents = $(TaggableTemplate());
 
         // define the three sections of the UI
         this.$left = this.$contents.children('.taggable-left');

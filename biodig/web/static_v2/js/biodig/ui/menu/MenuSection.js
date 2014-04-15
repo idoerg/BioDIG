@@ -29,7 +29,7 @@ define(deps, function($, _, MenuItem, util, MenuSectionTmpl) {
             iconType = "span"; // icon is simply the class of a span
         }
 
-        this.$ui = $(MenuSectionTemplate.call({ 'text': text, 'icon': icon, 'iconType': iconType }));
+        this.$ui = $(MenuSectionTemplate({ 'text': text, 'icon': icon, 'iconType': iconType }));
 
         this.$menu = this.$ui.find('.toolbar-menu');
     };
