@@ -1,4 +1,4 @@
-var deps  [
+var deps = [
     'jquery', 'lib/settings', 'biodig/clients/URLBuilderFactory',
     'lib/util'
 ];
