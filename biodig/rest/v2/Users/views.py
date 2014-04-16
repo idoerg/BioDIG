@@ -64,8 +64,8 @@ class UserSingle(APIView):
         '''
             Method for updating a User's information.
         '''
-        params = { key : val for key, val in request.QUERY_PARAMS.iteritems() }
-        params.update(request.DATA)
+        params = { key : val for key, val in request.DATA.iteritems() }
+        params.update(request.QUERY_PARAMS)
         params['user_id'] = user_id
         form = PutForm(params)
 
