@@ -82,17 +82,6 @@ class PostForm(forms.Form):
     first_name = forms.CharField(required=False)
     last_name = forms.CharField(required=False)
 
-    def clean_user_id(self):
-        return FormUtil.clean_user_id(self.cleaned_data)
-
-    def clean(self):
-        '''
-            Cleans the data and checks to see if the image id is
-            a valid input.
-        '''
-        if self.cleaned_data['image_id'] < 0: raise ValidationError("The given image id is incorrect.")
-        return self.cleaned_data
-
     @transaction.commit_on_success
     def submit(self, request):
         '''
