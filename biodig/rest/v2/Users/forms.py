@@ -90,7 +90,7 @@ class PostForm(forms.Form):
         '''
         # start saving the new tag now that it has passed all tests
         user = User(username=self.cleaned_data['username'], email=self.cleaned_data['email'],
-            is_active=False, password=self.cleaned['password'])
+            is_active=False, password=self.cleaned_data['password'])
 
         if self.cleaned_data['first_name']:
             user.first_name = self.cleaned_data['first_name']
