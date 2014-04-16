@@ -202,6 +202,7 @@ class PutForm(forms.Form):
 
         props = ['username', 'email', 'password', 'first_name', 'last_name']
         for key in props:
+            raise DatabaseIntegrity(detail=self.cleaned_data['username'])
             # update the username
             if self.cleaned_data[key]:
                 setattr(user, key, self.cleaned_data[key])
