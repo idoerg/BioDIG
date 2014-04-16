@@ -7,7 +7,7 @@
     @author: Andrew Oberlin
 '''
 from django import forms
-from django.contrib.auth.models import Organism
+from biodig.base.models import Organism
 from biodig.base import forms as bioforms
 from biodig.base.serializers import OrganismSerializer
 from biodig.base.exceptions import OrganismDoesNotExist, DatabaseIntegrity
