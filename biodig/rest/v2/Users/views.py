@@ -22,7 +22,7 @@ class UserList(APIView):
         form = MultiGetForm(params)
 
         if not form.is_valid():
-            raise BadRequestException()
+            raise BadRequestException(detail=form.errors)
 
         return Response(form.submit(request))
 
@@ -35,7 +35,7 @@ class UserList(APIView):
         form = PostForm(params)
 
         if not form.is_valid():
-            raise BadRequestException()
+            raise BadRequestException(detail=form.errors)
 
         return Response(form.submit(request))
 
@@ -56,7 +56,7 @@ class UserSingle(APIView):
         form = SingleGetForm(params)
 
         if not form.is_valid():
-            raise BadRequestException()
+            raise BadRequestException(detail=form.errors)
 
         return Response(form.submit(request))
 
@@ -70,7 +70,7 @@ class UserSingle(APIView):
         form = PutForm(params)
 
         if not form.is_valid():
-            raise BadRequestException()
+            raise BadRequestException(detail=form.errors)
 
         return Response(form.submit(request))
 
@@ -83,6 +83,6 @@ class UserSingle(APIView):
         form = DeleteForm(params)
 
         if not form.is_valid():
-            raise BadRequestException()
+            raise BadRequestException(detail=form.errors)
 
         return Response(form.submit(request))
