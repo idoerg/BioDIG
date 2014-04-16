@@ -200,8 +200,6 @@ class PutForm(forms.Form):
         if not request.user.is_staff and request.user != user:
             raise PermissionDenied()
 
-        raise DatabaseIntegrity(detail=self.cleaned_data['username'])
-
         props = ['username', 'email', 'password', 'first_name', 'last_name']
         for key in props:
             # update the username
