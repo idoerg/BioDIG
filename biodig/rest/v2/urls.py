@@ -1,5 +1,7 @@
 from django.conf.urls import patterns, url
 
+from biodig.rest.v2.Users.views import UserList, UserSingle
+from biodig.rest.v2.Organisms.views import OrganismList, OrganismSingle
 from biodig.rest.v2.Images.views import ImageList, ImageSingle
 from biodig.rest.v2.ImageOrganisms.views import ImageOrganismList, ImageOrganismSingle
 from biodig.rest.v2.TagGroups.views import TagGroupList, TagGroupSingle
@@ -16,13 +18,13 @@ urlpatterns = patterns('',
     url(r'^images/(\d+)/organisms/(\d+)/?$', ImageOrganismSingle.as_view(), name="Image Organism Single View"),
     url(r'^images/(\d+)/organisms/?$', ImageOrganismList.as_view(), name="Image Organism Multiple View"),
     url(r'^images/(\d+)/?$', ImageSingle.as_view(), name="Image Single View"),
-    url(r'^images/?$', ImageList.as_view(), name="Image Multiple View")
-    #url(r'^organism$', 'Organism.multiple.Application.renderAction'),
-    #url(r'^organism/(\d+)$', 'Organism.single.Application.renderAction'),
-    #url(r'^geneLinks$', 'GeneLinks.multiple.Application.renderAction'),
-    #url(r'^geneLinks/(\d+)$', 'GeneLinks.single.Application.renderAction')
+    url(r'^images/?$', ImageList.as_view(), name="Image Multiple View"),
+    url(r'^organisms/(\d+)/?$', OrganismSingle.as_view(), name="Organism Single View"),
+    url(r'^organisms/?$', OrganismList.as_view(), name="Organism List View")
 )
 
 urlpatterns += patterns('',
-    url(r'^users/token/?$', 'rest_framework.authtoken.views.obtain_auth_token')
+    url(r'^users/token/?$', 'rest_framework.authtoken.views.obtain_auth_token'),
+    url(r'^users/(\d+)/?$', UserSingle.as_view(), name="User Single View"),
+    url(r'^users/?$', UserList.as_view(), name="User List View")
 )
