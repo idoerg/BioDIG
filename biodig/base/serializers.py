@@ -3,6 +3,7 @@ Created on Nov 3, 2013
 
 @author: Andrew Oberlin
 '''
+from django.contrib.auth.models import User
 from models import Image, TagGroup, Tag, TagPoint, TagColor, GeneLink, Organism, Feature
 from rest_framework import serializers
 import biodig.swagger.decorators.Models as Models
