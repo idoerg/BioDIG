@@ -114,7 +114,7 @@ IMAGE_ENGINE = 'biodig.base.imageengine.local.LocalImageEngine'
 # Default email for sending activation codes
 EMAIL_HOST          = 'mailfwd.miamioh.edu'
 EMAIL_PORT          = 25
-#EMAIL_HOST_USER     = ''
+EMAIL_HOST_USER     = 'noreply@biodig.org'
 #EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_TLS       = True
 

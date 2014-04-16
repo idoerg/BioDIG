@@ -100,7 +100,7 @@ class PostForm(forms.Form):
 
         # begin the email sending process
         subject = 'Thank you for registering with BioDIG',
-        from_email, to = settings.EMAIL, user.email
+        from_email, to = settings.EMAIL_HOST_USER, user.email
         html_content = '''
             <html>
                 <body>
