@@ -112,7 +112,11 @@ IMAGE_ENGINE = 'biodig.base.imageengine.local.LocalImageEngine'
 #THUMBNAIL_BUCKET_NAME = 'biodig-thumbnails-test1'
 
 # Default email for sending activation codes
-EMAIL = 'noreply@biodig.org'
+EMAIL_HOST          = 'mailfwd.miamioh.edu'
+EMAIL_PORT          = 25
+#EMAIL_HOST_USER     = ''
+#EMAIL_HOST_PASSWORD = ''
+EMAIL_USE_TLS       = True
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'u9)@z86=@r_3_*m=&kzx$=7z9&4+(x#+1$g16v6p!z333&hak='
