@@ -35,7 +35,7 @@ class MultiGetForm(forms.Form):
     limit = forms.IntegerField(required=False)
     # User filters (Query)
     username = forms.IntegerField(required=False)
-    email = forms.CharField(required=False)
+    email = forms.EmailField(required=False)
     is_active = forms.BooleanField(required=False)
 
     def clean(self):
