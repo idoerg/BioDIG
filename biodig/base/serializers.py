@@ -12,7 +12,7 @@ class ImageSerializer(serializers.ModelSerializer):
     url = serializers.CharField(source='imageName')
     owner = serializers.PrimaryKeyRelatedField(source='user')
     dateCreated = serializers.DateTimeField(source='uploadDate')
-    
+
     class Meta:
         model = Image
         fields = ('id', 'description', 'url', 'thumbnail', 'owner', 'dateCreated', 'altText')
@@ -23,6 +23,11 @@ class ImageOrganismSerializer:
             self.data = OrganismSerializer(imageOrg.organism, many=many).data
         else:
             self.data = OrganismSerializer([org.organism for org in imageOrg], many=many).data
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'is_active')
 
 class OrganismSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(source='organism_id')
@@ -35,12 +40,12 @@ class OrganismSerializer(serializers.ModelSerializer):
 class TagGroupSerializer(serializers.ModelSerializer):
     image = serializers.PrimaryKeyRelatedField(source='picture')
     owner = serializers.PrimaryKeyRelatedField(source='user')
-    
+
     class Meta:
         model = TagGroup
         fields = ('id', 'name', 'image', 'owner', 'dateCreated', 'lastModified', 'isPrivate')
-        
-        
+
+
 class TagSerializer:
     def __init__(self, tag, points=None, many=False):
         self.data = SecretTagSerializer(tag, many=many).data
@@ -53,7 +58,7 @@ class TagSerializer:
                 points = TagPoint.objects.filter(tag__exact=tag['id'])
                 tag['points'] = TagPointSerializer(points, many=True).data
                 self.data[index] = tag
-                
+
 
 class TagPointSerializer(serializers.ModelSerializer):
     x = serializers.FloatField(source='pointX')
@@ -97,4 +102,3 @@ class GeneLinkSerializer(serializers.ModelSerializer):
     class Meta:
         model = GeneLink
         fields = ('id', 'feature', 'tag', 'dateCreated', 'lastModified', 'owner')
-

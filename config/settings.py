@@ -111,6 +111,9 @@ IMAGE_ENGINE = 'biodig.base.imageengine.local.LocalImageEngine'
 #IMAGE_BUCKET_NAME = 'biodig-images-test1'
 #THUMBNAIL_BUCKET_NAME = 'biodig-thumbnails-test1'
 
+# Default email for sending activation codes
+EMAIL = 'noreply@biodig.org'
+
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'u9)@z86=@r_3_*m=&kzx$=7z9&4+(x#+1$g16v6p!z333&hak='
 
@@ -202,6 +205,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES' : (
-        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+        'biodig.base.permissions.IsAuthenticatedAndActiveOrReadOnly',
     )
 }

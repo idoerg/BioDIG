@@ -6,13 +6,27 @@ class BadRequestException(APIException):
     '''
     status_code = 400
     default_detail = "A Bad Request was made for the API. Revise input parameters."
-    
+
+class UserDoesNotExist(APIException):
+    '''
+        User does not exist error.
+    '''
+    status_code = 404
+    default_detail = "The user_id provided does not refer to a user in this database."
+
 class ImageDoesNotExist(APIException):
     '''
         Image does not exist error.
     '''
     status_code = 404
     default_detail = "The image id provided does not refer to an image in this database."
+
+class OrganismDoesNotExist(APIException):
+    '''
+        Organism does not exist error.
+    '''
+    status_code = 404
+    default_detail = "The organism_id provided does not refer to an organism in this database."
 
 class ImageOrganismDoesNotExist(APIException):
     '''
@@ -27,7 +41,7 @@ class TagGroupDoesNotExist(APIException):
     '''
     status_code = 404
     default_detail = "The tag group id provided does not refer to a tag group in this database."
-    
+
 class TagDoesNotExist(APIException):
     '''
         Tag does not exist error.
@@ -78,7 +92,7 @@ class DatabaseIntegrity(APIException):
     '''
     status_code = 500
     default_detail = 'An error occurred while trying to write to the database.'
-    
+
 class NotImplementedException(APIException):
     '''
         An error to throw when a form/view has not been implemented yet.

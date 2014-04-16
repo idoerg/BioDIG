@@ -1,7 +1,7 @@
 '''
     This file holds all of the forms for the cleaning and validation of
     the parameters being used for Images.
-    
+
     Created on March 5, 2013
 
     @author: Andrew Oberlin
@@ -36,20 +36,6 @@ def load_class(full_class_string):
 
 ImageEngine = load_class(settings.IMAGE_ENGINE)
 
-class FormCleaningUtil:
-    @staticmethod
-    def clean_organisms(data):
-        '''
-            Cleans an array of organisms appearing in the image.
-            This should be a list of integers.
-        '''
-        if not isinstance(data, list):
-            raise ValidationError("Organisms should be in a list form")
-
-        for org in organisms:
-            if not isinstance(org, int) or org < 0:
-                raise ValidationError("The organisms list should contain only positive integers")
-
 class MultiGetForm(forms.Form):
     # Query Parameters
     offset = forms.IntegerField(required=False)
@@ -69,21 +55,21 @@ class MultiGetForm(forms.Form):
             once the form has cleaned the input data.
         '''
         qbuild = bioforms.QueryBuilder(Image)
-        
+
         # add permissions to query
         if request.user and request.user.is_authenticated():
             if not request.user.is_staff:
                 qbuild.q = qbuild().filter(isPrivate = False) | Image.objects.filter(user__pk__exact=request.user.pk)
         else:
             qbuild.q = qbuild().filter(isPrivate=False)
-        
+
         filterkeys = {
             'user' : 'owner',
             'uploadDate' : 'dateCreated'
         }
         for buildkey, key in filterkeys.iteritems():
             qbuild.filter(buildkey, self.cleaned_data[key])
-            
+
         if not self.cleaned_data['limit'] or self.cleaned_data['limit'] < 0:
             qbuild.q = qbuild()[self.cleaned_data['offset']:]
         else:
@@ -96,10 +82,6 @@ class PostForm(forms.Form):
     description = forms.CharField(required=True)
     altText = forms.CharField(required=True)
     image = forms.FileField(required=True)
-    organisms = bioforms.JsonField(required=False)
-
-    def clean_organisms(self):
-        return FormCleaningUtil.clean_organisms(self.cleaned_data) if self.cleaned_data['organisms'] else None
 
     @transaction.commit_on_success
     def submit(self, request):
@@ -114,10 +96,10 @@ class PostForm(forms.Form):
         originalFilename = os.path.join(
             os.path.join(
                 settings.MEDIA_ROOT, os.path.join('cache', 'pictures')
-            ), 
+            ),
             now + image.name
         )
-    
+
         # writes the chunks in the file upload to the cache file
         with open(originalFilename, 'wb+') as destination:
             for chunk in image.chunks():
@@ -131,7 +113,7 @@ class PostForm(forms.Form):
         thumbnailFilename = imageEngine.thumbnail(normalizedFilename)
         imageURL = imageEngine.save_image(normalizedFilename)
         thumbnailURL = imageEngine.save_thumbnail(thumbnailFilename)
-        
+
         upload = Image(imageName=imageURL, thumbnail=thumbnailURL, user=request.user,
             description=self.cleaned_data['description'], altText=self.cleaned_data['altText'],
             isPrivate=(not request.user.is_staff))
@@ -155,7 +137,7 @@ class DeleteForm(forms.Form):
         '''
         if self.cleaned_data['image_id'] < 0: raise ValidationError("The given image id is incorrect.")
         return self.cleaned_data['image_id']
-    
+
     @transaction.commit_on_success
     def submit(self, request):
         '''
@@ -228,7 +210,7 @@ class PutForm(forms.Form):
             transaction.rollback()
             raise DatabaseIntegrity()
 
-        return ImageSerializer(image).data 
+        return ImageSerializer(image).data
 
 class SingleGetForm(forms.Form):
     # Path Parameters

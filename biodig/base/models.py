@@ -10,6 +10,10 @@ from datetime import datetime
 from django.db.models.signals import pre_delete
 from django.dispatch.dispatcher import receiver
 
+class UserProfile(models.Model):
+    user = models.ForeignKey(User, unique=True)
+    activation_key = models.CharField(max_length=200)
+
 class Image(models.Model):
     description = models.TextField(blank=True, null=True)
     #imageName = models.ImageField(upload_to="pictures/")
