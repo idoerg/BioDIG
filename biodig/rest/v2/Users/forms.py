@@ -118,7 +118,7 @@ class PostForm(forms.Form):
             user.save()
             userProfile.user = user
             userProfile.save()
-            url = settings.SITE_URL + 'activate/%s/%s' % (str(user.pk), activation_key)
+            url = settings.SITE_URL + 'activate/%s/%s' % (str(user.pk), userProfile.activation_key)
             msg.attach_alternative(html_content % (url), "text/html")
             msg.send()
         except DatabaseError:
