@@ -1,9 +1,9 @@
 var deps = [
     'jquery', 'biodig/clients/ImageClient', 'biodig/clients/ImageOrganismClient',
-    'biodig/clients/TagGroupClient'
+    'biodig/clients    agGroupClient', 'biodig/clients    agClient'
 ];
 
-define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient) {
+define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagClient) {
 
     function ImageDao(image_id) {
         this.image_id = image_id;
@@ -13,6 +13,8 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient) {
 
         this.organisms_cache = null;
         this.tagGroups_cache = null;
+        this.tags_cache = null;
+        this.geneLinks_cache = null;
         this.metadata_cache = null;
     }
 
@@ -68,19 +70,27 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient) {
                         // add the tags section into the tag groups
                         // object to be checked later and switch to
                         // a dictionary rather than an array
-                        var groups = {};
+                        self.tags_cache = {};
+                        self.tagGroups_cache = {};
                         $.each(tagGroups, function(index, tagGroup) {
-                            tagGroup['tags'] = null;
+                            // setup the new clients for each tag group to
+                            // fetch the tags in the tag cache
+                            self.tags_cache[index] = {
+                                client: TagClient.create({
+                                    'image_id' : self.image_id,
+                                    'tag_group_id' : index
+                                }),
+                                tags: null
+                            };
                             tagGroup['visible'] = false;
-                            groups[tagGroup.id] = tagGroup;
+                            self.tagGroups_cache[tagGroup.id] = tagGroup;
                         });
 
-                        self.tagGroups_cache = groups;
                         if (opts.visible === true) {
                             deferred_object.resolve({});
                         }
                         else {
-                            deferred_obj.resolve(groups);
+                            deferred_obj.resolve(self.tagGroups_cache);
                         }
                     })
                     .fail(function(e) {
@@ -106,8 +116,49 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient) {
         }
     };
 
-    ImageDao.prototype.tags = function(tagGroup_id) {
+    ImageDao.prototype.tags = function(tagGroup_ids, opts) {
+        if (!opts) opts = {};
+        if (!$.isArray(tagGroup_ids)) tagGroup_ids = [tagGroup_ids];
 
+        var self = this;
+        var tags = {};
+        var promises = [];
+        $.each(tagGroup_ids, function(id) {
+            if (self.tags_cache[id].tags == null) {
+                if (!self.tags_cache[id].client) {
+                    self.tags_cache[id].client = TagClient.create({
+                        'image_id': self.image_id,
+                        'tag_group_id': id
+                    });
+                }
+
+                promises.push($.Deferred(function(deferred_obj) {
+                    $.when(self.tags_cache[id].client.list())
+                        .done(function(tag_results) {
+                            var results = {};
+                            $.each(tag_results, function(tag) {
+                                results[tag.id] = tag;
+                            });
+                            $.extend(tags, results);
+                            self.tags_cache[id].tags = results;
+                            deferred_obj.resolve();
+                        })
+                        .fail(function(e) {
+                            deferred_obj.reject(e);
+                        });
+                }).promise());
+            }
+        });
+
+        return $.Deferred(function(deferred_obj) {
+            $.when.apply($, promises)
+                .done(function() {
+                    deferred_obj.resolve(tags);
+                })
+                .fail(function(e) {
+                    deferred_obj.reject(e.detail);
+                });
+        }).promise();
     };
 
     ImageDao.prototype.geneLinks = function(tag_id) {

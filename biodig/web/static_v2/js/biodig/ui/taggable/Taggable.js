@@ -127,7 +127,7 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, DialogManag
                             return tagGroup.id;
                         });
 
-                        $.when(self.imageDao.tags({ 'tagGroups' : group_ids }))
+                        $.when(self.imageDao.tags(group_ids))
                             .done(function(tags) {
                                 self.tagBoard.draw(tags);
                             })
@@ -185,7 +185,7 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, DialogManag
 
 
                 // update the tag board with the tags for the newly visible tag groups
-                $.when(self.imageDao.tags({ 'tagGroups' : visibleGroups }))
+                $.when(self.imageDao.tags(visibleGroups)
                     .done(function(tags) {
                         self.tagBoard.draw(tags);
                     })
