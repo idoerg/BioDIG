@@ -26,7 +26,10 @@ define(deps, function($, _, util, DialogStructureTmpl) {
     }
 
     DynamicDialog.prototype.accept = function(callback) {
-        this.$el.find('.accept').on('click', callback);
+        var self = this;
+        this.$el.find('.accept').on('click', function() {
+            $(self).trigger('accept', [self.$el]);
+        });
     };
 
     return {

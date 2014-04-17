@@ -9,6 +9,11 @@ require.config({
         jquery_ui: ['jquery'],
         underscore : {
             exports : '_'
+        },
+        kinetic: {
+            init: function() {
+                return Kinetic;
+            }
         }
     },
     paths: {
@@ -17,7 +22,8 @@ require.config({
         bootstrap: 'lib/bootstrap.min',
         settings: 'lib/settings',
         jquery_ui: 'lib/jquery-ui-1.10.4.min',
-        text: 'lib/require-text'
+        text: 'lib/require-text',
+        kinetic: 'lib/kinetic-v5.1.0.min'
     }
 });
 

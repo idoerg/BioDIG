@@ -99,13 +99,14 @@ class PostForm(forms.Form):
             user.last_name = self.cleaned_data['last_name']
 
         # begin the email sending process
-        subject = 'Thank you for registering with BioDIG',
+        subject = 'Thank you for registering with BioDIG'
         from_email, to = settings.EMAIL_HOST_USER, user.email
         html_content = '''
             <html>
                 <body>
-                    <p>Please click the link below to activate your account</p>
-                    <a href=%s>Click Here</a>
+                    <p>Thank you for registering for the BioDIG platform. Please click the link
+                    below to activate your account on our servers.</p>
+                    <a href=%s>Activate account</a>
                 </body>
             </html>
         '''
@@ -118,7 +119,7 @@ class PostForm(forms.Form):
             user.save()
             userProfile.user = user
             userProfile.save()
-            url = settings.SITE_URL + 'activate/%s/%s' % (str(user.pk), userProfile.activation_key)
+            url = '%sactivate/%s/%s' % (settings.SITE_URL, str(user.pk), userProfile.activation_key)
             msg.attach_alternative(html_content % (url), "text/html")
             msg.send()
         except DatabaseError:

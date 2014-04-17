@@ -147,7 +147,7 @@ define(deps, function($, _, util, ZoomableTmpl) {
         this.$image.addClass('zoomable-src');
         this.$image.parent().addClass('zoomable-parent');
 
-        this.template = _.template($(ZoomableTmpl).html());
+        this.template = _.template(ZoomableTmpl);
 
         var self = this;
 
@@ -158,6 +158,9 @@ define(deps, function($, _, util, ZoomableTmpl) {
             self.$image.draggable();
 
             self.$image.data('zoomable', true);
+            if (options.onload) {
+                options.onload();
+            }
         };
 
         if (options.alreadyLoaded) {
