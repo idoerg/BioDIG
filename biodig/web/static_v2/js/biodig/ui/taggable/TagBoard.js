@@ -1,5 +1,5 @@
 var deps = [
-    'jquery', 'kinetic', 'underscore', 'lib/util', 'biodig/ui/taggable/util',
+    'jquery', 'underscore', 'kinetic', 'lib/util', 'biodig/ui/taggable/util',
     'text!biodig/tmpl/taggable/tagboard.html', 'jquery_ui'
 ];
 
@@ -9,7 +9,7 @@ define(deps, function($, _, Kinetic, util, taggable_util, TagBoardTmpl, jquery_u
 
     var TagDrawingUtil = {
         color: function(c) {
-            return "rgba(" + c.r "," + c.g + "," + c.b + ",0.3)"
+            return "rgba(" + c.r + "," + c.g + "," + c.b + ",0.3)";
         },
         poly: function(tag) {
             // converts the tag's points to the current zoom level
@@ -91,7 +91,7 @@ define(deps, function($, _, Kinetic, util, taggable_util, TagBoardTmpl, jquery_u
         }
     }
 
-    function TagBoard(image_el, opts) {
+    function TagBoard(image_el) {
         this.$board = $(TagBoardTemplate({ 'id' : image_el.attr('id') }));
         this.$image = image_el;
         image_el.parent().prepend(this.$board);
@@ -145,8 +145,8 @@ define(deps, function($, _, Kinetic, util, taggable_util, TagBoardTmpl, jquery_u
     };
 
     return {
-        create: function(image_el, opts) {
-            return new TagBoard(image_el, opts);
+        create: function(image_el) {
+            return new TagBoard(image_el);
         }
     }
 });

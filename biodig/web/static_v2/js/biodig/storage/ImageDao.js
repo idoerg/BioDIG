@@ -1,6 +1,6 @@
 var deps = [
     'jquery', 'biodig/clients/ImageClient', 'biodig/clients/ImageOrganismClient',
-    'biodig/clients    agGroupClient', 'biodig/clients    agClient'
+    'biodig/clients/TagGroupClient', 'biodig/clients/TagClient'
 ];
 
 define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagClient) {
@@ -123,7 +123,7 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
         var self = this;
         var tags = {};
         var promises = [];
-        $.each(tagGroup_ids, function(id) {
+        $.each(tagGroup_ids, function(index, id) {
             if (self.tags_cache[id].tags == null) {
                 if (!self.tags_cache[id].client) {
                     self.tags_cache[id].client = TagClient.create({

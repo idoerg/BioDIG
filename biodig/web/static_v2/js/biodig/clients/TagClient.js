@@ -12,19 +12,29 @@ define(deps, function($, util, settings, URLBuilder) {
             // validator
             return {
                 create: function(name) {
-                    if (!name) throw { validation_error : 'Not a valid name' }
+                    if (!name) throw { detail : 'Not a valid name' }
                 },
                 get: function(TagId) {
-                    if (!TagId || isNaN(TagId)) throw { validation_error : 'The id is not a valid positive number' }
+                    if (!TagId || isNaN(TagId)) throw { detail : 'The id is not a valid positive number' }
                 },
                 list: function(opts) {
-                    if (!opts['owner'] || isNaN(opts['owner'])) throw { validation_error : 'The ow is not a valid positive number' }
-                    if (!opts['name']) throw { validation_error : 'Not a valid name' }
-                    if (!opts['offset'] || isNaN(opts['offset'])) throw { validation_error : 'Offset is not a pos num' }
-                    if (!opts['limit'] || isNaN(opts['limit'])) throw { validation_error : 'Limit is not a pos num' }
+                    if (opts) {
+                        if ('owner' in opts && (!opts['owner'] || isNaN(opts['owner']))) {
+                            throw { detail : 'The owner is not a valid positive number' }
+                        }
+                        if ('name' in opts && !opts['name']) {
+                            throw { detail : 'Not a valid name' }
+                        }
+                        if ('offset' in opts && (!opts['offset'] || isNaN(opts['offset']))) {
+                             throw { detail : 'Offset is not a positive number' }
+                        }
+                        if ('limit' in opts && (!opts['limit'] || isNaN(opts['limit']))) {
+                             throw { detail : 'Limit is not a positive number' }
+                        }
+                    }
                 },
                 update: function(tag_id) {
-                    if (!tag_id || isNaN(tag_id)) throw { validation_error : 'The id is not a valid positive number' }
+                    if (!tag_id || isNaN(tag_id)) throw { detail : 'The id is not a valid positive number' }
                 }
             }
         }
@@ -128,6 +138,7 @@ define(deps, function($, util, settings, URLBuilder) {
 
     TagClient.prototype.list = function(opts) {
         try {
+            if (!opts) opts = {};
             this.validator.list(opts);
         }
         catch (e) {

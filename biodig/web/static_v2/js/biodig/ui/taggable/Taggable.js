@@ -58,16 +58,19 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, DialogManag
         // state of the image's data
         this.imageDao = ImageDao.create(this.image_id);
 
+        var self = this;
+        
         // creates a canvas with methods for viewing tags and selecting them
         this.zoomable = Zoomable.create(this.image, $.extend({}, opts, {
-            onload: util.scope(this, TaggableImageHelper.loadDrawingModule)
-        });
+            onload: function() {
+                util.scope(self, TaggableImageHelper.loadDrawingModule)(opts);
+            }
+        }));
 
         // create the right side of the taggable interface
 
         // the title of the right side is determined by the list of organisms
         // on the image
-        var self = this;
 
         $.when(this.imageDao.organisms())
             .done(function(organisms) {
@@ -96,8 +99,8 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, DialogManag
     }
 
     var TaggableImageHelper = {
-        loadDrawingModule: function() {
-            this.tagBoard = TagBoard.create(this.$image, opts);
+        loadDrawingModule: function(opts) {
+            this.tagBoard = TagBoard.create(this.$image);
 
             util.scope(this, TaggableImageHelper.addPublicMenuControls).call();
 
@@ -168,15 +171,20 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, DialogManag
             $(this.dialogs.dialog('ChangeVisibleTagGroups')).on('accept', function(event, ui) {
                 // get the selected tag groups from the ui
                 var visibleGroups = ui.find('input[type="checkbox"]:checked').map(function() {
-                    return $(this).data('tag-group-id');
+                    return $(this).data('tagGroupId');
                 }).get();
 
                 // update the tag groups that should be visible and the
                 // tag groups that should be invisible
+                var visibleGroupsSet = {};
+                $.each(visibleGroups, function(index, group_id) {
+                    visibleGroupsSet[group_id] = true;
+                });
+
                 $.when(self.imageDao.tagGroups())
                     .done(function(tagGroups) {
                         $.each(tagGroups, function(id, tagGroup) {
-                            tagGroup.visible = id in visibleGroups;
+                            tagGroup.visible = tagGroup.id in visibleGroupsSet;
                         });
                     })
                     .fail(function(e) {
@@ -185,7 +193,7 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, DialogManag
 
 
                 // update the tag board with the tags for the newly visible tag groups
-                $.when(self.imageDao.tags(visibleGroups)
+                $.when(self.imageDao.tags(visibleGroups))
                     .done(function(tags) {
                         self.tagBoard.draw(tags);
                     })

@@ -10,6 +10,10 @@ define(deps, function($, _, util, DialogStructureTmpl) {
     function DynamicDialog(name, title, tmpl) {
         this.tmpl = tmpl;
         this.$el = $(DialogStructureTemplate({ 'name' : name, 'title': title }));
+        var self = this;
+        this.$el.find('.accept').on('click', function() {
+            $(self).trigger('accept', [self.$el]);
+        });
     }
 
     DynamicDialog.prototype.show = function(data) {
@@ -26,10 +30,7 @@ define(deps, function($, _, util, DialogStructureTmpl) {
     }
 
     DynamicDialog.prototype.accept = function(callback) {
-        var self = this;
-        this.$el.find('.accept').on('click', function() {
-            $(self).trigger('accept', [self.$el]);
-        });
+        $(self).trigger('accept', [self.$el]);
     };
 
     return {
