@@ -119,7 +119,7 @@ define(deps, function($, _, Kinetic, util, taggable_util, TagBoardTmpl, jquery_u
         this.resize();
     }
 
-    TagBoard.prototype.resize: function() {
+    TagBoard.prototype.resize = function() {
         // change the size and position of the tag board to match the image
         this.locked = true; // lock the TagBoard until it is finsihed resizing
         this.$tagBoard.css('left', this.$image.css('left')).css('top', this.$image.css('top'));
