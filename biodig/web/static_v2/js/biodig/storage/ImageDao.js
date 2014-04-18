@@ -139,7 +139,7 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
                                 self.tags_cache[tagGroupId].tags = {};
                             }
 
-                            $.each(tag_results, function(tag) {
+                            $.each(tag_results, function(index, tag) {
                                 self.tags_cache[tagGroupId].tags[tag.id] = tag;
                                 tags[tag.id] = tag;
                             });
