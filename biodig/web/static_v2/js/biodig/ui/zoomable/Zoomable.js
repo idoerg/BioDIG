@@ -73,19 +73,19 @@ define(deps, function($, _, util, ZoomableTmpl) {
             });
 
             // sets up the slider to change the zoom level
-            $container.find('.zoomable-slider').on('slidechange', function(event, ui) {
+            this.$container.find('.zoomable-slider').on('slidechange', function(event, ui) {
                 ZoomableUIHelper.changeEvent(event, ui, self.$image);
                 $(self).trigger('zoom');
             });
 
             // sets up the zoomSlider to be hidden by default and appear on mouseover
-            $container.children('.zoomable-slider-container').hide();
+            this.$container.children('.zoomable-slider-container').hide();
 
-            $container.on('mouseover', function() {
+            this.$container.on('mouseover', function() {
                 $(this).children('.zoomable-slider-container').show();
             });
 
-            $container.on('mouseout', function() {
+            this.$container.on('mouseout', function() {
                 $(this).children('.zoomable-slider-container').hide();
             });
         },
