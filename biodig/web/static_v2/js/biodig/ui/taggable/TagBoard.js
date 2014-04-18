@@ -108,7 +108,7 @@ define(deps, function($, _, Kinetic, util, taggable_util, TagBoardTmpl, jquery_u
 
         var self = this;
         this.$board.on('drag', function(event, ui) {
-            self.$image.css('left', self.$board.css('left')).css('top', self.$board.css('top'));
+            self.$image.css('left', ui.position.left).css('top', ui.position.top);
             $(self).trigger('drag', [ui]);
         });
 
