@@ -56,7 +56,7 @@ define(deps, function($, _, Kinetic, util, taggable_util, TagBoardTmpl, jquery_u
     var TagBoardEvents = {
         mousemove: function(event) {
             if (!this.locked) {
-                var mousePos = this.stage.getMousePosition(event);
+                var mousePos = this.stage.getPointerPosition(event);
 
                 if (this.shapes.length > 0) {
                     for (var i = 0; i < this.shapes.length; i++) {
