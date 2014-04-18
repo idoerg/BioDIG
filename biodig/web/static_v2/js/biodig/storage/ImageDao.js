@@ -123,29 +123,37 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
         var self = this;
         var tags = {};
         var promises = [];
-        $.each(tagGroup_ids, function(index, id) {
-            if (self.tags_cache[id].tags == null) {
-                if (!self.tags_cache[id].client) {
-                    self.tags_cache[id].client = TagClient.create({
+        $.each(tagGroup_ids, function(index, tagGroupId) {
+            if (self.tags_cache[tagGroupId].tags == null) {
+                if (!self.tags_cache[tagGroupId].client) {
+                    self.tags_cache[tagGroupId].client = TagClient.create({
                         'image_id': self.image_id,
-                        'tag_group_id': id
+                        'tag_group_id': tagGroupId
                     });
                 }
 
                 promises.push($.Deferred(function(deferred_obj) {
-                    $.when(self.tags_cache[id].client.list())
+                    $.when(self.tags_cache[tagGroupId].client.list())
                         .done(function(tag_results) {
-                            var results = {};
+                            if (self.tags.cache[tagGroupId].tags == null) {
+                                self.tags_cache[tagGroupId].tags = {};
+                            }
+
                             $.each(tag_results, function(tag) {
-                                results[tag.id] = tag;
+                                self.tags_cache[tagGroupId].tags[tag.id] = tag;
                             });
-                            $.extend(tags, results);
-                            self.tags_cache[id].tags = results;
+                            tags[tag.id] = tag;
                             deferred_obj.resolve();
                         })
                         .fail(function(e) {
                             deferred_obj.reject(e);
                         });
+                }).promise());
+            }
+            else {
+                promises.push($.Deferred(function(deferred_obj) {
+                    $.extend(tags, self.tags_cache[tagGroupId].tags);
+                    deferred_obj.resolve();
                 }).promise());
             }
         });
