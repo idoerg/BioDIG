@@ -114,7 +114,7 @@ define(deps, function($, _, Kinetic, util, taggable_util, TagBoardTmpl, jquery_u
         this.locked = false;
         this.shapes = [];
         this.selectedtags = {};
-        this.show = false;
+        this.show = true;
 
         this.resize();
     }
@@ -127,7 +127,7 @@ define(deps, function($, _, Kinetic, util, taggable_util, TagBoardTmpl, jquery_u
         this.$board.width(this.$image.width());
 
         var tags = {};
-        $.each(this.shapes, function(index, shape) {
+        $.each(this.layer.children, function(index, shape) {
             tags[shape.tag.id] = shape.tag;
         });
 
@@ -135,8 +135,13 @@ define(deps, function($, _, Kinetic, util, taggable_util, TagBoardTmpl, jquery_u
     };
 
     TagBoard.prototype.toggleVisibility = function() {
-        this.tagsVisible = !this.tagsVisible;
-        this.draw();
+        this.show = !this.show;
+        var tags = {};
+        $.each(this.layer.children, function(index, shape) {
+            tags[shape.tag.id] = shape.tag;
+        });
+
+        this.draw(tags);
     };
 
     TagBoard.prototype.draw = function(tags) {
@@ -147,7 +152,7 @@ define(deps, function($, _, Kinetic, util, taggable_util, TagBoardTmpl, jquery_u
             'width': this.$board.width(),
             'height': this.$board.height()
         });
-        
+
         this.stage.removeChildren();
 
         this.layer = new Kinetic.Layer();

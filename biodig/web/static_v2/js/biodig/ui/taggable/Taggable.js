@@ -124,7 +124,7 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, DialogManag
         addTagBoardZoomControls: function() {
             var self = this;
             $(self.zoomable).on('zoom', function() {
-                self.tagBoard.resize();
+                self.tagBoard.toggleVisibility();
             });
         },
         addPublicMenuControls: function() {
