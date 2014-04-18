@@ -133,7 +133,7 @@ define(deps, function($, _, util, ZoomableTmpl) {
 
         var init = function() {
             // creates the structure
-            util.scope(ZoomableUIHelper.createStructure)(options);
+            util.scope(self, ZoomableUIHelper.createStructure)(options);
             util.scope(self, ZoomableUIHelper.setupControls)(options);
             self.$image.draggable();
 
