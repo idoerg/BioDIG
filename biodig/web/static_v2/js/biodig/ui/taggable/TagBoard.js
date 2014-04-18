@@ -126,22 +126,22 @@ define(deps, function($, _, Kinetic, util, taggable_util, TagBoardTmpl, jquery_u
         this.$board.height(this.$image.height());
         this.$board.width(this.$image.width());
 
-        var tags = {};
-        $.each(this.layer.children, function(index, shape) {
-            tags[shape.tag.id] = shape.tag;
-        });
+        this.redraw();
+    };
 
+    TagBoard.prototype.redraw = function() {
+        var tags = {};
+        if (this.layer) {
+            $.each(this.layer.children, function(index, shape) {
+                tags[shape.tag.id] = shape.tag;
+            });
+        }
         this.draw(tags);
     };
 
     TagBoard.prototype.toggleVisibility = function() {
         this.show = !this.show;
-        var tags = {};
-        $.each(this.layer.children, function(index, shape) {
-            tags[shape.tag.id] = shape.tag;
-        });
-
-        this.draw(tags);
+        this.redraw();
     };
 
     TagBoard.prototype.draw = function(tags) {
