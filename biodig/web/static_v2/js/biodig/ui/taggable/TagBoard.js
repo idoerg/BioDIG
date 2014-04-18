@@ -143,7 +143,11 @@ define(deps, function($, _, Kinetic, util, taggable_util, TagBoardTmpl, jquery_u
         this.locked =  false;
 
         // clear the original stage and resize it
-        this.stage.setSize(this.$board.width(), this.$board.height());
+        this.stage.setSize({
+            'width': this.$board.width(),
+            'height': this.$board.height()
+        });
+        
         this.stage.removeChildren();
 
         this.layer = new Kinetic.Layer();
