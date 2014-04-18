@@ -67,6 +67,8 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, DialogManag
             }
         }));
 
+        util.scope(this, TaggableImageHelper.addTagBoardZoomControls).call();
+
         // create the right side of the taggable interface
 
         // the title of the right side is determined by the list of organisms
@@ -101,8 +103,6 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, DialogManag
     var TaggableImageHelper = {
         loadDrawingModule: function(opts) {
             this.tagBoard = TagBoard.create(this.$image);
-
-            util.scope(this, TaggableImageHelper.addTagBoardZoomControls).call();
 
             util.scope(this, TaggableImageHelper.addPublicMenuControls).call();
 
