@@ -68,7 +68,7 @@ define(deps, function($, _, Kinetic, util, taggable_util, TagBoardTmpl, jquery_u
                     this.shapes.length = 0;
                 }
 
-                this.shapes = this.stage.getIntersections(mousePos);
+                this.shapes = this.stage.getAllIntersections(mousePos);
 
                 this.selectedtags = {};
 
