@@ -132,7 +132,7 @@ define(deps, function($, _, Kinetic, util, taggable_util, TagBoardTmpl, jquery_u
         var self = this;
         // Draws the tags on the board and sets up mouseover and mouseout events
         $.each(tags, function(id, tag) {
-            self.layer.add(util.scope(this, TagDrawingUtil.poly(tag)));
+            self.layer.add(util.scope(self, TagDrawingUtil.poly(tag)));
         });
 
         this.stage.add(this.layer);
