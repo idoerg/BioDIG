@@ -141,8 +141,9 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
 
                             $.each(tag_results, function(tag) {
                                 self.tags_cache[tagGroupId].tags[tag.id] = tag;
+                                tags[tag.id] = tag;
                             });
-                            tags[tag.id] = tag;
+
                             deferred_obj.resolve();
                         })
                         .fail(function(e) {
