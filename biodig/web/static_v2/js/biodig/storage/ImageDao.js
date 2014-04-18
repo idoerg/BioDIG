@@ -75,7 +75,7 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
                         $.each(tagGroups, function(index, tagGroup) {
                             // setup the new clients for each tag group to
                             // fetch the tags in the tag cache
-                            self.tags_cache[index] = {
+                            self.tags_cache[tagGroup.id] = {
                                 client: TagClient.create({
                                     'image_id' : self.image_id,
                                     'tag_group_id' : tagGroup.id
