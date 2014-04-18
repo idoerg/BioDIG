@@ -124,7 +124,7 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, DialogManag
         addTagBoardZoomControls: function() {
             var self = this;
             $(self.zoomable).on('zoom', function() {
-                self.tagBoard.toggleVisibility();
+                self.tagBoard.resize();
             });
         },
         addPublicMenuControls: function() {
@@ -132,8 +132,7 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, DialogManag
 
             // toggles the visibility of the tags for the currently selected tag groups
             this.menu.section('tools').item('toggleTags').click(function() {
-                self.tagBoard.show = true;
-                self.tagBoard.resize();
+                self.tagBoard.toggleVisibility();
             });
 
             // shows the download dialog for downloading image metadata
