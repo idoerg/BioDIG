@@ -78,7 +78,7 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
                             self.tags_cache[index] = {
                                 client: TagClient.create({
                                     'image_id' : self.image_id,
-                                    'tag_group_id' : index
+                                    'tag_group_id' : tagGroup.id
                                 }),
                                 tags: null
                             };
