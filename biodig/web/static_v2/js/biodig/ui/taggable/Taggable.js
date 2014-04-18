@@ -132,23 +132,8 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, DialogManag
 
             // toggles the visibility of the tags for the currently selected tag groups
             this.menu.section('tools').item('toggleTags').click(function() {
-                $.when(self.imageDao.tagGroups({ visible: true }))
-                    .done(function(tagGroups) {
-                        var group_ids = $.map(tagGroups, function(tagGroup) {
-                            return tagGroup.id;
-                        });
-
-                        $.when(self.imageDao.tags(group_ids))
-                            .done(function(tags) {
-                                self.tagBoard.draw(tags);
-                            })
-                            .fail(function(e) {
-                                console.error(e.detail);
-                            });
-                    })
-                    .fail(function(e) {
-                        console.error(e.detail);
-                    })
+                self.tagBoard.show = true;
+                self.tagBoard.resize();
             });
 
             // shows the download dialog for downloading image metadata
