@@ -135,7 +135,7 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
                 promises.push($.Deferred(function(deferred_obj) {
                     $.when(self.tags_cache[tagGroupId].client.list())
                         .done(function(tag_results) {
-                            if (self.tags.cache[tagGroupId].tags == null) {
+                            if (self.tags_cache[tagGroupId].tags == null) {
                                 self.tags_cache[tagGroupId].tags = {};
                             }
 
