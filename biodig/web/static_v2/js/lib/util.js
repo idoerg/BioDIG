@@ -10,7 +10,7 @@ define(['jquery'], function($) {
 
     Util.scope = function(scope, fn) {
         return function() {
-            fn.apply(scope, arguments);
+            return fn.apply(scope, arguments);
         };
     };
 
