@@ -6,18 +6,24 @@ var deps = [
 define(deps, function($, _, util, ZoomableTmpl) {
 
     var ZoomableUIHelper = {
-        createStructure: function($img, template, options) {
-            $img.off('load');
+        createStructure: function(options) {
+            this.$image.off('load');
             // renders the zoomable template, structural
-            var id = $img.attr('id');
+            var id = this.$image.attr('id');
             if (!id) {
                 id = util.uuid4();
-                $img.attr('id', id);
+                this.$image.attr('id', id);
             }
-            $img.parent().append(template({ id : id }));
+            this.$image.parent().append(this.template({ id : id }));
+
+            // this is the container of everything and the image needs to be moved inside of it
+            this.$container = this.$image.parent().find('.zoomable-container');
+            this.$container.height(options.height);
+            this.$container.width(options.width);
+            this.$container.append(this.$image);
 
             // uses the jQueryUI slider plugin to create the controls as a slider
-            $('#' + id + '-zoomable-slider').slider({
+            this.$container.find('.zoomable-slider').slider({
                 orientation: 'vertical',
                 range: 'min',
                 min: 0,
@@ -25,18 +31,12 @@ define(deps, function($, _, util, ZoomableTmpl) {
                 value: 0
             });
 
-            // this is the container of everything and the image needs to be moved inside of it
-            var $zoomableContainer = $('#' + id + '-zoomable-container');
-            $zoomableContainer.height(options.height);
-            $zoomableContainer.width(options.width);
-            $zoomableContainer.append($img);
-
             // make image fit inside the container
-            ZoomableUIHelper.fit($img, $zoomableContainer);
+            ZoomableUIHelper.fit(this.$image, this.$container);
 
             // stores the original height for use later
-            $img.data('originalHeight', $img.height());
-            $img.data('originalWidth', $img.width());
+            this.$image.data('originalHeight', this.$image.height());
+            this.$image.data('originalWidth', this.$image.width());
         },
         fit: function($img, $container) {
             // makes the image fit inside of the zoomable container no matter what its
@@ -54,58 +54,38 @@ define(deps, function($, _, util, ZoomableTmpl) {
                 $img.css('left', leftVal);
             }
         },
-        setupControls: function($img, options) {
-            var id = $img.attr('id'); // should be set when this is being called
+        setupControls: function(options) {
+            var id = this.$image.attr('id'); // should be set when this is being called
+            var self = this;
             // controls are setup for the zooming bar (PLUS)
-            $('#' + id + '-zoomable-plus').on('click', function() {
-                $('#' + id + '-zoomable-slider').slider('value', $('#' + id + '-zoomable-slider').slider('value') + 1);
-                if (options.zoom_callback) {
-                    if (options.zoom_callback_args) {
-                        options.zoom_callback.apply(this, options.zoom_callback_args);
-                    }
-                    else {
-                        options.zoom_callback();
-                    }
-                }
+            this.$container.find('.zoomable-plus > button').on('click', function() {
+                var $slider = self.$container.find('.zoomable-slider');
+                $slider.slider('value', $slider.slider('value') + 1);
+                $(self).trigger('zoom');
             });
 
 
             // controls are setup for the zooming bar (MINUS)
-            $('#' + id + '-zoomable-minus').on('click', function() {
-                $('#' + id + '-zoomable-slider').slider('value', $('#' + id + '-zoomable-slider').slider('value') - 1);
-                if (options.zoom_callback) {
-                    if (options.zoom_callback_args) {
-                        options.zoom_callback.apply(this, options.zoom_callback_args);
-                    }
-                    else {
-                        options.zoom_callback();
-                    }
-                }
+            this.$container.find('.zoomable-minus > button').on('click', function() {
+                var $slider = self.$container.find('.zoomable-slider');
+                $slider.slider('value', $slider.slider('value') - 1);
+                $(self).trigger('zoom');
             });
 
             // sets up the slider to change the zoom level
-            $('#' + id + '-zoomable-slider').on('slidechange', function(event, ui) {
-                ZoomableUIHelper.changeEvent(event, ui, $img);
-                if (options.zoom_callback) {
-                    if (options.zoom_callback_args) {
-                        options.zoom_callback.apply(this, options.zoom_callback_args);
-                    }
-                    else {
-                        options.zoom_callback();
-                    }
-                }
+            $container.find('.zoomable-slider').on('slidechange', function(event, ui) {
+                ZoomableUIHelper.changeEvent(event, ui, self.$image);
+                $(self).trigger('zoom');
             });
 
-            var $zoomableContainer = $('#' + id + '-zoomable-container');
-
             // sets up the zoomSlider to be hidden by default and appear on mouseover
-            $zoomableContainer.children('.zoomable-slider-container').hide();
+            $container.children('.zoomable-slider-container').hide();
 
-            $zoomableContainer.on('mouseover', function() {
+            $container.on('mouseover', function() {
                 $(this).children('.zoomable-slider-container').show();
             });
 
-            $zoomableContainer.on('mouseout', function() {
+            $container.on('mouseout', function() {
                 $(this).children('.zoomable-slider-container').hide();
             });
         },
@@ -153,8 +133,8 @@ define(deps, function($, _, util, ZoomableTmpl) {
 
         var init = function() {
             // creates the structure
-            ZoomableUIHelper.createStructure(self.$image, self.template, options);
-            ZoomableUIHelper.setupControls(self.$image, options);
+            util.scope(ZoomableUIHelper.createStructure)(options);
+            util.scope(self, ZoomableUIHelper.setupControls)(options);
             self.$image.draggable();
 
             self.$image.data('zoomable', true);
@@ -173,11 +153,12 @@ define(deps, function($, _, util, ZoomableTmpl) {
 
     ZoomableUI.prototype.zoom = function() {
         var id = this.$image.attr('id');
-        var zoomSlider = $('#' + id + '-zoomable-slider');
-        var newVal = zoomSlider.slider("value") + magnitude;
+        var $slider = this.$container('.zoomable-slider');
+        var newVal = $slider.slider("value") + magnitude;
         newVal = newVal < 100 ? newVal : 100;
         newVal = newVal > 0 ? newVal : 0;
-        zoomSlider.slider("value", newVal);
+        $slider.slider("value", newVal);
+        $(self).trigger('zoom');
     };
 
     ZoomableUI.prototype.withImage = function(src) {

@@ -59,7 +59,7 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, DialogManag
         this.imageDao = ImageDao.create(this.image_id);
 
         var self = this;
-        
+
         // creates a canvas with methods for viewing tags and selecting them
         this.zoomable = Zoomable.create(this.image, $.extend({}, opts, {
             onload: function() {
@@ -102,6 +102,8 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, DialogManag
         loadDrawingModule: function(opts) {
             this.tagBoard = TagBoard.create(this.$image);
 
+            util.scope(this, TaggableImageHelper.addTagBoardZoomControls).call();
+
             util.scope(this, TaggableImageHelper.addPublicMenuControls).call();
 
             util.scope(this, TaggableImageHelper.addPublicDialogControls).call();
@@ -118,6 +120,12 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, DialogManag
                     //util.scope(this, TaggableImageHelper.addRegisteredControls).call();
                 });
             }
+        },
+        addTagBoardZoomControls: function() {
+            var self = this;
+            $(self.zoomable).on('zoom', function() {
+                self.tagBoard.resize();
+            });
         },
         addPublicMenuControls: function() {
             var self = this;

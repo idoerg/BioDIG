@@ -107,6 +107,7 @@ define(deps, function($, _, Kinetic, util, taggable_util, TagBoardTmpl, jquery_u
 
         var self = this;
         this.$board.on('drag', function(event, ui) {
+            self.$image.css('left', self.$board.css('left')).css('top', self.$board.css('top'));
             $(self).trigger('drag', [ui]);
         });
 
@@ -114,7 +115,24 @@ define(deps, function($, _, Kinetic, util, taggable_util, TagBoardTmpl, jquery_u
         this.shapes = [];
         this.selectedtags = {};
         this.show = false;
+
+        this.resize();
     }
+
+    TagBoard.prototype.resize: function() {
+        // change the size and position of the tag board to match the image
+        this.locked = true; // lock the TagBoard until it is finsihed resizing
+        this.$tagBoard.css('left', this.$image.css('left')).css('top', this.$image.css('top'));
+        this.$tagBoard.height(this.$image.height());
+        this.$tagBoard.width(this.$image.width());
+
+        var tags = {};
+        $.each(this.shapes, function(index, shape) {
+            tags[shape.tag.id] = shape.tag;
+        });
+
+        this.draw(tags);
+    };
 
     TagBoard.prototype.toggleVisibility = function() {
         this.tagsVisible = !this.tagsVisible;
