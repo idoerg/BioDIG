@@ -15,7 +15,7 @@ define(deps, function($, _, Kinetic, util, taggable_util, TagBoardTmpl, jquery_u
             // converts the tag's points to the current zoom level
             var drawPoints = [];
             for (var i = 0; i < tag.points.length; i++) {
-                drawPoints[i] = taggable_util.convertFromOriginalToZoom(tag.points[j], this.$image);
+                drawPoints[i] = taggable_util.convertFromOriginalToZoom(tag.points[i], this.$image);
             }
 
             // checks if the points represent a rectangle and fixes the array to be a four point
