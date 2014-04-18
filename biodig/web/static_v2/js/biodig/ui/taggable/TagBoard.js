@@ -30,7 +30,7 @@ define(deps, function($, _, Kinetic, util, taggable_util, TagBoardTmpl, jquery_u
             var fill = this.show ? TagDrawingUtil.color(tag.color) : "";
 
             // creates a polygon with the points for this tag
-            var poly = new Kinetic.Polygon({
+            var poly = new Kinetic.Line({
                 points: $.map( drawPoints, function(point){return [point.x, point.y]}),
                 fill: fill,
                 stroke: "rgba(255,255,255,0)",
