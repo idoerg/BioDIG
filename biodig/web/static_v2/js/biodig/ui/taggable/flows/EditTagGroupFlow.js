@@ -1,7 +1,7 @@
 var deps = [
     'jquery', 'biodig/ui/dialogs/FlowNode',
-    'text!biodig/tmp/taggable/dialogs/choose-tag-group.html',
-    'text!biodig/tmp/taggable/dialogs/edit-tag-group.html'
+    'text!biodig/tmpl/taggable/dialogs/choose-tag-group.html',
+    'text!biodig/tmpl/taggable/dialogs/edit-tag-group.html'
 ];
 
 define(deps, function($, FlowNode, ChooseTagGroupTmpl, EditTagGroupTmpl) {
