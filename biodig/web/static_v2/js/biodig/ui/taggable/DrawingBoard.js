@@ -20,7 +20,7 @@ define(deps, function($, _, util, TaggableUtil, DrawingBoardTmpl) {
 
     function DrawingBoard(image) {
         this.$image = image;
-        this.$board = DrawingBoardTemplate(this.$image);
+        this.$board = $(DrawingBoardTemplate(this.$image));
         this.$image.parent().prepend(this.$board);
         this.config = {
             fillStyle : '',
