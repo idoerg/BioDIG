@@ -1,0 +1,12 @@
+<div class="center-block">
+    <div>
+        <h2>Select a Tag Group</h2>
+    </div>
+    <div>
+        <select class="select-tag-group form-control">
+            <% _.each(tagGroups, function(tagGroup, id) { %>
+                <option data-tag-group="<%= JSON.stringify(tagGroup) %>"><%= tagGroup.name %></option>
+            <% }); %>
+        </select>
+    </div>
+</div>

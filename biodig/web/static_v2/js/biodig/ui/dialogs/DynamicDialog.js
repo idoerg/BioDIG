@@ -13,6 +13,7 @@ define(deps, function($, _, util, DialogStructureTmpl) {
         var self = this;
         this.$el.find('.accept').on('click', function() {
             $(self).trigger('accept', [self.$el]);
+            self.$el.modal('hide');
         });
     }
 

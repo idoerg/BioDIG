@@ -28,8 +28,12 @@ define(deps, function($, _, ItemTmpl) {
         this.$ui = $(ItemTemplate({ 'text': text, 'icon': icon, 'iconType': iconType }));
     };
 
-    Item.prototype.click = function(callback) {
-        this.$ui.click(callback);
+    Item.prototype.on = function(event, callback) {
+        this.$ui.on(event, callback);
+    };
+
+    Item.prototype.off = function(event) {
+        this.$ui.off(event);
     };
 
     Item.prototype.ui = function() {

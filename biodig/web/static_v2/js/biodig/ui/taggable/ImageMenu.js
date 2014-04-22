@@ -26,7 +26,7 @@ define(deps, function($, _, Menu, MenuSection, MenuItem, settings) {
 
             return menu;
         },
-        createRegisteredMenu: function(menu) {
+        addRegisteredMenu: function(menu) {
             // finish the tag groups section
             var tagGroups = menu.section('tagGroups');
             tagGroups.item('add', 'Add New Tag Group', 'ui-icon ui-icon-plusthick');

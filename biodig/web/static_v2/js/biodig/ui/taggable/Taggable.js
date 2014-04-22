@@ -1,13 +1,13 @@
 var deps = [
     'jquery', 'underscore', 'biodig/ui/zoomable/Zoomable', 'biodig/ui/taggable/TagBoard',
     'biodig/storage/ImageDao', 'biodig/ui/taggable/ImageMenu', 'biodig/ui/taggable/DialogManager',
-    'lib/util', 'text!biodig/tmpl/taggable/structure.html',
+    'biodig/ui/taggable/public/TaggableController', 'lib/util', 'text!biodig/tmpl/taggable/structure.html',
     'text!biodig/tmpl/taggable/image-metadata.html',
 
 ];
 
-define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, DialogManager, util,
-    TaggableTmpl, MetadataTmpl) {
+define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, DialogManager,
+    PublicTaggableController, util, TaggableTmpl, MetadataTmpl) {
 
     var ACCEPTED_MODES = {
         REGISTERED: 'REGISTERED',
@@ -58,6 +58,9 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, DialogManag
         // state of the image's data
         this.imageDao = ImageDao.create(this.image_id);
 
+        // start the public taggable controller
+        this.publicController = PublicTaggableController.create(this);
+
         var self = this;
 
         // creates a canvas with methods for viewing tags and selecting them
@@ -67,7 +70,7 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, DialogManag
             }
         }));
 
-        util.scope(this, TaggableImageHelper.addTagBoardZoomControls).call();
+        this.publicController.controls('on', 'zoom');
 
         // create the right side of the taggable interface
 
@@ -102,104 +105,31 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, DialogManag
 
     var TaggableImageHelper = {
         loadDrawingModule: function(opts) {
+            var self = this;
             this.tagBoard = TagBoard.create(this.$image);
 
-            util.scope(this, TaggableImageHelper.addPublicMenuControls).call();
-
-            util.scope(this, TaggableImageHelper.addPublicDialogControls).call();
+            this.publicController.controls('on', 'dialog');
+            this.publicController.controls('on', 'menu');
 
             // optionally install the registered features
             if (opts.mode == ACCEPTED_MODES.REGISTERED) {
                 // tells the dialog manager that the registered user dialogs
                 // are required, so all dialog related functions are loaded here
+                this.drawingBoard = DrawingBoard.create(this.$image);
+                this.drawingMenu = DrawingMenu.create('hidden');
+                this.registeredController = RegisteredTaggableController.create(this);
+
+                // start off by allowing the drawing menu to affect the drawing board
+                // and the main menu to control the drawing/tag board
+                this.registeredController.controls('on', 'zoom');
+                this.registeredController.controls('on', 'drawing');
+                this.registeredController.controls('on', 'menu');
+
                 $.when(this.dialogs.loadRegistered()).done(function() {
                     // creates a canvas with methods for drawing tags
-                    //this.drawingBoard = DrawingBoard.create(this.$image);
-                    //this.drawingUI = DrawingUI.create('hidden');
-
-                    //util.scope(this, TaggableImageHelper.addRegisteredControls).call();
+                    self.registeredController.controls('on', 'dialog');
                 });
             }
-        },
-        addTagBoardZoomControls: function() {
-            var self = this;
-            $(self.zoomable).on('zoom', function() {
-                self.tagBoard.resize();
-            });
-        },
-        addPublicMenuControls: function() {
-            var self = this;
-
-            // toggles the visibility of the tags for the currently selected tag groups
-            this.menu.section('tools').item('toggleTags').click(function() {
-                self.tagBoard.toggleVisibility();
-            });
-
-            // shows the download dialog for downloading image metadata
-            this.menu.section('tools').item('download').click(function() {
-                self.dialogs.dialog('DownloadMetadata').show();
-            });
-
-            this.menu.section('tools').item('zoomIn').click(function() {
-                self.zoomable.zoom(1);
-            });
-
-            this.menu.section('tools').item('zoomOut').click(function() {
-                self.zoomable.zoom(-1);
-            });
-
-            this.menu.section('tagGroups').item('changeVisibleTagGroups').click(function() {
-                $.when(self.imageDao.tagGroups())
-                    .done(function(tagGroups) {
-                        self.dialogs.dialog('ChangeVisibleTagGroups').show({'tagGroups' : tagGroups});
-                    })
-                    .fail(function(e) {
-                        console.error(e.detail);
-                    });
-            });
-        },
-        addPublicDialogControls: function() {
-            var self = this;
-            $(this.dialogs.dialog('ChangeVisibleTagGroups')).on('accept', function(event, ui) {
-                // get the selected tag groups from the ui
-                var visibleGroups = ui.find('input[type="checkbox"]:checked').map(function() {
-                    return $(this).data('tagGroupId');
-                }).get();
-
-                // update the tag groups that should be visible and the
-                // tag groups that should be invisible
-                var visibleGroupsSet = {};
-                $.each(visibleGroups, function(index, group_id) {
-                    visibleGroupsSet[group_id] = true;
-                });
-
-                $.when(self.imageDao.tagGroups())
-                    .done(function(tagGroups) {
-                        $.each(tagGroups, function(id, tagGroup) {
-                            tagGroup.visible = tagGroup.id in visibleGroupsSet;
-                        });
-                    })
-                    .fail(function(e) {
-                        console.error(e.detail);
-                    });
-
-
-                // update the tag board with the tags for the newly visible tag groups
-                $.when(self.imageDao.tags(visibleGroups))
-                    .done(function(tags) {
-                        self.tagBoard.draw(tags);
-                    })
-                    .fail(function(e) {
-                        console.error(e.detail);
-                    });
-            });
-
-            $(this.dialogs.dialog('DownloadMetadata')).on('accept', function(event, ui) {
-                console.log("Image metadata download started...");
-            });
-        },
-        addRegisteredControls: function() {
-            // TODO: implement these features
         }
     }
 
