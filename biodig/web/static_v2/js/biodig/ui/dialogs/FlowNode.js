@@ -3,11 +3,11 @@ define([], function() {
         this.template = template;
         this.transition = transition;
         this.beforeCheck = null;
-        this.data = null;
+        this.mydata = null;
     }
 
     FlowNode.prototype.data = function(data) {
-        this.data = data;
+        this.mydata = data;
     };
 
     FlowNode.prototype.nextData = function() {
@@ -15,7 +15,7 @@ define([], function() {
     };
 
     FlowNode.prototype.view = function() {
-        return this.template(this.data);
+        return this.template(this.mydata);
     };
 
     FlowNode.prototype.before = function(callback) {
@@ -25,7 +25,7 @@ define([], function() {
 
     FlowNode.prototype.skip = function() {
         if (this.beforeCheck) {
-            return this.beforeCheck(this.data);
+            return this.beforeCheck(this.mydata);
         }
         return false;
     };
