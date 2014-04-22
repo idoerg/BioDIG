@@ -11,7 +11,7 @@ define([], function() {
     };
 
     FlowNode.prototype.nextData = function() {
-        return transition.apply(null, arguments);
+        return this.transition.apply(null, arguments);
     };
 
     FlowNode.prototype.view = function() {
