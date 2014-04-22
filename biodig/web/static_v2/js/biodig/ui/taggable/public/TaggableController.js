@@ -118,7 +118,7 @@ define(deps, function($, util) {
     }
 
     TaggableController.prototype.controls = function(state, type) {
-        state = state.lower() == 'on' ? 'on' : 'off';
+        state = state.toLowerCase() == 'on' ? 'on' : 'off';
         this.controllers[state][type]();
     };
 
