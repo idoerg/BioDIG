@@ -13,7 +13,7 @@ define(deps, function($, util) {
         },
         setupDialogControls: function() {
             var self = this;
-            $(this.dialogs.dialog('ChangeVisibleTagGroups')).on('accept', function(event, ui) {
+            $(this.dialogs.get('ChangeVisibleTagGroups')).on('accept', function(event, ui) {
                 // get the selected tag groups from the ui
                 var visibleGroups = ui.find('input[type="checkbox"]:checked').map(function() {
                     return $(this).data('tagGroupId');
@@ -47,7 +47,7 @@ define(deps, function($, util) {
                     });
             });
 
-            $(this.dialogs.dialog('DownloadMetadata')).on('accept', function(event, ui) {
+            $(this.dialogs.get('DownloadMetadata')).on('accept', function(event, ui) {
                 console.log("Image metadata download started...");
             });
         },
