@@ -11,7 +11,11 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
 
     var registeredDeps = [
         'biodig/ui/dialogs/DynamicFlowDialog', 'biodig/ui/taggable/flows/EditTagGroupFlow',
-        'biodig/ui/taggable/flows/EditTagFlow'
+        'biodig/ui/taggable/flows/EditTagFlow', 'text!biodig/tmpl/taggable/dialogs/add-organism.html',
+        'text!biodig/tmpl/taggable/dialogs/delete-organism.html',
+        'text!biodig/tmpl/taggable/dialogs/add-organism.html',
+        'text!biodig/tmpl/taggable/dialogs/edit-tag-group.html',
+        'text!biodig/tmpl/taggable/dialogs/add-gene-link.html'
     ];
 
     function DialogManager() {
@@ -30,7 +34,8 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
     DialogManager.prototype.loadRegistered = function() {
         var self = this;
         return $.Deferred(function(deferred_obj) {
-            require(registeredDeps, function(DynamicFlowDialog, EditTagGroupFlow, EditTagFlow) {
+            require(registeredDeps, function(DynamicFlowDialog, EditTagGroupFlow, EditTagFlow,
+                AddOrganismTmpl, DeleteOrganismTmpl, EditTagGroupTmpl, AddGeneLinkTmpl) {
 
                 /*var addGeneLinkFlow = [
                     FlowNode.create(_.template(ChooseTagTmpl), function(body) {
@@ -63,16 +68,16 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
                         _.template(EditTagGroupTmpl)),
                     'EditTagGroup': DynamicFlowDialog.create('EditTagGroup', 'Edit Tag Group',
                         EditTagGroupFlow),
-                    'DeleteTagGroup': DynamicDialog.create('DeleteTagGroup', 'Delete Tag Group',
-                        _.template(ChooseTagGroupTmpl + DeleteTagGroupTmpl)),
+                    //'DeleteTagGroup': DynamicDialog.create('DeleteTagGroup', 'Delete Tag Group',
+                    //    _.template(ChooseTagGroupTmpl + DeleteTagGroupTmpl)),
                     'EditTag': DynamicFlowDialog.create('EditTag', 'Edit Tag',
                         EditTagFlow),
-                    'DeleteTag': DynamicDialog.create('DeleteTag', 'Delete Tag',
-                        _.template(ChooseTagTmpl + DeleteTagTmpl)),
+                    //'DeleteTag': DynamicDialog.create('DeleteTag', 'Delete Tag',
+                    //    _.template(ChooseTagTmpl + DeleteTagTmpl)),
                     'AddGeneLink': DynamicDialog.create('AddGeneLink', 'Add Gene Link',
                         _.template(AddGeneLinkTmpl)),
-                    'DeleteGeneLink': DynamicDialog.create('DeleteGeneLink', 'Delete Gene Link',
-                        _.template(ChooseGeneLinkTmpl + DeleteGeneLinkTmpl))
+                    //'DeleteGeneLink': DynamicDialog.create('DeleteGeneLink', 'Delete Gene Link',
+                    //    _.template(ChooseGeneLinkTmpl + DeleteGeneLinkTmpl))
                 };
 
                 $.extend(self.dialogs, dialogs);
