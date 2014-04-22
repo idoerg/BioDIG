@@ -9,16 +9,10 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
     var ChangeVisibleTagGroupsTemplate = _.template(ChangeVisibleTagGroupsTmpl);
     var DownloadMetadataTemplate = _.template(DownloadMetadataTmpl);
 
-    var regDeps = $.map([
-        'add-organism.html', 'delete-organism.html', 'choose-tag-group.html',
-        'edit-tag-group.html', 'delete-tag-group.html', 'choose-tag.html', 'edit-tag.html',
-        'delete-tag.html', 'choose-gene-link.html', 'add-gene-link.html', 'delete-gene-link.html'
-    ], function(dialog) {
-        return 'text!biodig/tmp/taggable/dialogs/' + dialog;
-    });
-
-    regDeps.push('biodig/ui/dialogs/FlowNode');
-
+    var registeredDeps = [
+        'biodig/ui/dialogs/DynamicFlowDialog', 'biodig/ui/dialogs/flows/EditTagGroupFlow',
+        'biodig/ui/dialogs/flows/EditTagFlow'
+    ];
 
     function DialogManager() {
         this.dialogs = {
@@ -36,14 +30,9 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
     DialogManager.prototype.loadRegistered = function() {
         var self = this;
         return $.Deferred(function(deferred_obj) {
-            require(regDeps, function(AddOrganismTmpl, DeleteOrganismTmpl, ChooseTagGroupTmpl,
-                    EditTagGroupTmpl, DeleteTagGroupTmpl, ChooseTagTmpl, EditTagTmpl, DeleteTagTmpl,
-                    ChooseGeneLinkTmpl, AddGeneLinkTmpl, DeleteGeneLinkTmpl, FlowNode) {
+            require(registeredDeps, function(DynamicFlowDialog, EditTagGroupFlow, EditTagFlow) {
 
-
-
-                
-                var addGeneLinkFlow = [
+                /*var addGeneLinkFlow = [
                     FlowNode.create(_.template(ChooseTagTmpl), function(body) {
                         // get the json stringified geneLink array stored in the data section
                         // of the option and turn it back into an object for rendering
@@ -63,7 +52,7 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
                         );
                     }),
                     FlowNode.create(_.template(AddGeneLinkTmpl))
-                ];
+                ];*/
 
                 var dialogs = {
                     'AddOrganism': DynamicDialog.create('AddOrganism', 'Add Organism to Image',
@@ -72,12 +61,12 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
                         'Delete Organism from Image', _.template(DeleteOrganismTmpl)),
                     'AddTagGroup': DynamicDialog.create('AddTagGroup', 'Add Tag Group',
                         _.template(EditTagGroupTmpl)),
-                    'EditTagGroup': DynamicDialog.create('EditTagGroup', 'Edit Tag Group',
-                        _.template(ChooseTagGroupTmpl + EditTagGroupTmpl)),
+                    'EditTagGroup': DynamicFlowDialog.create('EditTagGroup', 'Edit Tag Group',
+                        EditTagGroupFlow),
                     'DeleteTagGroup': DynamicDialog.create('DeleteTagGroup', 'Delete Tag Group',
                         _.template(ChooseTagGroupTmpl + DeleteTagGroupTmpl)),
-                    'EditTag': DynamicDialog.create('EditTag', 'Edit Tag',
-                        _.template(ChooseTagTmpl + EditTagTmpl)),
+                    'EditTag': DynamicFlowDialog.create('EditTag', 'Edit Tag',
+                        EditTagFlow),
                     'DeleteTag': DynamicDialog.create('DeleteTag', 'Delete Tag',
                         _.template(ChooseTagTmpl + DeleteTagTmpl)),
                     'AddGeneLink': DynamicDialog.create('AddGeneLink', 'Add Gene Link',
