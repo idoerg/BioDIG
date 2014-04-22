@@ -52,6 +52,7 @@ define(deps, function($, util) {
             });
         },
         setupMenuControls: function() {
+            var self = this;
             // toggles the visibility of the tags for the currently selected tag groups
             this.menu.section('tools').item('toggleTags').on('click', function() {
                 self.tagBoard.toggleVisibility();
