@@ -5,7 +5,7 @@
     <div>
         <select class="select-tag-group form-control">
             <% _.each(tagGroups, function(tagGroup, id) { %>
-                <option data-tag-group="<%= JSON.stringify(tagGroup) %>"><%= tagGroup.name %></option>
+                <option data-tag-group="<%= escape(JSON.stringify(tagGroup)) %>"><%= tagGroup.name %></option>
             <% }); %>
         </select>
     </div>

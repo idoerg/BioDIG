@@ -11,7 +11,7 @@ define(deps, function($, FlowNode, ChooseTagGroupTmpl, EditTagGroupTmpl) {
             // get the json stringified tag group stored in the data section
             // of the option and turn it back into an object for rendering
             return $.parseJSON(
-                body.find('.select-tag-group option:selected').data('tagGroup')
+                unescape(body.find('.select-tag-group option:selected').data('tagGroup'))
             );
         }),
         FlowNode.create(_.template(EditTagGroupTmpl))

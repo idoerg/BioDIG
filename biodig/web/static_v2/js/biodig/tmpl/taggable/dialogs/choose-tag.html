@@ -5,7 +5,7 @@
     <div>
         <select class="select-tag form-control">
             <% _.each(tags, function(tag, id) { %>
-                <option data-tag="<%= JSON.stringify(tag) %>"><%= tag.name %></option>
+                <option data-tag="<%= escape(JSON.stringify(tag)) %>"><%= tag.name %></option>
             <% }); %>
         </select>
     </div>

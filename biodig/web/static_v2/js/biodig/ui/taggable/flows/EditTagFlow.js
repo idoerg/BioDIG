@@ -13,14 +13,14 @@ define(deps, function($, FlowNode, ChooseTagGroupTmpl, ChooseTagTmpl, EditTagTmp
             // get the json stringified tag stored in the data section
             // of the option and turn it back into an object for rendering
             return $.parseJSON(
-                body.find('.select-tag-group option:selected').data('tags')
+                unescape(body.find('.select-tag-group option:selected').data('tags'))
             );
         }).before(function(tagGroups) {
             // check to see if there is only one tag group given in the
             // data and if so skip this node (return of true means to skip)
             var keys = Object.keys(tagGroups);
             if (keys.length == 1) {
-                return tagGroups[keys[0]].tags; // returns the tags for the next thing
+                return { 'tags' : tagGroups[keys[0]].tags }; // returns the tags for the next thing
             }
 
             return false;
