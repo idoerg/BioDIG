@@ -10,8 +10,8 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
     var DownloadMetadataTemplate = _.template(DownloadMetadataTmpl);
 
     var registeredDeps = [
-        'biodig/ui/dialogs/DynamicFlowDialog', 'biodig/ui/dialogs/flows/EditTagGroupFlow',
-        'biodig/ui/dialogs/flows/EditTagFlow'
+        'biodig/ui/dialogs/DynamicFlowDialog', 'biodig/ui/taggable/flows/EditTagGroupFlow',
+        'biodig/ui/taggable/flows/EditTagFlow'
     ];
 
     function DialogManager() {
