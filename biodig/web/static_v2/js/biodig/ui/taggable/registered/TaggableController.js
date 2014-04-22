@@ -206,6 +206,19 @@ define(deps, function($, util) {
         }
     };
 
+    var DialogControls = {
+        setup: {
+
+        },
+        tearDown: {
+
+        }
+    };
+
+    var DrawingControls = {
+
+    };
+
     return {
         create: function(taggable) {
             return new TaggableController(taggable);
