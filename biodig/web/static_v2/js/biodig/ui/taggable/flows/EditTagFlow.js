@@ -43,7 +43,7 @@ define(deps, function($, FlowNode, ChooseTagGroupTmpl, ChooseTagTmpl, EditTagTmp
 
     return {
         get: function() {
-            return EditTagGroupFlow;
+            return EditTagFlow;
         }
     }
 });
