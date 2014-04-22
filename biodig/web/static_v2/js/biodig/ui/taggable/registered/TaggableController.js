@@ -216,7 +216,12 @@ define(deps, function($, util) {
     };
 
     var DrawingControls = {
+        setup: {
 
+        },
+        tearDown: {
+
+        }
     };
 
     return {
