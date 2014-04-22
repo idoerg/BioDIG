@@ -35,7 +35,7 @@ define(deps, function($, _, util, DialogStructureTmpl) {
     DynamicFlowDialog.prototype.show = function(data) {
         var self = this;
         var box = $(this.$el.attr('id'));
-        this.current = 0;
+        this.current = -1;
         var nextView = util.scope(this, Helper.nextView);
         if (box.length > 0) {
             box.find('.modal-body').empty().append(nextView(data));
