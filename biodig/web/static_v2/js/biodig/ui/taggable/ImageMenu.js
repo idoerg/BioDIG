@@ -35,7 +35,7 @@ define(deps, function($, _, Menu, MenuSection, MenuItem, settings) {
 
             // create organism menu section
             var organisms = menu.section('organisms', 'Organisms on Image', 'img[' +
-                settings.STATIC_URL + 'organismIcon.png]');
+                settings.STATIC_URL + 'images/organismIcon.png]');
             organisms.item('add', 'Add Organism', 'ui-icon ui-icon-plusthick');
             organisms.item('delete', 'Remove Organism', 'ui-icon ui-icon-trash');
 

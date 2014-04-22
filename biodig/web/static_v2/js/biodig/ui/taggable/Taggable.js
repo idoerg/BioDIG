@@ -1,13 +1,14 @@
 var deps = [
     'jquery', 'underscore', 'biodig/ui/zoomable/Zoomable', 'biodig/ui/taggable/TagBoard',
     'biodig/storage/ImageDao', 'biodig/ui/taggable/ImageMenu', 'biodig/ui/taggable/DialogManager',
-    'biodig/ui/taggable/public/TaggableController', 'lib/util', 'text!biodig/tmpl/taggable/structure.html',
-    'text!biodig/tmpl/taggable/image-metadata.html',
-
+    'biodig/ui/taggable/public/TaggableController', 'biodig/ui/taggable/DrawingBoard',
+    'biodig/ui/taggable/registered/TaggableController', 'lib/util',
+    'text!biodig/tmpl/taggable/structure.html', 'text!biodig/tmpl/taggable/image-metadata.html'
 ];
 
 define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, DialogManager,
-    PublicTaggableController, util, TaggableTmpl, MetadataTmpl) {
+    PublicTaggableController, DrawingBoard, RegisteredTaggableController, util, TaggableTmpl,
+    MetadataTmpl) {
 
     var ACCEPTED_MODES = {
         REGISTERED: 'REGISTERED',
@@ -116,7 +117,7 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, DialogManag
                 // tells the dialog manager that the registered user dialogs
                 // are required, so all dialog related functions are loaded here
                 this.drawingBoard = DrawingBoard.create(this.$image);
-                this.drawingMenu = DrawingMenu.create('hidden');
+                //this.drawingMenu = DrawingMenu.create('hidden');
                 this.registeredController = RegisteredTaggableController.create(this);
 
                 // start off by allowing the drawing menu to affect the drawing board
