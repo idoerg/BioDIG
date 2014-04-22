@@ -88,7 +88,7 @@ define(deps, function($, util) {
                 this.menu.section('tagGroups').item('edit').on('click', function() {
                     $.when(self.imageDao.tagGroups())
                         .done(function(tagGroups) {
-                            self.dialogs.get('EditTagGroup').show(tagGroups);
+                            self.dialogs.get('EditTagGroup').show({ 'tagGroups' : tagGroups});
                         })
                         .fail(function(e) {
                             console.error(e.detail || e.message);
