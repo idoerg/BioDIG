@@ -52,8 +52,9 @@ define(deps, function($, _, util, DialogStructureTmpl) {
 
         this.$el.find('.accept').on('click', function() {
             if (self.current + 1 < self.nodes.length) {
-                var data = self.nodes[self.current].nextData();
-                self.$el.find('.modal-body').empty().append(nextView(data));
+                var $body = self.$el.find('.modal-body');
+                var data = self.nodes[self.current].nextData($body);
+                $body.empty().append(nextView(data));
 
                 // set the accept button to say "Accept" if we have moved to the last node
                 if (self.current == self.nodes.length - 1) {
