@@ -14,7 +14,9 @@ define(deps, function($, FlowNode, ChooseTagGroupTmpl, EditTagGroupTmpl) {
                 unescape(body.find('.select-tag-group option:selected').data('tagGroup'))
             );
         }),
-        FlowNode.create(_.template(EditTagGroupTmpl))
+        FlowNode.create(_.template(EditTagGroupTmpl), function(body) {
+            return { "name" : body.find('input[name="name"]').val() };
+        })
     ];
 
     return {

@@ -208,10 +208,23 @@ define(deps, function($, util) {
 
     var DialogControls = {
         setup: {
-
+            tagGroups: function() {
+                var self = this;
+                $(this.dialogs.get('EditTagGroup')).on('accept', function(event, $el, data) {
+                    $.when(self.imageDao.editTagGroup(data.id, data))
+                        .done(function(tagGroup) {
+                            console.log("Successful save of tag group: " + tagGroup);
+                        })
+                        .fail(function(e) {
+                            console.error(e.detail || e.message);
+                        })
+                });
+            }
         },
         tearDown: {
-
+            tagGroups: function() {
+                $(this.dialogs.get('EditTagGroup')).off('accept');
+            }
         }
     };
 

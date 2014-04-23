@@ -31,6 +31,7 @@ define(deps, function($, _, util, DialogStructureTmpl) {
         this.$el = $(DialogStructureTemplate({ 'name' : name, 'title': title }));
         this.current = 0;
 
+        var self = this;
         // setup the listener for the Dialog on click
         this.$el.find('.accept').on('click', function() {
             if (self.current + 1 < self.nodes.length) {
@@ -47,8 +48,9 @@ define(deps, function($, _, util, DialogStructureTmpl) {
                 $(self).trigger('next', [self.$el, data]);
             }
             else {
-
-                $(self).trigger('accept', [self.$el]);
+                var $body = self.$el.find('.modal-body');
+                var data = self.nodes[self.current].nextData($body);
+                $(self).trigger('accept', [self.$el, data]);
                 self.$el.modal('hide');
             }
         });
