@@ -197,7 +197,7 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
                 .done(function(tag) {
                     self.tags_cache[tag.id] = tag;
                     self.tags_cache.all[tag.id] = tag;
-                    deferred_obj.resolve(tagGroup);
+                    deferred_obj.resolve(tag);
                 })
                 .fail(function(e) {
                     deferred_obj.reject(e);
