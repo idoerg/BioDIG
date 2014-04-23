@@ -142,7 +142,11 @@ define(deps, function($, util) {
                         // future menus
                         $.when(self.imageDao.tagGroups())
                             .done(function(tagGroups) {
-                                $.when(self.imageDao.tags())
+                                var ids = $.map(tagGroups, function(tagGroup) {
+                                    return tagGroup.id;
+                                });
+
+                                $.when(self.imageDao.tags(ids))
                                     .done(function(tags) {
                                         // add the tags subsection
                                         var aggregate = $.map(tagGroups, function(tagGroup) {

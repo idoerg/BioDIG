@@ -131,6 +131,7 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
     };
 
     ImageDao.prototype.tags = function(tagGroup_ids, opts) {
+        if (!tagGroup_ids) raise { 'detail' : 'Please provide a list of TagGroup ids' }
         if (!opts) opts = {};
         if (!$.isArray(tagGroup_ids)) tagGroup_ids = [tagGroup_ids];
 
