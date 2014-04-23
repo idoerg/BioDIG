@@ -27,8 +27,24 @@ define(['jquery'], function($) {
                 }
             }
          }
-         
+
          return cookieValue;
+    };
+
+    Util.csrfSafeMethod = function(method) {
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    };
+
+    Util.auth = function(token) {
+        return token ?
+            function (xhr, settings) {
+                xhr.setRequestHeader('Authorization', 'Token ' + token) ;
+            } :
+            function(xhr, settings) {
+                if (!Util.csrfSafeMethod(settings.type)) {
+                    xhr.setRequestHeader("X-CSRFToken", util.cookie('csrftoken'));
+                }
+            };
     };
 
     /**

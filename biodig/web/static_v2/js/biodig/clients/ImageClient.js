@@ -71,12 +71,6 @@ define(['jquery', 'lib/settings', 'biodig/clients/URLBuilderFactory'], function(
         }
 
         var self = this;
-        // Add the Authorization Header only if the token is set
-        var addAuthToken = this.token ?
-            function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Token ' + self.token) ;
-            } :
-            function(xhr) {};
 
         return $.Deferred(function(deferredObj) {
             var formData = new FormData();
@@ -87,7 +81,7 @@ define(['jquery', 'lib/settings', 'biodig/clients/URLBuilderFactory'], function(
             $.ajax({
                 url: self.url,
                 method: 'POST',
-                beforeSend: addAuthToken,
+                beforeSend: util.auth(self.token),
                 contentType: false,
                 processData: false,
                 data: formData,
@@ -128,16 +122,11 @@ define(['jquery', 'lib/settings', 'biodig/clients/URLBuilderFactory'], function(
 
         // Add the Authorization Header only if the token is set
         var self = this;
-        var addAuthToken = this.token ?
-            function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Token ' + self.token) ;
-            } :
-            function(xhr) {};
 
     	return $.Deferred(function(deferredObj) {
     		$.ajax({
     			url: urlBuilder.complete(),
-                beforeSend: addAuthToken,
+                beforeSend: util.auth(self.token),
     			method: 'GET',
     			success: function(data, textStatus, jqXHR) {
                     deferredObj.resolve(data);
@@ -170,18 +159,12 @@ define(['jquery', 'lib/settings', 'biodig/clients/URLBuilderFactory'], function(
     		});
     	}
 
-       var self = this;
-       // Add the Authorization Header only if the token is set
-        var addAuthToken = this.token ?
-            function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Token ' + self.token) ;
-            } :
-            function(xhr) {};
+        var self = this;
 
     	return $.Deferred(function(deferredObj) {
     		$.ajax({
     			url: self.url + id,
-    			beforeSend: addAuthToken,
+    			beforeSend: util.auth(self.token),
                 method: 'GET',
     			success: function(data, textStatus, jqXHR) {
                     deferredObj.resolve(data);
@@ -221,17 +204,11 @@ define(['jquery', 'lib/settings', 'biodig/clients/URLBuilderFactory'], function(
     	if (altText) data['altText'] = altText;
 
         var self = this;
-        // Add the Authorization Header only if the token is set
-        var addAuthToken = this.token ?
-            function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Token ' + self.token) ;
-            } :
-            function(xhr) {};
 
     	return $.Deferred(function(deferredObj) {
     		$.ajax({
     			url: self.url + id,
-                beforeSend: addAuthToken,
+                beforeSend: util.auth(self.token),
     			method: 'PUT',
     			data: data,
     			success: function(data) {
@@ -260,16 +237,10 @@ define(['jquery', 'lib/settings', 'biodig/clients/URLBuilderFactory'], function(
             }).promise();
         }
 
-        var addAuthToken = this.token ?
-            function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Token ' + self.token) ;
-            } :
-            function(xhr) {};
-
         return $.Deferred(function(deferredObj) {
             $.ajax({
                 url: self.url + id,
-                beforeSend: addAuthToken,
+                beforeSend: util.auth(self.token),
                 method: 'DELETE',
                 data: data,
                 success: function(data) {

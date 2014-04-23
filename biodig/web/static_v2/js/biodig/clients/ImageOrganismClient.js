@@ -67,18 +67,12 @@ define(deps, function($, settings, URLBuilderFactory, util) {
         }
 
         var self = this;
-        // Add the Authorization Header only if the token is set
-        var addAuthToken = this.token ?
-            function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Token ' + self.token) ;
-            } :
-            function(xhr) {};
 
         return $.Deferred(function(deferredObj) {
             $.ajax({
                 url: self.url,
                 method: 'POST',
-                beforeSend: addAuthToken,
+                beforeSend: util.auth(self.token),
                 dataType: 'json',
                 data: {
                     'organism_id' : organism_id
@@ -121,16 +115,11 @@ define(deps, function($, settings, URLBuilderFactory, util) {
 
         // Add the Authorization Header only if the token is set
         var self = this;
-        var addAuthToken = this.token ?
-            function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Token ' + self.token) ;
-            } :
-            function(xhr) {};
 
     	return $.Deferred(function(deferredObj) {
     		$.ajax({
     			url: urlBuilder.complete(),
-                beforeSend: addAuthToken,
+                beforeSend: util.auth(self.token),
     			method: 'GET',
     			success: function(data, textStatus, jqXHR) {
                     deferredObj.resolve(data);
@@ -164,16 +153,10 @@ define(deps, function($, settings, URLBuilderFactory, util) {
             }).promise();
         }
 
-        var addAuthToken = this.token ?
-            function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Token ' + self.token) ;
-            } :
-            function(xhr) {};
-
         return $.Deferred(function(deferredObj) {
             $.ajax({
                 url: self.url + organism_id,
-                beforeSend: addAuthToken,
+                beforeSend: util.auth(self.token),
                 method: 'DELETE',
                 data: data,
                 success: function(data) {

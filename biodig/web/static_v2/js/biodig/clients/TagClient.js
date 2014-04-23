@@ -72,19 +72,14 @@ define(deps, function($, util, settings, URLBuilder) {
                 deferredObj.reject(e);
             }).promise();
         }
-        var self=this;
-        // Add the Authorization Header only if the token is set
-        var addAuthToken = this.token ?
-            function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Token ' + self.token) ;
-            } :
-            function(xhr) {};
+
+        var self = this;
 
         return $.Deferred(function(deferredObj) {
             $.ajax({
                 url : self.url,
                 method : 'POST',
-                beforeSend : addAuthToken,
+                beforeSend : util.auth(self.token),
                 dataType : 'json',
                 data : {
                     name: name,
@@ -112,17 +107,13 @@ define(deps, function($, util, settings, URLBuilder) {
                 deferredObj.reject(e);
             }).promise();
         }
-        var self=this;
-        var addAuthToken = this.token ?
-            function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Token ' + self.token) ;
-            } :
-            function(xhr) {};
+        var self = this;
+
         return $.Deferred(function(deferredObj) {
             $.ajax({
                 url : self.url + id,
                 method : 'GET',
-                beforeSend : addAuthToken,
+                beforeSend : util.auth(self.token),
                 dataType : 'json',
                 success : function(data) {
                     deferredObj.resolve(data);
@@ -151,19 +142,15 @@ define(deps, function($, util, settings, URLBuilder) {
         $.each(opts, function(key, val) {
             urlBuilder.addQuery(key, val, URLBuilder.NOT_EMPTY);
         });
+
         var self = this;
-        var addAuthToken = this.token ?
-            function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Token ' + self.token) ;
-            } :
-            function(xhr) {};
 
 
-      return $.Deferred(function(deferredObj) {
+        return $.Deferred(function(deferredObj) {
             $.ajax({
                 url: urlBuilder.complete(),
                 method: 'GET',
-                beforeSend : addAuthToken,
+                beforeSend : util.auth(self.token),
                 success: function(data, textStatus, jqXHR) {
                     deferredObj.resolve(data);
                 },
@@ -185,12 +172,9 @@ define(deps, function($, util, settings, URLBuilder) {
                 deferredObj.reject(e);
             }).promise();
         }
+
         var self = this;
-        var addAuthToken = this.token ?
-            function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Token ' + self.token) ;
-            } :
-            function(xhr) {};
+
         var data = {
             name : name
         };
@@ -199,7 +183,7 @@ define(deps, function($, util, settings, URLBuilder) {
             $.ajax({
                 url: self.url + TagId,
                 method: 'PUT',
-                beforeSend : addAuthToken,
+                beforeSend : util.auth(self.token),
                 data: data,
                 success: function(data) {
                     deferredObj.resolve(data);
