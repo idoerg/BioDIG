@@ -31,7 +31,7 @@ define(deps, function($, FlowNode, ChooseTagGroupTmpl, ChooseTagTmpl, EditTagTmp
         }),
         FlowNode.create(_.template(ChooseTagTmpl), function(body) {
             return $.parseJSON(
-                body.find('.select-tag option:selected').data('tag')
+                unescape(body.find('.select-tag option:selected').data('tag'))
             );
         }).before(function(data) {
             var keys = Object.keys(data['tags']);
