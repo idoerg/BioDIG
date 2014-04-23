@@ -19,14 +19,14 @@ define(deps, function($, URLBuilder, settings, util) {
                 },
                 list: function(opts) {
                     if ('owner' in opts) {
-                        if (!opts['owner'] || isNaN(opts['owner'])) throw { detail : 'The ow is not a valid positive number' }
+                        if (!opts['owner'] || isNaN(opts['owner'])) throw { detail : 'The owner is not a valid positive number' }
                     }
                     if ('name' in opts) {
                         if (!opts['name']) throw { detail : 'Not a valid name' }
                     }
                 },
-                update: function(tagGroupId, name) {
-                    if (!tagGroupId || isNaN(TagGroupId)) throw { detail : 'The id is not a valid positive number' }
+                update: function(id, name) {
+                    if (!id || isNaN(id)) throw { detail : 'The id is not a valid positive number' }
                     if (!name) throw { detail : 'Not a valid name' }
                 }
             }
