@@ -42,7 +42,7 @@ define(['jquery'], function($) {
             } :
             function(xhr, settings) {
                 if (!Util.csrfSafeMethod(settings.type)) {
-                    xhr.setRequestHeader("X-CSRFToken", util.cookie('csrftoken'));
+                    xhr.setRequestHeader("X-CSRFToken", Util.cookie('csrftoken'));
                 }
             };
     };
