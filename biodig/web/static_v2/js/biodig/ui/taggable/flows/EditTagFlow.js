@@ -38,7 +38,10 @@ define(deps, function($, FlowNode, ChooseTagGroupTmpl, ChooseTagTmpl, EditTagTmp
             return false;
         }),
         FlowNode.create(_.template(EditTagTmpl), function(body) {
-            return { "name" : body.find('input[name="name"]').val() };
+            return {
+                "id" : body.find('input[name="id"]').val(),
+                "name" : body.find('input[name="name"]').val()
+            };
         })
     ];
 
