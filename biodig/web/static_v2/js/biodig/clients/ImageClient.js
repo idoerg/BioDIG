@@ -1,4 +1,8 @@
-define(['jquery', 'lib/settings', 'biodig/clients/URLBuilderFactory'], function($, settings, URLBuilderFactory) {
+var deps = [
+    'jquery', 'lib/settings', 'lib/util', 'biodig/clients/URLBuilderFactory'
+];
+
+define(deps, function($, settings, util, URLBuilderFactory) {
 
     /**
      *  Validator for the image client.
