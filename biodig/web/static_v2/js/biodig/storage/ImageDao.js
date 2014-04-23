@@ -13,7 +13,9 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
 
         this.organisms_cache = null;
         this.tagGroups_cache = null;
-        this.tags_cache = null;
+        this.tags_cache = {
+            'all': {}
+        };
         this.geneLinks_cache = null;
         this.metadata_cache = null;
     }
@@ -139,6 +141,9 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
         var tags = {};
         var promises = [];
         $.each(tagGroup_ids, function(index, tagGroupId) {
+            if (!self.tags_cache[tagGroupId]) {
+                throw { "Please retrieve the tag group information first for group: " + tagGroupId }
+            }
             if (self.tags_cache[tagGroupId].tags == null) {
                 if (!self.tags_cache[tagGroupId].client) {
                     self.tags_cache[tagGroupId].client = TagClient.create({
@@ -156,6 +161,7 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
 
                             $.each(tag_results, function(index, tag) {
                                 self.tags_cache[tagGroupId].tags[tag.id] = tag;
+                                self.tags_cache.all[tag.id] = tag;
                                 tags[tag.id] = tag;
                             });
 
@@ -183,6 +189,24 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
                     deferred_obj.reject(e.detail);
                 });
         }).promise();
+    };
+
+    ImageDao.prototype.editTag = function(id, opts) {
+        var self = this;
+        return $.Deferred(function(deferred_obj) {
+            // find the correct tag client
+            var client = self.tags_cache[self.tags_cache.all[id].group].client;
+
+            $.when(client.update(id, opts.name))
+                .done(function(tag) {
+                    self.tags_cache[tag.id] = tag;
+                    self.tags_cache.all[tag.id] = tag;
+                    deferred_obj.resolve(tagGroup);
+                })
+                .fail(function(e) {
+                    deferred_obj.reject(e);
+                });
+        });
     };
 
     ImageDao.prototype.geneLinks = function(tag_id) {

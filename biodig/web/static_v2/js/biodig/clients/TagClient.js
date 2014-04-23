@@ -163,9 +163,9 @@ define(deps, function($, util, settings, URLBuilder) {
         }).promise();
     };
 
-   TagClient.prototype.update = function(TagId) {
+   TagClient.prototype.update = function(id, name, points, color) {
         try {
-            this.validator.update(TagId);
+            this.validator.update(id, name, points, color);
         }
         catch (e) {
             return $.Deferred(function(deferredObj) {
@@ -175,13 +175,14 @@ define(deps, function($, util, settings, URLBuilder) {
 
         var self = this;
 
-        var data = {
-            name : name
-        };
+        var data = {};
+        if (name) data['name'] = name;
+        if (points) data['points'] = JSON.stringify(points,null,2);
+        if (color) data['color'] = JSON.stringify(color,null,2);
 
         return $.Deferred(function(deferredObj) {
             $.ajax({
-                url: self.url + TagId,
+                url: self.url + id,
                 method: 'PUT',
                 beforeSend : util.auth(self.token),
                 data: data,

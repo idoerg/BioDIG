@@ -224,16 +224,21 @@ define(deps, function($, util) {
         },
         tearDown: {
             tagGroups: function() {
-
+                this.menu.section('tagGroups').item('add').off('click');
+                this.menu.section('tagGroups').item('edit').off('click');
+                this.menu.section('tagGroups').item('delete').off('click');
             },
             organisms: function() {
-
+                this.menu.section('organisms').item('add').off('click');
+                this.menu.section('organisms').item('delete').off('click');
             },
             tags: function() {
-
+                this.menu.section('tags').item('add').off('click');
+                this.menu.section('tags').item('edit').off('click')
             },
             geneLinks: function() {
-
+                this.menu.section('geneLinks').item('add').off('click');
+                this.menu.section('geneLinks').item('delete').off('click');
             }
         }
     };
@@ -251,11 +256,26 @@ define(deps, function($, util) {
                             console.error(e.detail || e.message);
                         })
                 });
+            },
+            tags: function() {
+                var self = this;
+                $(this.dialogs.get('EditTag')).on('accept', function(event, $el, data) {
+                    $.when(self.imageDao.editTag(data.id, data))
+                        .done(function(tag) {
+                            console.log("Successful save of tag group: " + tagGroup);
+                        })
+                        .fail(function(e) {
+                            console.error(e.detail || e.message);
+                        })
+                });
             }
         },
         tearDown: {
             tagGroups: function() {
                 $(this.dialogs.get('EditTagGroup')).off('accept');
+            },
+            tags: function() {
+                $(this.dialogs.get('EditTag')).off('accept');
             }
         }
     };
