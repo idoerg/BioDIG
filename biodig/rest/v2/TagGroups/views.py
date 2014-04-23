@@ -18,7 +18,7 @@ class TagGroupList(APIView):
         params = { key : val for key, val in request.QUERY_PARAMS.iteritems() }
         params['image_id'] = image_id
         form = MultiGetForm(params)
-        
+
         if not form.is_valid():
             raise BadRequestException()
 
@@ -42,7 +42,7 @@ class TagGroupList(APIView):
 class TagGroupSingle(APIView):
     '''
        Class for rendering the view for getting a TagGroup, deleting a TagGroup
-       and updating a TagGroup. 
+       and updating a TagGroup.
     '''
 
     def get(self, request, image_id, tag_group_id):
@@ -54,7 +54,7 @@ class TagGroupSingle(APIView):
         params['image_id'] = image_id
         params['tag_group_id'] = tag_group_id
         form = SingleGetForm(params)
-        
+
         if not form.is_valid():
             raise BadRequestException()
 
@@ -65,11 +65,10 @@ class TagGroupSingle(APIView):
             Method for updating a TagGroup's information.
         '''
         params = { key : val for key, val in request.DATA.iteritems() }
-        params.update(request.DATA)
         params['image_id'] = image_id
         params['tag_group_id'] = tag_group_id
         form = PutForm(params)
-        
+
         if not form.is_valid():
             raise BadRequestException()
 
@@ -83,7 +82,7 @@ class TagGroupSingle(APIView):
         params['image_id'] = image_id
         params['tag_group_id'] = tag_group_id
         form = DeleteForm(params)
-        
+
         if not form.is_valid():
             raise BadRequestException()
 
