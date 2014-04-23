@@ -106,6 +106,7 @@ define(deps, function($, util) {
                 });
             },
             organisms: function() {
+                var self = this;
                 // handle the events for clicking to manage organisms on the image
                 this.menu.section('organisms').item('add').on('click', function() {
                     $.when(self.organismDao.organisms())
@@ -128,17 +129,41 @@ define(deps, function($, util) {
                 });
             },
             tags: function() {
+                var self = this;
                 // handle the events for clicking to manage the tags on the page
                 this.menu.section('tags').item('add').on('click', function() {
                     // TODO: Access the DrawingMenu and display it
                 });
 
                 this.menu.section('tags').item('edit').on('click', function() {
-                    if ($.isEmptyObject(self.tagBoard.selected)) {
-                        // no tags are selected so we will show all tags
-                        $.when(self.imageDao.tags())
-                            .done(function(tags) {
-                                self.dialogs.get('EditTag').show(tags);
+                    if ($.isEmptyObject(self.tagBoard.selected())) {
+                        // no tags are selected so we will start with the
+                        // tag groups and place the tags in the tag groups for
+                        // future menus
+                        $.when(self.imageDao.tagGroups())
+                            .done(function(tagGroups) {
+                                $.when(self.imageDao.tags())
+                                    .done(function(tags) {
+                                        // add the tags subsection
+                                        var aggregate = $.map(tagGroups, function(tagGroup) {
+                                            tagGroup.tags = {};
+                                            return tagGroup;
+                                        });
+
+                                        $.each(tags, function(id, tag) {
+                                            aggregate[tag.group].tags[tag.id] = tag;
+                                        });
+
+                                        // telling it that tag groups are given makes its so
+                                        // that the dialog knows to start at the choose tag group
+                                        // dialog instead of the choose tag dialog
+                                        self.dialogs.get('EditTag').show({
+                                            "tagGroups" : aggregate
+                                        });
+                                    })
+                                    .fail(function(e) {
+                                        console.error(e.detail || e.message);
+                                    });
                             })
                             .fail(function(e) {
                                 console.error(e.detail || e.message);
@@ -146,7 +171,10 @@ define(deps, function($, util) {
                     }
                     else {
                         // if tags are selected then we want to only show those
-                        self.dialogs.get('EditTag').show(self.tagBoard.selected);
+                        // and proceed directly to the choose tag dialog
+                        self.dialogs.get('EditTag').show({
+                            "tags" : self.tagBoard.selected()
+                        });
                     }
                 });
 
@@ -168,6 +196,7 @@ define(deps, function($, util) {
                 });
             },
             geneLinks: function() {
+                var self = this;
                 this.menu.section('geneLinks').item('add').on('click', function() {
                     if ($.isEmptyObject(self.tagBoard.selected)) {
                         // no tags are selected so we will show all tags
