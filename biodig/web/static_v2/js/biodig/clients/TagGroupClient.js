@@ -202,6 +202,7 @@ define(deps, function($, URLBuilder, settings, util) {
 
         return $.Deferred(function(deferredObj) {
             $.ajax({
+                crossDomain: false,
                 url: self.url + id,
                 method: 'PUT',
                 beforeSend : addAuthToken,
