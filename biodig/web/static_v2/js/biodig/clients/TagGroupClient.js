@@ -25,8 +25,9 @@ define(deps, function($, URLBuilder, settings, util) {
                         if (!opts['name']) throw { detail : 'Not a valid name' }
                     }
                 },
-                update: function(tagGroupId) {
+                update: function(tagGroupId, name) {
                     if (!tagGroupId || isNaN(TagGroupId)) throw { detail : 'The id is not a valid positive number' }
+                    if (!name) throw { detail : 'Not a valid name' }
                 }
             }
         }
@@ -178,9 +179,9 @@ define(deps, function($, URLBuilder, settings, util) {
         }).promise();
     };
 
-    TagGroupClient.prototype.update = function(TagGroupId) {
+    TagGroupClient.prototype.update = function(id, name) {
         try {
-            this.validator.update(TagGroupId);
+            this.validator.update(id, name);
         }
         catch (e) {
             return $.Deferred(function(deferredObj) {
@@ -194,12 +195,12 @@ define(deps, function($, URLBuilder, settings, util) {
             } :
             function(xhr) {};
         var data = {
-            name : name
+            'name' : name
         };
 
         return $.Deferred(function(deferredObj) {
             $.ajax({
-                url: self.url + TagGroupId,
+                url: self.url + id,
                 method: 'PUT',
                 beforeSend : addAuthToken,
                 data: data,
