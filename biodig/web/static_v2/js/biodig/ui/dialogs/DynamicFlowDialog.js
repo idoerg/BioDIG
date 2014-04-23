@@ -32,6 +32,7 @@ define(deps, function($, _, util, DialogStructureTmpl) {
         this.current = 0;
 
         var self = this;
+        var nextView = util.scope(this, Helper.nextView);
         // setup the listener for the Dialog on click
         this.$el.find('.accept').on('click', function() {
             if (self.current + 1 < self.nodes.length) {
