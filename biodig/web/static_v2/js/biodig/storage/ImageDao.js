@@ -142,7 +142,7 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
         var promises = [];
         $.each(tagGroup_ids, function(index, tagGroupId) {
             if (!self.tags_cache[tagGroupId]) {
-                throw { "Please retrieve the tag group information first for group: " + tagGroupId }
+                throw { 'detail' : "Please retrieve the tag group information first for group: " + tagGroupId }
             }
             if (self.tags_cache[tagGroupId].tags == null) {
                 if (!self.tags_cache[tagGroupId].client) {
