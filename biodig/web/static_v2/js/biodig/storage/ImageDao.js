@@ -69,10 +69,6 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
             return $.Deferred(function(deferred_obj) {
                 $.when(self.tagGroupClient.list())
                     .done(function(tagGroups) {
-                        // add the tags section into the tag groups
-                        // object to be checked later and switch to
-                        // a dictionary rather than an array
-                        self.tags_cache = {};
                         self.tagGroups_cache = {};
                         $.each(tagGroups, function(index, tagGroup) {
                             // setup the new clients for each tag group to
