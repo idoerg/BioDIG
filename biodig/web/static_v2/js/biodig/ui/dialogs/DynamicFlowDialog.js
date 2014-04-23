@@ -30,26 +30,8 @@ define(deps, function($, _, util, DialogStructureTmpl) {
         this.nodes = nodes;
         this.$el = $(DialogStructureTemplate({ 'name' : name, 'title': title }));
         this.current = 0;
-    }
 
-    DynamicFlowDialog.prototype.show = function(data) {
-        var self = this;
-        var box = $(this.$el.attr('id'));
-        this.current = -1;
-        var nextView = util.scope(this, Helper.nextView);
-        if (box.length > 0) {
-            box.find('.modal-body').empty().append(nextView(data));
-            box.modal('show');
-        }
-        else {
-            this.$el.appendTo($('body'));
-            this.$el.find('.modal-body').empty().append(nextView(data));
-            this.$el.modal();
-        }
-
-        // first node should show next not accept
-        this.$el.find('.accept').text('Next');
-
+        // setup the listener for the Dialog on click
         this.$el.find('.accept').on('click', function() {
             if (self.current + 1 < self.nodes.length) {
                 var $body = self.$el.find('.modal-body');
@@ -70,6 +52,25 @@ define(deps, function($, _, util, DialogStructureTmpl) {
                 self.$el.modal('hide');
             }
         });
+    }
+
+    DynamicFlowDialog.prototype.show = function(data) {
+        var self = this;
+        var box = $(this.$el.attr('id'));
+        this.current = -1;
+        var nextView = util.scope(this, Helper.nextView);
+        if (box.length > 0) {
+            box.find('.modal-body').empty().append(nextView(data));
+            box.modal('show');
+        }
+        else {
+            this.$el.appendTo($('body'));
+            this.$el.find('.modal-body').empty().append(nextView(data));
+            this.$el.modal();
+        }
+
+        // first node should show next not accept
+        this.$el.find('.accept').text('Next');
     }
 
     DynamicFlowDialog.prototype.accept = function(callback) {
