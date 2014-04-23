@@ -24,6 +24,7 @@ div#body_div {
 	text-align: left;
 }
 
+/*
 input[type=text] {
 	border: 1px solid #BBBBBB;
     font-family: Lucida Grande;
@@ -35,7 +36,7 @@ input[type=text] {
 input[type=text]:focus {
 	box-shadow: 0 0 2px 0 #DDDDDD inset;
 }
-
+*/
 input[type=password] {
 	border: 1px solid #BBBBBB;
     font-family: Lucida Grande;

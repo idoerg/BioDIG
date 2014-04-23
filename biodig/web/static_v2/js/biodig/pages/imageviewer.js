@@ -45,5 +45,5 @@ require(deps, function($, _, settings, Taggable, HelpBox) {
         }
     });
 
-    Taggable.create('#target-image', { mode : Taggable.MODES.PUBLIC });
+    Taggable.create('#target-image', { mode : Taggable.MODES.REGISTERED });
 });
