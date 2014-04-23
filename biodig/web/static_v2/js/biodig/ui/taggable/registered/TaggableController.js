@@ -149,20 +149,19 @@ define(deps, function($, util) {
                                 $.when(self.imageDao.tags(ids))
                                     .done(function(tags) {
                                         // add the tags subsection
-                                        var aggregate = $.map(tagGroups, function(tagGroup) {
+                                        $.each(tagGroups, function(id, tagGroup) {
                                             tagGroup.tags = {};
-                                            return tagGroup;
                                         });
 
                                         $.each(tags, function(id, tag) {
-                                            aggregate[tag.group].tags[tag.id] = tag;
+                                            tagGroups[tag.group].tags[tag.id] = tag;
                                         });
 
                                         // telling it that tag groups are given makes its so
                                         // that the dialog knows to start at the choose tag group
                                         // dialog instead of the choose tag dialog
                                         self.dialogs.get('EditTag').show({
-                                            "tagGroups" : aggregate
+                                            "tagGroups" : tagGroups
                                         });
                                     })
                                     .fail(function(e) {
