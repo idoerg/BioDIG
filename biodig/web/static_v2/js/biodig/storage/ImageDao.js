@@ -117,8 +117,9 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
     };
 
     ImageDao.prototype.editTagGroup = function(id, opts) {
+        var self = this;
         return $.Deferred(function(deferred_obj) {
-            $.when(this.tagGroupClient.update(id, opts.name))
+            $.when(self.tagGroupClient.update(id, opts.name))
                 .done(function(tagGroup) {
                     self.tagGroups_cache[tagGroup.id] = tagGroup;
                     deferred_obj.resolve(tagGroup);
