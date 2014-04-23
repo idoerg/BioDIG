@@ -193,7 +193,9 @@ define(deps, function($, URLBuilder, settings, util) {
             function (xhr) {
                 xhr.setRequestHeader('Authorization', 'Token ' + self.token) ;
             } :
-            function(xhr) {};
+            function(xhr) {
+                xhr.setRequestHeader("X-CSRFToken", util.cookie('csrftoken'));
+            };
         var data = {
             'name' : name
         };
