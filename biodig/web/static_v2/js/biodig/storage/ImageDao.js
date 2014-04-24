@@ -56,6 +56,21 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
         });
     };
 
+    ImageDao.prototype.deleteOrganism = function(id) {
+        var self = this;
+        return $.Deferred(function(deferred_obj) {
+            $.when(self.imageOrganismClient.delete(id))
+                .done(function(imageOrg) {
+                    delete self.organisms_cache[id];
+                    $(self).trigger('change:organisms');
+                    deferred_obj.resolve(imageOrg);
+                })
+                .fail(function(e) {
+                    deferred_obj.reject(e);
+                });
+        });
+    };
+
     ImageDao.prototype.organisms = function() {
         var self = this;
         if (this.organisms_cache == null) {

@@ -11,8 +11,8 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
 
     var registeredDeps = [
         'biodig/ui/dialogs/DynamicFlowDialog', 'biodig/ui/taggable/flows/EditTagGroupFlow',
-        'biodig/ui/taggable/flows/EditTagFlow', 'text!biodig/tmpl/taggable/dialogs/add-organism.html',
-        'text!biodig/tmpl/taggable/dialogs/delete-organism.html',
+        'biodig/ui/taggable/flows/EditTagFlow',
+        'text!biodig/tmpl/taggable/dialogs/choose-organism.html',
         'text!biodig/tmpl/taggable/dialogs/choose-tag-group.html',
         'text!biodig/tmpl/taggable/dialogs/edit-tag-group.html',
         'text!biodig/tmpl/taggable/dialogs/add-gene-link.html'
@@ -35,7 +35,7 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
         var self = this;
         return $.Deferred(function(deferred_obj) {
             require(registeredDeps, function(DynamicFlowDialog, EditTagGroupFlow,
-                EditTagFlow, AddOrganismTmpl, DeleteOrganismTmpl, ChooseTagGroupTmpl,
+                EditTagFlow, ChooseOrganismTmpl, ChooseTagGroupTmpl,
                 EditTagGroupTmpl, AddGeneLinkTmpl) {
 
                 /*var addGeneLinkFlow = [
@@ -62,9 +62,9 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
 
                 var dialogs = {
                     'AddOrganism': DynamicDialog.create('AddOrganism', 'Add Organism to Image',
-                        _.template(AddOrganismTmpl)),
+                        _.template(ChooseOrganismTmpl)),
                     'DeleteOrganism': DynamicDialog.create('DeleteOrganism',
-                        'Delete Organism from Image', _.template(DeleteOrganismTmpl)),
+                        'Delete Organism from Image', _.template(ChooseOrganismTmpl)),
                     'AddTagGroup': DynamicDialog.create('AddTagGroup', 'Add Tag Group',
                         _.template(EditTagGroupTmpl)),
                     'EditTagGroup': DynamicFlowDialog.create('EditTagGroup', 'Edit Tag Group',

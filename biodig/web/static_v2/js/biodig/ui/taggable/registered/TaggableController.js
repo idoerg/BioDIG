@@ -294,8 +294,22 @@ define(deps, function($, util) {
                     );
 
                     $.when(self.imageDao.addOrganism(data.id))
-                        .done(function(tag) {
+                        .done(function() {
                             console.log("Successfully added organism: " + data);
+                        })
+                        .fail(function(e) {
+                            console.error(e.detail || e.message);
+                        })
+                });
+
+                $(this.dialogs.get('DeleteOrganism')).on('accept', function(event, $el) {
+                    var data = $.parseJSON(
+                        unescape($el.find('.modal-body').find('.select-organism option:selected').data('organism'))
+                    );
+
+                    $.when(self.imageDao.deleteOrganism(data.id))
+                        .done(function() {
+                            console.log("Successfully deleted organism: " + data);
                         })
                         .fail(function(e) {
                             console.error(e.detail || e.message);
@@ -317,11 +331,13 @@ define(deps, function($, util) {
         },
         tearDown: {
             tagGroups: function() {
+                $(this.dialogs.get('AddTagGroup')).off('accept');
                 $(this.dialogs.get('EditTagGroup')).off('accept');
                 $(this.dialogs.get('DeleteTagGroup')).off('accept');
             },
             organisms: function() {
-
+                $(this.dialogs.get('AddOrganism')).off('accept');
+                $(this.dialogs.get('DeleteOrganism')).off('accept');
             },
             tags: function() {
                 $(this.dialogs.get('EditTag')).off('accept');
