@@ -13,6 +13,7 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
         'biodig/ui/dialogs/DynamicFlowDialog', 'biodig/ui/taggable/flows/EditTagGroupFlow',
         'biodig/ui/taggable/flows/EditTagFlow', 'text!biodig/tmpl/taggable/dialogs/add-organism.html',
         'text!biodig/tmpl/taggable/dialogs/delete-organism.html',
+        'text!biodig/tmpl/taggable/dialogs/choose-tag-group.html',
         'text!biodig/tmpl/taggable/dialogs/add-organism.html',
         'text!biodig/tmpl/taggable/dialogs/edit-tag-group.html',
         'text!biodig/tmpl/taggable/dialogs/add-gene-link.html'
@@ -34,8 +35,9 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
     DialogManager.prototype.loadRegistered = function() {
         var self = this;
         return $.Deferred(function(deferred_obj) {
-            require(registeredDeps, function(DynamicFlowDialog, ChooseTagGroupTmpl, EditTagGroupFlow,
-                EditTagFlow, AddOrganismTmpl, DeleteOrganismTmpl, EditTagGroupTmpl, AddGeneLinkTmpl) {
+            require(registeredDeps, function(DynamicFlowDialog,, EditTagGroupFlow,
+                EditTagFlow, AddOrganismTmpl, DeleteOrganismTmpl, ChooseTagGroupTmpl,
+                EditTagGroupTmpl, AddGeneLinkTmpl) {
 
                 /*var addGeneLinkFlow = [
                     FlowNode.create(_.template(ChooseTagTmpl), function(body) {
