@@ -6,23 +6,6 @@ var deps = [
 define(deps, function($, settings, URLBuilderFactory, util) {
 
     /**
-     *  Validator for the image client.
-    **/
-    var ValidatorFactory = {
-        getInstance: function() {
-            // validator
-            return {
-                create: function(organism_id) {
-                    if (!organism_id || isNan(organism_id)) throw { detail : 'The organism_id is not a valid positive number' }
-                },
-                delete: function(organism_id) {
-                    if (!organism_id || isNan(organism_id)) throw { detail : 'The organism_id is not a valid positive number' }
-                }
-            }
-        }
-    };
-
-    /**
      *  Organism Client constructor that takes in the options
      *  such as url.
      *
@@ -35,7 +18,6 @@ define(deps, function($, settings, URLBuilderFactory, util) {
         }
 
         this.token = opts.token || null;
-        this.validator = ValidatorFactory.getInstance();
     }
 
     /**
