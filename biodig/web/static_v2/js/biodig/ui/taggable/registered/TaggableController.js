@@ -247,6 +247,21 @@ define(deps, function($, util) {
         setup: {
             tagGroups: function() {
                 var self = this;
+
+                $(this.dialogs.get('AddTagGroup')).on('accept', function(event, $el) {
+                    var data = {
+                        'name' : $el.find('input[name="name"]').val()
+                    };
+
+                    $.when(self.imageDao.addTagGroup(data))
+                        .done(function(tagGroup) {
+                            console.log("Successful addition of tag group: " + tagGroup);
+                        })
+                        .fail(function(e) {
+                            console.error(e.detail || e.message);
+                        })
+                });
+
                 $(this.dialogs.get('EditTagGroup')).on('accept', function(event, $el, data) {
                     $.when(self.imageDao.editTagGroup(data.id, data))
                         .done(function(tagGroup) {

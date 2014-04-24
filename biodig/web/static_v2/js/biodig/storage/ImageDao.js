@@ -114,6 +114,28 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
         }
     };
 
+    ImageDao.prototype.addTagGroup = function(opts) {
+        var self = this;
+        return $.Deferred(function(deferred_obj) {
+            $.when(self.tagGroupClient.create(opts.name))
+                .done(function(tagGroup) {
+                    tagGroup.visible = false;
+                    self.tagGroups_cache[tagGroup.id] = tagGroup;
+                    self.tags_cache[tagGroup.id] = {
+                        client: TagClient.create({
+                            'image_id' : self.image_id,
+                            'tag_group_id' : tagGroup.id
+                        }),
+                        tags: null
+                    };
+                    deferred_obj.resolve(tagGroup);
+                })
+                .fail(function(e) {
+                    deferred_obj.reject(e);
+                });
+        });
+    };
+
     ImageDao.prototype.editTagGroup = function(id, opts) {
         var self = this;
         return $.Deferred(function(deferred_obj) {
