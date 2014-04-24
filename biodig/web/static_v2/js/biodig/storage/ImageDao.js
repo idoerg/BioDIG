@@ -64,7 +64,7 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
                     .done(function(organisms) {
                         self.organisms_cache = {};
                         $.each(organisms, function(id, organism) {
-                            self.organisms_cache[id] = organism;
+                            self.organisms_cache[organism.id] = organism;
                         });
 
                         deferred_obj.resolve(organisms);
