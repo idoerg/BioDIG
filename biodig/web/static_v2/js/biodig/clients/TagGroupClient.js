@@ -203,6 +203,37 @@ define(deps, function($, URLBuilder, settings, util) {
         }).promise();
     };
 
+    TagGroupClient.prototype.delete = function(id) {
+        try {
+            this.validator.delete(id);
+        }
+        catch (e) {
+            return $.Deferred(function(deferredObj) {
+                deferredObj.reject(e);
+            }).promise();
+        }
+
+        return $.Deferred(function(deferredObj) {
+            $.ajax({
+                url: self.url + id,
+                beforeSend: util.auth(self.token),
+                method: 'DELETE',
+                success: function(data) {
+                    deferredObj.resolve(data);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    try {
+                        var e = $.parseJSON(jqXHR.responseText);
+                        deferredObj.reject(e);
+                    }
+                    catch (e) {
+                        deferredObj.reject({ detail: 'An unidentified error occurred with the server.'});
+                    }
+                }
+            });
+        }).promise();
+    }
+
 
     var defaults = {
         url : settings.SITE_URL + 'rest/v2/images/{0}/tagGroups/'

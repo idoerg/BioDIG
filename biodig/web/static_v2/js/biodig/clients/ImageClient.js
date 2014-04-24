@@ -246,7 +246,6 @@ define(deps, function($, settings, util, URLBuilderFactory) {
                 url: self.url + id,
                 beforeSend: util.auth(self.token),
                 method: 'DELETE',
-                data: data,
                 success: function(data) {
                     deferredObj.resolve(data);
                 },
