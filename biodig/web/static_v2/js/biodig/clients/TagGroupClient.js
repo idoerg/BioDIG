@@ -28,6 +28,9 @@ define(deps, function($, URLBuilder, settings, util) {
                 update: function(id, name) {
                     if (!id || isNaN(id)) throw { detail : 'The id is not a valid positive number' }
                     if (!name) throw { detail : 'Not a valid name' }
+                },
+                delete: function(id) {
+                    if (!id || isNaN(id)) throw { detail : 'The id is not a valid positive number' }
                 }
             }
         }
