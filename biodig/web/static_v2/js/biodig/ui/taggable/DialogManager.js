@@ -14,7 +14,6 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
         'biodig/ui/taggable/flows/EditTagFlow', 'text!biodig/tmpl/taggable/dialogs/add-organism.html',
         'text!biodig/tmpl/taggable/dialogs/delete-organism.html',
         'text!biodig/tmpl/taggable/dialogs/choose-tag-group.html',
-        'text!biodig/tmpl/taggable/dialogs/add-organism.html',
         'text!biodig/tmpl/taggable/dialogs/edit-tag-group.html',
         'text!biodig/tmpl/taggable/dialogs/add-gene-link.html'
     ];
