@@ -62,7 +62,11 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
             return $.Deferred(function(deferred_obj) {
                 $.when(self.imageOrganismClient.list())
                     .done(function(organisms) {
-                        self.organisms_cache = organisms;
+                        self.organisms_cache = {};
+                        $.each(organisms, function(id, organism) {
+                            self.organisms_cache[id] = organism;
+                        });
+
                         deferred_obj.resolve(organisms);
                     })
                     .fail(function(e) {

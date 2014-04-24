@@ -79,12 +79,12 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, OrganismDao, ImageMenu
         // on the image
 
         var createOrganismsView = function(organisms) {
-            if (organisms.length > 0) {
+            if (!$.isEmptyObject(organisms)) {
                 var organisms_text = []
                 $.each(organisms, function(index, organism) {
                     organisms_text.push(organism.common_name);
                 });
-                self.$right.find('.organism-title').text(", ".join(organisms_text));
+                self.$right.find('.organism-title').text(organisms_text.join(", "));
             }
             else {
                 self.$right.find('.organism-title').text("No Organisms Added");
