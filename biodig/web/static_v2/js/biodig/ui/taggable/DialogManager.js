@@ -35,7 +35,7 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
     DialogManager.prototype.loadRegistered = function() {
         var self = this;
         return $.Deferred(function(deferred_obj) {
-            require(registeredDeps, function(DynamicFlowDialog,, EditTagGroupFlow,
+            require(registeredDeps, function(DynamicFlowDialog, EditTagGroupFlow,
                 EditTagFlow, AddOrganismTmpl, DeleteOrganismTmpl, ChooseTagGroupTmpl,
                 EditTagGroupTmpl, AddGeneLinkTmpl) {
 
