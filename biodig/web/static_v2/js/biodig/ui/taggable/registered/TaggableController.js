@@ -257,7 +257,11 @@ define(deps, function($, util) {
                         })
                 });
 
-                $(this.dialogs.get('DeleteTagGroup')).on('accept', function(event, $el, data) {
+                $(this.dialogs.get('DeleteTagGroup')).on('accept', function(event, $el) {
+                    var data = $.parseJSON(
+                        unescape($el.find('.modal-body').find('.select-tag-group option:selected').data('tagGroup'))
+                    );
+
                     $.when(self.imageDao.deleteTagGroup(data.id))
                         .done(function(tagGroup) {
                             console.log("Successful deletion of tag group: " + tagGroup);
