@@ -1,12 +1,12 @@
 var deps = [
     'jquery', 'underscore', 'biodig/ui/zoomable/Zoomable', 'biodig/ui/taggable/TagBoard',
-    'biodig/storage/ImageDao', 'biodig/ui/taggable/ImageMenu', 'biodig/ui/taggable/DialogManager',
-    'biodig/ui/taggable/public/TaggableController', 'biodig/ui/taggable/DrawingBoard',
-    'biodig/ui/taggable/registered/TaggableController', 'lib/util',
+    'biodig/storage/ImageDao', 'biodig/storage/OrganismDao', 'biodig/ui/taggable/ImageMenu',
+    'biodig/ui/taggable/DialogManager', 'biodig/ui/taggable/public/TaggableController',
+    'biodig/ui/taggable/DrawingBoard', 'biodig/ui/taggable/registered/TaggableController', 'lib/util',
     'text!biodig/tmpl/taggable/structure.html', 'text!biodig/tmpl/taggable/image-metadata.html'
 ];
 
-define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, DialogManager,
+define(deps, function($, _, Zoomable, TagBoard, ImageDao, OrganismDao, ImageMenu, DialogManager,
     PublicTaggableController, DrawingBoard, RegisteredTaggableController, util, TaggableTmpl,
     MetadataTmpl) {
 
@@ -78,22 +78,36 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, DialogManag
         // the title of the right side is determined by the list of organisms
         // on the image
 
+        var createOrganismsView = function(organisms) {
+            if (organisms.length > 0) {
+                var organisms_text = []
+                $.each(organisms, function(index, organism) {
+                    organisms_text.push(organism.common_name);
+                });
+                self.$right.find('.organism-title').text(", ".join(organisms_text));
+            }
+            else {
+                self.$right.find('.organism-title').text("No Organisms Added");
+            }
+        };
+
         $.when(this.imageDao.organisms())
             .done(function(organisms) {
-                if (organisms.length > 0) {
-                    var organisms_text = []
-                    $.each(organisms, function(index, organism) {
-                        organisms_text.push(organism.common_name);
-                    });
-                    self.$right.find('.organism-title').text(", ".join(organisms_text));
-                }
-                else {
-                    self.$right.find('.organism-title').text("No Organisms Added");
-                }
+                createOrganismsView(organisms);
             })
             .fail(function(e) {
                 console.error(e.detail);
             });
+
+        $(this.imageDao).on('change:organisms', function() {
+            $.when(self.imageDao.organisms())
+                .done(function(organisms) {
+                    createOrganismsView(organisms);
+                })
+                .fail(function(e) {
+                    console.error(e.detail);
+                });
+        });
 
         $.when(this.imageDao.metadata())
             .done(function(metadata) {
@@ -119,6 +133,8 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ImageMenu, DialogManag
                 this.drawingBoard = DrawingBoard.create(this.$image);
                 //this.drawingMenu = DrawingMenu.create('hidden');
                 this.registeredController = RegisteredTaggableController.create(this);
+
+                this.organismDao = OrganismDao.create();
 
                 // start off by allowing the drawing menu to affect the drawing board
                 // and the main menu to control the drawing/tag board

@@ -1,0 +1,12 @@
+<div class="center-block">
+    <div>
+        <h2>Choose an Organism</h2>
+    </div>
+    <div>
+        <select class="select-organism form-control">
+            <% _.each(organisms, function(organism, id) { %>
+                <option data-organism="<%= escape(JSON.stringify(organism)) %>"><%= organism.common_name %></option>
+            <% }); %>
+        </select>
+    </div>
+</div>

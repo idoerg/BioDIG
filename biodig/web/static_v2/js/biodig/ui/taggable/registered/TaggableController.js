@@ -111,7 +111,7 @@ define(deps, function($, util) {
                 this.menu.section('organisms').item('add').on('click', function() {
                     $.when(self.organismDao.organisms())
                         .done(function(organisms) {
-                            self.dialogs.get('AddOrganism').show(organisms);
+                            self.dialogs.get('AddOrganism').show({ 'organisms' : organisms });
                         })
                         .fail(function(e) {
                             console.error(e.detail || e.message);
@@ -121,7 +121,7 @@ define(deps, function($, util) {
                 this.menu.section('organisms').item('delete').on('click', function() {
                     $.when(self.imageDao.organisms())
                         .done(function(organisms) {
-                            self.dialogs.get('DeleteOrganism').show(organisms);
+                            self.dialogs.get('DeleteOrganism').show({ 'organisms' : organisms });
                         })
                         .fail(function(e) {
                             console.error(e.detail || e.message);
@@ -286,6 +286,22 @@ define(deps, function($, util) {
                         })
                 });
             },
+            organisms: function() {
+                var self = this;
+                $(this.dialogs.get('AddOrganism')).on('accept', function(event, $el) {
+                    var data = $.parseJSON(
+                        unescape($el.find('.modal-body').find('.select-organism option:selected').data('organism'))
+                    );
+
+                    $.when(self.imageDao.addOrganism(data.id))
+                        .done(function(tag) {
+                            console.log("Successfully added organism: " + data);
+                        })
+                        .fail(function(e) {
+                            console.error(e.detail || e.message);
+                        })
+                });
+            },
             tags: function() {
                 var self = this;
                 $(this.dialogs.get('EditTag')).on('accept', function(event, $el, data) {
@@ -303,6 +319,9 @@ define(deps, function($, util) {
             tagGroups: function() {
                 $(this.dialogs.get('EditTagGroup')).off('accept');
                 $(this.dialogs.get('DeleteTagGroup')).off('accept');
+            },
+            organisms: function() {
+
             },
             tags: function() {
                 $(this.dialogs.get('EditTag')).off('accept');
