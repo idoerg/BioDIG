@@ -143,7 +143,7 @@ define(deps, function($, settings, URLBuilderFactory, util) {
      *
      *  @param description: The new description of the image.
     **/
-    ImageOrganismClient.prototype.delete = function(organism_id) {
+    ImageOrganismClient.prototype.delete = function(id) {
         try {
             this.validator.delete(id);
         }
@@ -155,7 +155,7 @@ define(deps, function($, settings, URLBuilderFactory, util) {
 
         return $.Deferred(function(deferredObj) {
             $.ajax({
-                url: self.url + organism_id,
+                url: self.url + id,
                 beforeSend: util.auth(self.token),
                 method: 'DELETE',
                 data: data,
