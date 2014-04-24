@@ -216,6 +216,8 @@ define(deps, function($, URLBuilder, settings, util) {
             }).promise();
         }
 
+        var self = this;
+
         return $.Deferred(function(deferredObj) {
             $.ajax({
                 url: self.url + id,

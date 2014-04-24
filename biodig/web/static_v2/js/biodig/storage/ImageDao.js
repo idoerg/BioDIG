@@ -138,12 +138,14 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
                     // TODO: Delete gene links
                     delete self.tagGroups_cache[tagGroup.id];
                     $.each(self.tags_cache, function(tagGroupId, group) {
-                        $.each(group.tags, function(tagId, tag) {
-                            if (tag.group == tagGroup.id) {
-                                delete self.tags_cache[tagGroupId][tagId];
-                                delete self.tags_cache.all[tagId];
-                            }
-                        })
+                        if (group.tags) {
+                            $.each(group.tags, function(tagId, tag) {
+                                if (tag.group == tagGroup.id) {
+                                    delete self.tags_cache[tagGroupId][tagId];
+                                    delete self.tags_cache.all[tagId];
+                                }
+                            })
+                        }
                     });
                     deferred_obj.resolve(tagGroup);
                 })
