@@ -158,7 +158,6 @@ define(deps, function($, settings, URLBuilderFactory, util) {
                 url: self.url + id,
                 beforeSend: util.auth(self.token),
                 method: 'DELETE',
-                data: data,
                 success: function(data) {
                     deferredObj.resolve(data);
                 },
