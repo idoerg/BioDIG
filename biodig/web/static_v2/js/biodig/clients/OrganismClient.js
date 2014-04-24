@@ -29,11 +29,7 @@ define(deps, function($, settings, URLBuilderFactory, util) {
      *  @param opts: The options to customize this client.
     **/
     function OrganismClient(opts) {
-        if (! ('image_id' in opts)){
-            throw { detail : 'Image ID is necessary for Organism Client use' };
-        }
-
-        this.url = util.format(opts.url, opts.image_id);
+        this.url = opts.url;
         if (this.url[this.url.length -1] != '/') {
             this.url += '/';
         }
