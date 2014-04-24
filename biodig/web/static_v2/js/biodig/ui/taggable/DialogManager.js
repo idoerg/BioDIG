@@ -34,8 +34,8 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
     DialogManager.prototype.loadRegistered = function() {
         var self = this;
         return $.Deferred(function(deferred_obj) {
-            require(registeredDeps, function(DynamicFlowDialog, EditTagGroupFlow, EditTagFlow,
-                AddOrganismTmpl, DeleteOrganismTmpl, EditTagGroupTmpl, AddGeneLinkTmpl) {
+            require(registeredDeps, function(DynamicFlowDialog, ChooseTagGroupTmpl, EditTagGroupFlow,
+                EditTagFlow, AddOrganismTmpl, DeleteOrganismTmpl, EditTagGroupTmpl, AddGeneLinkTmpl) {
 
                 /*var addGeneLinkFlow = [
                     FlowNode.create(_.template(ChooseTagTmpl), function(body) {
@@ -68,8 +68,8 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
                         _.template(EditTagGroupTmpl)),
                     'EditTagGroup': DynamicFlowDialog.create('EditTagGroup', 'Edit Tag Group',
                         EditTagGroupFlow.get()),
-                    //'DeleteTagGroup': DynamicDialog.create('DeleteTagGroup', 'Delete Tag Group',
-                    //    _.template(ChooseTagGroupTmpl + DeleteTagGroupTmpl)),
+                    'DeleteTagGroup': DynamicDialog.create('DeleteTagGroup', 'Delete Tag Group',
+                        _.template(ChooseTagGroupTmpl)),
                     'EditTag': DynamicFlowDialog.create('EditTag', 'Edit Tag',
                         EditTagFlow.get()),
                     //'DeleteTag': DynamicDialog.create('DeleteTag', 'Delete Tag',

@@ -128,6 +128,31 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
         });
     };
 
+    ImageDao.prototype.deleteTagGroup = function(id) {
+        var self = this;
+        return $.Deferred(function(deferred_obj) {
+            $.when(self.tagGroupClient.delete(id))
+                .done(function(tagGroup) {
+                    // update the imageDao to delete all of the tag group's
+                    // information including tags and gene links
+                    // TODO: Delete gene links
+                    delete self.tagGroups_cache[tagGroup.id];
+                    $.each(self.tags_cache, function(tagGroupId, group) {
+                        $.each(group.tags, function(tagId, tag) {
+                            if (tag.group == tagGroup.id) {
+                                delete self.tags_cache[tagGroupId][tagId];
+                                delete self.tags_cache.all[tagId];
+                            }
+                        })
+                    });
+                    deferred_obj.resolve(tagGroup);
+                })
+                .fail(function(e) {
+                    deferred_obj.reject(e);
+                });
+        });
+    };
+
     ImageDao.prototype.tags = function(tagGroup_ids, opts) {
         if (!tagGroup_ids) throw { 'detail' : 'Please provide a list of TagGroup ids' }
         if (!opts) opts = {};

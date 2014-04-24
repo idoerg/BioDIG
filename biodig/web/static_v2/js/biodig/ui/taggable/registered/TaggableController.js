@@ -88,7 +88,7 @@ define(deps, function($, util) {
                 this.menu.section('tagGroups').item('edit').on('click', function() {
                     $.when(self.imageDao.tagGroups())
                         .done(function(tagGroups) {
-                            self.dialogs.get('EditTagGroup').show({ 'tagGroups' : tagGroups});
+                            self.dialogs.get('EditTagGroup').show({ 'tagGroups' : tagGroups });
                         })
                         .fail(function(e) {
                             console.error(e.detail || e.message);
@@ -98,7 +98,7 @@ define(deps, function($, util) {
                 this.menu.section('tagGroups').item('delete').on('click', function() {
                     $.when(self.imageDao.tagGroups())
                         .done(function(tagGroups) {
-                            self.dialogs.get('DeleteTagGroup').show(tagGroups);
+                            self.dialogs.get('DeleteTagGroup').show({ 'tagGroups' : tagGroups });
                         })
                         .fail(function(e) {
                             console.error(e.detail || e.message);
@@ -256,6 +256,16 @@ define(deps, function($, util) {
                             console.error(e.detail || e.message);
                         })
                 });
+
+                $(this.dialogs.get('DeleteTagGroup')).on('accept', function(event, $el, data) {
+                    $.when(self.imageDao.deleteTagGroup(data.id))
+                        .done(function(tagGroup) {
+                            console.log("Successful deletion of tag group: " + tagGroup);
+                        })
+                        .fail(function(e) {
+                            console.error(e.detail || e.message);
+                        })
+                });
             },
             tags: function() {
                 var self = this;
@@ -273,6 +283,7 @@ define(deps, function($, util) {
         tearDown: {
             tagGroups: function() {
                 $(this.dialogs.get('EditTagGroup')).off('accept');
+                $(this.dialogs.get('DeleteTagGroup')).off('accept');
             },
             tags: function() {
                 $(this.dialogs.get('EditTag')).off('accept');
