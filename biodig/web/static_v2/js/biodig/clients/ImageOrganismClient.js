@@ -13,10 +13,10 @@ define(deps, function($, settings, URLBuilderFactory, util) {
             // validator
             return {
                 create: function(organism_id) {
-                    if (!organism_id || isNan(organism_id)) throw { detail : 'The organism_id is not a valid positive number' }
+                    if (!organism_id || isNaN(organism_id)) throw { detail : 'The organism_id is not a valid positive number' }
                 },
                 delete: function(organism_id) {
-                    if (!organism_id || isNan(organism_id)) throw { detail : 'The organism_id is not a valid positive number' }
+                    if (!organism_id || isNaN(organism_id)) throw { detail : 'The organism_id is not a valid positive number' }
                 }
             }
         }
