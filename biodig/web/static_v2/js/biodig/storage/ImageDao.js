@@ -270,6 +270,24 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
         }).promise();
     };
 
+    ImageDao.prototype.addTag = function(opts) {
+        var self = this;
+        return $.Deferred(function(deferred_obj) {
+            // find the correct tag client
+            var client = self.tags_cache[opts.group].client;
+
+            $.when(client.create(opts.name, opts.points, opts.color))
+                .done(function(tag) {
+                    self.tags_cache[tag.id] = tag;
+                    self.tags_cache.all[tag.id] = tag;
+                    deferred_obj.resolve(tag);
+                })
+                .fail(function(e) {
+                    deferred_obj.reject(e);
+                });
+        });
+    };
+
     ImageDao.prototype.editTag = function(id, opts) {
         var self = this;
         return $.Deferred(function(deferred_obj) {
@@ -280,6 +298,27 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
                 .done(function(tag) {
                     self.tags_cache[tag.id] = tag;
                     self.tags_cache.all[tag.id] = tag;
+                    deferred_obj.resolve(tag);
+                })
+                .fail(function(e) {
+                    deferred_obj.reject(e);
+                });
+        });
+    };
+
+    ImageDao.prototype.deleteTag = function(id) {
+        var self = this;
+        return $.Deferred(function(deferred_obj) {
+            // find the correct tag client
+            var client = self.tags_cache[self.tags_cache.all[id].group].client;
+
+            $.when(client.delete(id))
+                .done(function(tag) {
+                    // update the imageDao to delete all of the tag's
+                    // information including tags and gene links
+                    // TODO: Delete gene links
+                    delete self.tags_cache[tag.group].tags[id];
+                    delete self.tags_cache.all[id];
                     deferred_obj.resolve(tag);
                 })
                 .fail(function(e) {

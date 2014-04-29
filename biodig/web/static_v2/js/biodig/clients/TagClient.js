@@ -35,6 +35,9 @@ define(deps, function($, util, settings, URLBuilder) {
                 },
                 update: function(tag_id) {
                     if (!tag_id || isNaN(tag_id)) throw { detail : 'The id is not a valid positive number' }
+                },
+                delete: function(id) {
+                    if (!id || isNaN(id)) throw { detail : 'The id is not a valid positive number' }
                 }
             }
         }
@@ -196,6 +199,40 @@ define(deps, function($, util, settings, URLBuilder) {
             });
         }).promise();
     };
+
+    TagClient.prototype.delete = function(id) {
+        try {
+            this.validator.delete(id);
+        }
+        catch (e) {
+            return $.Deferred(function(deferredObj) {
+                deferredObj.reject(e);
+            }).promise();
+        }
+
+        var self = this;
+
+        return $.Deferred(function(deferredObj) {
+            $.ajax({
+                url: self.url + id,
+                beforeSend: util.auth(self.token),
+                method: 'DELETE',
+                success: function(data) {
+                    deferredObj.resolve(data);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    try {
+                        var e = $.parseJSON(jqXHR.responseText);
+                        deferredObj.reject(e);
+                    }
+                    catch (e) {
+                        deferredObj.reject({ detail: 'An unidentified error occurred with the server.'});
+                    }
+                }
+            });
+        }).promise();
+    }
+
 
 
     var defaults = {

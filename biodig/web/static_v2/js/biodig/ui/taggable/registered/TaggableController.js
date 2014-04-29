@@ -132,7 +132,7 @@ define(deps, function($, util) {
                 var self = this;
                 // handle the events for clicking to manage the tags on the page
                 this.menu.section('tags').item('add').on('click', function() {
-                    // TODO: Access the DrawingMenu and display it
+                    self.drawingMenu.show();
                 });
 
                 this.menu.section('tags').item('edit').on('click', function() {
@@ -183,10 +183,19 @@ define(deps, function($, util) {
 
                 this.menu.section('tags').item('delete').on('click', function() {
                     if ($.isEmptyObject(self.tagBoard.selected)) {
-                        // no tags are selected so we will show all tags
-                        $.when(self.imageDao.tags())
-                            .done(function(tags) {
-                                self.dialogs.get('DeleteTag').show(tags);
+                        $.when(self.imageDao.tagGroups())
+                            .done(function(tagGroups) {
+                                var ids = $.map(tagGroups, function(tagGroup) {
+                                    return tagGroup.id;
+                                });
+                                // no tags are selected so we will show all tags
+                                $.when(self.imageDao.tags(ids))
+                                    .done(function(tags) {
+                                        self.dialogs.get('DeleteTag').show({ 'tags' : tags });
+                                    })
+                                    .fail(function(e) {
+                                        console.error(e.detail || e.message);
+                                    });
                             })
                             .fail(function(e) {
                                 console.error(e.detail || e.message);
@@ -318,10 +327,44 @@ define(deps, function($, util) {
             },
             tags: function() {
                 var self = this;
+                $(this.dialogs.get('AddTag')).on('accept', function(event, $el) {
+                    var $body = $el.find('.modal-body');
+                    var data = {
+                        'group': $.parseJSON(
+                            unescape($body.find('.select-tag-group option:selected').data('tagGroup'))
+                        ).id,
+                        'name': $body.find('input[name="name"]').val(),
+                        'points': $.parseJSON(unescape($body.find('input[name="points"]').val())),
+                        'color': $.parseJSON(unescape($body.find('input[name="color"]').val()))
+                    };
+
+                    $.when(self.imageDao.addTag(data))
+                        .done(function(tag) {
+                            console.log("Successful save of tag: " + tag);
+                        })
+                        .fail(function(e) {
+                            console.error(e.detail || e.message);
+                        })
+                });
+
                 $(this.dialogs.get('EditTag')).on('accept', function(event, $el, data) {
                     $.when(self.imageDao.editTag(data.id, data))
                         .done(function(tag) {
-                            console.log("Successful save of tag group: " + tagGroup);
+                            console.log("Successful save of tag group: " + tag);
+                        })
+                        .fail(function(e) {
+                            console.error(e.detail || e.message);
+                        })
+                });
+
+                $(this.dialogs.get('DeleteTag')).on('accept', function(event, $el) {
+                    var data = $.parseJSON(
+                        unescape($el.find('.modal-body').find('.select-tag option:selected').data('tag'))
+                    );
+
+                    $.when(self.imageDao.deleteTag(data.id))
+                        .done(function(tag) {
+                            console.log("Successful deletion of tag: " + tag);
                         })
                         .fail(function(e) {
                             console.error(e.detail || e.message);

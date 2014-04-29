@@ -14,6 +14,7 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
         'biodig/ui/taggable/flows/EditTagFlow',
         'text!biodig/tmpl/taggable/dialogs/choose-organism.html',
         'text!biodig/tmpl/taggable/dialogs/choose-tag-group.html',
+        'text!biodig/tmpl/taggable/dialogs/choose-tag.html',
         'text!biodig/tmpl/taggable/dialogs/edit-tag-group.html',
         'text!biodig/tmpl/taggable/dialogs/add-gene-link.html'
     ];
@@ -35,7 +36,7 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
         var self = this;
         return $.Deferred(function(deferred_obj) {
             require(registeredDeps, function(DynamicFlowDialog, EditTagGroupFlow,
-                EditTagFlow, ChooseOrganismTmpl, ChooseTagGroupTmpl,
+                EditTagFlow, ChooseOrganismTmpl, ChooseTagGroupTmpl, ChooseTagTmpl,
                 EditTagGroupTmpl, AddGeneLinkTmpl) {
 
                 /*var addGeneLinkFlow = [
@@ -73,8 +74,8 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
                         _.template(ChooseTagGroupTmpl)),
                     'EditTag': DynamicFlowDialog.create('EditTag', 'Edit Tag',
                         EditTagFlow.get()),
-                    //'DeleteTag': DynamicDialog.create('DeleteTag', 'Delete Tag',
-                    //    _.template(ChooseTagTmpl + DeleteTagTmpl)),
+                    'DeleteTag': DynamicDialog.create('DeleteTag', 'Delete Tag',
+                        _.template(ChooseTagTmpl)),
                     'AddGeneLink': DynamicDialog.create('AddGeneLink', 'Add Gene Link',
                         _.template(AddGeneLinkTmpl)),
                     //'DeleteGeneLink': DynamicDialog.create('DeleteGeneLink', 'Delete Gene Link',

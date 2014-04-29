@@ -5,9 +5,23 @@
     <div>
         <div class="form-group">
             <input type="hidden" name="id" value="<%= id ? id : "" %>" />
+            <input type="hidden" name="points" value="<%= escape(JSON.stringify(points)) %>" />
+            <input type="hidden" name="color" value="<%= escape(JSON.stringify(color)) %>" />
             <label for="name">Name</label>
             <input type="text" class="form-control" name="name" value="<%= name ? name : "" %>"
-                placeholder="Tag name. i.e. &quot;Motility organelle&quot;"/>
+                placeholder="Tag name. i.e. &quot;Motility organelle&quot;" />
+            <label for="group">Tag Group</label>
+            <select name="group" class="select-tag-group form-control">
+                <% _.each(tagGroups, function(tagGroup, id) { %>
+                    <option data-tag-group="<%= escape(JSON.stringify(tagGroup)) %>"
+                        <% if (typeof group !== undefined && tagGroup.id == group) { %>
+                            selected="selected"
+                        <% } %>
+                    >
+                        <%= tagGroup.name %>
+                    </option>
+                <% }); %>
+            </select>
         </div>
     </div>
 </div>

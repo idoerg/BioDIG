@@ -150,12 +150,14 @@ class TagColor(models.Model):
     red = models.IntegerField()
     green = models.IntegerField()
     blue = models.IntegerField()
+    alpha = models.FloatField()
     class Meta:
         db_table = u'tagcolor'
         app_label = u'base'
 
     def __unicode__(self):
-        return 'R: ' + str(self.red) + ', G: ' + str(self.green) + ', B: ' + str(self.blue)
+        return 'R: ' + str(self.red) + ', G: ' + str(self.green) + ', B: ' + str(self.blue) +
+            " A: " + str(self.alpha)
 
 class Tag(models.Model):
     name = models.TextField()

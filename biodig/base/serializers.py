@@ -73,10 +73,11 @@ class TagColorSerializer(serializers.ModelSerializer):
     r = serializers.IntegerField(source='red')
     g = serializers.IntegerField(source='green')
     b = serializers.IntegerField(source='blue')
+    a = serializers.FloatField(source='alpha')
 
     class Meta:
         model = TagColor
-        fields = ('r', 'g', 'b')
+        fields = ('r', 'g', 'b', 'a')
 
 class SecretTagSerializer(serializers.ModelSerializer):
     owner = serializers.PrimaryKeyRelatedField(source='user')
