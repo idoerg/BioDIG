@@ -7,6 +7,7 @@ require.config({
         },
         bootstrap: ['jquery'],
         jquery_ui: ['jquery'],
+        colorpicker: ['jquery'],
         underscore : {
             exports : '_'
         },
@@ -23,7 +24,8 @@ require.config({
         settings: 'lib/settings',
         jquery_ui: 'lib/jquery-ui-1.10.4.min',
         text: 'lib/require-text',
-        kinetic: 'lib/kinetic-v5.1.0.min'
+        kinetic: 'lib/kinetic-v5.1.0.min',
+        colorpicker: 'lib/colorpicker/colorpicker'
     }
 });
 
