@@ -156,8 +156,7 @@ class TagColor(models.Model):
         app_label = u'base'
 
     def __unicode__(self):
-        return 'R: ' + str(self.red) + ', G: ' + str(self.green) + ', B: ' + str(self.blue) +
-            " A: " + str(self.alpha)
+        return 'R: ' + str(self.red) + ', G: ' + str(self.green) + ', B: ' + str(self.blue) + " A: " + str(self.alpha)
 
 class Tag(models.Model):
     name = models.TextField()
