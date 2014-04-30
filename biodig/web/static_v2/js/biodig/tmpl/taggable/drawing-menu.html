@@ -1,9 +1,9 @@
 <div class="drawing-menu-box hidden">
-    <div class="drawing-menu-box-title">Tagging Tools</div>
+    <div class="drawing-menu-box-title">drawing Tools</div>
     <div class="drawing-menu-box-section">
         <div class="drawing-menu-box-section-title">Colors</div>
         <div class="drawing-menu-box-section-body">
-            <div class="tagging-menu-color-container">
+            <div class="drawing-menu-color-container">
                 <% console.log(JSON.stringify(colors)); %>
                 <% for (var i = 0; i < colors.length / 2; i++) { %>
                 <% console.log(JSON.stringify(colors[i])); %>
@@ -14,7 +14,7 @@
                 <% } %>
                 <div class="color-picker toolbar-item"></div>
             </div>
-            <div class="tagging-menu-color-container">
+            <div class="drawing-menu-color-container">
                 <% for (var i = Math.ceil(colors.length / 2); i < colors.length; i++) { %>
                 <% console.log(i); %>
                 <% console.log(colors.length); %>
@@ -42,10 +42,10 @@
     <div class="drawing-menu-box-section">
         <div class="drawing-menu-box-section-title">Style</div>
         <div class="drawing-menu-box-section-body">
-            <button class="draw-rect tagging-button toolbar-item">
+            <button class="draw-rect drawing-button toolbar-item">
                 <img src="<%= settings.STATIC_URL %>images/rectButtonIcon.png" style="height: 20px;" />
             </button>
-            <button class="draw-poly tagging-button toolbar-item" style="margin-left: 30px">
+            <button class="draw-poly drawing-button toolbar-item" style="margin-left: 30px">
                 <img src="<%= settings.STATIC_URL %>images/polygonButtonIcon.png" style="height: 20px;" />
             </button>
         </div>
