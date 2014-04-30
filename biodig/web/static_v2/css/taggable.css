@@ -47,18 +47,18 @@
 	cursor: pointer;
 }
 
-.tagging-button {
+.drawing-button {
 	border: 1px solid #AAAAAA;
 	background-color: #EEEEEE;
 	vertical-align: top;
 	border-radius: 5px;
 }
 
-.tagging-button img {
+.drawing-button img {
 	height: 23px;
 }
 
-.tagging-button:hover {
+.drawing-button:hover {
 	cursor: pointer;
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#EEEEEE), to(#CCCCCC));
 	background-image: -moz-linear-gradient(top, #EEEEEE, #CCCCCC); /* for firefox 3.6+ */
@@ -170,7 +170,7 @@ th {
 	z-index: 7000;
 }
 
-.tagging-menu-box {
+.drawing-menu-box {
 	width: 155px;
 	z-index: 11000;
 	background-color: white;
@@ -184,32 +184,32 @@ th {
 	box-shadow: -1px 2px 6px 1px #333333;
 }
 
-.tagging-menu-box > div {
+.drawing-menu-box > div {
 	padding: 5px;
 }
 
-.tagging-menu-box-title {
+.drawing-menu-box-title {
 	text-align: center;
 	font-size: 15px;
 	background-color: #CCC;
 	border-radius: 7px 7px 0px 0px;
 }
 
-.tagging-menu-box-section-title {
+.drawing-menu-box-section-title {
 	border-bottom: 1px solid #CCCCCC;
     font-size: 13px;
     margin-bottom: 5px;
 }
 
-.tagging-menu-box-section-body {
+.drawing-menu-box-section-body {
 	text-align: center;
 }
 
-.tagging-menu-color-container {
+.drawing-menu-color-container {
 	margin-bottom: 4px;
 }
 
-.tagging-dialog {
+.drawing-dialog {
 	background-color: white;
     border: 1px solid black;
     border-radius: 7px 7px 7px 7px;
@@ -221,7 +221,7 @@ th {
     display: none;
 }
 
-.tagging-dialog-title {
+.drawing-dialog-title {
 	background-color: #CCCCCC;
     border-bottom: 1px solid #AAA;
     border-radius: 7px 7px 0 0;
@@ -233,15 +233,15 @@ th {
     font-variant: small-caps;
 }
 
-.tagging-dialog-title .close-button {
+.drawing-dialog-title .close-button {
 	float: right;
 }
 
-.tagging-dialog-title .close-button {
+.drawing-dialog-title .close-button {
 	cursor: pointer;
 }
 
-.tagging-dialog-contents {
+.drawing-dialog-contents {
 	padding-left: 10px;
 	padding-right: 10px;
 	padding-bottom: 10px;

@@ -15,7 +15,7 @@
                 <div class="color-picker toolbar-item"></div>
             </div>
             <div class="tagging-menu-color-container">
-                <% for (var i = Math.floor(colors.length / 2); i < colors.length; i++) { %>
+                <% for (var i = Math.ceil(colors.length / 2); i < colors.length; i++) { %>
                 <% console.log(i); %>
                 <% console.log(colors.length); %>
                 <button data-color="<%= escape(JSON.stringify(colors[i])) %>"
@@ -51,9 +51,9 @@
         </div>
     </div>
     <div class="drawing-menu-box-section">
-        <div class="tagging-menu-box-section-body" style="border-top-width: 1px; border-top-style: solid; border-top-color: rgb(204, 204, 204); padding-top: 5px;">
-            <button class="submit tagging-button">Submit</button>
-            <button class="cancel tagging-button .tagging-button-last" style="margin-left: 10px">Cancel</button>
+        <div class="drawing-menu-box-section-body" style="border-top-width: 1px; border-top-style: solid; border-top-color: rgb(204, 204, 204); padding-top: 5px;">
+            <button class="submit drawing-button">Submit</button>
+            <button class="cancel drawing-button drawing-button-last" style="margin-left: 10px">Cancel</button>
         </div>
     </div>
 </div>
