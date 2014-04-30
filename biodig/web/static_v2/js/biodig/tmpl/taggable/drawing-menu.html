@@ -4,6 +4,7 @@
         <div class="drawing-menu-box-section-title">Colors</div>
         <div class="drawing-menu-box-section-body">
             <div class="tagging-menu-color-container">
+                <% console.log(JSON.stringify(colors)); %>
                 <% for (var i = 0; i < colors.length / 2; i++) { %>
                 <button data-color="<%= escape(JSON.stringify(colors[i])) %>"
                     class="change-color toolbar-item"

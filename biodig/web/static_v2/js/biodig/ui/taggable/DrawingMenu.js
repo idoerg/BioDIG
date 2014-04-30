@@ -9,10 +9,10 @@ define(deps, function($, _, settings, DrawingMenuTmpl) {
 
     function DrawingMenu(opts) {
         this.colors = opts.colors;
-        this.$el = DrawingMenuTemplate({
+        this.$el = $(DrawingMenuTemplate({
             'colors' : this.colors,
             'settings' : settings
-        });
+        }));
         $(opts.parent).prepend(this.$el);
 
         this.$el.draggable();
