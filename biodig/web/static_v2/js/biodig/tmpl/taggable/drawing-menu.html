@@ -6,6 +6,7 @@
             <div class="tagging-menu-color-container">
                 <% console.log(JSON.stringify(colors)); %>
                 <% for (var i = 0; i < colors.length / 2; i++) { %>
+                <% console.log(JSON.stringify(colors[i])); %>
                 <button data-color="<%= escape(JSON.stringify(colors[i])) %>"
                     class="change-color toolbar-item"
                     style="background-color: rgb(<%= colors[i].r %>, <%= colors[i].g %>, <%= colors[i].b %>);">
@@ -15,6 +16,7 @@
             </div>
             <div class="tagging-menu-color-container">
                 <% for (var i = colors.length / 2; i < colors.length; i++) { %>
+                <% console.log(JSON.stringify(colors[i])); %>
                 <button data-color="<%= escape(JSON.stringify(colors[i])) %>"
                     class="change-color toolbar-item"
                     style="background-color: rgb(<%= colors[i].r %>, <%= colors[i].g %>, <%= colors[i].b %>);">
