@@ -11,12 +11,12 @@
             <input type="text" class="form-control" name="name" value="<%= name ? name : "" %>"
                 placeholder="Tag name. i.e. &quot;Motility organelle&quot;" />
             <% console.log(tagGroups); %>
-            <% if (typeof tagGroups !== undefined) { %>
+            <% if (typeof tagGroups !== "undefined") { %>
             <label for="group">Tag Group</label>
             <select name="group" class="select-tag-group form-control">
                 <% _.each(tagGroups, function(tagGroup, id) { %>
                     <option data-tag-group="<%= escape(JSON.stringify(tagGroup)) %>"
-                        <% if (typeof group !== undefined && tagGroup.id == group) { %>
+                        <% if (typeof group !== "undefined" && tagGroup.id == group) { %>
                             selected="selected"
                         <% } %>
                     >
