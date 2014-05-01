@@ -436,6 +436,7 @@
 						} else {
 							$(this).bind(options.eventName, function(evt) {
                                 if (cal.is(':visible')) {
+                                    evt.data.cal = cal;
                                     scopefn(this, hide)(evt);
                                 }
                                 else {
