@@ -168,6 +168,10 @@ th {
 	border: 1px solid black;
 }
 
+.colorpicker {
+	z-index: 1001;
+}
+
 .drawing-menu-box {
 	width: 180px;
 	z-index: 1000;
