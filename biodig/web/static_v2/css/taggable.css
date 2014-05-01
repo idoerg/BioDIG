@@ -149,14 +149,6 @@ th {
 	display: none;
 }
 
-.page-block {
-	background-color: #666;
-	opacity: 0.1;
-	position: fixed;
-	top: 0;
-	z-index: 13000;
-}
-
 .tag-saving-dialog {
 	position: fixed;
 	background-color: #292828;
@@ -168,6 +160,12 @@ th {
 	margin-top: -125px;
 	border-radius: 7px;
 	z-index: 7000;
+}
+
+.color-picker {
+	width: 25px;
+	height: 25px;
+	border: 1px solid black;
 }
 
 .drawing-menu-box {
