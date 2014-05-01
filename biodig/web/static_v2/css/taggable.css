@@ -162,12 +162,6 @@ th {
 	z-index: 7000;
 }
 
-.color-picker {
-	width: 25px;
-	height: 25px;
-	border: 1px solid black;
-}
-
 .colorpicker {
 	z-index: 1001;
 }
