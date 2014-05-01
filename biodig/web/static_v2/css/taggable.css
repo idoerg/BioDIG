@@ -163,9 +163,9 @@ th {
 }
 
 .color-picker {
-	background-size: 128%;
-	background-color: rgb(31, 31, 143);
-	background-position: -4px -3px;
+	background-size: 121%;
+	background-position: -3px -3px;
+	border-radius: 3px 3px 3px 3px;
 	border: none !important;
 }
 
