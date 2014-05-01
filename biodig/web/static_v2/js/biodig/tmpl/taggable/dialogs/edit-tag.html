@@ -10,6 +10,7 @@
             <label for="name">Name</label>
             <input type="text" class="form-control" name="name" value="<%= name ? name : "" %>"
                 placeholder="Tag name. i.e. &quot;Motility organelle&quot;" />
+            <% console.log(tagGroups); %>
             <% if (typeof tagGroups !== undefined) { %>
             <label for="group">Tag Group</label>
             <select name="group" class="select-tag-group form-control">
