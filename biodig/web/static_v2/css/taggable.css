@@ -188,11 +188,10 @@ th {
 }
 
 .drawing-menu-box > div {
-	padding: 5px;
+	padding: 10px;
 }
 
 .drawing-menu-box-title {
-	text-align: center;
 	font-size: 15px;
 	background-color: #CCC;
 	border-radius: 7px 7px 0px 0px;
