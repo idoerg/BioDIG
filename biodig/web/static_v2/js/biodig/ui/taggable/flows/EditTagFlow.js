@@ -24,7 +24,9 @@ define(deps, function($, FlowNode, ChooseTagGroupTmpl, ChooseTagTmpl, EditTagTmp
             // data and if so skip this node (return of true means to skip)
             var keys = Object.keys(data['tagGroups']);
             if (keys.length == 1) {
-                return { 'tags' : data['tagGroups'][keys[0]].tags }; // returns the tags for the next thing
+                return {
+                    'tags' : data['tagGroups'][keys[0]].tags
+                }; // returns the tags for the next thing
             }
 
             return false;
