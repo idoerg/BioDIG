@@ -86,6 +86,11 @@ define(deps, function($, _, settings, DrawingMenuTmpl) {
             self.hide();
             $(self).trigger('cancel');
         });
+
+        this.$el.find('.close').on('click', function() {
+            self.hide();
+            $(self).trigger('cancel');
+        });
     }
 
     DrawingMenu.prototype.show = function() {
