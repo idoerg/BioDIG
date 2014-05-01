@@ -4,11 +4,13 @@
     </div>
     <div>
         <div class="form-group">
-            <input type="hidden" name="id" value="<%= id ? id : "" %>" />
+            <% if (typeof id !== "undefined") { %>
+            <input type="hidden" name="id" value="<%= id %>" />
+            <% } %>
             <input type="hidden" name="points" value="<%= escape(JSON.stringify(points)) %>" />
             <input type="hidden" name="color" value="<%= escape(JSON.stringify(color)) %>" />
             <label for="name">Name</label>
-            <input type="text" class="form-control" name="name" value="<%= name ? name : "" %>"
+            <input type="text" class="form-control" name="name" value="<%= typeof name "undefined" ? name : "" %>"
                 placeholder="Tag name. i.e. &quot;Motility organelle&quot;" />
             <% if (typeof tagGroups !== "undefined") { %>
             <label for="group">Tag Group</label>

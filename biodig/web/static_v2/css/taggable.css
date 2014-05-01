@@ -172,7 +172,7 @@ th {
 
 .drawing-menu-box {
 	width: 180px;
-	z-index: 11000;
+	z-index: 1000;
 	background-color: white;
 	border-radius: 7px;
 	border: 1px solid #CCC;
