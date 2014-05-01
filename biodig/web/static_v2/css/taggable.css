@@ -162,6 +162,13 @@ th {
 	z-index: 7000;
 }
 
+.color-picker {
+	background-size: 128%;
+	background-color: rgb(31, 31, 143);
+	background-position: -4px -3px;
+	border: none !important;
+}
+
 .colorpicker {
 	z-index: 1001;
 }
