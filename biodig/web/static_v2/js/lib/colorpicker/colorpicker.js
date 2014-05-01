@@ -9,6 +9,11 @@
 (function ($) {
 	var ColorPicker = function () {
 		var
+            scopefn = function(scope, fn) {
+                return function() {
+                    return fn.apply(scope, arguments);
+                };
+            },
 			ids = {},
 			inAction,
 			charMin = 65,
@@ -431,10 +436,10 @@
 						} else {
 							$(this).bind(options.eventName, function(evt) {
                                 if (cal.is(':visible')) {
-                                    hide(evt);
+                                    scopefn(this, hide)(evt);
                                 }
                                 else {
-                                    show(evt);
+                                    scopefn(this, show)(evt);
                                 }
                             });
 						}
