@@ -133,6 +133,8 @@ define(deps, function($, util) {
                 // handle the events for clicking to manage the tags on the page
                 this.menu.section('tags').item('add').on('click', function() {
                     self.drawingMenu.show();
+                    self.drawingBoard.show();
+                    self.drawingBoard.start();
                 });
 
                 this.menu.section('tags').item('edit').on('click', function() {
@@ -390,10 +392,57 @@ define(deps, function($, util) {
 
     var DrawingControls = {
         setup: {
+            follow: function() {
+                var self = this;
+                $(this.tagBoard).on('drag.drawing', function(event, ui) {
+                    self.drawingBoard.css('left', ui.position.left).css('top', ui.position.top);
+                });
+            },
+            menu: function() {
+                var self = this;
+                $(this.drawingMenu).on('submit', function() {
+                    self.imageDao.tagGroups({'visible': true})
+                        .done(function(tagGroups) {
+                            var data = {
+                                'color': $.extend(self.drawingMenu.color, self.drawingMenu.alpha),
+                                'points': self.drawingBoard.points,
+                                'tagGroups': tagGroups
+                            };
+                            self.dialogs.get('AddTag').show(data);
+                        })
+                        .fail(function(e) {
+                            console.error(e.detail || e.message);
+                        });
+                });
 
+                $(this.drawingMenu).on('style:change', function() {
+                    self.drawingBoard.config('shape', self.drawingMenu.style);
+                });
+
+                $(this.drawingMenu).on('color:change alpha:change', function() {
+                    var rgb = self.drawingMenu.color;
+                    var alpha = self.drawingMenu.alpha;
+                    var color = 'rgba(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ',' + alpha ')';
+                    self.drawingBoard.config('fillStyle', color);
+                });
+            },
+            board: function() {
+                var self = this;
+                
+            }
         },
         tearDown: {
+            follow: function() {
+                $(this.tagBoard).off('drag.drawing');
+            },
+            menu: function() {
+                $(this.drawingMenu).off('submit');
+                $(this.drawingMenu).off('style:change');
+                $(this.drawingMenu).off('color:change alpha:change');
+            },
+            board: function() {
 
+            }
         }
     };
 

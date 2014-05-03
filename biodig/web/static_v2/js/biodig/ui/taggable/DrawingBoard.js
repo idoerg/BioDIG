@@ -22,9 +22,9 @@ define(deps, function($, _, util, TaggableUtil, DrawingBoardTmpl) {
         this.$image = image;
         this.$board = $(DrawingBoardTemplate(this.$image));
         this.$image.parent().prepend(this.$board);
-        this.config = {
+        this.ddconfig = {
             fillStyle : '',
-            shape : 'rect',
+            shape : 'RECT',
             n : 0,
             mouseDown : false
         };
@@ -44,6 +44,10 @@ define(deps, function($, _, util, TaggableUtil, DrawingBoardTmpl) {
         this.redraw();
     };
 
+    DrawingBoard.prototype.config = function(key, value) {
+        this.dconfig[key] = value;
+    };
+
     /*
     --------------------------------------------------------------------------------
                 Rectangle Drawing API for starting, finishing and expanding
@@ -53,20 +57,20 @@ define(deps, function($, _, util, TaggableUtil, DrawingBoardTmpl) {
         var point = TaggableUtil.getCoordinates(event);
         this.points = [];
         this.points[0] = TaggableUtil.convertFromZoomToOriginal(point, this.$image);
-        this.config.mouseDown = true;
+        this.dconfig.mouseDown = true;
     };
 
     DrawingBoard.prototype.finishRect = function(event) {
         var point = TaggableUtil.getCoordinates(event);
         this.points[1] = TaggableUtil.convertFromZoomToOriginal(point, this.$image);
-        this.config.mouseDown = false;
+        this.dconfig.mouseDown = false;
     };
 
     DrawingBoard.prototype.expandRect = function(event) {
         var canvas = this.$board[0];
 
         // should do nothing if the mouse is not held down
-        if (this.config.mouseDown) {
+        if (this.dconfig.mouseDown) {
             // converts the events x,y values to create a point that is local to the canvas
             var point = TaggableUtil.getCoordinates(event);
 
@@ -95,20 +99,20 @@ define(deps, function($, _, util, TaggableUtil, DrawingBoardTmpl) {
         var point = TaggableUtil.getCoordinates(event);
         this.points = [];
         this.points.push(TaggableUtil.convertFromZoomToOriginal(point, this.image));
-        this.config.n = 1;
-        this.config.mouseDown = true;
+        this.dconfig.n = 1;
+        this.dconfig.mouseDown = true;
     };
 
     DrawingBoard.prototype.finishPoly = function(event) {
         var point = TaggableUtil.getCoordinates(event);
         this.points.push(TaggableUtil.convertFromZoomToOriginal(point, this.image));
-        this.config.mouseDown = false;
+        this.dconfig.mouseDown = false;
     };
 
     DrawingBoard.prototype.expandPoly = function(event) {
         // should only be called when the mouse is down and should not
         // be called every time because it will produce too many points
-        if (this.config.mouseDown && this.config.n % 8 == 1) {
+        if (this.dconfig.mouseDown && this.dconfig.n % 8 == 1) {
             // converts the events x,y values to create a point that is local to the canvas
             var point = TaggableUtil.getCoordinates(event);
 
@@ -163,8 +167,8 @@ define(deps, function($, _, util, TaggableUtil, DrawingBoardTmpl) {
         }
         context.closePath();
 
-        if (this.config.fillStyle != "") {
-            context.fillStyle = this.config.fillStyle;
+        if (this.dconfig.fillStyle != "") {
+            context.fillStyle = this.dconfig.fillStyle;
             context.fill();
         }
         context.stroke();
