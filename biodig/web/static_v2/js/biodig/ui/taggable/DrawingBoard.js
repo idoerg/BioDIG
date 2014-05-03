@@ -59,7 +59,7 @@ define(deps, function($, _, util, TaggableUtil, DrawingBoardTmpl) {
             else {
                 this.startPoly(e);
             }
-        });
+        }));
 
         this.$board.on('mouseup', util.scope(this, function(e) {
             if (this.dconfig.shape == 'RECT') {
@@ -68,7 +68,7 @@ define(deps, function($, _, util, TaggableUtil, DrawingBoardTmpl) {
             else {
                 this.finishPoly(e);
             }
-        });
+        }));
 
         this.$board.on('mousemove', util.scope(this, function(e) {
             if (this.dconfig.shape == 'RECT') {
@@ -77,7 +77,7 @@ define(deps, function($, _, util, TaggableUtil, DrawingBoardTmpl) {
             else {
                 this.expandPoly(e);
             }
-        });
+        }));
     };
 
     DrawingBoard.prototype.end = function() {
