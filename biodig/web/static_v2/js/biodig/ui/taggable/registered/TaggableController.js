@@ -133,8 +133,7 @@ define(deps, function($, util) {
                 // handle the events for clicking to manage the tags on the page
                 this.menu.section('tags').item('add').on('click', function() {
                     self.drawingMenu.show();
-                    self.drawingBoard.show();
-                    self.drawingBoard.start();
+                    self.drawingBoard.begin();
                 });
 
                 this.menu.section('tags').item('edit').on('click', function() {
@@ -403,6 +402,7 @@ define(deps, function($, util) {
                 $(this.drawingMenu).on('submit', function() {
                     self.imageDao.tagGroups({'visible': true})
                         .done(function(tagGroups) {
+                            self.drawingBoard.end();
                             var data = {
                                 'color': $.extend(self.drawingMenu.color, self.drawingMenu.alpha),
                                 'points': self.drawingBoard.points,
@@ -413,6 +413,10 @@ define(deps, function($, util) {
                         .fail(function(e) {
                             console.error(e.detail || e.message);
                         });
+                });
+
+                $(this.drawingMenu).on('cancel', function() {
+                    self.drawingBoard.end();
                 });
 
                 $(this.drawingMenu).on('style:change', function() {

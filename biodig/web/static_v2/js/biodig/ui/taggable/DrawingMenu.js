@@ -51,7 +51,7 @@ define(deps, function($, _, settings, DrawingMenuTmpl) {
 
         // setup alpha UI
         var $alphaSlider = this.$el.find('.alpha-slider');
-        var $alphaText = this.$el.find('input[name="alpha"]');
+        var $alphaText = this.$el.find('.alpha-text');
 
         $alphaSlider.slider({
             range: 'min',

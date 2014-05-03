@@ -22,7 +22,7 @@ define(deps, function($, _, util, TaggableUtil, DrawingBoardTmpl) {
         this.$image = image;
         this.$board = $(DrawingBoardTemplate(this.$image));
         this.$image.parent().prepend(this.$board);
-        this.ddconfig = {
+        this.dconfig = {
             fillStyle : '',
             shape : 'RECT',
             n : 0,
@@ -46,6 +46,46 @@ define(deps, function($, _, util, TaggableUtil, DrawingBoardTmpl) {
 
     DrawingBoard.prototype.config = function(key, value) {
         this.dconfig[key] = value;
+    };
+
+    DrawingBoard.prototype.begin = function() {
+        this.$board.removeClass('hidden').addClass('show');
+        this.$board.css('z-index', 500);
+
+        this.$board.on('mousedown', util.scope(this, function(e) {
+            if (this.dconfig.shape == 'RECT') {
+                this.startRect(e);
+            }
+            else {
+                this.startPoly(e);
+            }
+        });
+
+        this.$board.on('mouseup', util.scope(this, function(e) {
+            if (this.dconfig.shape == 'RECT') {
+                this.finishRect(e);
+            }
+            else {
+                this.finishPoly(e);
+            }
+        });
+
+        this.$board.on('mousemove', util.scope(this, function(e) {
+            if (this.dconfig.shape == 'RECT') {
+                this.expandRect(e);
+            }
+            else {
+                this.expandPoly(e);
+            }
+        });
+    };
+
+    DrawingBoard.prototype.end = function() {
+        this.$board.removeClass('show').addClass('hidden');
+
+        this.$board.off('mousedown');
+        this.$board.off('mouseup');
+        this.$board.off('mousemove');
     };
 
     /*
