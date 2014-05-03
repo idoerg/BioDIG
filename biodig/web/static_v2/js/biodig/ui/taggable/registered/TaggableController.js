@@ -422,13 +422,13 @@ define(deps, function($, util) {
                 $(this.drawingMenu).on('color:change alpha:change', function() {
                     var rgb = self.drawingMenu.color;
                     var alpha = self.drawingMenu.alpha;
-                    var color = 'rgba(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ',' + alpha ')';
+                    var color = 'rgba(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ',' + alpha + ')';
                     self.drawingBoard.config('fillStyle', color);
                 });
             },
             board: function() {
                 var self = this;
-                
+
             }
         },
         tearDown: {
