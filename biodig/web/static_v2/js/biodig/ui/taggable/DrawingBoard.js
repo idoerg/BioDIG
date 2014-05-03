@@ -52,6 +52,10 @@ define(deps, function($, _, util, TaggableUtil, DrawingBoardTmpl) {
         this.$board.removeClass('hidden').addClass('show');
         this.$board.css('z-index', 500);
 
+        this.$board.off('mousedown');
+        this.$board.off('mouseup');
+        this.$board.off('mousemove');
+
         this.$board.on('mousedown', util.scope(this, function(e) {
             if (this.dconfig.shape == 'RECT') {
                 this.startRect(e);
