@@ -45,7 +45,7 @@ define(deps, function($, _, settings, DrawingMenuTmpl) {
 
         // setup color picker UI
         this.$el.find('.change-color').on('click', function() {
-            self.color = $(this).data('color');
+            self.color = $.parseJSON(unescape($(this).data('color')));
             $(self).trigger('color:change', [self.color]);
         });
 
