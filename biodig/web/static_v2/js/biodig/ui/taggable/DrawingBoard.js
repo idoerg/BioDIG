@@ -142,14 +142,14 @@ define(deps, function($, _, util, TaggableUtil, DrawingBoardTmpl) {
     DrawingBoard.prototype.startPoly = function(event) {
         var point = TaggableUtil.getCoordinates(event);
         this.points = [];
-        this.points.push(TaggableUtil.convertFromZoomToOriginal(point, this.image));
+        this.points.push(TaggableUtil.convertFromZoomToOriginal(point, this.$image));
         this.dconfig.n = 1;
         this.dconfig.mouseDown = true;
     };
 
     DrawingBoard.prototype.finishPoly = function(event) {
         var point = TaggableUtil.getCoordinates(event);
-        this.points.push(TaggableUtil.convertFromZoomToOriginal(point, this.image));
+        this.points.push(TaggableUtil.convertFromZoomToOriginal(point, this.$image));
         this.dconfig.mouseDown = false;
     };
 
@@ -162,13 +162,13 @@ define(deps, function($, _, util, TaggableUtil, DrawingBoardTmpl) {
 
             // since the canvas is most likely zoomed in we must convert back to original points for
             // storing so that they can be properly scaled and stored through ajax later
-            point = TaggableUtil.convertFromZoomToOriginal(point, this.image);
+            point = TaggableUtil.convertFromZoomToOriginal(point, this.$image);
             this.points.push(point);
 
             // converts the points array to an array of zoomed points instead
             var drawPoints = [];
             for (var i = 0; i < this.points.length; i++) {
-                drawPoints[i] = TaggableUtil.convertFromOriginalToZoom(this.points[i], this.image);
+                drawPoints[i] = TaggableUtil.convertFromOriginalToZoom(this.points[i], this.$image);
             }
 
             // draws the polygon
@@ -181,7 +181,7 @@ define(deps, function($, _, util, TaggableUtil, DrawingBoardTmpl) {
             // converts the points to be at the correct zoom level
             var drawPoints = [];
             for (var i = 0; i < this.points.length; i++) {
-                drawPoints[i] = TaggableUtil.convertFromOriginalToZoom(this.points[i], this.image);
+                drawPoints[i] = TaggableUtil.convertFromOriginalToZoom(this.points[i], this.$image);
             }
 
             // checks to see if its is a rectangle
