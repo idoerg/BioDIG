@@ -35,6 +35,7 @@ define(deps, function($, _, settings, DrawingMenuTmpl) {
         	onChange: function (hsb, hex, rgb) {
         		$colorPicker.css('background-color', '#' + hex);
                 self.color = rgb;
+                $(self).trigger('color:change', [self.color]);
         	}
         });
 
