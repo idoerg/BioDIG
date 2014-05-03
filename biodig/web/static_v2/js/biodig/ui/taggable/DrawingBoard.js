@@ -10,7 +10,7 @@ define(deps, function($, _, util, TaggableUtil, DrawingBoardTmpl) {
     var Helper = {
         drawRect : function(points, refresh) {
             var drawPoints = [points[0], points[1]];
-            var otherPoints = TaggableUtil.getOtherRectPoints(drawPoints);
+            var otherPoints = TaggableUtil.otherRectPoints(drawPoints);
             drawPoints[2] = drawPoints[1];
             drawPoints[1] = otherPoints[0];
             drawPoints[3] = otherPoints[1];
