@@ -428,6 +428,7 @@ define(deps, function($, util) {
                     var alpha = self.drawingMenu.alpha;
                     var color = 'rgba(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ',' + alpha + ')';
                     self.drawingBoard.config('fillStyle', color);
+                    self.drawingBoard.redraw();
                 });
             },
             board: function() {
