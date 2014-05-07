@@ -82,6 +82,7 @@ define(deps, function($, util) {
             });
         },
         setupTagBoardControls: function() {
+            var self = this;
             $(this.imageDao).on('tagGroups:change tags:change', function() {
                 $.when(self.imageDao.tagGroups({'visible' : true}))
                     .done(function(tagGroups) {
