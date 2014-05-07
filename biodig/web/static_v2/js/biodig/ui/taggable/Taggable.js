@@ -1,15 +1,16 @@
 var deps = [
     'jquery', 'underscore', 'biodig/ui/zoomable/Zoomable', 'biodig/ui/taggable/TagBoard',
     'biodig/storage/ImageDao', 'biodig/storage/OrganismDao', 'biodig/ui/taggable/ImageMenu',
-    'biodig/ui/taggable/DialogManager', 'biodig/ui/taggable/public/TaggableController',
-    'biodig/ui/taggable/DrawingMenu', 'biodig/ui/taggable/DrawingBoard',
-    'biodig/ui/taggable/registered/TaggableController', 'lib/util',
-    'text!biodig/tmpl/taggable/structure.html', 'text!biodig/tmpl/taggable/image-metadata.html'
+    'biodig/ui/taggable/DialogManager', 'biodig/ui/taggable/StatusMessager',
+    'biodig/ui/taggable/public/TaggableController', 'biodig/ui/taggable/DrawingMenu',
+    'biodig/ui/taggable/DrawingBoard', 'biodig/ui/taggable/registered/TaggableController',
+    'lib/util', 'text!biodig/tmpl/taggable/structure.html',
+    'text!biodig/tmpl/taggable/image-metadata.html'
 ];
 
 define(deps, function($, _, Zoomable, TagBoard, ImageDao, OrganismDao, ImageMenu, DialogManager,
-    PublicTaggableController, DrawingMenu, DrawingBoard, RegisteredTaggableController, util,
-    TaggableTmpl, MetadataTmpl) {
+    StatusMessager, PublicTaggableController, DrawingMenu, DrawingBoard,
+    RegisteredTaggableController, util, TaggableTmpl, MetadataTmpl) {
 
     var ACCEPTED_MODES = {
         REGISTERED: 'REGISTERED',
@@ -39,6 +40,7 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, OrganismDao, ImageMenu
         this.$left = this.$contents.children('.taggable-left');
         this.$right = this.$contents.children('.taggable-right');
         this.$toolbar = this.$contents.children('.toolbar-container');
+        this.$messages = this.$contents.children('.status-messages-container');
 
 
         if (!ACCEPTED_MODES[opts.mode]) opts.mode = ACCEPTED_MODES.REGISTERED;
@@ -59,6 +61,9 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, OrganismDao, ImageMenu
         // create the image data manager for storing the current internal
         // state of the image's data
         this.imageDao = ImageDao.create(this.image_id);
+
+        // create the status messager
+        this.messager = StatusMessager.create(this.$messages);
 
         // start the public taggable controller
         this.publicController = PublicTaggableController.create(this);

@@ -265,7 +265,8 @@ define(deps, function($, util) {
 
                     $.when(self.imageDao.addTagGroup(data))
                         .done(function(tagGroup) {
-                            console.log("Successful addition of tag group: " + tagGroup);
+                            self.messager.add(self.messager.SUCCESS, 'Added tag group "' +
+                                data.name + '"');
                         })
                         .fail(function(e) {
                             console.error(e.detail || e.message);

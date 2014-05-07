@@ -67,6 +67,12 @@
 	border: 1px solid #777777;
 }
 
+.status-messages-container {
+	min-height: 40px;
+	width: 100%;
+	position: absolute;
+}
+
 .toolbar-icon {
 	height: 35px;
 	margin-top: 9px;
