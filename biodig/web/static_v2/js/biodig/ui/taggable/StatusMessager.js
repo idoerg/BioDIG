@@ -33,14 +33,14 @@ define(deps, function($, _, StatusMessageTmpl) {
     }
 
     StatusMessager.prototype.add = function(type, message) {
-        var data = $.extend({}, this.construct[type], {'message':message});
+        var data = $.extend({}, this.construct[type], {'message':escape(message)});
         var $message = $(StatusMessageTemplate(data));
         $message.alert();
 
         // setup timeout for close
         setTimeout(function() {
             $message.alert('close');
-        }, 3000);
+        }, 6000);
 
         this.$container.append($message);
     };
