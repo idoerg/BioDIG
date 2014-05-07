@@ -14,19 +14,19 @@ define(deps, function($, _, StatusMessageTmpl) {
 
         this.construct = {
             'SUCCESS': {
-                'class': 'success',
+                'alert': 'success',
                 'prefix': 'Success!'
             },
             'ERROR': {
-                'class': 'danger',
+                'alert': 'danger',
                 'prefix': 'Error!'
             },
             'WARNING': {
-                'class': 'warning',
+                'alert': 'warning',
                 'prefix': 'Warning!'
             },
             'INFO': {
-                'class': 'info',
+                'alert': 'info',
                 'prefix': 'Info'
             },
         }
@@ -39,7 +39,7 @@ define(deps, function($, _, StatusMessageTmpl) {
 
         // setup timeout for close
         setTimeout(function() {
-            $message.alert('close');    
+            $message.alert('close');
         }, 3000);
 
         this.$container.append($message);
