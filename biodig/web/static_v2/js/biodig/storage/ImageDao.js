@@ -119,7 +119,7 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
                         });
 
                         if (opts.visible === true) {
-                            deferred_object.resolve({});
+                            deferred_obj.resolve({});
                         }
                         else {
                             deferred_obj.resolve(self.tagGroups_cache);
