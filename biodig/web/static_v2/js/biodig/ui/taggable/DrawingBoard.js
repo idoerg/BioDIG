@@ -1,9 +1,9 @@
 var deps = [
-    'jquery', 'underscore', 'lib/util', 'biodig/ui/taggable/util',
+    'jquery', 'underscore', 'kinetic', 'lib/util', 'biodig/ui/taggable/util',
     'text!biodig/tmpl/taggable/drawingboard.html'
 ];
 
-define(deps, function($, _, util, TaggableUtil, DrawingBoardTmpl) {
+define(deps, function($, _, Kinetic, util, TaggableUtil, DrawingBoardTmpl) {
 
     var DrawingBoardTemplate = _.template(DrawingBoardTmpl);
 
@@ -22,6 +22,13 @@ define(deps, function($, _, util, TaggableUtil, DrawingBoardTmpl) {
         this.$image = image;
         this.$board = $(DrawingBoardTemplate(this.$image));
         this.$image.parent().prepend(this.$board);
+
+        this.stage = new Kinetic.Stage({
+            container: this.$board[0],
+            width: this.$board.width(),
+            height: this.$board.height()
+        });
+
         this.dconfig = {
             fillStyle : '',
             shape : 'RECT',
@@ -98,15 +105,15 @@ define(deps, function($, _, util, TaggableUtil, DrawingBoardTmpl) {
     --------------------------------------------------------------------------------
     */
     DrawingBoard.prototype.startRect = function(event) {
-        var point = TaggableUtil.getCoordinates(event);
+        var mousePos = this.stage.getPointerPosition(event);
         this.points = [];
-        this.points[0] = TaggableUtil.convertFromZoomToOriginal(point, this.$image);
+        this.points[0] = TaggableUtil.convertFromZoomToOriginal(mousePos, this.$image);
         this.dconfig.mouseDown = true;
     };
 
     DrawingBoard.prototype.finishRect = function(event) {
-        var point = TaggableUtil.getCoordinates(event);
-        this.points[1] = TaggableUtil.convertFromZoomToOriginal(point, this.$image);
+        var mousePos = this.stage.getPointerPosition(event);
+        this.points[1] = TaggableUtil.convertFromZoomToOriginal(mousePos, this.$image);
         this.dconfig.mouseDown = false;
     };
 
@@ -116,12 +123,11 @@ define(deps, function($, _, util, TaggableUtil, DrawingBoardTmpl) {
         // should do nothing if the mouse is not held down
         if (this.dconfig.mouseDown) {
             // converts the events x,y values to create a point that is local to the canvas
-            var point = TaggableUtil.getCoordinates(event);
+            var mousePos = this.stage.getPointerPosition(event);
 
             // since the canvas is most likely zoomed in we must convert back to original points for
             // storing so that they can be properly scaled and stored through ajax later
-            point = TaggableUtil.convertFromZoomToOriginal(point, this.$image);
-            this.points[1] = point;
+            this.points[1] = TaggableUtil.convertFromZoomToOriginal(mousePos, this.$image);
 
             // converts the points array to an array of zoomed points instead
             var drawPoints = [];
@@ -140,16 +146,16 @@ define(deps, function($, _, util, TaggableUtil, DrawingBoardTmpl) {
     ---------------------------------------------------------------------------------
     */
     DrawingBoard.prototype.startPoly = function(event) {
-        var point = TaggableUtil.getCoordinates(event);
+        var mousePos = this.stage.getPointerPosition(event);
         this.points = [];
-        this.points.push(TaggableUtil.convertFromZoomToOriginal(point, this.$image));
+        this.points.push(TaggableUtil.convertFromZoomToOriginal(mousePos, this.$image));
         this.dconfig.n = 1;
         this.dconfig.mouseDown = true;
     };
 
     DrawingBoard.prototype.finishPoly = function(event) {
-        var point = TaggableUtil.getCoordinates(event);
-        this.points.push(TaggableUtil.convertFromZoomToOriginal(point, this.$image));
+        var mousePos = this.stage.getPointerPosition(event);
+        this.points.push(TaggableUtil.convertFromZoomToOriginal(mousePos, this.$image));
         this.dconfig.mouseDown = false;
     };
 
@@ -158,11 +164,11 @@ define(deps, function($, _, util, TaggableUtil, DrawingBoardTmpl) {
         // be called every time because it will produce too many points
         if (this.dconfig.mouseDown && this.dconfig.n % 8 == 1) {
             // converts the events x,y values to create a point that is local to the canvas
-            var point = TaggableUtil.getCoordinates(event);
+            var mousePos = this.stage.getPointerPosition(event);
 
             // since the canvas is most likely zoomed in we must convert back to original points for
             // storing so that they can be properly scaled and stored through ajax later
-            point = TaggableUtil.convertFromZoomToOriginal(point, this.$image);
+            point = TaggableUtil.convertFromZoomToOriginal(mousePos, this.$image);
             this.points.push(point);
 
             // converts the points array to an array of zoomed points instead
@@ -196,26 +202,27 @@ define(deps, function($, _, util, TaggableUtil, DrawingBoardTmpl) {
     };
 
     DrawingBoard.prototype.draw = function(points, refresh) {
-        var canvas = this.$board[0];
-        // checks to see if the canvas should be refreshed
-        if (refresh) {
-            canvas.width = canvas.width;
-        }
-        var context = canvas.getContext("2d");
+        // creates a polygon with the points
+        var poly = new Kinetic.Line({
+            closed: true,
+            points: $.map( drawPoints, function(point){return [point.x, point.y]}),
+            fill: this.dconfig.fillStyle,
+            stroke: "rgba(255,255,255,0)",
+            strokeWidth: 1
+        });
 
-        // goes through each point and draws the polygon
-        context.beginPath();
-        context.moveTo(points[0].x, points[0].y);
-        for (var i = 1; i < points.length; i++) {
-            context.lineTo(points[i].x, points[i].y);
-        }
-        context.closePath();
+        // clear the original stage and resize it
+        this.stage.setSize({
+            'width': this.$board.width(),
+            'height': this.$board.height()
+        });
 
-        if (this.dconfig.fillStyle != "") {
-            context.fillStyle = this.dconfig.fillStyle;
-            context.fill();
-        }
-        context.stroke();
+        this.stage.removeChildren();
+
+        var layer = new Kinetic.Layer();
+        layer.add(poly);
+
+        this.stage.add(layer);
     };
 
     return {

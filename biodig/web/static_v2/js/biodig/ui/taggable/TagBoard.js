@@ -51,7 +51,6 @@ define(deps, function($, _, Kinetic, util, taggable_util, TagBoardTmpl, jquery_u
 
             return poly;
         }
-
     };
 
     var TagBoardEvents = {
