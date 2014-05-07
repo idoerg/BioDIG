@@ -16,7 +16,7 @@ import os
 '''
 def renderAction(request, *args, **kwargs):
 	authorized = False
-	query = request.path_info.split('media/')[1]
+	query = request.path_info.split(settings.MEDIA_URL)[1]
 	filename = os.path.join(settings.MEDIA_ROOT, query)
 
 	# check for thumbnail
@@ -24,7 +24,7 @@ def renderAction(request, *args, **kwargs):
 	if len(thumbnailCheck) > 1:
 		query = os.path.join('pictures', thumbnailCheck[1])
 
-	query = os.path.join(settings.MEDIA_ROOT, query)
+	query = os.path.join(settings.MEDIA_URL, query)
 
 	if request.user and request.user.is_authenticated():
 		if request.user.is_staff:
