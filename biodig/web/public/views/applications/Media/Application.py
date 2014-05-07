@@ -16,25 +16,25 @@ import os
 '''
 def renderAction(request, *args, **kwargs):
 	authorized = False
-	query = request.path_info.split(settings.MEDIA_URL)[1]
 	filename = os.path.join(settings.MEDIA_ROOT, query)
 
 	# check for thumbnail
-	thumbnailCheck = query.split('thumbnails/')
-	if len(thumbnailCheck) > 1:
-		query = os.path.join('pictures', thumbnailCheck[1])
-
-	query = os.path.join(settings.MEDIA_URL, query)
+	thumbnailCheck = len(request.path_info.split(settings.MEDIA_URL)[1].split('thumbnails/')) > 1
 
 	if request.user and request.user.is_authenticated():
 		if request.user.is_staff:
 			authorized = True
 		else:
-			authorized = Image.objects.get(imageName=query).readPermissions(request.user)
+			if thumbnailCheck:
+				authorized = Image.objects.get(thumbnail=request.path_info).readPermissions(request.user)
+			else:
+				authorized = Image.objects.get(imageName=request.path_info).readPermissions(request.user)
 	else:
 		try:
-			authorized = not Image.objects.get(imageName=query).isPrivate
-			return HttpResponse("Authorized: " + str(authorized))
+			if thumbnailCheck:
+				authorized = not Image.objects.get(thumbnail=request.path_info).isPrivate
+			else:
+				authorized = not Image.objects.get(imageName=request.path_info).isPrivate
 		except Exception as e:
 			return HttpResponse("Error: " + str(e) + " for query: " + query)
 			#return HttpResponseNotFound()
