@@ -25,6 +25,11 @@
                     </option>
                 <% }); %>
             </select>
+            <%
+               }
+               else if (typeof group !== "undefined") {
+            %>
+                <input type="hidden" name="group" value="<%= group %>" />
             <% } %>
         </div>
     </div>
