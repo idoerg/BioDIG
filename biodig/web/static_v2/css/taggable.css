@@ -71,6 +71,7 @@
 	min-height: 40px;
 	width: 100%;
 	position: absolute;
+	z-index: 1000;
 }
 
 .toolbar-icon {
