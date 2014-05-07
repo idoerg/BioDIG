@@ -153,7 +153,7 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
         return $.Deferred(function(deferred_obj) {
             $.when(self.tagGroupClient.create(opts.name))
                 .done(function(tagGroup) {
-                    tagGroup.visible = false;
+                    tagGroup.visible = true; // make tag group visible by default
                     self.tagGroups_cache[tagGroup.id] = tagGroup;
                     self.tags_cache[tagGroup.id] = {
                         client: TagClient.create({
@@ -162,6 +162,10 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
                         }),
                         tags: null
                     };
+
+                    // emit event so that UI components can update
+                    $(self).trigger('tagGroups:change');
+
                     deferred_obj.resolve(tagGroup);
                 })
                 .fail(function(e) {
@@ -176,6 +180,10 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
             $.when(self.tagGroupClient.update(id, opts.name))
                 .done(function(tagGroup) {
                     self.tagGroups_cache[tagGroup.id] = tagGroup;
+
+                    // emit event so that UI components can update
+                    $(self).trigger('tagGroups:change');
+
                     deferred_obj.resolve(tagGroup);
                 })
                 .fail(function(e) {
@@ -203,6 +211,10 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
                             })
                         }
                     });
+
+                    // emit event so that UI components can update
+                    $(self).trigger('tagGroups:change');
+
                     deferred_obj.resolve(tagGroup);
                 })
                 .fail(function(e) {
@@ -280,6 +292,10 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
                 .done(function(tag) {
                     self.tags_cache[tag.id] = tag;
                     self.tags_cache.all[tag.id] = tag;
+
+                    // emit event so that UI components can update
+                    $(self).trigger('tags:change');
+
                     deferred_obj.resolve(tag);
                 })
                 .fail(function(e) {
@@ -298,6 +314,10 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
                 .done(function(tag) {
                     self.tags_cache[tag.id] = tag;
                     self.tags_cache.all[tag.id] = tag;
+
+                    // emit event so that UI components can update
+                    $(self).trigger('tags:change');
+
                     deferred_obj.resolve(tag);
                 })
                 .fail(function(e) {
@@ -319,6 +339,10 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
                     // TODO: Delete gene links
                     delete self.tags_cache[tag.group].tags[id];
                     delete self.tags_cache.all[id];
+
+                    // emit event so that UI components can update
+                    $(self).trigger('tags:change');
+
                     deferred_obj.resolve(tag);
                 })
                 .fail(function(e) {

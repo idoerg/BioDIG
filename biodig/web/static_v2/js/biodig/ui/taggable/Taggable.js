@@ -126,6 +126,7 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, OrganismDao, ImageMenu
 
             this.publicController.controls('on', 'dialog');
             this.publicController.controls('on', 'menu');
+            this.publicController.controls('on', 'tagboard');
 
             // optionally install the registered features
             if (opts.mode == ACCEPTED_MODES.REGISTERED) {

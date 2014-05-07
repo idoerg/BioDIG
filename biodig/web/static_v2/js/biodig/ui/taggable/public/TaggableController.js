@@ -81,6 +81,25 @@ define(deps, function($, util) {
                     });
             });
         },
+        setupTagBoardControls: function() {
+            $(this.imageDao).on('tagGroups:change tags:change', function() {
+                $.when(self.imageDao.tagGroups({'visible' : true}))
+                    .done(function(tagGroups) {
+                        $.when(self.imageDao.tags(tagGroups))
+                            .done(function(tags) {
+                                self.tagBoard.draw(tags);
+                            })
+                            .fail(function(e) {
+                                console.error(e.detail || e.message);
+                            });
+                    })
+                    .fail(function() {
+                        console.error(e.detail || e.message);
+                    });
+            });
+
+
+        },
         tearDownZoomableControls: function() {
             $(self.zoomable).off('zoom.public');
         },
@@ -98,6 +117,9 @@ define(deps, function($, util) {
             this.menu.section('tools').item('zoomOut').off('click');
 
             this.menu.section('tagGroups').item('changeVisibleTagGroups').off('click');
+        },
+        tearDownTagBoardControls: function() {
+            $(this.imageDao).off('tagGroups:change tags:change');
         }
     };
 
@@ -108,12 +130,14 @@ define(deps, function($, util) {
             'on' : {
                 'dialog': util.scope(this.taggable, Helper.setupDialogControls),
                 'zoom': util.scope(this.taggable, Helper.setupZoomControls),
-                'menu': util.scope(this.taggable, Helper.setupMenuControls)
+                'menu': util.scope(this.taggable, Helper.setupMenuControls),
+                'tagboard': util.scope(this.taggable, Helper.setupTagBoardControls)
             },
             'off' : {
                 'dialog': util.scope(this.taggable, Helper.tearDownDialogControls),
                 'zoom': util.scope(this.taggable, Helper.tearDownZoomControls),
-                'menu': util.scope(this.taggable, Helper.tearDownMenuControls)
+                'menu': util.scope(this.taggable, Helper.tearDownMenuControls),
+                'tagboard': util.scope(this.taggable, Helper.tearDownTagBoardControls)
             }
         }
     }
