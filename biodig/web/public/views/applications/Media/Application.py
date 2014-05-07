@@ -32,7 +32,7 @@ def renderAction(request, *args, **kwargs):
 			authorized = not Image.objects.get(imageName=query).isPrivate
 			return HttpResponse("Authorized: " + str(authorized))
 		except Exception as e:
-			return HttpResponse("Error: " + str(e))
+			return HttpResponse("Error: " + str(e) + " for query: " + query)
 			#return HttpResponseNotFound()
 
 	if authorized:
