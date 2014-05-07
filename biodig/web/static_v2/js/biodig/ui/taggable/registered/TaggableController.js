@@ -390,9 +390,10 @@ define(deps, function($, util) {
             menu: function() {
                 var self = this;
                 $(this.drawingMenu).on('submit', function() {
-                    self.imageDao.tagGroups({'visible': true})
+                    self.imageDao.tagGroups()
                         .done(function(tagGroups) {
                             self.drawingBoard.end();
+
                             var data = {
                                 'color': $.extend(self.drawingMenu.color, self.drawingMenu.alpha),
                                 'points': self.drawingBoard.points,
