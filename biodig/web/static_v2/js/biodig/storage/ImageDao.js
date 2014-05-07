@@ -150,28 +150,54 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
 
     ImageDao.prototype.addTagGroup = function(opts) {
         var self = this;
-        return $.Deferred(function(deferred_obj) {
-            $.when(self.tagGroupClient.create(opts.name))
-                .done(function(tagGroup) {
-                    tagGroup.visible = true; // make tag group visible by default
-                    self.tagGroups_cache[tagGroup.id] = tagGroup;
-                    self.tags_cache[tagGroup.id] = {
-                        client: TagClient.create({
-                            'image_id' : self.image_id,
-                            'tag_group_id' : tagGroup.id
-                        }),
-                        tags: null
-                    };
 
-                    // emit event so that UI components can update
-                    $(self).trigger('tagGroups:change');
+        var add = function() {
+            return $.Deferred(function(deferred_obj) {
+                $.when(self.tagGroupClient.create(opts.name))
+                    .done(function(tagGroup) {
+                        tagGroup.visible = true; // make tag group visible by default
+                        self.tagGroups_cache[tagGroup.id] = tagGroup;
+                        self.tags_cache[tagGroup.id] = {
+                            client: TagClient.create({
+                                'image_id' : self.image_id,
+                                'tag_group_id' : tagGroup.id
+                            }),
+                            tags: null
+                        };
 
-                    deferred_obj.resolve(tagGroup);
-                })
-                .fail(function(e) {
-                    deferred_obj.reject(e);
-                });
-        });
+                        // emit event so that UI components can update
+                        $(self).trigger('tagGroups:change');
+
+                        deferred_obj.resolve(tagGroup);
+                    })
+                    .fail(function(e) {
+                        deferred_obj.reject(e);
+                    });
+            }).promise();
+        }
+
+
+        if (this.tagGroups_cache == null) {
+            return $.Deferred(function() {
+                this.tagGroups()
+                    .done(function() {
+                        $.when(add())
+                            .done(function(group) {
+                                deferred_obj.resolve(group);
+                            })
+                            .fail(function(e) {
+                                deferred_obj.reject(e);
+                            });
+                    })
+                    .fail(function(e) {
+                        deferred_obj.reject(e);
+                    });
+            }).promise();
+        }
+        else {
+            return add();
+        }
+
     };
 
     ImageDao.prototype.editTagGroup = function(id, opts) {
