@@ -178,7 +178,7 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
 
 
         if (this.tagGroups_cache == null) {
-            return $.Deferred(function() {
+            return $.Deferred(function(deferred_obj) {
                 self.tagGroups()
                     .done(function() {
                         $.when(add())
