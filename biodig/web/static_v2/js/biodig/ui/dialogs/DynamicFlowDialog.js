@@ -59,7 +59,7 @@ define(deps, function($, _, util, DialogStructureTmpl) {
     DynamicFlowDialog.prototype.show = function(data) {
         var self = this;
         var box = $(this.$el.attr('id'));
-        this.current = -1;
+        this.current = this.first;
         var nextView = util.scope(this, Helper.nextView);
         if (box.length > 0) {
             box.find('.modal-body').empty().append(nextView(data));
@@ -80,8 +80,8 @@ define(deps, function($, _, util, DialogStructureTmpl) {
     };
 
     return {
-        create: function(name, title, nodes) {
-            return new DynamicFlowDialog(name, title, nodes);
+        create: function(name, title, first) {
+            return new DynamicFlowDialog(name, title, first);
         }
     };
 });
