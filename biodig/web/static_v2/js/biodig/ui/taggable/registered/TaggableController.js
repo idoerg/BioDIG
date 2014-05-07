@@ -328,17 +328,7 @@ define(deps, function($, util) {
             },
             tags: function() {
                 var self = this;
-                $(this.dialogs.get('AddTag')).on('accept', function(event, $el) {
-                    var $body = $el.find('.modal-body');
-                    var data = {
-                        'group': $.parseJSON(
-                            unescape($body.find('.select-tag-group option:selected').data('tagGroup'))
-                        ).id,
-                        'name': $body.find('input[name="name"]').val(),
-                        'points': $.parseJSON(unescape($body.find('input[name="points"]').val())),
-                        'color': $.parseJSON(unescape($body.find('input[name="color"]').val()))
-                    };
-
+                $(this.dialogs.get('AddTag')).on('accept', function(event, $el, data) {
                     $.when(self.imageDao.addTag(data))
                         .done(function(tag) {
                             console.log("Successful save of tag: " + tag);

@@ -11,12 +11,11 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
 
     var registeredDeps = [
         'biodig/ui/dialogs/DynamicFlowDialog', 'biodig/ui/taggable/flows/EditTagGroupFlow',
-        'biodig/ui/taggable/flows/EditTagFlow',
+        'biodig/ui/taggable/flows/EditTagFlow','biodig/ui/taggable/flows/AddTagFlow',
         'text!biodig/tmpl/taggable/dialogs/choose-organism.html',
         'text!biodig/tmpl/taggable/dialogs/choose-tag-group.html',
         'text!biodig/tmpl/taggable/dialogs/choose-tag.html',
         'text!biodig/tmpl/taggable/dialogs/edit-tag-group.html',
-        'text!biodig/tmpl/taggable/dialogs/edit-tag.html',
         'text!biodig/tmpl/taggable/dialogs/add-gene-link.html'
     ];
 
@@ -37,8 +36,8 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
         var self = this;
         return $.Deferred(function(deferred_obj) {
             require(registeredDeps, function(DynamicFlowDialog, EditTagGroupFlow,
-                EditTagFlow, ChooseOrganismTmpl, ChooseTagGroupTmpl, ChooseTagTmpl,
-                EditTagGroupTmpl, EditTagTmpl, AddGeneLinkTmpl) {
+                EditTagFlow, AddTagFlow, ChooseOrganismTmpl, ChooseTagGroupTmpl, ChooseTagTmpl,
+                EditTagGroupTmpl, AddGeneLinkTmpl) {
 
                 /*var addGeneLinkFlow = [
                     FlowNode.create(_.template(ChooseTagTmpl), function(body) {
@@ -74,7 +73,7 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
                     'DeleteTagGroup': DynamicDialog.create('DeleteTagGroup', 'Delete Tag Group',
                         _.template(ChooseTagGroupTmpl)),
                     'AddTag': DynamicFlowDialog.create('AddTag', 'Add Tag',
-                        _.template(EditTagTmpl)),
+                        AddTagFlow.get()),
                     'EditTag': DynamicFlowDialog.create('EditTag', 'Edit Tag',
                         EditTagFlow.get()),
                     'DeleteTag': DynamicDialog.create('DeleteTag', 'Delete Tag',

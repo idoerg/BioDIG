@@ -3,6 +3,12 @@
         <h2>Select a Tag Group</h2>
     </div>
     <div>
+        <% if (typeof points !== "undefined") { %>
+            <input type="hidden" value="<%= escape(JSON.stringify(points)) %>" />
+        <% } %>
+        <% if (typeof color !== "undefined") { %>
+            <input type="hidden" value="<%= escape(JSON.stringify(color)) %>" />
+        <% } %>
         <select class="select-tag-group form-control">
             <% _.each(tagGroups, function(tagGroup, id) { %>
                 <option data-tag-group="<%= escape(JSON.stringify(tagGroup)) %>"><%= tagGroup.name %></option>

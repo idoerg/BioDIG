@@ -4,10 +4,38 @@ define([], function() {
         this.transition = transition;
         this.beforeCheck = null;
         this.mydata = null;
+        this.nextNode = null;
+        this.prevNode = null;
     }
 
     FlowNode.prototype.data = function(data) {
         this.mydata = data;
+    };
+
+    FlowNode.prototype.next = function(node) {
+        if (arguments.length > 0) {
+            // if a parameter is given then we are treating this
+            // as a setter, which is chainable
+            this.nextNode = node;
+            return this;
+        }
+        else {
+            // other wise this is used as a getter
+            return this.nextNode;
+        }
+    };
+
+    FlowNode.prototype.prev = function(node) {
+        if (arguments.length > 0) {
+            // if a parameter is given then we are treating this
+            // as a setter, which is chainable
+            this.prevNode = node;
+            return this;
+        }
+        else {
+            // other wise this is used as a getter
+            return this.nextNode;
+        }
     };
 
     FlowNode.prototype.nextData = function() {

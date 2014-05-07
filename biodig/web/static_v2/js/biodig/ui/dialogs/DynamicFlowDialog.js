@@ -11,37 +11,36 @@ define(deps, function($, _, util, DialogStructureTmpl) {
         nextView: function(data) {
             // get the next node and move the current pointer
             // (this shouldn't be called on a final node)
-            this.current++;
-            var nextNode = this.nodes[this.current];
-            nextNode.data(data);
+            this.current = this.current.next();
+            this.current.data(data);
 
             // check to see if we can automate this stage of the workflow
             // and skip it altogether
-            var nextData = nextNode.skip();
+            var nextData = this.current.skip();
             if (nextData) {
                 return util.scope(this, Helper.nextView)(nextData);
             }
 
-            return nextNode.view();
+            return this.current.view();
         }
     };
 
-    function DynamicFlowDialog(name, title, nodes) {
-        this.nodes = nodes;
+    function DynamicFlowDialog(name, title, first) {
+        this.first = first;
         this.$el = $(DialogStructureTemplate({ 'name' : name, 'title': title }));
-        this.current = 0;
+        this.current = this.first;
 
         var self = this;
         var nextView = util.scope(this, Helper.nextView);
         // setup the listener for the Dialog on click
         this.$el.find('.accept').on('click', function() {
-            if (self.current + 1 < self.nodes.length) {
+            if (self.current.next()) {
                 var $body = self.$el.find('.modal-body');
-                var data = self.nodes[self.current].nextData($body);
+                var data = self.current.nextData($body);
                 $body.empty().append(nextView(data));
 
                 // set the accept button to say "Accept" if we have moved to the last node
-                if (self.current == self.nodes.length - 1) {
+                if (self.current.next() == null) {
                     var $accept = self.$el.find('.accept');
                     $accept.text('Accept');
                 }
@@ -50,7 +49,7 @@ define(deps, function($, _, util, DialogStructureTmpl) {
             }
             else {
                 var $body = self.$el.find('.modal-body');
-                var data = self.nodes[self.current].nextData($body);
+                var data = self.current.nextData($body);
                 $(self).trigger('accept', [self.$el, data]);
                 self.$el.modal('hide');
             }

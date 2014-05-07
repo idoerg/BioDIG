@@ -22,9 +22,15 @@ define(deps, function($, FlowNode, ChooseTagGroupTmpl, EditTagGroupTmpl) {
         })
     ];
 
+    // set the pointers according the array order for ease
+    for (var i = 0; i < EditTagGroupFlow.length; i++) {
+        if (i < EditTagGroupFlow.length - 1) EditTagGroupFlow[i].next(EditTagGroupFlow[i+1]);
+        if (i > 0) EditTagGroupFlow[i].prev(EditTagGroupFlow[i-1]);
+    }
+
     return {
         get: function() {
-            return EditTagGroupFlow;
+            return EditTagGroupFlow[0];
         }
     }
 });
