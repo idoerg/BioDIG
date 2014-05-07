@@ -68,7 +68,7 @@
 }
 
 .status-messages-container {
-	min-height: 40px;
+	min-height: 30px;
 	width: 100%;
 	position: absolute;
 	z-index: 1000;

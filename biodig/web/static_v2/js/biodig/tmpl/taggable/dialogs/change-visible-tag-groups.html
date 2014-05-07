@@ -1,6 +1,7 @@
 <div>
-    <% _.each(tagGroups, function(tagGroup, index) { %>
-        <% if (index % 2 == 0) { %>
+    <%  var i = 0;
+        _.each(tagGroups, function(tagGroup, index) { %>
+        <% if (i % 2 == 0) { %>
         <div class="row">
         <% } %>
             <div class="col-sm-6">
@@ -11,8 +12,11 @@
                         <span><%= tagGroup.name %></span>
                     </label>
                 </div>
-        <% if (index % 2 == 0) { %>
+        <% if (i % 2 == 0) { %>
         </div>
         <% } %>
-    <% }) %>
+    <%
+            i++;
+        })
+    %>
 </div>
