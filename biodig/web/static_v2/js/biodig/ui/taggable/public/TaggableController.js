@@ -86,7 +86,11 @@ define(deps, function($, util) {
             $(this.imageDao).on('tagGroups:change tags:change', function() {
                 $.when(self.imageDao.tagGroups({'visible' : true}))
                     .done(function(tagGroups) {
-                        $.when(self.imageDao.tags(tagGroups))
+                        var ids = $.map(tagGroups, function(tagGroup) {
+                            return tagGroup.id;
+                        });
+
+                        $.when(self.imageDao.tags(ids))
                             .done(function(tags) {
                                 self.tagBoard.draw(tags);
                             })
