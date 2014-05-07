@@ -211,17 +211,19 @@ define(deps, function($, _, Kinetic, util, TaggableUtil, DrawingBoardTmpl) {
         // creates a polygon with the points
         var poly = new Kinetic.Line({
             closed: true,
-            points: $.map( drawPoints, function(point){return [point.x, point.y]}),
+            points: $.map( points, function(point){return [point.x, point.y]}),
             fill: this.dconfig.fillStyle,
             stroke: "rgba(255,255,255,0)",
             strokeWidth: 1
         });
 
-        // clear the original stage and resize it
-        this.stage.setSize({
-            'width': this.$board.width(),
-            'height': this.$board.height()
-        });
+        if (refresh) {
+            // clear the original stage and resize it
+            this.stage.setSize({
+                'width': this.$board.width(),
+                'height': this.$board.height()
+            });
+        }
 
         this.stage.removeChildren();
 
