@@ -4,10 +4,10 @@
     </div>
     <div>
         <% if (typeof points !== "undefined") { %>
-            <input type="hidden" value="<%= escape(JSON.stringify(points)) %>" />
+            <input type="hidden" name="points" value="<%= escape(JSON.stringify(points)) %>" />
         <% } %>
         <% if (typeof color !== "undefined") { %>
-            <input type="hidden" value="<%= escape(JSON.stringify(color)) %>" />
+            <input type="hidden" name="color" value="<%= escape(JSON.stringify(color)) %>" />
         <% } %>
         <select class="select-tag-group form-control">
             <% _.each(tagGroups, function(tagGroup, id) { %>

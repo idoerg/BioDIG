@@ -21,9 +21,10 @@ define(deps, function($, FlowNode, ChooseTagGroupTmpl, EditTagTmpl) {
                 return data;
             }
 
-            // if there is only one tag gorup skip this step
-            if (data.tagGroups.length == 1) {
-                data.group = data.tagGroups[0];
+            var keys = Object.keys(data.tagGroups);
+            // if there is only one tag group skip this step
+            if (keys.length == 1) {
+                data.group = data.tagGroups[keys[0]];
                 delete data.tagGroups;
                 return data;
             }
