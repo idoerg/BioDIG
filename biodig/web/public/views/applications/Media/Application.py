@@ -1,7 +1,7 @@
 '''
 	Application for the Images Page of the DOME
 	URL: /images
-	
+
 	Author: Andrew Oberlin
 	Date: July 23, 2012
 '''
@@ -30,9 +30,10 @@ def renderAction(request, *args, **kwargs):
 	else:
 		try:
 			authorized = not Image.objects.get(imageName=query).isPrivate
+			return HttpResponse("Authorized: " + str(authorized))
 		except Exception:
 			return HttpResponseNotFound()
-	
+
 	if authorized:
 		try:
 			response = HttpResponse(FileWrapper(file(filename)), mimetype="image/png")
