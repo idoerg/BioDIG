@@ -60,6 +60,12 @@ define([], function() {
 
     return {
         create: function(template, transition) {
+            if (arguments.length < 2) {
+                if (arguments.length == 0) {
+                    template = null;
+                }
+                transition = null;
+            }
             return new FlowNode(template, transition);
         }
     }

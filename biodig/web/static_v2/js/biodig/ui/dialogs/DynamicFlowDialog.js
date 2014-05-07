@@ -1,9 +1,9 @@
 var deps = [
-    'jquery', 'underscore', 'lib/util',
+    'jquery', 'underscore', 'lib/util', 'biodig/ui/dialogs/FlowNode',
     'text!biodig/tmpl/taggable/dialogs/structure.html'
 ];
 
-define(deps, function($, _, util, DialogStructureTmpl) {
+define(deps, function($, _, util, FlowNode, DialogStructureTmpl) {
 
     var DialogStructureTemplate = _.template(DialogStructureTmpl);
 
@@ -26,7 +26,7 @@ define(deps, function($, _, util, DialogStructureTmpl) {
     };
 
     function DynamicFlowDialog(name, title, first) {
-        this.first = first;
+        this.first = FlowNode.create().before(function(data) { return data; }).next(first);
         this.$el = $(DialogStructureTemplate({ 'name' : name, 'title': title }));
         this.current = this.first;
 
