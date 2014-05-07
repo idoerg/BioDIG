@@ -29,7 +29,7 @@
                }
                else if (typeof group !== "undefined") {
             %>
-                <input type="hidden" name="group" value="<%= group %>" />
+                <input type="hidden" name="group" value="<%= escape(JSON.stringify(group)) %>" />
             <% } %>
         </div>
     </div>
