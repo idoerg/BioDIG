@@ -48,6 +48,12 @@ define(deps, function($, _, Kinetic, util, TaggableUtil, DrawingBoardTmpl) {
         this.$board.height(this.$image.height());
         this.$board.width(this.$image.width());
 
+        // clear the original stage and resize it
+        this.stage.setSize({
+            'width': this.$board.width(),
+            'height': this.$board.height()
+        });
+
         this.redraw();
     };
 
