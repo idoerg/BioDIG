@@ -332,7 +332,9 @@ define(deps, function($, util) {
                 $(this.dialogs.get('AddTag')).on('accept', function(event, $el, data) {
                     $.when(self.imageDao.addTag(data))
                         .done(function(tag) {
-                            console.log("Successful save of tag: " + tag);
+                            self.messager.add(self.messager.SUCCESS, 'Added tag "' + tag.name + '"');
+                            self.drawingBoard.hide();
+                            self.drawingMenu.hide();
                         })
                         .fail(function(e) {
                             console.error(e.detail || e.message);
@@ -341,6 +343,7 @@ define(deps, function($, util) {
 
                 $(this.dialogs.get('AddTag')).on('close', function() {
                     self.drawingBoard.end();
+                    self.drawingBoard.hide();
                     self.drawingMenu.hide();
                 });
 

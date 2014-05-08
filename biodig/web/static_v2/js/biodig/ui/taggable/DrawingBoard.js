@@ -97,8 +97,16 @@ define(deps, function($, _, Kinetic, util, TaggableUtil, DrawingBoardTmpl) {
         }));
     };
 
-    DrawingBoard.prototype.end = function() {
+    DrawingBoard.prototype.hide = function() {
         this.$board.removeClass('show').addClass('hidden');
+    };
+
+    DrawingBoard.prototype.end = function() {
+        // refresh the drawing board to remove layer
+        this.stage.setSize({
+            'width': this.$board.width(),
+            'height': this.$board.height()
+        });
 
         this.$board.off('mousedown');
         this.$board.off('mouseup');
