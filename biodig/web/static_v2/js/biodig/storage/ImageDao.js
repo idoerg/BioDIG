@@ -197,7 +197,6 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
         else {
             return add();
         }
-
     };
 
     ImageDao.prototype.editTagGroup = function(id, opts) {
@@ -310,24 +309,58 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
 
     ImageDao.prototype.addTag = function(opts) {
         var self = this;
-        return $.Deferred(function(deferred_obj) {
-            // find the correct tag client
-            var client = self.tags_cache[opts.group].client;
 
-            $.when(client.create(opts.name, opts.points, opts.color))
-                .done(function(tag) {
-                    self.tags_cache[tag.group].tags[tag.id] = tag;
-                    self.tags_cache.all[tag.id] = tag;
+        var add = function() {
+            return $.Deferred(function(deferred_obj) {
+                // find the correct tag client
+                var client = self.tags_cache[opts.group].client;
 
-                    // emit event so that UI components can update
-                    $(self).trigger('tags:change');
+                $.when(client.create(opts.name, opts.points, opts.color))
+                    .done(function(tag) {
+                        self.tags_cache[tag.group].tags[tag.id] = tag;
+                        self.tags_cache.all[tag.id] = tag;
 
-                    deferred_obj.resolve(tag);
-                })
-                .fail(function(e) {
-                    deferred_obj.reject(e);
-                });
-        }).promise();
+                        // emit event so that UI components can update
+                        $(self).trigger('tags:change');
+
+                        deferred_obj.resolve(tag);
+                    })
+                    .fail(function(e) {
+                        deferred_obj.reject(e);
+                    });
+            }).promise();
+        };
+        
+        if (this.tags_cache[opts.group].tags == null) {
+            return $.Deferred(function(deferred_obj) {
+                self.tagGroups()
+                    .done(function(tagGroups) {
+                        var ids = $.map(tagGroups, function(tagGroup) {
+                            return tagGroup.id;
+                        });
+
+                        self.tags(ids)
+                            .done(function(tags) {
+                                $.when(add())
+                                    .done(function(group) {
+                                        deferred_obj.resolve(group);
+                                    })
+                                    .fail(function(e) {
+                                        deferred_obj.reject(e);
+                                    });
+                            })
+                            .fail(function(e) {
+                                deferred_obj.reject(e);
+                            });
+                    })
+                    .fail(function(e) {
+                        deferred_obj.reject(e);
+                    });
+            }).promise();
+        }
+        else {
+            return add();
+        }
     };
 
     ImageDao.prototype.editTag = function(id, opts) {
