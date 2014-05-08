@@ -10,9 +10,14 @@ define(deps, function($, _, TagInfoTmpl) {
         this.$container = $(selector);
     }
 
-    TagInfoView.prototype.add = function(tag) {
-        var $info = $(TagInfoTemplate(tag));
-        this.$container.append($info);
+    TagInfoView.prototype.add = function(tags) {
+        var self = this;
+        this.clear();
+
+        $.each(tags, function() {
+            var $info = $(TagInfoTemplate(tag));
+            self.$container.append($info);
+        });
     };
 
     TagInfoView.prototype.clear = function() {

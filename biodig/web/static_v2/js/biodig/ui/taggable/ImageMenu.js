@@ -55,7 +55,7 @@ define(deps, function($, _, Menu, MenuSection, MenuItem, settings) {
             // submit publication request
             var publication = menu.section('publication', 'Publication', 'img[' + settings.STATIC_URL +
                 'images/publication.png]');
-            geneLinks.item('add', 'Send Request', 'ui-icon ui-icon-plusthick');
+            publication.item('add', 'Send Request', 'ui-icon ui-icon-plusthick');
         }
     };
 
