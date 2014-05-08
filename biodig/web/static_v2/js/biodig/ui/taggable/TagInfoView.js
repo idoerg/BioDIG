@@ -14,7 +14,7 @@ define(deps, function($, _, TagInfoTmpl) {
         var self = this;
         this.clear();
 
-        $.each(tags, function() {
+        $.each(tags, function(id, tag) {
             var $info = $(TagInfoTemplate(tag));
             self.$container.append($info);
         });
