@@ -10,7 +10,7 @@ define(deps, function($, _, TagInfoTmpl) {
         this.$container = $(selector);
     }
 
-    TagInfoView.prototype.add = function(tags) {
+    TagInfoView.prototype.update = function(tags) {
         var self = this;
         this.clear();
 
