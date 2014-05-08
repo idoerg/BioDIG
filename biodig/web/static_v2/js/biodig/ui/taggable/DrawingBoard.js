@@ -107,6 +107,7 @@ define(deps, function($, _, Kinetic, util, TaggableUtil, DrawingBoardTmpl) {
             'width': this.$board.width(),
             'height': this.$board.height()
         });
+        this.stage.removeChildren();
 
         this.$board.off('mousedown');
         this.$board.off('mouseup');

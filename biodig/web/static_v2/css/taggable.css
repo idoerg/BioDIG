@@ -328,7 +328,8 @@ th {
 }
 
 .tag-list-container {
-	overflow-y: auto;
+	overflow-y: scroll;
+	height: 325px;
 }
 
 .current-tag-group-text {
