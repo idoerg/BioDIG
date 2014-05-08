@@ -339,6 +339,11 @@ define(deps, function($, util) {
                         })
                 });
 
+                $(this.dialogs.get('AddTag')).on('close', function() {
+                    self.drawingBoard.end();
+                    self.drawingMenu.hide();
+                });
+
                 $(this.dialogs.get('EditTag')).on('accept', function(event, $el, data) {
                     $.when(self.imageDao.editTag(data.id, data))
                         .done(function(tag) {
@@ -385,7 +390,7 @@ define(deps, function($, util) {
             follow: function() {
                 var self = this;
                 $(this.tagBoard).on('drag.drawing', function(event, ui) {
-                    self.drawingBoard.css('left', ui.position.left).css('top', ui.position.top);
+                    self.drawingBoard.$board.css('left', ui.position.left).css('top', ui.position.top);
                 });
             },
             menu: function() {
@@ -396,7 +401,7 @@ define(deps, function($, util) {
                             self.drawingBoard.end();
 
                             var data = {
-                                'color': $.extend(self.drawingMenu.color, self.drawingMenu.alpha),
+                                'color': $.extend({}, self.drawingMenu.color, self.drawingMenu.alpha),
                                 'points': self.drawingBoard.points,
                                 'tagGroups': tagGroups
                             };
