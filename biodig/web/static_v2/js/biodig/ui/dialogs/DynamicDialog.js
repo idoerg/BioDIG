@@ -17,7 +17,7 @@ define(deps, function($, _, util, DialogStructureTmpl) {
         });
 
         this.$el.find('.cancel').on('click', function() {
-            this.$el.modal('hide');
+            self.$el.modal('hide');
             $(self).trigger('close');
         });
     }
