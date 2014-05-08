@@ -109,7 +109,7 @@ define(deps, function($, util) {
                         var tags = self.tagBoard.selected();
                         var display = {};
                         $.each(tags, function(id, tag) {
-                            display[id] = $.extend({}, poly.tag, { 'group': tagGroups[tag.group].name });
+                            display[id] = $.extend({}, tag, { 'group': tagGroups[tag.group].name });
                             display[id].geneLinks = {};
                         });
 
