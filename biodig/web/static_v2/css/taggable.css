@@ -295,6 +295,10 @@ th {
 	height: 20px;
 }
 
+.tag-info > table > tbody > tr > td:first-child {
+	width: 90px;
+}
+
 .tag-list-title {
 	border-bottom: 1px solid #CCCCCC;
     display: block;

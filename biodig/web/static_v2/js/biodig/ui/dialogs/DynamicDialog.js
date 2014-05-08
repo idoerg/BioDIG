@@ -15,6 +15,10 @@ define(deps, function($, _, util, DialogStructureTmpl) {
             $(self).trigger('accept', [self.$el]);
             self.$el.modal('hide');
         });
+
+        this.$el.find('.close').on('click', function() {
+            $(self).trigger('close');
+        });
     }
 
     DynamicDialog.prototype.show = function(data) {
@@ -32,6 +36,10 @@ define(deps, function($, _, util, DialogStructureTmpl) {
 
     DynamicDialog.prototype.accept = function(callback) {
         $(self).trigger('accept', [self.$el]);
+    };
+
+    DynamicDialog.prototype.close = function(callback) {
+        this.$el.find('.close').first().trigger('click');
     };
 
     return {
