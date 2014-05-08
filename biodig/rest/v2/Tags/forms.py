@@ -187,7 +187,7 @@ class PostForm(forms.Form):
 
         # create the tag's color
         color = self.cleaned_data['color']
-        color = TagColor.objects.get_or_create(red=int(color['r']), green=int(color['g']), blue=int(color['b'], alpha=float(color['a'])))[0]
+        color = TagColor.objects.get_or_create(red=int(color['r']), green=int(color['g']), blue=int(color['b']), alpha=float(color['a']))[0]
 
         # start saving the new tag now that it has passed all tests
         tag = Tag(name=self.cleaned_data['name'], color=color, group=group, user=request.user)

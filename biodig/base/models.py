@@ -151,6 +151,7 @@ class TagColor(models.Model):
     green = models.IntegerField()
     blue = models.IntegerField()
     alpha = models.FloatField()
+    
     class Meta:
         db_table = u'tagcolor'
         app_label = u'base'
