@@ -55,7 +55,7 @@ define(deps, function($, _, util, FlowNode, DialogStructureTmpl) {
             }
         });
 
-        this.$el.find('.close').on('click', function() {
+        this.$el.find('.cancel').on('click', function() {
             $(self).trigger('close');
         });
     }
@@ -84,7 +84,7 @@ define(deps, function($, _, util, FlowNode, DialogStructureTmpl) {
     };
 
     DynamicFlowDialog.prototype.close = function(callback) {
-        this.$el.find('.close').first().trigger('click');
+        this.$el.find('.cancel').first().trigger('click');
     };
 
     return {
