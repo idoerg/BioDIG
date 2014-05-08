@@ -79,7 +79,8 @@ class FormCleaningUtil:
                 color[key] = val
 
         alpha = True
-        if 'a' not in data['color'] or not isinstance(data['color']['a'], float) or val < 0 or val > 1:
+        val = data['color']['a']
+        if 'a' not in data['color'] or not isinstance(val, numbers.Number) or val < 0 or val > 1:
             raise ValidationError("Value for alpha is not a float between 0 and 1")
         else:
             color['a'] = data['color']['a']
