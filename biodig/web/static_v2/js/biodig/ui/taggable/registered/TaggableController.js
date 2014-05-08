@@ -401,7 +401,7 @@ define(deps, function($, util) {
                             self.drawingBoard.end();
 
                             var data = {
-                                'color': $.extend({}, self.drawingMenu.color, self.drawingMenu.alpha),
+                                'color': $.extend({}, self.drawingMenu.color, {'a':self.drawingMenu.alpha}),
                                 'points': self.drawingBoard.points,
                                 'tagGroups': tagGroups
                             };
