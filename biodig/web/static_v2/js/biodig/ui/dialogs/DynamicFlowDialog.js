@@ -56,6 +56,7 @@ define(deps, function($, _, util, FlowNode, DialogStructureTmpl) {
         });
 
         this.$el.find('.cancel').on('click', function() {
+            this.$el.modal('hide');
             $(self).trigger('close');
         });
     }
