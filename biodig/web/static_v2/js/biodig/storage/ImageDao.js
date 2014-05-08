@@ -316,7 +316,7 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
 
             $.when(client.create(opts.name, opts.points, opts.color))
                 .done(function(tag) {
-                    self.tags_cache[tag.id] = tag;
+                    self.tags_cache[tag.group].tags[tag.id] = tag;
                     self.tags_cache.all[tag.id] = tag;
 
                     // emit event so that UI components can update
@@ -327,7 +327,7 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
                 .fail(function(e) {
                     deferred_obj.reject(e);
                 });
-        });
+        }).promise();
     };
 
     ImageDao.prototype.editTag = function(id, opts) {
@@ -338,7 +338,7 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
 
             $.when(client.update(id, opts.name))
                 .done(function(tag) {
-                    self.tags_cache[tag.id] = tag;
+                    self.tags_cache[tag.group].tags[tag.id] = tag;
                     self.tags_cache.all[tag.id] = tag;
 
                     // emit event so that UI components can update
@@ -349,7 +349,7 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
                 .fail(function(e) {
                     deferred_obj.reject(e);
                 });
-        });
+        }).promise();
     };
 
     ImageDao.prototype.deleteTag = function(id) {
@@ -374,7 +374,7 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
                 .fail(function(e) {
                     deferred_obj.reject(e);
                 });
-        });
+        }).promise();
     };
 
     ImageDao.prototype.geneLinks = function(tag_id) {
