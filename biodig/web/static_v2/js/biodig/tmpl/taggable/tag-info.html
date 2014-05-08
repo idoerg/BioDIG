@@ -1,0 +1,47 @@
+<div class="table-responsive">
+    <table class="table-condensed table-striped table-bordered">
+        <tbody>
+            <tr>
+                <td>Name</td>
+                <td><%= name %></td>
+            </tr>
+            <tr>
+                <td>Color</td>
+                <td>
+                    <div class="tag-info-color"
+                        style="background-color: rgba(<%= color.r %>, <%= color.g %>, <%= color.b %>, <%= color.a %>)">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Tag Group</td>
+                <td><%= group %></td>
+            </tr>
+            <tr>
+                <td>Genes</td>
+                <% if (Object.keys(geneLinks).length > 0) { %>
+                    <div class="table-responsive">
+                        <table class="table-condensed table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Uniquename</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% _.each(geneLinks, function(gene) { %>
+                                    <tr>
+                                        <td></td>
+                                    </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                <% }
+                   else {
+                %>
+                    <div>No Gene Links for this tag</div>
+                <% } %>
+        </tbody>
+    </table>
+</div>

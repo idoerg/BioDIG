@@ -51,6 +51,11 @@ define(deps, function($, _, Menu, MenuSection, MenuItem, settings) {
                 'images/geneLinksIcon.png]');
             geneLinks.item('add', 'Add New Gene To Tag', 'ui-icon ui-icon-plusthick');
             geneLinks.item('delete', 'Delete Gene From Tag', 'ui-icon ui-icon-trash');
+
+            // submit publication request
+            var publication = menu.section('publication', 'Publication', 'img[' + settings.STATIC_URL +
+                'images/publication.png]');
+            geneLinks.item('add', 'Send Request', 'ui-icon ui-icon-plusthick');
         }
     };
 

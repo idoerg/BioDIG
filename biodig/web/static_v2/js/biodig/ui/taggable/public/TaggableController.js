@@ -103,6 +103,24 @@ define(deps, function($, util) {
                     });
             });
 
+            $(this.tagBoard).on('poly:click', function(e, poly) {
+                if (self.tagBoard.locked) {
+                    // add the tag's information to the TagInfoView
+                    $.when(imageDao.tagGroups())
+                        .done(function(tagGroups) {
+                            var tag = $.extend({}, poly.tag, { 'group': tagGroups[tag.group].name });
+                            tag.geneLinks = {};
+                            self.tagInfo.add(tag);
+                        })
+                        .fail(function(e) {
+                            console.error(e.detail || e.message);
+                        });
+                }
+                else {
+                    // clear the TagInfoView
+                    self.tagInfo.clear();
+                }
+            })
 
         },
         tearDownZoomableControls: function() {

@@ -2,14 +2,14 @@ var deps = [
     'jquery', 'underscore', 'biodig/ui/zoomable/Zoomable', 'biodig/ui/taggable/TagBoard',
     'biodig/storage/ImageDao', 'biodig/storage/OrganismDao', 'biodig/ui/taggable/ImageMenu',
     'biodig/ui/taggable/DialogManager', 'biodig/ui/taggable/StatusMessager',
-    'biodig/ui/taggable/public/TaggableController', 'biodig/ui/taggable/DrawingMenu',
-    'biodig/ui/taggable/DrawingBoard', 'biodig/ui/taggable/registered/TaggableController',
-    'lib/util', 'text!biodig/tmpl/taggable/structure.html',
-    'text!biodig/tmpl/taggable/image-metadata.html'
+    'biodig/ui/taggable/TagInfoView', 'biodig/ui/taggable/public/TaggableController',
+    'biodig/ui/taggable/DrawingMenu', 'biodig/ui/taggable/DrawingBoard',
+    'biodig/ui/taggable/registered/TaggableController', 'lib/util',
+    'text!biodig/tmpl/taggable/structure.html', 'text!biodig/tmpl/taggable/image-metadata.html'
 ];
 
 define(deps, function($, _, Zoomable, TagBoard, ImageDao, OrganismDao, ImageMenu, DialogManager,
-    StatusMessager, PublicTaggableController, DrawingMenu, DrawingBoard,
+    StatusMessager, TagInfoView, PublicTaggableController, DrawingMenu, DrawingBoard,
     RegisteredTaggableController, util, TaggableTmpl, MetadataTmpl) {
 
     var ACCEPTED_MODES = {
@@ -20,7 +20,7 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, OrganismDao, ImageMenu
     var TaggableTemplate = _.template(TaggableTmpl);
     var MetadataTemplate = _.template(MetadataTmpl);
 
-    function TaggableImage(selector, opts) {
+    function Taggable(selector, opts) {
         // check to see if features were directly requested
         // otherwise use the "mode" to determine the feature set
         this.image = selector;
@@ -28,7 +28,7 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, OrganismDao, ImageMenu
         this.image_id = this.$image.data('image-id') || opts.image_id;
         if (!this.image_id) {
             throw {
-                'detail' : "No image_id given for the TaggableImage interface"
+                'detail' : "No image_id given for the Taggable interface"
             };
         }
 
@@ -65,6 +65,9 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, OrganismDao, ImageMenu
         // create the status messager
         this.messager = StatusMessager.create(this.$messages);
 
+        // create TagInfoView
+        this.tagInfo = TagInfoView.create(this.$right.find('.tag-list-container'));
+
         // start the public taggable controller
         this.publicController = PublicTaggableController.create(this);
 
@@ -73,7 +76,7 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, OrganismDao, ImageMenu
         // creates a canvas with methods for viewing tags and selecting them
         this.zoomable = Zoomable.create(this.image, $.extend({}, opts, {
             onload: function() {
-                util.scope(self, TaggableImageHelper.loadDrawingModule)(opts);
+                util.scope(self, TaggableHelper.loadDrawingModule)(opts);
             }
         }));
 
@@ -124,7 +127,7 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, OrganismDao, ImageMenu
             });
     }
 
-    var TaggableImageHelper = {
+    var TaggableHelper = {
         loadDrawingModule: function(opts) {
             var self = this;
             this.tagBoard = TagBoard.create(this.$image);
@@ -165,7 +168,7 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, OrganismDao, ImageMenu
 
             $.extend(defaults, opts);
 
-            return new TaggableImage(selector, defaults);
+            return new Taggable(selector, defaults);
         },
         MODES: ACCEPTED_MODES
     }
