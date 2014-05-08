@@ -9,7 +9,7 @@ define(deps, function($, _, Kinetic, util, taggable_util, TagBoardTmpl, jquery_u
 
     var TagDrawingUtil = {
         color: function(c) {
-            return "rgba(" + c.r + "," + c.g + "," + c.b + ",0.3)";
+            return "rgba(" + c.r + "," + c.g + "," + c.b + "," + c.a + ")";
         },
         poly: function(tag) {
             // converts the tag's points to the current zoom level
