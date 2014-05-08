@@ -107,6 +107,14 @@ define(deps, function($, util) {
                 $.when(self.imageDao.tagGroups())
                     .done(function(tagGroups) {
                         var tags = self.tagBoard.selected();
+
+                        if (!$.isEmptyObject(tags)) {
+                            self.$right.find('.tag-list-title').removeClass('hidden').addClass('show');
+                        }
+                        else {
+                            self.$right.find('.tag-list-title').removeClass('show').addClass('hidden');
+                        }
+
                         var display = {};
                         $.each(tags, function(id, tag) {
                             display[id] = $.extend({}, tag, { 'group': tagGroups[tag.group].name });

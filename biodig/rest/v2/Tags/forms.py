@@ -1,7 +1,7 @@
 '''
     This file holds all of the forms for the cleaning and validation of
     the parameters being used for Tags.
-    
+
     Created on February 10, 2013
 
     @author: Andrew Oberlin
@@ -24,7 +24,7 @@ class FormCleaningUtil:
         '''
         if data['image_id'] < 0: raise ValidationError("The given image id is incorrect.")
         return data['image_id']
-    
+
     @staticmethod
     def clean_tag_group_id(data):
         '''
@@ -32,7 +32,7 @@ class FormCleaningUtil:
         '''
         if data['tag_group_id'] < 0: raise ValidationError("The given tag group id is incorrect.")
         return data['tag_group_id']
-    
+
     @staticmethod
     def clean_tag_id(data):
         '''
@@ -49,7 +49,7 @@ class FormCleaningUtil:
         '''
         # check that the points are an array
         if not isinstance(data['points'], list):
-            raise ValidationError("A valid JSON array should be given for points parameter") 
+            raise ValidationError("A valid JSON array should be given for points parameter")
 
         # check if points array is 2 points or more in length
         if len(data['points']) < 2:
@@ -64,7 +64,7 @@ class FormCleaningUtil:
                 raise ValidationError("The y-value of a point must be a number")
 
         return data['points']
-    
+
     @staticmethod
     def clean_color(data):
         if not isinstance(data['color'], dict):
@@ -77,10 +77,17 @@ class FormCleaningUtil:
                     raise ValidationError("Value for key " + key + " is not an integer between 0 and 255")
                 accepted.remove(key)
                 color[key] = val
-                
-        if accepted: # missingkeys for color
+
+        alpha = True
+        if not isinstance(data['color']['a'], float) or val < 0 or val > 1:
+            raise ValidationError("Value for alpha is not a float between 0 and 1")
+        else:
+            color['a'] = data['color']['a']
+            alpha = False
+
+        if accepted or alpha: # missingkeys for color
             raise ValidationError("The keys " + ", ".join(list(accepted)) + "were missing from the color")
-        
+
         return color
 
 class MultiGetForm(forms.Form):
@@ -92,7 +99,7 @@ class MultiGetForm(forms.Form):
     dateCreated = bioforms.DateTimeRangeField(required=False)
     user = forms.IntegerField(required=False)
     name = forms.CharField(required=False)
-    
+
     # Path Parameters
     image_id = forms.IntegerField(required=True)
     tag_group_id = forms.IntegerField(required=True)
@@ -108,30 +115,30 @@ class MultiGetForm(forms.Form):
             once the form has cleaned the input data.
         '''
         qbuild = bioforms.QueryBuilder(Tag)
-        
+
         # find the tag group that contains the tag
         try:
             group = TagGroup.objects.get(pk__exact=self.cleaned_data['tag_group_id'], picture__exact=self.cleaned_data['image_id'])
-            
+
             # check tag group permissions
             if not group.readPermissions(request.user):
                 raise PermissionDenied()
-            
+
             qbuild.filter('group', group, match='')
         except (TagGroup.DoesNotExist, ValueError):
             raise TagGroupDoesNotExist()
-        
+
         # add permissions to query
         if request.user and request.user.is_authenticated():
             if not request.user.is_staff:
                 qbuild.q = qbuild().filter(isPrivate = False) | Tag.objects.filter(user__pk__exact=request.user.pk)
         else:
             qbuild.q = qbuild().filter(isPrivate=False)
-        
+
         filterkeys = ['name', 'user', 'lastModified', 'dateCreated']
         for key in filterkeys:
             qbuild.filter(key, self.cleaned_data[key])
-            
+
         if not self.cleaned_data['limit'] or self.cleaned_data['limit'] < 0:
             qbuild.q = qbuild()[self.cleaned_data['offset']:]
         else:
@@ -154,10 +161,10 @@ class PostForm(forms.Form):
 
     def clean_points(self):
         return FormCleaningUtil.clean_points(self.cleaned_data)
-    
+
     def clean_color(self):
         return FormCleaningUtil.clean_color(self.cleaned_data)
-    
+
     @transaction.commit_on_success
     def submit(self, request):
         '''
@@ -166,13 +173,13 @@ class PostForm(forms.Form):
         '''
         try:
             group = TagGroup.objects.get(pk__exact=self.cleaned_data['tag_group_id'], picture__exact=self.cleaned_data['image_id'])
-            
+
             # check tag group permissions
             if not group.writePermissions(request.user):
                 raise PermissionDenied()
         except (TagGroup.DoesNotExist, ValueError):
             raise TagGroupDoesNotExist()
-        
+
         # create tag points
         points = []
         for counter, point in enumerate(self.cleaned_data['points']):
@@ -180,7 +187,7 @@ class PostForm(forms.Form):
 
         # create the tag's color
         color = self.cleaned_data['color']
-        color = TagColor.objects.get_or_create(red=int(color['r']), green=int(color['g']), blue=int(color['b']))[0]
+        color = TagColor.objects.get_or_create(red=int(color['r']), green=int(color['g']), blue=int(color['b'], alpha=float(color['a'])))[0]
 
         # start saving the new tag now that it has passed all tests
         tag = Tag(name=self.cleaned_data['name'], color=color, group=group, user=request.user)
@@ -205,10 +212,10 @@ class DeleteForm(forms.Form):
 
     def clean_tag_group_id(self):
         return FormCleaningUtil.clean_tag_group_id(self.cleaned_data)
-    
+
     def clean_image_id(self):
         return FormCleaningUtil.clean_image_id(self.cleaned_data)
-    
+
     @transaction.commit_on_success
     def submit(self, request):
         '''
@@ -227,17 +234,17 @@ class DeleteForm(forms.Form):
                 raise PermissionDenied()
         except Tag.DoesNotExist:
             raise TagDoesNotExist()
-        
+
         points = TagPoint.objects.filter(tag=tag)
         serialized = TagSerializer(tag, points).data
-        
+
         try:
             tag.delete()
             points.delete()
         except DatabaseError:
             transaction.rollback()
             raise DatabaseIntegrity()
-        
+
         return serialized
 
 class PutForm(forms.Form):
@@ -253,13 +260,13 @@ class PutForm(forms.Form):
 
     def clean_tag_group_id(self):
         return FormCleaningUtil.clean_tag_group_id(self.cleaned_data)
-    
+
     def clean_image_id(self):
         return FormCleaningUtil.clean_image_id(self.cleaned_data)
-    
+
     def clean_points(self):
         return FormCleaningUtil.clean_points(self.cleaned_data) if self.cleaned_data['points'] else None
-    
+
     def clean_color(self):
         return FormCleaningUtil.clean_color(self.cleaned_data) if self.cleaned_data['color'] else None
 
@@ -281,22 +288,22 @@ class PutForm(forms.Form):
                 raise PermissionDenied()
         except Tag.DoesNotExist:
             raise TagDoesNotExist()
-        
+
         try:
             changed = False
-            
+
             if self.cleaned_data['color']:
                 # update color
                 color = self.cleaned_data['color']
-                color = TagColor.objects.get_or_create(red=int(color['r']), green=int(color['g']), blue=int(color['b']))[0]
+                color = TagColor.objects.get_or_create(red=int(color['r']), green=int(color['g']), blue=int(color['b']), alpha=float(color['a']))[0]
                 tag.color = color
                 changed = True
-            
+
             if self.cleaned_data['name']:
                 # update the name
                 tag.name = self.cleaned_data['name']
                 changed = True
-            
+
             points = None
             if self.cleaned_data['points']:
                 # update points and delete old points
@@ -306,17 +313,17 @@ class PutForm(forms.Form):
                     point = TagPoint(tag=tag, pointX=float(point['x']), pointY=float(point['y']), rank=counter+1)
                     points.append(point)
                 changed = True
-                
+
             if changed:
                 tag.save()
                 if points is not None: # we have points
                     TagPoint.objects.filter(tag=tag).delete() # deletes all the old tag points
                     for point in points:
-                        point.save()        
+                        point.save()
         except DatabaseError:
             transaction.rollback()
             raise DatabaseIntegrity()
-            
+
         return TagSerializer(tag, points).data
 
 class SingleGetForm(forms.Form):
@@ -328,7 +335,7 @@ class SingleGetForm(forms.Form):
 
     def clean_tag_group_id(self):
         return FormCleaningUtil.clean_tag_group_id(self.cleaned_data)
-    
+
     def clean_image_id(self):
         return FormCleaningUtil.clean_image_id(self.cleaned_data)
 

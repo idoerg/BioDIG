@@ -290,11 +290,9 @@ th {
     padding-right: 5px;
 }
 
-.tag-info .color-box {
-	background-color: rgba(0, 255, 0, 0.5);
-	border: 1px solid black;
-	padding-bottom: 0;
-	padding-right: 20px;
+.tag-info-color {
+	width: 100%;
+	height: 20px;
 }
 
 .tag-list-title {
@@ -304,7 +302,6 @@ th {
     font-variant: small-caps;
     font-weight: bold;
     text-align: center;
-    display: none;
 }
 
 .tag-list table {
@@ -319,12 +316,7 @@ th {
 }
 
 .tag-info {
-	border: 1px solid #CCCCCC;
     margin-top: 10px;
-}
-
-.tag-info div {
-	text-align: center;
 }
 
 .tag-list table tbody tr.even {
