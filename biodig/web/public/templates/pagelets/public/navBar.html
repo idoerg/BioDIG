@@ -43,7 +43,10 @@
 	{% if user.is_authenticated %}
 		<div>
 			<ul id="user_options">
-				<li class="logged_in_title_left"><a href="{{ SITE_URL }}workbench/">Workbench</a></li>
+				<li class="logged_in_title_left"><a href="{{ SITE_URL }}registered/workbench/">Workbench</a></li>
+				{% if user.is_staff %}
+				<li class="logged_in_title_left"><a href="{{ SITE_URL }}admin/">Administration</a></li>
+				{% endif %}
 				<li class="logout"><a onclick="logout(event)">Logout</a></li>
 			</ul>
 		</div>
