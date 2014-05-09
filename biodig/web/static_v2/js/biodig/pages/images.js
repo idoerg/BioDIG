@@ -22,10 +22,10 @@ require.config({
 });
 
 var deps = [
-    'jquery', 'biodig/ui/paginator/ImagePaginator', 'biodig/ui/users/Login'
+    'jquery', 'biodig/ui/paginator/ImagePaginator', 'biodig/ui/users/Login', 'settings'
 ];
 
-require(deps, function($, ImagePaginator, Login) {
+require(deps, function($, ImagePaginator, Login, settings) {
     // setup login and logout forms
     var login = Login.create();
     $('.login > a').on('click', function() {
@@ -35,7 +35,7 @@ require(deps, function($, ImagePaginator, Login) {
     $('.logout > a').on('click', function() {
         var form = document.createElement("form");
         form.setAttribute("method", "post");
-        form.setAttribute("action", "{{ SITE_URL }}logout/");
+        form.setAttribute("action", settings.SITE_URL + "logout/");
         document.body.appendChild(form);
         form.submit();
     });

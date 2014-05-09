@@ -57,7 +57,7 @@ require(deps, function($, _, settings, Taggable, Login, HelpBox) {
     $('.logout > a').on('click', function() {
         var form = document.createElement("form");
         form.setAttribute("method", "post");
-        form.setAttribute("action", "{{ SITE_URL }}logout/");
+        form.setAttribute("action", settings.SITE_URL + "logout/");
         document.body.appendChild(form);
         form.submit();
     });
