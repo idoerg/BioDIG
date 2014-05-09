@@ -47,8 +47,8 @@ require(deps, function($, _, settings, ActivationStatus, Login, Register) {
     });
 
     // setup the activation status to update
-    var activation_status = $('#activation-status');
-    var user = activation_status.find('input[name="user_id"]').val();
-    var activation = activation_status.find('input[name="activation_key"]').val();
-    ActivationStatus.create(activation-status).start(user, activation);
+    var activation_state = $('#activation-state');
+    var user = activation_state.find('input[name="user_id"]').val();
+    var activation = activation_state.find('input[name="activation_key"]').val();
+    ActivationStatus.create(activation-state).start(user, activation);
 });
