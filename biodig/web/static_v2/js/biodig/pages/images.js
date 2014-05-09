@@ -22,9 +22,23 @@ require.config({
 });
 
 var deps = [
-    'jquery', 'biodig/ui/paginator/ImagePaginator'
+    'jquery', 'biodig/ui/paginator/ImagePaginator', 'biodig/ui/users/Login'
 ];
 
-require(deps, function($, ImagePaginator) {
+require(deps, function($, ImagePaginator, Login) {
+    // setup login and logout forms
+    var login = Login.create();
+    $('.login > a').on('click', function() {
+        login.show();
+    });
+
+    $('.logout > a').on('click', function() {
+        var form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "{{ SITE_URL }}logout/");
+        document.body.appendChild(form);
+        form.submit();
+    });
+
     ImagePaginator.create('#images-container', { totalImages: parseInt($('input#totalImages').val()) });
 });

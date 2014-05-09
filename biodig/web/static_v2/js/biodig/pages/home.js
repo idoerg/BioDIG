@@ -22,11 +22,25 @@ require.config({
 });
 
 var deps = [
-    'jquery', 'underscore', 'settings', 'biodig/ui/zoomable/Zoomable',
+    'jquery', 'underscore', 'settings', 'biodig/ui/zoomable/Zoomable', 'biodig/ui/users/Login'
     'text!biodig/tmpl/helpbox/home.html', 'bootstrap', 'jquery_ui'
 ];
 
-require(deps, function($, _, settings, ZoomableUI, HelpBox) {
+require(deps, function($, _, settings, ZoomableUI, HelpBox, Login) {
+
+    // setup login and logout forms
+    var login = Login.create();
+    $('.login > a').on('click', function() {
+        login.show();
+    });
+
+    $('.logout > a').on('click', function() {
+        var form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "{{ SITE_URL }}logout/");
+        document.body.appendChild(form);
+        form.submit();
+    });
 
     $(function() {
         $( "#selectable" ).selectable();

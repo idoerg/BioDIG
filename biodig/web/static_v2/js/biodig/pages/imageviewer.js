@@ -30,11 +30,12 @@ require.config({
 });
 
 var deps = [
-    'jquery', 'underscore', 'lib/settings', 'biodig/ui/taggable/Taggable',
+    'jquery', 'underscore', 'lib/settings', 'biodig/ui/taggable/Taggable', 'biodig/ui/users/Login',
     'text!biodig/tmpl/helpbox/imageviewer.html', 'bootstrap', 'jquery_ui'
 ];
 
-require(deps, function($, _, settings, Taggable, HelpBox) {
+require(deps, function($, _, settings, Taggable, Login, HelpBox) {
+    // setup the help dialog box for this page
     var helpDialog = $(_.template(HelpBox).call(settings));
 
     $('#helpButton').click(function() {
@@ -47,5 +48,20 @@ require(deps, function($, _, settings, Taggable, HelpBox) {
         }
     });
 
+    // setup login and logout forms
+    var login = Login.create();
+    $('.login > a').on('click', function() {
+        login.show();
+    });
+
+    $('.logout > a').on('click', function() {
+        var form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "{{ SITE_URL }}logout/");
+        document.body.appendChild(form);
+        form.submit();
+    });
+
+    // setup the Taggable plugin to run in public mode
     Taggable.create('#target-image', { mode : Taggable.MODES.REGISTERED });
 });

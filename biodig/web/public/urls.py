@@ -9,8 +9,8 @@ urlpatterns = patterns('biodig.web.public.views.applications',
     url(r'^images/viewer/(\d+)/?$','ViewImage.Application.renderAction'),
     url(r'^images/?$', 'Images.Application.renderAction'),
     url(r'^genome_browser/?$', 'GBrowse.Application.renderAction'),
-    url(r'^login_handler/?$', 'Login.Application.renderAction'),
-    url(r'^logout_handler/?$', 'Logout.Application.renderAction'),
+    url(r'^login/?$', 'Login.Application.renderAction'),
+    url(r'^logout/?$', 'Logout.Application.renderAction'),
     url(r'^search/?$', 'Search.Application.renderAction'),
     url(r'^advancedSearch/?$', 'AdvancedSearch.Application.renderAction')
 )
