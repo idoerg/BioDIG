@@ -18,11 +18,11 @@ define(deps, function($, DynamicDialog, settings, LoginTmpl) {
 
     Login.prototype.hide = function() {
         this.dialog.hide();
-    }
+    };
 
     return {
         create: function() {
             return new Login();
         }
-    }
+    };
 });

@@ -26,7 +26,7 @@ var deps = [
     'text!biodig/tmpl/helpbox/home.html', 'bootstrap', 'jquery_ui'
 ];
 
-require(deps, function($, _, settings, ZoomableUI, HelpBox, Login) {
+require(deps, function($, _, settings, ZoomableUI, Login, HelpBox) {
 
     // setup login and logout forms
     var login = Login.create();
