@@ -33,10 +33,10 @@ define(deps, function($, settings, util, URLBuilderFactory) {
                 get: function(id) {
                 	if (!id || isNaN(id)) throw { detail : 'The id is not a valid positive number' }
                 },
-                update: function(id, description, altText) {
+                update: function(id, opts) {
                 	if (!id || isNaN(id)) throw { detail : 'The id is not a valid positive number' }
 
-                	if (!username && !password && (!email || !ValidatorFactory.validate_email(email)))
+                	if ($.isEmptyObject(opts))
                         throw { detail : 'No changes have been made to this user' }
                 },
                 delete: function(id) {
