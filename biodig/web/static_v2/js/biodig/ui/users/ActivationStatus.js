@@ -16,7 +16,7 @@ define(deps, function($, _, settings, UserClient, ActivationStatusTmpl) {
         var self = this;
         this.client.update(user_id, { 'activation_key' : activation_key })
             .done(function(user) {
-                self.$container.remove(self.$el);
+                self.$el.remove();
                 self.$el = $(ActivationStatusTemplate({
                     'status' : 'SUCCESS',
                     'user' : user,
@@ -25,7 +25,7 @@ define(deps, function($, _, settings, UserClient, ActivationStatusTmpl) {
                 self.$container.append(self.$el);
             })
             .fail(function(e) {
-                self.$container.remove(self.$el);
+                self.$el.remove();
                 self.$el = $(ActivationStatusTemplate({
                     'status' : 'ERROR',
                     'detail' : e.detail || e.message,
