@@ -28,5 +28,5 @@ class Application(ApplicationBase):
 '''
     Used for mapping to the url in urls.py
 '''
-def renderAction(request, image_id):
-return Application().render(request, image_id)
+def renderAction(request, user_id, activation_key):
+	return Application().render(request, user_id, activation_key)
