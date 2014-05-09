@@ -279,7 +279,7 @@ define(deps, function($, settings, util, URLBuilderFactory) {
 
     UserClient.prototype.activate = function(id, activation_key) {
         try {
-            this.validator.activate(is, activation_key);
+            this.validator.activate(id, activation_key);
         }
         catch (e) {
             return $.Deferred(function(deferredObj) {
