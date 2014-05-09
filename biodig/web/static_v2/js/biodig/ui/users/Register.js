@@ -1,5 +1,6 @@
 var deps = [
-    'jquery', 'biodig/ui/dialogs/DynamicDialog', 'settings', 'text!biodig/tmpl/users/register.html'
+    'jquery', 'biodig/ui/dialogs/DynamicDialog', 'biodoig/clients/UserClient', 'settings',
+    'text!biodig/tmpl/users/register.html'
 ];
 
 define(deps, function($, DynamicDialog, UserClient, settings, RegisterTmpl) {

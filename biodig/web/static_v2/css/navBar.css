@@ -162,6 +162,7 @@ li.logout, li.login, li.register {
 	color: white;
 	font-size: 15;
 	display: inline;
+	margin-left: 10px;
 }
 
 li.logout a, li.login a, li.register a {
