@@ -22,7 +22,7 @@ require.config({
 });
 
 var deps = [
-    'jquery', 'underscore', 'settings', 'biodig/ui/zoomable/Zoomable', 'biodig/ui/users/Login'
+    'jquery', 'underscore', 'settings', 'biodig/ui/zoomable/Zoomable', 'biodig/ui/users/Login',
     'text!biodig/tmpl/helpbox/home.html', 'bootstrap', 'jquery_ui'
 ];
 

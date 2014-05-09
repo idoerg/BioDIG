@@ -6,8 +6,8 @@ body {
 
 #top {
 	background-color: darkred;
-} 
-        
+}
+
 #navbar {
 	display: block;
 	height: 32px;
@@ -15,24 +15,24 @@ body {
 	margin: 0 auto;
 	width: 100%;
 	background-color: #292828;
-}      
-        
-#menu {    
+}
+
+#menu {
 	list-style-type: none;
 	padding: 0;
 	margin: 0;
 }
-        
+
 ul.dropDownMenu {
 	list-style-type: none;
 	position: absolute;
 	top: 30;
 	left: -40;
 }
-        
-li.menuItem {      
+
+li.menuItem {
 	height: 30px;
-	line-height: 30px;       
+	line-height: 30px;
 	float: left;
 	position: relative;
 	display: block;
@@ -44,19 +44,19 @@ li.menuItem:hover {
 	cursor: pointer;
 	color: white;
 }
-    
+
 li.menuItem a:hover {
 	background-repeat: no-repeat;
 	cursor: pointer;
 	color: white;
 }
 
-li.menuItem a { 
+li.menuItem a {
 	color: #BBBBBB;
 	padding: 5px;
 	text-decoration: none;
 }
-        
+
 li.menuItem:hover .dropDownMenu li {
 	display: block;
 	width: 100px;
@@ -72,12 +72,12 @@ li.dropDownItem {
 	border: 1px solid black;
 }
 
-            
+
 li.dropDownItem a:hover {
 	background-color: goldenrod;
 	cursor: pointer;
 }
-        
+
 img#banner {
 	z-index: 8;
 	float: right;
@@ -93,7 +93,7 @@ div#picture_buttons {
 
 form#search {
 	margin-bottom: 5px;
-}       
+}
 
 .search_button {
 	background-color: cornflowerblue;
@@ -105,7 +105,7 @@ form#search {
 	height: 29px;
     	width: 42px;
     	vertical-align: top;
-}	
+}
 
 .search_button:hover {
 	cursor: pointer;
@@ -113,7 +113,7 @@ form#search {
 	box-shadow: 0px 1px 1px rgba(0,0,0,0.1);
 	filter: DXImageTransform.Microsoft.gradient(startColorstr='#6495ED', endColorstr='#2F5BB7'); /*For IE */
 }
-	
+
 #search_val {
 	border: 1px solid grey;
 	padding: 3px;
@@ -151,25 +151,25 @@ input.submit_button {
 input.submit_button:hover {
 	cursor: pointer;
 }
-        
+
 ul#user_options {
 	list-style-type: none;
 	padding-left: 5px;
 	margin-top: 2px;
 }
-        
-li.logout {
+
+li.logout, li.login {
 	color: white;
 	font-size: 15;
 	display: inline;
 }
-    
-li.logout a {
+
+li.logout a, li.login a {
 	text-decoration: none;
 	color: midnightblue;
 }
-        
-li.logout a:hover {
+
+li.logout a:hover, li.login a:hover {
 	color: grey;
 	cursor: pointer;
 }
@@ -181,12 +181,12 @@ li.logged_in_title_left {
 	border-right: 1px solid white;
 	padding-right: 5px;
 }
-    
+
 li.logged_in_title_left a {
 	text-decoration: none;
 	color: midnightblue;
 }
-        
+
 li.logged_in_title_left a:hover {
 	color: grey;
 }
