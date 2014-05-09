@@ -17,7 +17,7 @@ define(deps, function($, settings, util, URLBuilderFactory) {
             else {
                 return true;
             }
-        }
+        },
         getInstance: function() {
             // validator
             return {
