@@ -2,7 +2,7 @@ var deps = [
     'jquery', 'underscore', 'settings', 'biodig/clients/UserClient', 'text!biodig/tmpl/users/activate.html'
 ];
 
-define(deps, function($, _, UserClient, ActivationStatusTmpl) {
+define(deps, function($, _, settings, UserClient, ActivationStatusTmpl) {
     var ActivationStatusTemplate = _.template(ActivationStatusTmpl);
 
     function ActivationStatus(selector) {
