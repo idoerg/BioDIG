@@ -225,7 +225,7 @@ define(deps, function($, settings, util, URLBuilderFactory) {
     			url: self.url + id,
                 beforeSend: util.auth(self.token),
     			method: 'PUT',
-    			data: data,
+    			data: opts,
     			success: function(data) {
     				deferredObj.resolve(data);
     			},

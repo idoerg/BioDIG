@@ -1,0 +1,12 @@
+<body>
+    <div id="activation-state">
+        <input type="hidden" name="user_id" value="{{ user_id }}">
+        <input type="hidden" name="activation_key" value="{{ activation_key }}">
+    </div>
+</body>
+<script type="text/javascript">
+    var require = {
+        baseUrl: '{{ STATIC_URL }}js/'
+    };
+</script>
+<script type="text/javascript" data-main="{{ STATIC_URL }}js/biodig/pages/activate.js" src="{{ STATIC_URL }}js/lib/require.js"></script>

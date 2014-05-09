@@ -28,6 +28,10 @@ class ImageViewerPagelet(PageletBase):
             self.setLayout('public/404Media.html')
             return {}
 
+        if not request.user.is_staff and image.isPrivate and image.user != request.user:
+            self.setLayout('public/404Media.html')
+            return {}
+
         return {
             'image' : image
         }

@@ -12,5 +12,6 @@ urlpatterns = patterns('biodig.web.public.views.applications',
     url(r'^login/?$', 'Login.Application.renderAction'),
     url(r'^logout/?$', 'Logout.Application.renderAction'),
     url(r'^search/?$', 'Search.Application.renderAction'),
-    url(r'^advancedSearch/?$', 'AdvancedSearch.Application.renderAction')
+    url(r'^advancedSearch/?$', 'AdvancedSearch.Application.renderAction'),
+    url(r'^activate/(\d+)/([-\w]+)/?$', 'Activate.Application.renderAction')
 )
