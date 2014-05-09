@@ -1,5 +1,5 @@
 var deps = [
-    'jquery', 'biodig/ui/dialogs/DynamicDialog', 'lib/settings', 'text!biodig/tmpl/users/login.html'
+    'jquery', 'biodig/ui/dialogs/DynamicDialog', 'settings', 'text!biodig/tmpl/users/login.html'
 ];
 
 define(deps, function($, DynamicDialog, settings, LoginTmpl) {
