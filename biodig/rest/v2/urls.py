@@ -25,7 +25,7 @@ urlpatterns = patterns('',
 
 urlpatterns += patterns('',
     url(r'^users/token/?$', 'rest_framework.authtoken.views.obtain_auth_token'),
-    url(r'^users/(\d+)/activate/([-\w]+)/?$', UserActivation.as_view(), name="User Activation View")
+    url(r'^users/(\d+)/activate/([-\w]+)/?$', UserActivation.as_view(), name="User Activation View"),
     url(r'^users/(\d+)/?$', UserSingle.as_view(), name="User Single View"),
     url(r'^users/?$', UserList.as_view(), name="User List View")
 )
