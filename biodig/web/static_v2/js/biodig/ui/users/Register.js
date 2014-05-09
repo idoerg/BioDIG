@@ -16,7 +16,7 @@ define(deps, function($, DynamicDialog, UserClient, settings, RegisterTmpl) {
                 $el.find('input[name="username"]').val(),
                 $el.find('input[name="password"]').val(),
                 $el.find('input[name="email"]').val()
-            ]
+            ];
 
             var firstname = $el.find('input[name="firstname"]').val();
             if (firstname) user.push(firstname);
@@ -30,6 +30,7 @@ define(deps, function($, DynamicDialog, UserClient, settings, RegisterTmpl) {
                 })
                 .fail(function(e) {
                     // TODO: Error message on failed registration
+                    console.error(e.detail || e.message);
                 });
         });
     }
