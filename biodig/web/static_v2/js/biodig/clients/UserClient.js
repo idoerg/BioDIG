@@ -41,6 +41,10 @@ define(deps, function($, settings, util, URLBuilderFactory) {
                 },
                 delete: function(id) {
                     if (!id || isNaN(id)) throw { detail : 'The id is not a valid positive number' }
+                },
+                activate: function(id, activation_key) {
+                    if (!id || isNaN(id)) throw { detail : 'The id is not a valid positive number' }
+                    if (!activation_key) throw { detail: 'The activation must not be empty' }
                 }
             }
         }
@@ -271,7 +275,40 @@ define(deps, function($, settings, util, URLBuilderFactory) {
                 }
             });
         }).promise();
-    }
+    };
+
+    UserClient.prototype.activate = function(id, activation_key) {
+        try {
+            this.validator.activate(is, activation_key);
+        }
+        catch (e) {
+            return $.Deferred(function(deferredObj) {
+                deferredObj.reject(e);
+            }).promise();
+        }
+
+        var self = this;
+
+        return $.Deferred(function(deferredObj) {
+            $.ajax({
+                url: self.url + id + '/activate/' + activation_key,
+                method: 'POST',
+                beforeSend: util.auth(self.token),
+                success: function(data, textStatus, jqXHR) {
+                    deferredObj.resolve(data);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    try {
+                        var e = $.parseJSON(jqXHR.responseText);
+                        deferredObj.reject(e);
+                    }
+                    catch (e) {
+                        deferredObj.reject({ detail: 'An unidentified error occurred with the server.'});
+                    }
+                }
+            });
+        }).promise();
+    };
 
     // default settings for an UserClient
     var defaults = {

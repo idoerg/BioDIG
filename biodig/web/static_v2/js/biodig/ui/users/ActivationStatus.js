@@ -14,7 +14,7 @@ define(deps, function($, _, settings, UserClient, ActivationStatusTmpl) {
 
     ActivationStatus.prototype.start = function(user_id, activation_key) {
         var self = this;
-        this.client.update(user_id, { 'activation_key' : activation_key })
+        this.client.activate(user_id, activation_key)
             .done(function(user) {
                 self.$el.remove();
                 self.$el = $(ActivationStatusTemplate({

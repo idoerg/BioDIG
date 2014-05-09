@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 
-from biodig.rest.v2.Users.views import UserList, UserSingle
+from biodig.rest.v2.Users.views import UserList, UserSingle, UserActivation
 from biodig.rest.v2.Organisms.views import OrganismList, OrganismSingle
 from biodig.rest.v2.Images.views import ImageList, ImageSingle
 from biodig.rest.v2.ImageOrganisms.views import ImageOrganismList, ImageOrganismSingle
@@ -25,6 +25,7 @@ urlpatterns = patterns('',
 
 urlpatterns += patterns('',
     url(r'^users/token/?$', 'rest_framework.authtoken.views.obtain_auth_token'),
+    url(r'^users/(\d+)/activate/([-\w]+)/?$', UserActivation.as_view(), name="User Activation View")
     url(r'^users/(\d+)/?$', UserSingle.as_view(), name="User Single View"),
     url(r'^users/?$', UserList.as_view(), name="User List View")
 )

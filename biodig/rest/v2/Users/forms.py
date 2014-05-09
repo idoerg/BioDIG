@@ -227,3 +227,34 @@ class SingleGetForm(forms.Form):
             raise UserDoesNotExist()
 
         return UserSerializer(user).data
+
+class ActivateForm(forms.Form):
+    # Path Parameters
+    user_id = forms.IntegerField(required=True)
+    activation_key = forms.CharField(required=True)
+
+    def clean_user_id(self):
+        return FormUtil.clean_user_id(self.cleaned_data)
+
+    @transaction.commit_on_success
+    def submit(self, request):
+        '''
+            Submits the form for updating a User
+            once the form has cleaned the input data.
+        '''
+        try:
+            user = User.objects.get(pk__exact=self.cleaned_data['user_id'])
+        except (User.DoesNotExist, ValueError):
+            raise UserDoesNotExist()
+
+        profile = UserProfile.objects.get(user=user)
+        if profile.activation_key == self.cleaned_data['activation_key']:
+            user.is_active = True
+
+        try:
+            user.save()
+        except DatabaseError:
+            transaction.rollback()
+            raise DatabaseIntegrity()
+
+        return UserSerializer(user).data

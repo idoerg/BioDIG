@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 
-from biodig.rest.v2.Users.forms import MultiGetForm, PostForm, PutForm, DeleteForm, SingleGetForm
+from biodig.rest.v2.Users.forms import MultiGetForm, PostForm, ActivateForm, PutForm, DeleteForm, SingleGetForm
 
 class UserList(APIView):
     permission_classes = (AllowAny,) # a POST by an unknown user will allow them to signup
@@ -39,6 +39,26 @@ class UserList(APIView):
 
         return Response(form.submit(request))
 
+class UserActivation(APIView):
+    permission_classes = (AllowAny,)
+    '''
+        Class for rendering the view for activating a user's account.
+    '''
+
+    def post(self, request, user_id, activation_key):
+        '''
+            Method for activating a user's account.
+        '''
+
+        form = ActivateForm({
+            'user_id': user_id,
+            'activation_key': activation_key
+        })
+
+        if not form.is_valid():
+            raise BadRequestException(detail=form.errors)
+
+        return Response(form.submit(request))
 
 class UserSingle(APIView):
     '''
