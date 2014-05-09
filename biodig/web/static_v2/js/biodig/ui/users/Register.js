@@ -12,9 +12,15 @@ define(deps, function($, DynamicDialog, UserClient, settings, RegisterTmpl) {
 
         var self = this;
         $(this.dialog).on('accept', function(event, $el) {
+            var password = $el.find('input[name="password"]').val();
+            var confirmpassword = $el.find('input[name="confirm-password"]').val();
+            if (password != confirmpassword) {
+                conole.error("Passwords did not match");
+            }
+
             var user = [
                 $el.find('input[name="username"]').val(),
-                $el.find('input[name="password"]').val(),
+                password,
                 $el.find('input[name="email"]').val()
             ];
 
@@ -24,7 +30,7 @@ define(deps, function($, DynamicDialog, UserClient, settings, RegisterTmpl) {
             var lastname = $el.find('input[name="lastname"]').val();
             if (lastname) user.push(lastname);
 
-            self.client.create.apply(user)
+            self.client.create.apply(self.client, user)
                 .done(function(user) {
                     self.hide();
                 })
