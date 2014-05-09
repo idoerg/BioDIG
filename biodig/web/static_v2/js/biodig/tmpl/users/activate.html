@@ -4,7 +4,7 @@
     </div>
     <% if (status == 'BEGIN') { %>
         <div>
-            <img width="200" src="<%= settings.STATIC_URL %>images/loading.gif" alt="Loading..."></img>
+            <img class="center-block" width="200" src="<%= settings.STATIC_URL %>images/loading.gif" alt="Loading..."></img>
         </div>
         <div>
             Please wait while we activate your account...
@@ -14,17 +14,17 @@
        else if (status == 'SUCCESS') {
     %>
         <div>
-            <img width="200" src="<%= settings.STATIC_URL %>images/success.png" alt="Success!"></img>
+            <img class="center-block" width="200" src="<%= settings.STATIC_URL %>images/success.png" alt="Success!"></img>
         </div>
         <div>
-            Activation of <%= user.username %> was successful! Please login to continue!
+            Activation of <strong><%= user.username %></strong> was successful! Please login to continue!
         </div>
     <%
        }
        else { // Treat state as an "ERROR" state
     %>
         <div>
-            <img width="200" src="<%= settings.STATIC_URL %>images/caution.png" alt="Success!"></img>
+            <img class="center-block" width="200" src="<%= settings.STATIC_URL %>images/caution.png" alt="Success!"></img>
         </div>
         <div>
             Sorry we could not activate you account at this time! Please check that this
