@@ -106,7 +106,7 @@ class PostForm(forms.Form):
                 <body>
                     <p>Thank you for registering for the BioDIG platform. Please click the link
                     below to activate your account on our servers.</p>
-                    <a href=%s>Activate account</a>
+                    <a href=%s>Click here to activate your account</a>
                 </body>
             </html>
         '''
@@ -119,7 +119,7 @@ class PostForm(forms.Form):
             user.save()
             userProfile.user = user
             userProfile.save()
-            url = '%sactivate/%s/%s' % (settings.SITE_URL, str(user.pk), userProfile.activation_key)
+            url = request.build_absolute_uri('%sactivate/%s/%s' % (settings.SITE_URL, str(user.pk), userProfile.activation_key))
             msg.attach_alternative(html_content % (url), "text/html")
             msg.send()
         except DatabaseError:

@@ -46,7 +46,7 @@ define(deps, function($, DynamicDialog, UserClient, settings, RegisterTmpl) {
     };
 
     Register.prototype.hide = function() {
-        this.dialog.hide();
+        this.dialog.close();
     };
 
     return {
