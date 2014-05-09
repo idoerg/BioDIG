@@ -50,5 +50,5 @@ require(deps, function($, _, settings, ActivationStatus, Login, Register) {
     var activation_state = $('#activation-state');
     var user = activation_state.find('input[name="user_id"]').val();
     var activation = activation_state.find('input[name="activation_key"]').val();
-    ActivationStatus.create(activation-state).start(user, activation);
+    ActivationStatus.create(activation_state).start(user, activation);
 });
