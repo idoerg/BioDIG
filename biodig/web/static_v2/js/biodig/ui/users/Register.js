@@ -1,5 +1,5 @@
 var deps = [
-    'jquery', 'biodig/ui/dialogs/DynamicDialog', 'biodoig/clients/UserClient', 'settings',
+    'jquery', 'biodig/ui/dialogs/DynamicDialog', 'biodig/clients/UserClient', 'settings',
     'text!biodig/tmpl/users/register.html'
 ];
 
