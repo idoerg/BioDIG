@@ -23,7 +23,7 @@ require.config({
 
 var deps = [
     'jquery', 'underscore', 'settings', 'biodig/ui/zoomable/Zoomable', 'biodig/ui/users/Login',
-    'biodig/ui/user/Register', 'text!biodig/tmpl/helpbox/home.html', 'bootstrap', 'jquery_ui'
+    'biodig/ui/users/Register', 'text!biodig/tmpl/helpbox/home.html', 'bootstrap', 'jquery_ui'
 ];
 
 require(deps, function($, _, settings, ZoomableUI, Login, Register, HelpBox) {
