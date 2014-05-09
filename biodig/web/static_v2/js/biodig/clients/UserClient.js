@@ -208,19 +208,15 @@ define(deps, function($, settings, util, URLBuilderFactory) {
      *  @param description: The new description of the User.
      *  @param altText: The new altText for the User.
     **/
-    UserClient.prototype.update = function(id, description, altText) {
+    UserClient.prototype.update = function(id, opts) {
     	try {
-    		this.validator.update(id, description, altText);
+    		this.validator.update(id, opts);
     	}
     	catch (e) {
     		return $.Deferred(function(deferredObj) {
                 deferredObj.reject(e);
             }).promise();
     	}
-
-    	var data = {};
-    	if (description) data['description'] = description;
-    	if (altText) data['altText'] = altText;
 
         var self = this;
 

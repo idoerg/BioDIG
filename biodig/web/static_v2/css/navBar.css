@@ -158,18 +158,18 @@ ul#user_options {
 	margin-top: 2px;
 }
 
-li.logout, li.login {
+li.logout, li.login, li.register {
 	color: white;
 	font-size: 15;
 	display: inline;
 }
 
-li.logout a, li.login a {
+li.logout a, li.login a, li.register a {
 	text-decoration: none;
 	color: midnightblue;
 }
 
-li.logout a:hover, li.login a:hover {
+li.logout a:hover, li.login a:hover, li.register a:hover {
 	color: grey;
 	cursor: pointer;
 }

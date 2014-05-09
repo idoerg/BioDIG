@@ -23,15 +23,20 @@ require.config({
 
 var deps = [
     'jquery', 'underscore', 'settings', 'biodig/ui/zoomable/Zoomable', 'biodig/ui/users/Login',
-    'text!biodig/tmpl/helpbox/home.html', 'bootstrap', 'jquery_ui'
+    'biodig/ui/user/Register', 'text!biodig/tmpl/helpbox/home.html', 'bootstrap', 'jquery_ui'
 ];
 
-require(deps, function($, _, settings, ZoomableUI, Login, HelpBox) {
+require(deps, function($, _, settings, ZoomableUI, Login, Register, HelpBox) {
 
-    // setup login and logout forms
+    // setup login, register, and logout forms
     var login = Login.create();
     $('.login > a').on('click', function() {
         login.show();
+    });
+
+    var register = Register.create();
+    $('.register > a').on('click', function() {
+        register.show();
     });
 
     $('.logout > a').on('click', function() {
