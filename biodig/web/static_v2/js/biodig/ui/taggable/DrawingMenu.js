@@ -1,5 +1,5 @@
 var deps = [
-   'jquery', 'underscore', 'lib/settings', 'text!biodig/tmpl/taggable/drawing-menu.html',
+   'jquery', 'underscore', 'settings', 'text!biodig/tmpl/taggable/drawing-menu.html',
    'colorpicker', 'jquery_ui'
 ];
 

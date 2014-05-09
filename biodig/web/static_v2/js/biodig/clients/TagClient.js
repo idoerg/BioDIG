@@ -1,5 +1,5 @@
 var deps = [
-    'jquery', 'lib/util', 'lib/settings', 'biodig/clients/URLBuilderFactory'
+    'jquery', 'lib/util', 'settings', 'biodig/clients/URLBuilderFactory'
 ];
 
 define(deps, function($, util, settings, URLBuilder) {
