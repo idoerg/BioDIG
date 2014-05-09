@@ -30,7 +30,7 @@ require.config({
 });
 
 var deps = [
-    'jquery', 'underscore', 'lib/settings', 'biodig/ui/taggable/Taggable', 'biodig/ui/users/Login',
+    'jquery', 'underscore', 'settings', 'biodig/ui/taggable/Taggable', 'biodig/ui/users/Login',
     'text!biodig/tmpl/helpbox/imageviewer.html', 'bootstrap', 'jquery_ui'
 ];
 

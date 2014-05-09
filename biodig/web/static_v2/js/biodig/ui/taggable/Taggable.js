@@ -43,7 +43,7 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, OrganismDao, ImageMenu
         this.$messages = this.$contents.children('.status-messages-container');
 
 
-        if (!ACCEPTED_MODES[opts.mode]) opts.mode = ACCEPTED_MODES.REGISTERED;
+        if (!ACCEPTED_MODES[opts.mode]) opts.mode = ACCEPTED_MODES.PUBLIC;
 
         this.$container.find('*').not(this.$image).remove();
         this.$container.prepend(this.$contents);

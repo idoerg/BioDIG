@@ -5,18 +5,30 @@ var deps = [
 define(deps, function($, settings, util, URLBuilderFactory) {
 
     /**
-     *  Validator for the image client.
+     *  Validator for the User client.
     **/
     var ValidatorFactory = {
+        validate_email: function(email) {
+            var atpos=x.indexOf("@");
+            var dotpos=x.lastIndexOf(".");
+            if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
         getInstance: function() {
             // validator
             return {
-                create: function(imageData, description, altText) {
-                    if (!imageData) throw { detail : 'Image data was empty or null' }
+                create: function(username, password, email) {
 
-                    if (!description) throw { detail : 'The description of the image was empty' }
+                    if (!username) throw { detail : 'The username of the user was empty' }
 
-                    if (!altText) throw { detail : 'The alternate text for this image is empty' }
+                    if (!password) throw { detail : 'The password for this user was empty' }
+
+                    if (!email || !ValidatorFactory.validate_email(email)) throw { detail : 'The email is not a valid email address' }
+
                 },
                 get: function(id) {
                 	if (!id || isNaN(id)) throw { detail : 'The id is not a valid positive number' }
@@ -24,7 +36,8 @@ define(deps, function($, settings, util, URLBuilderFactory) {
                 update: function(id, description, altText) {
                 	if (!id || isNaN(id)) throw { detail : 'The id is not a valid positive number' }
 
-                	if (!description && !altText) throw { detail : 'No changes have been made to this image' }
+                	if (!username && !password && (!email || !ValidatorFactory.validate_email(email)))
+                        throw { detail : 'No changes have been made to this user' }
                 },
                 delete: function(id) {
                     if (!id || isNaN(id)) throw { detail : 'The id is not a valid positive number' }
@@ -34,12 +47,12 @@ define(deps, function($, settings, util, URLBuilderFactory) {
     };
 
     /**
-     *  Image Client constructor that takes in the options
+     *  User Client constructor that takes in the options
      *  such as url.
      *
      *  @param opts: The options to customize this client.
     **/
-    function ImageClient(opts) {
+    function UserClient(opts) {
         this.url = opts.url;
         if (this.url[this.url.length - 1] != '/') {
             this.url += '/';
@@ -51,22 +64,22 @@ define(deps, function($, settings, util, URLBuilderFactory) {
     }
 
     /**
-     *  Creates an image on the server by sending the data over
+     *  Creates an User on the server by sending the data over
      *  to the server when enacted. An error state callback will be
      *  called on validation error. The error will contain information
      *  about the validation error.
      *
-     *  @param imageData: The raw data from a FileReader in Base64 encoding
-     *                    for the image to send.
-     *  @param description: The description of the image.
-     *  @param altText: The alternate text for this image.
+     *  @param UserData: The raw data from a FileReader in Base64 encoding
+     *                    for the User to send.
+     *  @param description: The description of the User.
+     *  @param altText: The alternate text for this User.
      *
      *  @return A deferred object that will enact the correct server action
-     *          to create the image.
+     *          to create the User.
     **/
-    ImageClient.prototype.create = function(imageData, description, altText) {
+    UserClient.prototype.create = function(username, password, email, firstname, lastname) {
         try {
-            this.validator.create(imageData, description, altText);
+            this.validator.create(username, password, email);
         }
         catch (e) {
             return $.Deferred(function(deferredObj) {
@@ -76,19 +89,21 @@ define(deps, function($, settings, util, URLBuilderFactory) {
 
         var self = this;
 
-        return $.Deferred(function(deferredObj) {
-            var formData = new FormData();
-            formData.append('image', imageData);
-            formData.append('description', description);
-            formData.append('altText', altText);
+        var data = {
+            'username' : username,
+            'password' : password,
+            'email' : email
+        };
 
+        if (firstname) data['first_name'] = firstname;
+        if (lastname) data['last_name'] = lastname;
+
+        return $.Deferred(function(deferredObj) {
             $.ajax({
                 url: self.url,
                 method: 'POST',
                 beforeSend: util.auth(self.token),
-                contentType: false,
-                processData: false,
-                data: formData,
+                data: data,
                 success: function(data, textStatus, jqXHR) {
                     deferredObj.resolve(data);
                 },
@@ -106,7 +121,7 @@ define(deps, function($, settings, util, URLBuilderFactory) {
     };
 
     /**
-     *  Gets a list of images that is paginated. Allows for filtering
+     *  Gets a list of Users that is paginated. Allows for filtering
      *  by owner and date.
      *
      *  @param opts: The optional query parameters for the list function.
@@ -118,7 +133,7 @@ define(deps, function($, settings, util, URLBuilderFactory) {
      *  			 limit: The number of entries to retrieve.
      *               offset: The number of entries to skip before listing.
     **/
-    ImageClient.prototype.list = function(opts) {
+    UserClient.prototype.list = function(opts) {
     	var urlBuilder = URLBuilderFactory.newBuilder(this.url);
     	$.each(opts, function(key, val) {
     		urlBuilder.addQuery(key, val, URLBuilderFactory.NOT_EMPTY);
@@ -149,11 +164,11 @@ define(deps, function($, settings, util, URLBuilderFactory) {
     };
 
     /**
-     *  Gets a single image given the id.
+     *  Gets a single User given the id.
      *
-     *  @param id: The id of the image.
+     *  @param id: The id of the User.
     **/
-    ImageClient.prototype.get = function(id) {
+    UserClient.prototype.get = function(id) {
     	try {
     		this.validator.get(id);
     	}
@@ -187,13 +202,13 @@ define(deps, function($, settings, util, URLBuilderFactory) {
     };
 
     /**
-     *  Updates the given image with the description and altText, which
+     *  Updates the given User with the description and altText, which
      *  are optional.
      *
-     *  @param description: The new description of the image.
-     *  @param altText: The new altText for the image.
+     *  @param description: The new description of the User.
+     *  @param altText: The new altText for the User.
     **/
-    ImageClient.prototype.update = function(id, description, altText) {
+    UserClient.prototype.update = function(id, description, altText) {
     	try {
     		this.validator.update(id, description, altText);
     	}
@@ -231,7 +246,7 @@ define(deps, function($, settings, util, URLBuilderFactory) {
     	}).promise();
     };
 
-    ImageClient.prototype.delete = function(id) {
+    UserClient.prototype.delete = function(id) {
         try {
             this.validator.delete(id);
         }
@@ -262,20 +277,20 @@ define(deps, function($, settings, util, URLBuilderFactory) {
         }).promise();
     }
 
-    // default settings for an ImageClient
+    // default settings for an UserClient
     var defaults = {
-        url: settings.SITE_URL + 'rest/v2/images/',
+        url: settings.SITE_URL + 'rest/v2/users/',
         token: null
     };
 
-    var ImageClientFactory = {
+    var UserClientFactory = {
         /**
-         *  Creates an instance of the Image Client.
+         *  Creates an instance of the User Client.
         **/
         create: function(opts) {
-            return new ImageClient($.extend({}, defaults, opts));
+            return new UserClient($.extend({}, defaults, opts));
         }
     };
 
-    return ImageClientFactory;
+    return UserClientFactory;
 });
