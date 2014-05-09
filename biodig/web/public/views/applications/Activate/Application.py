@@ -22,7 +22,7 @@ class Application(ApplicationBase):
 
 	def render(self, request, user_id, activation_key):
 		self.tokenAuthentication(request)
-		self.doProcessRender(request, image_id, activation_key)
+		self.doProcessRender(request, user_id, activation_key)
 		return self.renderEngine.render(request)
 
 '''
