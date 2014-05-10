@@ -59,7 +59,7 @@ define(deps, function($, _, util, settings, UploadItem, ImageUploaderTmpl) {
                             item.image(e.target.result);
                         };
 
-                        item.on('remove', function() {
+                        $(item).on('remove', function() {
                             if (self.queued[item.uid()]) {
                                 delete self.queued[item.uid()];
                             }
@@ -69,7 +69,7 @@ define(deps, function($, _, util, settings, UploadItem, ImageUploaderTmpl) {
                             }
                         });
 
-                        item.on('success', function() {
+                        $(item).on('success', function() {
                             self.completed[item.uid()] = self.queued[item.uid()];
                             delete self.queued[item.uid()];
                         });
