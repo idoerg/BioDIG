@@ -1,6 +1,6 @@
 var deps = [
     'jquery', 'underscore', 'lib/util', 'settings', 'biodig/clients/ImageClient',
-    'text!biodig/tmpl/imaguploader/item.html'
+    'text!biodig/tmpl/imageuploader/item.html'
 ];
 
 define(deps, function($, _, settings, ImageClient, UploadItemTmpl) {
