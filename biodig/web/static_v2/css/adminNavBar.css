@@ -7,18 +7,18 @@ body {
 
 #top {
 	background-color: darkred;
-} 
-	
+}
+
 #navbar {
 	display: block;
-	height: 30px;
+	height: 32px;
 	border-top: 2px solid black;
 	margin: 0 auto;
 	width: 100%;
 	background-color: #292828;
-}	  
-	
-#menu {	
+}
+
+#menu {
 	list-style-type: none;
 	padding: 0;
 	margin: 0;
@@ -32,10 +32,10 @@ ul.dropDownMenu {
 	top: 30;
 	left: -40;
 }
-	
-li.menuItem {	  
+
+li.menuItem {
 	height: 30px;
-	line-height: 30px;	   
+	line-height: 30px;
 	float: left;
 	position: relative;
 	display: block;
@@ -54,7 +54,7 @@ li.menuItem a:hover {
 	color: white;
 }
 
-li.menuItem a { 
+li.menuItem a {
 	color: #BBBBBB;
 	padding: 5px;
 	text-decoration: none;
@@ -75,12 +75,12 @@ li.dropDownItem a {
 	border: 1px solid black;
 }
 
-	
+
 li.dropDownItem a:hover {
 	background-color: goldenrod;
 	cursor: pointer;
 }
-	
+
 #banner {
 	height: 60px;
 	overflow: hidden;
@@ -113,7 +113,7 @@ li.dropDownItem a:hover {
 .admin_button_item div:hover {
 	background: -moz-linear-gradient(center top, rgba(0,0,0,0.05), rgba(0,0,0,0.1)) repeat scroll 0 0 transparent;
 	background: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,0.05)), to(rgba(0,0,0,0.1)));
-	filter: DXImageTransform.Microsoft.gradient(startColorstr='rgba(0,0,0,0.05)', endColorstr='rgba(0,0,0,0.1)'); /*For IE */ 
+	filter: DXImageTransform.Microsoft.gradient(startColorstr='rgba(0,0,0,0.05)', endColorstr='rgba(0,0,0,0.1)'); /*For IE */
 	cursor: pointer;
 }
 
@@ -137,7 +137,7 @@ div#picture_buttons {
 
 form#search {
 	margin-bottom: 5px;
-}	   
+}
 
 .search_button {
 	background-color: cornflowerblue;
@@ -150,7 +150,7 @@ form#search {
 	height: 29px;
     	width: 42px;
     	vertical-align: top;
-}	
+}
 
 .search_button:hover {
 	cursor: pointer;
@@ -171,7 +171,7 @@ form#search {
 	float: right;
 	margin-right: 10px;
 	margin-top: 25px;
-} 
+}
 
 #login {
 	float: left;
@@ -220,7 +220,7 @@ li.logout a {
 	text-decoration: none;
 	color: midnightblue;
 }
-	
+
 li.logout a:hover {
 	color: grey;
 	cursor: pointer;
