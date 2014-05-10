@@ -162,12 +162,12 @@ textarea[name="description"], textarea[name="alt-text"] {
     width: 460px;
 }
 
-.loading {
+.status {
 	display: none;
-	height: 45px;
+	width: 60px;
 }
 
-.loading-container {
+.status-container {
 	position: absolute;
 	padding: 30px;
 }

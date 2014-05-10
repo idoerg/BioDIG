@@ -11,14 +11,14 @@ define(deps, function($, _, util, settings, UploadItem, ImageUploaderTmpl) {
         bindEvents: function() {
             var self = this;
             // highlight the images overlay button on mouseover
-            $(document).on({
+            this.$uploader.find('input[name="add-images"]').on({
                 mouseenter: function() {
                     self.$uploader.find('button[name="add-images-overlay"]').addClass('uploader-menu-button-hover');
                 },
                 mouseleave: function() {
                     self.$uploader.find('button[name="add-images-overlay"]').removeClass('uploader-menu-button-hover');
                 }
-            }, this.$uploader.find('input[name="add-images"]'));
+            });
 
             // Clicking clear uploads should remove all uploads
             this.$uploader.find('button[name="clear-uploads"]').on('click', function() {

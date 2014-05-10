@@ -80,7 +80,7 @@ define(deps, function($, _, util, settings, ImageClient, UploadItemTmpl) {
 
         // update view to show a loading state
         this.$uploadButton.attr('disabled', true).parent().addClass('disabled-cell-container');
-        this.$status.removeClass('hidden').addClass('show').src('src', self.states['loading']);
+        this.$status.removeClass('hidden').addClass('show').attr('src', self.states['loading']);
 
         $.when(self.client.create(self.file, description, altText))
             .done(function(image) {
