@@ -69,6 +69,7 @@ define(deps, function($, _, util, settings, ImageClient, UploadItemTmpl) {
 
     UploadItem.prototype.remove = function() {
         var self = this;
+        this.$status.find('.status').remove();
         this.$el.slideUp('slow', function() { self.$el.remove(); });
         $(this).trigger('remove');
     };
@@ -78,7 +79,7 @@ define(deps, function($, _, util, settings, ImageClient, UploadItemTmpl) {
         var altText = this.$el.find('textarea[name="alt-text"]');
 
         if (!description.val() || !altText.val()) {
-            this.$status.removeClass('hidden').addClass('show').attr('src', this.states['error']);
+            this.$status.removeClass('hidden').addClass('show').find('.status').attr('src', this.states['error']);
             return;
         }
 
@@ -86,7 +87,7 @@ define(deps, function($, _, util, settings, ImageClient, UploadItemTmpl) {
 
         // update view to show a loading state
         this.$uploadButton.attr('disabled', true).parent().addClass('disabled-cell-container');
-        this.$status.removeClass('hidden').addClass('show').attr('src', self.states['loading']);
+        this.$status.removeClass('hidden').addClass('show').find('.status').attr('src', self.states['loading']);
 
         $.when(self.client.create(self.file, description.val(), altText.val()))
             .done(function(image) {
