@@ -115,15 +115,9 @@ input[name="add-images"] {
 	color: #292828;
 }
 
-textarea.description {
+textarea[name="description"], textarea[name="alt-text"] {
 	height: 64px;
     width: 340px;
-    resize: vertical;
-}
-
-textarea.alt-text {
-	height: 64px;
-    width: 325px;
     resize: vertical;
 }
 

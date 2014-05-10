@@ -99,7 +99,7 @@ define(deps, function($, _, util, settings, UploadItem, ImageUploaderTmpl) {
         this.$container = $(selector);
         this.$uploader = $(ImageUploaderTemplate(settings));
         this.$container.append(this.$uploader);
-        this.$body = self.$uploader.find('.uploader-body');
+        this.$body = this.$uploader.find('.uploader-body');
         this.completed = {};
         this.queued = {};
         util.scope(this, Helper.bindEvents)();
