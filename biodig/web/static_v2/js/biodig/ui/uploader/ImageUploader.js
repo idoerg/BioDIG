@@ -1,9 +1,9 @@
 var deps = [
-    'jquery', 'underscore', 'lib/util', 'settings', 'biodig/ui/uploader/UploaderItem',
+    'jquery', 'underscore', 'lib/util', 'settings', 'biodig/ui/uploader/UploadItem',
     'text!biodig/tmpl/imageuploader/uploader.html'
 ];
 
-define(deps, function($, _, util, settings, UploaderItem, ImageUploaderTmpl) {
+define(deps, function($, _, util, settings, UploadItem, ImageUploaderTmpl) {
 
     var ImageUploaderTemplate = _.template(ImageUploaderTmpl);
 
@@ -53,7 +53,7 @@ define(deps, function($, _, util, settings, UploaderItem, ImageUploaderTmpl) {
 
                     if (Helper.is_image(file)) {
                         var reader = new FileReader();
-                        var item = UploaderItem.create(file);
+                        var item = UploadItem.create(file);
 
                         reader.onload = function(e) {
                             item.image(e.target.result);
