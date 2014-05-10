@@ -3,7 +3,7 @@ var deps = [
     'text!biodig/tmpl/imageuploader/item.html'
 ];
 
-define(deps, function($, _, settings, ImageClient, UploadItemTmpl) {
+define(deps, function($, _, util, settings, ImageClient, UploadItemTmpl) {
     var UploadItemTemplate = _.template(UploadItemTmpl);
 
     function UploadItem(file) {
