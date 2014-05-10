@@ -14,6 +14,27 @@ define(['jquery'], function($) {
         };
     };
 
+    Util.set = function() {
+        this.items = {};
+        $.each(arguments, function(index, arg) {
+            this.items[arg] = true;
+        });
+    }
+
+    Util.set.prototype.add = function(item) {
+        this.items[item] = true;
+    };
+
+    Util.set.prototype.remove = function(item) {
+        if (this.items[item]) {
+            delete this.items[item];
+        }
+    };
+
+    Util.set.prototype.contains = function(item) {
+        return this.items.hasOwnProperty(item);
+    };
+
     Util.cookie = function(name) {
         var cookieValue = null;
         if (document.cookie && document.cookie != '') {

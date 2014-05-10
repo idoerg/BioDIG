@@ -1,20 +1,16 @@
-.imageHeaderButton {
-	
-}
-
-#managerHeader {
+.uploader-menu {
 	border-bottom: 1px solid #CCCCCC;
     padding: 10px;
 }
 
-#managerBody {
+.uploader-body {
 	background-color: white;
 	min-height: 200px;
 	max-height: 600px;
 	overflow-y: auto;
 }
 
-.managerButton {
+.uploader-menu-button {
 	border: 1px solid #CCCCCC;
     border-radius: 7px 7px 7px 7px;
     height: 55px;
@@ -24,14 +20,14 @@
     border-radius: 5px 5px 5px 5px;
 }
 
-.managerButton:hover {
+.uploader-menu-button:hover {
 	background-image: -moz-linear-gradient(center top , #EEEEEE, #CCCCCC);
     border: 1px solid #777777;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
     cursor: pointer;
 }
 
-.smallManagerButton {
+.small-manager-button {
 	border: 1px solid #CCCCCC;
     border-radius: 7px 7px 7px 7px;
     background-color: #EEEEEE;
@@ -40,37 +36,37 @@
     padding: 2px 6px;
 }
 
-.smallManagerButton img {
-	height: 20px;	
+.small-manager-button img {
+	height: 20px;
 }
 
-.smallManagerButton:hover {
+.small-manager-button:hover {
 	background-image: -moz-linear-gradient(center top , #EEEEEE, #CCCCCC);
     border: 1px solid #777777;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
     cursor: pointer;
 }
 
-.managerButtonHover {
+.uploader-menu-button-hover {
 	background-image: -moz-linear-gradient(center top , #EEEEEE, #CCCCCC);
     border: 1px solid #777777;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
     cursor: pointer;
 }
 
-.managerButtonContainer {
+.uploader-menu-button-container {
 	display: inline-table;
     position: relative;
 }
 
-.smallManagerLabel {
+.small-manager-label {
 	color: #292828;
     line-height: 30px;
     vertical-align: top;
     padding-left: 5px;
 }
 
-#addImages {
+input[name="add-images"] {
 	font-size: x-large;
     height: 55px;
     left: -378px;
@@ -80,7 +76,7 @@
     opacity: 0;
 }
 
-#addImagesHolder {
+.add-images-container {
 	height: 55px;
     overflow: hidden;
     position: absolute;
@@ -88,18 +84,14 @@
     width: 115px;
 }
 
-#imageMaster {
-	display: none;
-}
-
-.imageClone {
+.upload-item {
 	border-bottom: 1px solid #CCCCCC;
-    padding: 10px;	
+    padding: 10px;
 }
 
 .preview-thumbnail {
 	position: relative;
-	display: block;	
+	display: block;
 }
 
 .preview-thumbnail-container {
@@ -114,13 +106,13 @@
 }
 
 .filename-container {
-	width: 460px;	
+	width: 460px;
 }
 
 .top-align {
 	line-height: 35px;
 	vertical-align: top;
-	color: #292828;	
+	color: #292828;
 }
 
 textarea.description {
@@ -129,14 +121,14 @@ textarea.description {
     resize: vertical;
 }
 
-textarea.altText {
+textarea.alt-text {
 	height: 64px;
     width: 325px;
     resize: vertical;
 }
 
 .disabled-cell-container button.smallManagerButton img {
-	opacity: 0.5;	
+	opacity: 0.5;
 }
 
 .disabled-cell-container span.smallManagerLabel {
@@ -153,7 +145,7 @@ textarea.altText {
     cursor: default;
 }
 
-.row .cell {
+.uploader-row .cell {
 	display: inline-table;
     vertical-align: top;
 }
@@ -176,7 +168,7 @@ textarea.altText {
 	height: 45px;
 }
 
-.loading-holder {
+.loading-container {
 	position: absolute;
 	padding: 30px;
 }

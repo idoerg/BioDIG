@@ -4,38 +4,6 @@
 	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/zoomable.css"></link>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/taggable.css"></link>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/menu.css"></link>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/downloadify/swfobject.js"></script>
-	<script type="text/javascript" src="{{ STATIC_URL }}js/downloadify/downloadify.min.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/JSZip/jszip.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/JSZip/jszip-deflate.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/kineticjs/kinetic-v3.10.0.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/zoomable.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/tagViewingUI/TaggableUtil.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/tagViewingUI/GeneLink.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/tagViewingUI/Tag.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/tagViewingUI/TagGroup.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggableUtil/DrawingBoard.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/tagViewingUI/TagBoard.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggableUtil/DrawingAPI.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/MenuUI/MenuItem.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/MenuUI/MenuSection.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/MenuUI/Menu.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/DialogUI/PageBlock.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/DataFile/CachedXmlDataFile.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/DataFile/CachedJsonDataFile.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/tagViewingUI/DownloadImageDataDialog.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/tagViewingUI/ChangeCurrentTagGroupsDialog.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggableUtil/NewGeneLinkDialog.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggableUtil/NewTagGroupDialog.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggableUtil/SaveTagDialog.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggableUtil/AddOrganismDialog.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggableUtil/EditImageDialog.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggableUtil/TaggingMenu.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggableUtil/TaggerUI.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/ImagesUI/taggable.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/collapser/collapser.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/webServiceClient/WebServiceClient.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/DialogUI/AreYouSureDialog.js"></script>
 </head>
 <body>
 	<div id="left-toolbar" class="no-text-select">
@@ -60,8 +28,8 @@
 						<div>
 						{% for item in myImages %}
 							<div class="my-pictures-image-holder">
-								<div class="top-right-float" title=".ui-icon-close">                        
-					                <span class="ui-state-default ui-corner-all ui-icon ui-icon-trash delete-image-button"></span> 
+								<div class="top-right-float" title=".ui-icon-close">
+					                <span class="ui-state-default ui-corner-all ui-icon ui-icon-trash delete-image-button"></span>
 					            </div>
 								<img src="{{ MEDIA_URL }}{{ item.image.thumbnail }}" name="{{ item.image.pk }}" class="scaled-image {{ item.permissions }}-image my-pictures-image taggable-image" />
 							</div>
@@ -275,7 +243,7 @@
 		var args = {
 			id: imageKey
 		};
-		
+
 		this.client.call(args, callback);
 	};
 
@@ -287,7 +255,7 @@
 		var args = {
 			imageId: imageKey
 		};
-		
+
 		this.tagGroupClient.call(args, callback);
 	};
 </script>
@@ -304,10 +272,10 @@
 		// fill the tagGroup Info clone with this tag groups information
 		var tagGroupInfo = $('#tag-group-info-master').clone().attr('id', '').addClass('tag-group-info-clone');
 		fillTagGroupDisplay(data, tagGroupInfo);
-	
+
 		// add the image and scale it accordingly
 		var $img = tagGroupInfo.find('.tag-group-info-image').attr('src', (image.attr('src')));
-	
+
 		$img.load(function() {
 			var $parent = $img.parent();
 			var imgRatio = $img.width()/$img.height();
@@ -323,28 +291,28 @@
 				$img.css('left', leftVal);
 			}
 		});
-	
+
 		// show to the user
-		$('#work-area').html(tagGroupInfo.show());   
-	
+		$('#work-area').html(tagGroupInfo.show());
+
 		// figure out if data is private and set publishing
 		var permissions = '.tag-group-info-' + (data.isPrivate ? 'public' : 'private');
 		tagGroupInfo.find(permissions).hide();
 		if (!data.isPrivate) {
 			tagGroupInfo.find('.publish').hide();
 		}
-	
+
 		// edit button for tag group name
 		tagGroupInfo.find('.tag-group-info-name-edit-button').on('click', function() {
 			var name = tagGroupInfo.find('.tag-group-info-name').hide().text();
 			tagGroupInfo.find('.tag-group-info-name-edit').show().val(name);
 		});
-	
+
 		// show the tags to the user for this tag group
 		var tagsInfo = tagGroupInfo.find('.tag-group-info-tags');
-		
+
 		if (data.tags.length > 0) {
-			
+
 		}
 		else {
 			tagsInfo.html($('<div>', {
@@ -352,7 +320,7 @@
 				'text' : 'Sorry, this tag group has no tags.'
 			}));
 		}
-	
+
 		// save the changes to tag group if there are any
 		tagGroupInfo.find('button.save').on('click', function() {
 			var edited = tagGroupInfo.find('.tag-group-info-name-edit');
@@ -361,7 +329,7 @@
 				$.ajax({
 					url: '{{ SITE_URL }}api/tagGroups',
 	                type: 'PUT',
-	                data: { 
+	                data: {
 		            	id: tagGroupInfo.find('.tag-group-info-id').text(),
 		            	name: edited.val()
 		            },
@@ -369,7 +337,7 @@
 	                context: document.body,
 	                success: function(data) {
 						fillTagGroupDisplay(data, tagGroupInfo);
-						$('#' + data.id + '-tag-group').find('.item-info').text(data.name); 
+						$('#' + data.id + '-tag-group').find('.item-info').text(data.name);
 	                },
 	                error: function(jqXHR, textStatus, errorThrown) {
 	    				var errorMessage = $.parseJSON(jqXHR.responseText).message;
@@ -394,7 +362,7 @@
 		// allows each of the toolbars to be collapsible
 		$('.toolbar-header').collapser({
 			selector: '.toolbar-body',
-			siblings: true, 
+			siblings: true,
 			callback: function(collapsing, element) {
 				if (!collapsing) {
 					$('.toolbar-header').not(element).collapser('collapse');
@@ -428,7 +396,7 @@
 				$(this).children('img').attr('src', '{{ STATIC_URL }}images/minimizeLeft.png');
 			}
 		});
-		
+
 		// centers all of the images in there containers so that they fit correctly
 		$('.scaled-image').load(function() {
 			var $img = $(this);
@@ -446,32 +414,32 @@
 				$img.css('left', leftVal);
 			}
 		});
-	
+
 		var areYouSureDialog = new AreYouSureDialog();
-	
+
 		// make the trash cans work on hover
 		$('.my-pictures-image-holder').on('mouseenter', function() {
 			$(this).find('.delete-image-button').show();
 		});
-	
+
 		$('.my-pictures-image-holder').on('mouseout', function(event) {
 			if (!$(event.relatedTarget).hasClass('delete-image-button') && !$(event.relatedTarget).hasClass('my-pictures-image')) {
 				$(this).find('.delete-image-button').hide();
 			}
 		});
-		
+
 		// calls the getTags web service for this image in order to
 		// get the tags for the picture and stores them in cache so
 		// that only a ping is needed for the next time
-		$('.taggable-image').on('click', function() {		
+		$('.taggable-image').on('click', function() {
 			var $imgClone = $(this).clone();
 			$imgClone.attr('id', 'current-editing');
 			$imgClone.attr('class', '');
 			var key = $(this).attr('name');
-			
+
 			var taggingDataClient = new TaggingDataClient();
 			var getImageClient = new ImageClient();
-			
+
 			getImageClient.call(key, function(data, textStatus, jqXHR) {
 				taggingDataClient.call(key, function(tagGroups) {
 					var $workArea = $('#work-area').empty();
@@ -500,7 +468,7 @@
 						click : function() {
 							$('#work-area').children().hide();
 							//var tagGroup = this.
-							
+
 							var tagGroupInfo = $('#tag-group-info-master').clone();
 							tagGroupInfo.find('.tag-group-info-name').text(name);
 							tagGroupInfo.appendTo($('#work-area')).show();
@@ -510,7 +478,7 @@
 				});
 			});
 		});
-	
+
 		// trash cans should prompt the user to delete the image and this should pull up the
 		// dialog box asking if they are sure
 		$('.delete-image-button').on('click', function() {
@@ -544,7 +512,7 @@
 		// handle clicking of tag group item
 		$('.tag-group-item').on('click', function() {
 			var image = $(this).find('.scaled-image');
-			
+
 			$.ajax({
 				url: '{{ SITE_URL }}api/aggregate/tagGroups',
                 type: 'GET',
@@ -560,7 +528,7 @@
     			}
 			});
 		});
-	
+
 		// check boxes should limit the field of my pictures to public and private
 		$('#public-pictures').on('click', function() {
 			if (!$(this).is(':checked')) {
@@ -570,7 +538,7 @@
 				$('.public-image').parent().show('slow');
 			}
 		});
-	
+
 		$('#private-pictures').on('click', function() {
 			if (!$(this).is(':checked')) {
 				$('.private-image').parent().hide('slow');
@@ -589,7 +557,7 @@
 				$('.public-tag').parent().show('slow');
 			}
 		});
-	
+
 		$('#private-tags').on('click', function() {
 			if (!$(this).is(':checked')) {
 				$('.private-tag').parent().hide('slow');
@@ -608,7 +576,7 @@
 				$('.public-tag-group').parent().show('slow');
 			}
 		});
-	
+
 		$('#private-tags').on('click', function() {
 			if (!$(this).is(':checked')) {
 				$('.private-tag-group').parent().hide('slow');

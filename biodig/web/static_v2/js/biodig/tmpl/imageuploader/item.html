@@ -1,0 +1,42 @@
+<div class="upload-item">
+    <div class="close-button">
+        <span class="ui-icon ui-icon-closethick"></span>
+    </div>
+    <div class="uploader-row">
+        <div class="preview-thumbnail-container cell">
+            <img class="preview-thumbnail" src="" width="60"></img>
+        </div>
+        <div class="cell filename-container cell-container">
+            <div>
+                <span class="filename"><%= file.name %></span>
+            </div>
+        </div>
+        <div class="cell cell-container" style="margin-left: 95px; margin-right: 20px;">
+            <button class="small-manager-button upload">
+                <img src="<%= settings.STATIC_URL %>images/upload.png"></img>
+            </button>
+            <span class="small-manager-label">Upload</span>
+        </div>
+        <!--
+        <div class="cell cell-container disabled-cell-container">
+            <button class="small-manager-button delete" disabled>
+                <img src="<%= STATIC_URL %>images/trash.png"></img>
+            </button>
+            <span class="small-manager-label">Delete</span>
+        </div>
+        -->
+    </div>
+    <div class="uploader-row" style="margin-top: 10px;">
+        <div class="status-container hidden">
+            <img class="status" src="<%= settings.STATIC_URL %>images/loading.gif"></img>
+        </div>
+        <div class="cell" style="margin-left: 135px;">
+            <div class="top-align">Description</div>
+            <textarea name="description"></textarea>
+        </div>
+        <div class="cell" style="margin-left: 65px;">
+            <div class="top-align">Alternate Text</div>
+            <textarea name="alt-text"></textarea>
+        </div>
+    </div>
+</div>

@@ -172,7 +172,6 @@ class PutForm(forms.Form):
     password = forms.CharField(required=False)
     first_name = forms.CharField(required=False)
     last_name = forms.CharField(required=False)
-    activation_key = forms.CharField(required=False)
 
     def clean_user_id(self):
         return FormUtil.clean_user_id(self.cleaned_data)
@@ -191,16 +190,14 @@ class PutForm(forms.Form):
         if not request.user.is_staff and request.user != user:
             raise PermissionDenied()
 
-        props = ['username', 'email', 'password', 'first_name', 'last_name']
+        props = ['username', 'email', 'first_name', 'last_name']
         for key in props:
             # update the username
             if self.cleaned_data[key]:
                 setattr(user, key, self.cleaned_data[key])
 
-        if self.cleaned_data['activation_key']:
-            profile = UserProfile.objects.get(user=user)
-            if profile.activation_key == self.cleaned_data['activation_key']:
-                user.is_active = True
+        if self.cleaned_data['password']:
+            user.set_password(self.cleaned_data['password'])
 
         try:
             user.save()
