@@ -13,10 +13,10 @@ define(deps, function($, _, util, settings, UploadItem, ImageUploaderTmpl) {
             // highlight the images overlay button on mouseover
             $(document).on({
                 mouseenter: function() {
-                    this.$uploader.find('button[name="add-images-overlay"]').addClass('uploader-menu-button-hover');
+                    self.$uploader.find('button[name="add-images-overlay"]').addClass('uploader-menu-button-hover');
                 },
                 mouseleave: function() {
-                    this.$uploader.find('button[name="add-images-overlay"]').removeClass('uploader-menu-button-hover');
+                    self.$uploader.find('button[name="add-images-overlay"]').removeClass('uploader-menu-button-hover');
                 }
             }, this.$uploader.find('input[name="add-images"]'));
 
@@ -46,7 +46,7 @@ define(deps, function($, _, util, settings, UploadItem, ImageUploaderTmpl) {
             });
 
             // image upload change (the big one)
-            $(document).on('change', this.uploader.find('input[name="add-images"]'), function() {
+            $(document).on('change', this.$uploader.find('input[name="add-images"]'), function() {
                 if ($(this)[0].files) {
                     var file = $(this)[0].files[0];
                     var fileInputClone = $(this).clone();
