@@ -46,7 +46,7 @@ define(deps, function($, _, util, settings, UploadItem, ImageUploaderTmpl) {
             });
 
             // image upload change (the big one)
-            $(document).on('change', this.$uploader.find('input[name="add-images"]'), function() {
+            this.$uploader.find('input[name="add-images"]').on('change', function() {
                 if ($(this)[0].files) {
                     var file = $(this)[0].files[0];
                     var fileInputClone = $(this).clone();
