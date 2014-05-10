@@ -2,15 +2,6 @@
 	<head>
 		<title>BioDIG {{ title }}</title>
 		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/adminLayout.css" />
-		<script type="text/javascript" src="{{ STATIC_URL }}js/jquery/1.7.2/jquery.min.js"></script>
-		<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui/1.8.21/jquery-ui.min.js"></script>
-		<link rel="stylesheet" href="{{ STATIC_URL }}css/jquery-ui/1.8.21/jquery-ui.css" type="text/css"/>
-		<script type="text/javascript" src="{{ STATIC_URL }}js/util/Util.js"></script>
-		<style>
-			#container_holder {
-				background: url("{{ STATIC_URL }}images/dark-area.png") repeat-x scroll left top #3C3C3C;
-			}
-		</style>
 	</head>
 	<body>
 		<div>
@@ -20,7 +11,7 @@
 		    <div id="container">
 				<renderSlot name="center-1" />
 		    </div>
-		    <br /> 
+		    <br />
 		</div>
 		<div>
 			<renderslot name="footer" />

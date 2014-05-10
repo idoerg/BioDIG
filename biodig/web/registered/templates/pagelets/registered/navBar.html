@@ -15,7 +15,7 @@
         function logout(e) {
             var form = document.createElement("form");
             form.setAttribute("method", "post");
-            form.setAttribute("action", "{{ SITE_URL }}logout_handler/");
+            form.setAttribute("action", "{{ SITE_URL }}logout/");
             document.body.appendChild(form);
             form.submit();
         }
