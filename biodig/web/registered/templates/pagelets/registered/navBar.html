@@ -1,13 +1,11 @@
-<head>  
+<head>
     <!-- <link rel="shortcut icon" href="{{ MEDIA_URL }}" /> -->
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/adminNavBar.css" />
-    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery/1.7.2/jquery.min.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui/1.8.21/jquery-ui.min.js"></script>
     <style>
     	.search_button {
 			background-image: url({{ STATIC_URL }}images/search.png);
 		}
-		
+
 		.search_button:hover {
 			background-image: url({{STATIC_URL}}images/search.png),  -webkit-gradient(linear, left top, left bottom, from(#6495ED), to(#2F5BB7));
 			background-image: url({{STATIC_URL}}images/search.png), -moz-linear-gradient(top, #6495ED, #2F5BB7); /* for firefox 3.6+ */
@@ -31,66 +29,53 @@
 			</li>
 			{% if user.is_staff %}
 	    	<li class="admin_button_item">
-			    <div><a href="{{ SITE_URL }}administration/customize/">Customize BioDIG</a></div>
+			    <div><a href="{{ SITE_URL }}admin/dashboard">Dashboard</a></div>
 			</li>
 			{% endif %}
 			<li class="admin_button_item">
-			    <div><a href="{{ SITE_URL }}administration/">Workbench</a></div>
+			    <div><a href="{{ SITE_URL }}registered/workbench">Workbench</a></div>
 			</li>
 			<li class="admin_button_item">
-			    <div><a href="{{ SITE_URL }}administration/uploadImages/">Upload Images</a></div>
+			    <div><a href="{{ SITE_URL }}registered/upload">Upload Images</a></div>
 			</li>
+            <!--
 			<li class="admin_button_item">
 			    <div><a href="{{ SITE_URL }}administration/gbrowseManager/">Genome Manager</a></div>
 			</li>
 			<li class="admin_button_item">
 			    <div><a href="{{ SITE_URL }}administration/usersProfile/">User Profile</a></div>
 			</li>
+            -->
 	    </ul>
     </div>
     <div id="navbar">
-        <ul id="menu">    
+        <ul id="menu">
             <li class="menuItem">
 				<a href="{{ SITE_URL }}index.html">
 					<span>Home</span>
-				</a>     
+				</a>
 			</li>
 			<li class="menuItem">
 				<a href="{{ SITE_URL }}genome_browser">
 					<span>GBrowse</span>
-				</a>     
+				</a>
 			</li>
 			<li class="menuItem">
 				<a href="{{ SITE_URL }}images">
 					<span>Images</span>
-				</a>     
+				</a>
 			</li>
         </ul>
     </div>
     <div id="picture_buttons">
-        <div class="login_search" id="login">        
+        <div class="login_search" id="login">
             {% if user.is_authenticated %}
                 <div>
 					<ul id="user_options">
-						<li class="logged_in_title_left"><a href="{{ SITE_URL }}administration/">Administration</a></li>
-						<li class="logout"><a onclick="logout(event)">Log out</a></li> 
+						<li class="logged_in_title_left"><a href="{{ SITE_URL }}registered/workbench">Workbench</a></li>
+						<li class="logout"><a onclick="logout(event)">Log out</a></li>
 					</ul>
 				</div>
-            {% else %}
-            {% if is_admin_page %}
-            <form name="login" method="post" action="{{ SITE_URL }}login_handler/">
-                <table>       			
-                    <tr> <td class="login_title">Username</td><td class="login_title">Password</td></tr>
-                    <tr>
-                        <td><input class="login_text" type="text" name="username" size="18"></td>
-       			        <td><input class="login_text" type="password" name="password" size="18"></td>
-                    </tr>
-       			    <tr>
-       			        <td><input class="submit_button" id="login_submit" type="submit" name="submit" value="Login"></td>
-                    </tr>
-                </table>
-	      	</form>
-            {% endif %}
             {% endif %}
         </div>
         <div class="login_search">
@@ -98,7 +83,7 @@
 	        	<input type="text" name="query" id="query" />
 				<input type="hidden" name="searchImages" value="true" />
 				<input type="hidden" name="searchGenomes" value="false" />
-				<input type="submit" class="search_button" value="" />   	
+				<input type="submit" class="search_button" value="" />
 	        </form>
 	        <div>
 	        	<a href="{{ SITE_URL }}advancedSearch/">Advanced Search</a>
