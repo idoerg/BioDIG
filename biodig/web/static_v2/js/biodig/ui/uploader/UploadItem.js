@@ -13,7 +13,7 @@ define(deps, function($, _, util, settings, ImageClient, UploadItemTmpl) {
         }));
 
         this.client = ImageClient.create();
-        this.uid = util.uuid4();
+        this.uuid = util.uuid4();
         this.file = file;
 
         // setup the ocmponents of the UI
@@ -64,7 +64,7 @@ define(deps, function($, _, util, settings, ImageClient, UploadItemTmpl) {
     };
 
     UploadItem.prototype.uid = function() {
-        return this.uid;
+        return this.uuid;
     };
 
     UploadItem.prototype.remove = function() {
