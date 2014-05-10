@@ -78,7 +78,7 @@ define(deps, function($, _, util, settings, ImageClient, UploadItemTmpl) {
         var altText = this.$el.find('textarea[name="alt-text"]');
 
         if (!description.val() || !altText.val()) {
-            this.$status.removeClass('hidden').addClass('show').attr('src', self.states['error']);
+            this.$status.removeClass('hidden').addClass('show').attr('src', this.states['error']);
             return;
         }
 
