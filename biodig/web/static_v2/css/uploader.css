@@ -159,11 +159,10 @@ textarea[name="description"], textarea[name="alt-text"] {
 .filename-container > div {
 	overflow: hidden;
     text-overflow: ellipsis;
-    width: 460px;
+    width: 615px;
 }
 
 .status {
-	display: none;
 	width: 60px;
 }
 

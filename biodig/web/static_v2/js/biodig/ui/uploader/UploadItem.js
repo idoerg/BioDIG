@@ -76,13 +76,19 @@ define(deps, function($, _, util, settings, ImageClient, UploadItemTmpl) {
     UploadItem.prototype.upload = function() {
         var description = this.$el.find('textarea[name="description"]');
         var altText = this.$el.find('textarea[name="alt-text"]');
+
+        if (!description.val() || !altText.val()) {
+            this.$status.removeClass('hidden').addClass('show').attr('src', self.states['error']);
+            return;
+        }
+
         var self = this;
 
         // update view to show a loading state
         this.$uploadButton.attr('disabled', true).parent().addClass('disabled-cell-container');
         this.$status.removeClass('hidden').addClass('show').attr('src', self.states['loading']);
 
-        $.when(self.client.create(self.file, description, altText))
+        $.when(self.client.create(self.file, description.val(), altText.val()))
             .done(function(image) {
                 self.$status.find('.status').attr('src', self.states['success']);
                 var filename = image.url.split('/');
