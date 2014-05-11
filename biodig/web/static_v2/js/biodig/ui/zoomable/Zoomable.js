@@ -121,7 +121,6 @@ define(deps, function($, _, util, ZoomableTmpl) {
     }
 
     function ZoomableUI(image_selector, options) {
-        this.image = image_selector;
         this.$image = $(image_selector);
 
         this.$image.addClass('zoomable-src');

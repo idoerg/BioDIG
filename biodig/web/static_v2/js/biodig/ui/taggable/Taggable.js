@@ -23,9 +23,8 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, OrganismDao, ImageMenu
     function Taggable(selector, opts) {
         // check to see if features were directly requested
         // otherwise use the "mode" to determine the feature set
-        this.image = selector;
         this.$image = $(selector);
-        this.image_id = this.$image.data('image-id') || opts.image_id;
+        this.image_id = this.$image.data('imageId') || opts.image_id;
         if (!this.image_id) {
             throw {
                 'detail' : "No image_id given for the Taggable interface"
@@ -74,7 +73,7 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, OrganismDao, ImageMenu
         var self = this;
 
         // creates a canvas with methods for viewing tags and selecting them
-        this.zoomable = Zoomable.create(this.image, $.extend({}, opts, {
+        this.zoomable = Zoomable.create(this.$image, $.extend({}, opts, {
             onload: function() {
                 util.scope(self, TaggableHelper.loadDrawingModule)(opts);
             }
@@ -163,7 +162,7 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, OrganismDao, ImageMenu
     return {
         create: function(selector, opts) {
             var defaults = {
-                'mode': 'registered' // registered or public
+                'mode': ACCEPTED_MODES.PUBLIC // registered or public
             };
 
             $.extend(defaults, opts);
