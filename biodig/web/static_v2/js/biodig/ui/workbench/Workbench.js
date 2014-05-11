@@ -12,7 +12,7 @@ define(deps, function($, _, settings, Toolbar, Taggable, StructureTmpl) {
         this.$el = $(StructureTemplate({ 'settings' : settings }));
         this.$container.append(this.$el);
 
-        this.toolbar = Toolbar.create(this.$el.find('.toolbar'), user);
+        this.toolbar = Toolbar.create(this.$el.find('.workbench-toolbar-outside'), user);
         this.$workArea = this.$el.find('.work-area');
 
         var self = this;

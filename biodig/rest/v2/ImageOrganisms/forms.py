@@ -1,7 +1,7 @@
 '''
     This file holds all of the forms for the cleaning and validation of
     the parameters being used for ImageOrganisms.
-    
+
     Created on January 13, 2013
 
     @author: Andrew Oberlin
@@ -40,7 +40,7 @@ class MultiGetForm(forms.Form):
     limit = forms.IntegerField(required=False)
 
     # Path Parameters
-    image_id = forms.IntegerField(required=True) 
+    image_id = forms.IntegerField(required=True)
 
     def clean_image_id(self):
         return FormCleaningUtil.clean_image_id(self.cleaned_data)
@@ -58,16 +58,16 @@ class MultiGetForm(forms.Form):
             image = Image.objects.get(pk__exact=self.cleaned_data['image_id'])
         except Image.DoesNotExist:
             raise ImageDoesNotExist()
-        
+
         if image.isPrivate:
             if request.user and request.user.is_authenticated():
-                if not user.is_staff and image.user != request.user:
+                if not request.user.is_staff and image.user != request.user:
                     raise PermissionDenied()
             else:
                 raise PermissionDenied()
-        
+
         organisms = ImageOrganism.objects.filter(picture=image)
-        
+
         if not self.cleaned_data['limit'] or self.cleaned_data['limit'] < 0:
             organisms = organisms[self.cleaned_data['offset']:]
         else:
@@ -78,7 +78,7 @@ class MultiGetForm(forms.Form):
 class PostForm(forms.Form):
     # Path Parameters
     image_id = forms.IntegerField(required=True)
-    
+
     # POST (data section) Body Parameters
     organism_id = forms.IntegerField(required=True)
 
@@ -98,7 +98,7 @@ class PostForm(forms.Form):
             image = Image.objects.get(pk__exact=self.cleaned_data['image_id'])
         except (Image.DoesNotExist, ValueError):
             raise ImageDoesNotExist()
-        
+
         try:
             organism = Organism.objects.get(pk__exact=self.cleaned_data['organism_id'])
         except (Organism.DoesNotExist, ValueError):
@@ -127,7 +127,7 @@ class DeleteForm(forms.Form):
 
     def clean_organism_id(self):
         return FormCleaningUtil.clean_organism_id(self.cleaned_data)
-    
+
     @transaction.commit_on_success
     def submit(self, request):
         '''
@@ -139,7 +139,7 @@ class DeleteForm(forms.Form):
             if not request.user.is_staff and image.user != request.user:
                 raise PermissionDenied()
 
-            imageOrg = ImageOrganism.objects.get(picture=image, organism=self.cleaned_data['organism_id']) 
+            imageOrg = ImageOrganism.objects.get(picture=image, organism=self.cleaned_data['organism_id'])
         except (ImageOrganism.DoesNotExist, Image.DoesNotExist):
             raise ImageOrganismDoesNotExist()
 
@@ -176,7 +176,7 @@ class SingleGetForm(forms.Form):
 
         if image.isPrivate:
             if request.user and request.user.is_authenticated():
-                if not user.is_staff and image.user != request.user:
+                if not request.user.is_staff and image.user != request.user:
                     raise PermissionDenied()
             else:
                 raise PermissionDenied()
