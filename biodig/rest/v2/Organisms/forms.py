@@ -102,4 +102,4 @@ class FeatureMultiGetForm(forms.Form):
         except Feature.DoesNotExist:
             raise FeatureDoesNotExist()
 
-        return FeatureSerializer(features, many=true).data
+        return FeatureSerializer(features, many=True).data
