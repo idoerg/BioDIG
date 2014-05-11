@@ -445,6 +445,9 @@ define(deps, function($, util) {
                             console.error(e.detail || e.message);
                         })
                 });
+            },
+            geneLinks: function() {
+
             }
         },
         tearDown: {
@@ -459,6 +462,9 @@ define(deps, function($, util) {
             },
             tags: function() {
                 $(this.dialogs.get('EditTag')).off('accept');
+            },
+            geneLinks: function() {
+                
             }
         }
     };

@@ -93,8 +93,8 @@ class FeatureTypeField(serializers.RelatedField):
 
 class FeatureSerializer(serializers.ModelSerializer):
     type = FeatureTypeField()
-    id = serializers.PrimaryKeyField(source='feature_id')
-    
+    id = serializers.IntegerField(source='feature_id')
+
     class Meta:
         model = Feature
         fields = ('id', 'name', 'uniquename', 'type')
