@@ -80,6 +80,7 @@ define(deps, function($, ChadoClient) {
     };
 
     ChadoDao.prototype.types = function() {
+        var self = this;
         if (self.types_cache.length == 0) {
             return $.Deferred(function(deferred_obj) {
                 $.when(this.chadoClient.types())
