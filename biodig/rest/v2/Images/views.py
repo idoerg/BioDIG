@@ -1,7 +1,7 @@
 '''
     This file holds all of the forms for the cleaning and validation of
     the parameters being used for Images.
-    
+
     Created on March 5, 2013
 
     @author: Andrew Oberlin
@@ -24,7 +24,7 @@ class ImageList(APIView):
             or general listing.
         '''
         form = MultiGetForm(request.QUERY_PARAMS)
-        
+
         if not form.is_valid():
             raise BadRequestException()
 
@@ -45,7 +45,7 @@ class ImageList(APIView):
 class ImageSingle(APIView):
     '''
        Class for rendering the view for getting a Image, deleting a Image
-       and updating a Image. 
+       and updating a Image.
     '''
 
     def get(self, request, image_id):
@@ -54,7 +54,7 @@ class ImageSingle(APIView):
             or general listing.
         '''
         form = SingleGetForm({ 'image_id' : image_id })
-        
+
         if not form.is_valid():
             e = BadRequestException()
             e.detail = image_id
@@ -65,10 +65,10 @@ class ImageSingle(APIView):
         '''
             Method for updating a Image's information.
         '''
-        params = { key : val for key, val in request.DATA.iteritems() }
+        params = dict((key, val) for key, val in request.DATA.iteritems())
         params['image_id'] = image_id
         form = PutForm(request.DATA, { 'image_id' : image_id })
-        
+
         if not form.is_valid():
             raise BadRequestException()
 
@@ -79,7 +79,7 @@ class ImageSingle(APIView):
             Method for deleting a a Image.
         '''
         form = DeleteForm({ 'image_id' : image_id })
-        
+
         if not form.is_valid():
             raise BadRequestException()
 
