@@ -83,7 +83,7 @@ class RecentlyViewedPicture(models.Model):
 
 
     def __unicode__(self):
-        return (self.picture.imageName.name) + " viewed by " + self.user.username
+        return (self.picture.imageName) + " viewed by " + self.user.username
 
 class TagGroup(models.Model):
     name = models.TextField()
@@ -151,7 +151,7 @@ class TagColor(models.Model):
     green = models.IntegerField()
     blue = models.IntegerField()
     alpha = models.FloatField()
-    
+
     class Meta:
         db_table = u'tagcolor'
         app_label = u'base'
