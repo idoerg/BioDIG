@@ -9,7 +9,7 @@
 from django import forms
 from biodig.base.models import Organism, Feature
 from biodig.base import forms as bioforms
-from biodig.base.serializers import OrganismSerializer
+from biodig.base.serializers import OrganismSerializer, FeatureSerializer
 from biodig.base.exceptions import OrganismDoesNotExist, FeatureDoesNotExist, DatabaseIntegrity
 from rest_framework.exceptions import PermissionDenied
 from django.db import transaction, DatabaseError
