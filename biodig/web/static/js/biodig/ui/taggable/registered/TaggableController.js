@@ -204,7 +204,9 @@ define(deps, function($, util) {
                     }
                     else {
                         // if tags are selected then we want to only show those
-                        self.dialogs.get('DeleteTag').show(self.tagBoard.selected());
+                        self.dialogs.get('DeleteTag').show({
+                            'tags': self.tagBoard.selected()
+                        });
                     }
                 });
             },
