@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, url
 
 from biodig.rest.v2.Users.views import UserList, UserSingle, UserActivation
-from biodig.rest.v2.Organisms.views import OrganismList, OrganismSingle
+from biodig.rest.v2.Organisms.views import OrganismList, OrganismSingle, OrganismFeaturesList
 from biodig.rest.v2.Images.views import ImageList, ImageSingle
 from biodig.rest.v2.ImageOrganisms.views import ImageOrganismList, ImageOrganismSingle
 from biodig.rest.v2.TagGroups.views import TagGroupList, TagGroupSingle

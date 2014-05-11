@@ -10,7 +10,7 @@ from django import forms
 from biodig.base.models import Organism
 from biodig.base import forms as bioforms
 from biodig.base.serializers import OrganismSerializer
-from biodig.base.exceptions import OrganismDoesNotExist, DatabaseIntegrity
+from biodig.base.exceptions import OrganismDoesNotExist, FeatureDoesNotExist, DatabaseIntegrity
 from rest_framework.exceptions import PermissionDenied
 from django.db import transaction, DatabaseError
 from django.core.exceptions import ValidationError
@@ -79,3 +79,27 @@ class SingleGetForm(forms.Form):
             raise OrganismDoesNotExist()
 
         return OrganismSerializer(organism).data
+
+class FeatureMultiGetForm(forms.Form):
+    # Path Parameters
+    organism_id = forms.IntegerField(required=True)
+
+    def clean_organism_id(self):
+        return FormUtil.clean_organism_id(self.cleaned_data)
+
+    def submit(self, request):
+        '''
+            Submits the form for getting an Organism's Feature list
+            once the form has cleaned the input data.
+        '''
+        try:
+            organism = Organism.objects.get(pk__exact=self.cleaned_data['organism_id'])
+        except (Organism.DoesNotExist, ValueError):
+            raise OrganismDoesNotExist()
+
+        try:
+            features = Feature.objects.filter(organism=organism)
+        except Feature.DoesNotExist:
+            raise FeatureDoesNotExist()
+
+        return FeatureSerializer(features, many=true).data
