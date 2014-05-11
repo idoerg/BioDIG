@@ -6,9 +6,9 @@ define(deps, function($, _, ImageItemTmpl) {
     var ImageItemTemplate = _.template(ImageItemTmpl);
 
     function ImageItem(image) {
-        this.$el = ImageItemTemplate({
+        this.$el = $(ImageItemTemplate({
             'image': image
-        });
+        }));
         this.image = image;
 
         var self = this;
