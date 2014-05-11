@@ -14,7 +14,7 @@
         <label for="select-type">Type</label>
         <select name="select-type" class="select-type form-control">
             <% _.each(types, function(type, id) { %>
-                <option data-type="<%= type %>"><%= type %></option>
+                <option data-type="<%= escape(JSON.stringify(type)) %>"><%= type.name %></option>
             <% }); %>
         </select>
     </div>

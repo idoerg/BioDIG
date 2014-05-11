@@ -19,15 +19,19 @@ define(deps, function($, _, FlowNode, ChooseFeatureTmpl) {
                 var $featureselect = node.view().find('select[name="select-feature"]');
 
                 var changeFn = function() {
-                    var organism = $organismselect.find('option:selected').data('organism');
-                    var type = $typeselect.find('option:selected').data('type');
+                    var organism = $.parseJSON(
+                        unescape($organismselect.find('option:selected').data('organism'))
+                    );
+                    var type = $.parseJSON(
+                        unescape($typeselect.find('option:selected').data('type'))
+                    );
 
                     // clear out the feature select box
                     $featureselect.empty();
 
                     // refill the feature select box
                     $.each(node.data().features, function(id, feature) {
-                        if (feature.organism == organism.id && feature.type == type) {
+                        if (feature.organism == organism.id && feature.type == type.name) {
                             var $option = $('<option />').text(feature.name + " - " + feature.uniquename)
                                 .data('feature', escape(JSON.stringify(feature)));
                             $featureselect.append($option);

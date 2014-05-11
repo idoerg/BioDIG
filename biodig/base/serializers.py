@@ -99,6 +99,13 @@ class FeatureSerializer(serializers.ModelSerializer):
         model = Feature
         fields = ('id', 'name', 'uniquename', 'type')
 
+class CvtermSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(source='cvterm_id')
+
+    class Meta:
+        model = Feature
+        fields = ('id', 'name', 'cv', 'description')
+
 class GeneLinkSerializer(serializers.ModelSerializer):
     owner = serializers.PrimaryKeyRelatedField(source='user')
     feature = FeatureSerializer()
