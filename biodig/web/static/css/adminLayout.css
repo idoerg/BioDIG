@@ -28,6 +28,7 @@
 #container_holder {
     padding-bottom: 30px;
     min-height: 650px;
+    background: url("images/dark-area.png") repeat-x scroll left top #3C3C3C;
 }
 
 #container {
