@@ -70,7 +70,7 @@ class FormCleaningUtil:
         if not isinstance(data['color'], dict):
             raise ValidationError("A valid JSON dictionary should be given for color parameter")
         color = {}
-        accepted = { 'r', 'g', 'b' }
+        accepted = set(['r', 'g', 'b'])
         for key, val in data['color'].iteritems():
             if key in accepted:
                 if not isinstance(val, int) or val < 0 or val > 255:
