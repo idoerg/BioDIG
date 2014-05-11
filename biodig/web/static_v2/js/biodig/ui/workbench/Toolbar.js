@@ -10,7 +10,7 @@ define(deps, function($, _, MyImages, ToolbarTmpl) {
     function Toolbar(selector, user) {
         this.$container = $(selector);
         this.$el = $(ToolbarTemplate());
-        this.$container.append($el);
+        this.$container.append(this.$el);
         this.menus = {};
 
         this.add(MyImages.create(user));
