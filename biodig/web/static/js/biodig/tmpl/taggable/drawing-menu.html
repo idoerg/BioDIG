@@ -8,7 +8,6 @@
         <div class="drawing-menu-box-section-body">
             <div class="drawing-menu-color-container">
                 <% for (var i = 0; i < colors.length / 2; i++) { %>
-                <% console.log(JSON.stringify(colors[i])); %>
                 <button data-color="<%= escape(JSON.stringify(colors[i])) %>"
                     class="change-color toolbar-item"
                     style="background-color: rgb(<%= colors[i].r %>, <%= colors[i].g %>, <%= colors[i].b %>);">

@@ -57,7 +57,7 @@ define(deps, function($, _, util, FlowNode, DialogStructureTmpl) {
 
         this.$el.find('.cancel').on('click', function() {
             self.$el.modal('hide');
-            $(self).trigger('close');
+            $(self).trigger('cancel');
         });
     }
 

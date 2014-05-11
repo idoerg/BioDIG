@@ -183,7 +183,7 @@ define(deps, function($, util) {
                 });
 
                 this.menu.section('tags').item('delete').on('click', function() {
-                    if ($.isEmptyObject(self.tagBoard.selected)) {
+                    if ($.isEmptyObject(self.tagBoard.selected())) {
                         $.when(self.imageDao.tagGroups())
                             .done(function(tagGroups) {
                                 var ids = $.map(tagGroups, function(tagGroup) {
@@ -204,14 +204,14 @@ define(deps, function($, util) {
                     }
                     else {
                         // if tags are selected then we want to only show those
-                        self.dialogs.get('DeleteTag').show(self.tagBoard.selected);
+                        self.dialogs.get('DeleteTag').show(self.tagBoard.selected());
                     }
                 });
             },
             geneLinks: function() {
                 var self = this;
                 this.menu.section('geneLinks').item('add').on('click', function() {
-                    if ($.isEmptyObject(self.tagBoard.selected)) {
+                    if ($.isEmptyObject(self.tagBoard.selected())) {
                         // no tags are selected so we will show all tags
                         $.when(self.imageDao.tags())
                             .done(function(tags) {
@@ -223,7 +223,7 @@ define(deps, function($, util) {
                     }
                     else {
                         // if tags are selected then we want to only show those
-                        self.dialogs.get('DeleteTag').show(self.tagBoard.selected);
+                        self.dialogs.get('DeleteTag').show(self.tagBoard.selected());
                     }
                 });
 
@@ -341,7 +341,7 @@ define(deps, function($, util) {
                         })
                 });
 
-                $(this.dialogs.get('AddTag')).on('close', function() {
+                $(this.dialogs.get('AddTag')).on('cancel', function() {
                     self.drawingBoard.end();
                     self.drawingBoard.hide();
                     self.drawingMenu.hide();
