@@ -1,3 +1,14 @@
+.workbench-title {
+	background-color: transparent;
+	color: white;
+	font-family: Times New Roman;
+	font-variant: small-caps;
+	font-size: 30px;
+	font-family: lighter;
+	padding: 4px;
+	text-align: center;
+}
+
 .workbench-area {
 	background-color: white;
 	border-radius: 7px 7px 7px 7px;

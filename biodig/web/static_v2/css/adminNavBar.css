@@ -94,15 +94,15 @@ li.dropDownItem a:hover {
 
 #banner ul li {
 	float: left;
+	margin-top: 10px;
 }
 
 .admin_button_item {
-	padding-left: 10px;
-	padding-top: 8px;
+	margin-top: 7px;
+	margin-right: 10px;
 }
 
 .admin_button_item div {
-	height: 19px;
 	padding: 13px 6px;
 	border-radius: 3px;
 	font-family: Times New Roman;
