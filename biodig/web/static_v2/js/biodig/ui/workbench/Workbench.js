@@ -25,7 +25,7 @@ define(deps, function($, _, settings, Toolbar, Taggable, StructureTmpl) {
             var $image = $('<img />').attr('src', image.url).data('imageId', image.id);
             self.$workArea.append($image);
 
-            Taggable.create($image, { 'mode' : Taggable.MODES.REGISTERED });
+            Taggable.create($image, { 'mode' : Taggable.MODES.REGISTERED, 'alreadyLoaded': false });
         };
 
         $(this.toolbar.get('MyImages')).on('image:click', imageFn);
