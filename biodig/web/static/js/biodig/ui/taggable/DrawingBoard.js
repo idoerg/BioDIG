@@ -98,10 +98,12 @@ define(deps, function($, _, Kinetic, util, TaggableUtil, DrawingBoardTmpl) {
     };
 
     DrawingBoard.prototype.hide = function() {
+        this.$board.css('z-index', 0);
         this.$board.removeClass('show').addClass('hidden');
     };
 
     DrawingBoard.prototype.end = function() {
+        this.$board.css('z-index', 0);
         // refresh the drawing board to remove layer
         this.stage.setSize({
             'width': this.$board.width(),
