@@ -274,7 +274,7 @@ define(deps, function($, util) {
                                 errors.push(e);
                                 deferred_object.reject();
                             });
-                        }).promise();
+                        }).promise()
                     );
 
                     // get the types of features
@@ -464,7 +464,7 @@ define(deps, function($, util) {
                 $(this.dialogs.get('EditTag')).off('accept');
             },
             geneLinks: function() {
-                
+
             }
         }
     };
