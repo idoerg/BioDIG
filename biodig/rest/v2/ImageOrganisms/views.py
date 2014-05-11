@@ -15,10 +15,10 @@ class ImageOrganismList(APIView):
             Method for getting multiple ImageOrganisms either through search
             or general listing.
         '''
-        params = { key : val for key, val in request.QUERY_PARAMS.iteritems() }
+        params = dict((key, val) for key, val in request.QUERY_PARAMS.iteritems())
         params['image_id'] = image_id
         form = MultiGetForm(params)
-        
+
         if not form.is_valid():
             raise BadRequestException()
 
@@ -28,7 +28,7 @@ class ImageOrganismList(APIView):
         '''
             Method for creating a new ImageOrganism.
         '''
-        params = { key : val for key, val in request.DATA.iteritems() }
+        params = dict((key, val) for key, val in request.DATA.iteritems())
         params.update(request.QUERY_PARAMS)
         params['image_id'] = image_id
         form = PostForm(params)
@@ -42,18 +42,18 @@ class ImageOrganismList(APIView):
 class ImageOrganismSingle(APIView):
     '''
        Class for rendering the view for getting a Organim, deleting a ImageOrganism
-       and updating a ImageOrganism. 
+       and updating a ImageOrganism.
     '''
 
     def get(self, request, image_id, organism_id):
         '''
             Method for getting an ImageOrganism.
         '''
-        params = { key : val for key, val in request.QUERY_PARAMS.iteritems() }
+        params = dict((key, val) for key, val in request.QUERY_PARAMS.iteritems())
         params['image_id'] = image_id
         params['organism_id'] = organism_id
         form = SingleGetForm(params)
-        
+
         if not form.is_valid():
             raise BadRequestException()
 
@@ -63,11 +63,11 @@ class ImageOrganismSingle(APIView):
         '''
             Method for deleting an ImageOrganism.
         '''
-        params = { key : val for key, val in request.QUERY_PARAMS.iteritems() }
+        params = dict((key, val) for key, val in request.QUERY_PARAMS.iteritems())
         params['image_id'] = image_id
         params['organism_id'] = organism_id
         form = DeleteForm(params)
-        
+
         if not form.is_valid():
             raise BadRequestException()
 

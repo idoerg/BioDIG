@@ -15,11 +15,11 @@ class TagList(APIView):
             Method for getting multiple Tags either through search
             or general listing.
         '''
-        params = { key : val for key, val in request.QUERY_PARAMS.iteritems() }
+        params = dict((key, val) for key, val in request.QUERY_PARAMS.iteritems())
         params['image_id'] = image_id
         params['tag_group_id'] = tag_group_id
         form = MultiGetForm(params)
-        
+
         if not form.is_valid():
             raise BadRequestException()
 
@@ -29,7 +29,7 @@ class TagList(APIView):
         '''
             Method for creating a new Tag.
         '''
-        params = { key : val for key, val in request.DATA.iteritems() }
+        params = dict((key, val) for key, val in request.DATA.iteritems())
         params.update(request.QUERY_PARAMS)
         params['image_id'] = image_id
         params['tag_group_id'] = tag_group_id
@@ -45,7 +45,7 @@ class TagList(APIView):
 class TagSingle(APIView):
     '''
        Class for rendering the view for getting a Tag, deleting a Tag
-       and updating a Tag. 
+       and updating a Tag.
     '''
 
     def get(self, request, image_id, tag_group_id, tag_id):
@@ -53,12 +53,12 @@ class TagSingle(APIView):
             Method for getting multiple Tags either through search
             or general listing.
         '''
-        params = { key : val for key, val in request.QUERY_PARAMS.iteritems() }
+        params = dict((key, val) for key, val in request.QUERY_PARAMS.iteritems())
         params['tag_id'] = tag_id
         params['image_id'] = image_id
         params['tag_group_id'] = tag_group_id
         form = SingleGetForm(params)
-        
+
         if not form.is_valid():
             raise BadRequestException()
 
@@ -68,13 +68,13 @@ class TagSingle(APIView):
         '''
             Method for updating a TagGroup's information.
         '''
-        params = { key : val for key, val in request.DATA.iteritems() }
+        params = dict((key, val) for key, val in request.DATA.iteritems())
         params.update(request.QUERY_PARAMS)
         params['tag_id'] = tag_id
         params['image_id'] = image_id
         params['tag_group_id'] = tag_group_id
         form = PutForm(params)
-        
+
         if not form.is_valid():
             e = BadRequestException()
             e.detail = form.errors
@@ -85,12 +85,12 @@ class TagSingle(APIView):
         '''
             Method for deleting a a TagGroup.
         '''
-        params = { key : val for key, val in request.QUERY_PARAMS.iteritems() }
+        params = dict((key, val) for key, val in request.QUERY_PARAMS.iteritems())
         params['tag_id'] = tag_id
         params['image_id'] = image_id
         params['tag_group_id'] = tag_group_id
         form = DeleteForm(params)
-        
+
         if not form.is_valid():
             raise BadRequestException()
 

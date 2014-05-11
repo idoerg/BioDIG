@@ -16,7 +16,7 @@ class OrganismList(APIView):
             Method for getting multiple Organisms either through search
             or general listing.
         '''
-        params = { key : val for key, val in request.QUERY_PARAMS.iteritems() }
+        params = dict((key, val) for key, val in request.QUERY_PARAMS.iteritems())
         form = MultiGetForm(params)
 
         if not form.is_valid():
@@ -35,7 +35,7 @@ class OrganismSingle(APIView):
             Method for getting multiple Organisms either through search
             or general listing.
         '''
-        params = { key : val for key, val in request.QUERY_PARAMS.iteritems() }
+        params = dict((key, val) for key, val in request.QUERY_PARAMS.iteritems())
         params['organism_id'] = organism_id
         form = SingleGetForm(params)
 

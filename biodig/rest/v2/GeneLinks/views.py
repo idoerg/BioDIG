@@ -15,12 +15,12 @@ class GeneLinkList(APIView):
             Method for getting multiple GeneLinks either through search
             or general listing.
         '''
-        params = { key : val for key, val in request.QUERY_PARAMS.iteritems() }
+        params = dict((key, val) for key, val in request.QUERY_PARAMS.iteritems())
         params['image_id'] = image_id
         params['tag_group_id'] = tag_group_id
         params['tag_id'] = tag_id
         form = MultiGetForm(params)
-        
+
         if not form.is_valid():
             raise BadRequestException()
 
@@ -30,7 +30,7 @@ class GeneLinkList(APIView):
         '''
             Method for creating a new GeneLink.
         '''
-        params = { key : val for key, val in request.DATA.iteritems() }
+        params = dict((key, val) for key, val in request.DATA.iteritems())
         params.update(request.QUERY_PARAMS)
         params['image_id'] = image_id
         params['tag_group_id'] = tag_group_id
@@ -46,7 +46,7 @@ class GeneLinkList(APIView):
 class GeneLinkSingle(APIView):
     '''
        Class for rendering the view for getting a GeneLink, deleting a GeneLink
-       and updating a GeneLink. 
+       and updating a GeneLink.
     '''
 
     def get(self, request, image_id, tag_group_id, tag_id, gene_link_id):
@@ -54,13 +54,13 @@ class GeneLinkSingle(APIView):
             Method for getting multiple GeneLinks either through search
             or general listing.
         '''
-        params = { key : val for key, val in request.QUERY_PARAMS.iteritems() }
+        params = dict((key, val) for key, val in request.QUERY_PARAMS.iteritems())
         params['tag_id'] = tag_id
         params['image_id'] = image_id
         params['tag_group_id'] = tag_group_id
         params['gene_link_id'] = gene_link_id
         form = SingleGetForm(params)
-        
+
         if not form.is_valid():
             raise BadRequestException()
 
@@ -70,13 +70,13 @@ class GeneLinkSingle(APIView):
         '''
             Method for deleting a GeneLink.
         '''
-        params = { key : val for key, val in request.QUERY_PARAMS.iteritems() }
+        params = dict((key, val) for key, val in request.QUERY_PARAMS.iteritems())
         params['tag_id'] = tag_id
         params['image_id'] = image_id
         params['tag_group_id'] = tag_group_id
         params['gene_link_id'] = gene_link_id
         form = DeleteForm(params)
-        
+
         if not form.is_valid():
             raise BadRequestException()
 

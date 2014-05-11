@@ -18,7 +18,7 @@ class UserList(APIView):
             Method for getting multiple Users either through search
             or general listing.
         '''
-        params = { key : val for key, val in request.QUERY_PARAMS.iteritems() }
+        params = dict((key, val) for key, val in request.QUERY_PARAMS.iteritems())
         form = MultiGetForm(params)
 
         if not form.is_valid():
@@ -30,7 +30,7 @@ class UserList(APIView):
         '''
             Method for creating a new User.
         '''
-        params = { key : val for key, val in request.DATA.iteritems() }
+        params = dict((key, val) for key, val in request.DATA.iteritems())
         params.update(request.QUERY_PARAMS)
         form = PostForm(params)
 
@@ -71,7 +71,7 @@ class UserSingle(APIView):
             Method for getting multiple Users either through search
             or general listing.
         '''
-        params = { key : val for key, val in request.QUERY_PARAMS.iteritems() }
+        params = dict((key, val) for key, val in request.QUERY_PARAMS.iteritems())
         params['user_id'] = user_id
         form = SingleGetForm(params)
 
@@ -84,7 +84,7 @@ class UserSingle(APIView):
         '''
             Method for updating a User's information.
         '''
-        params = { key : val for key, val in request.DATA.iteritems() }
+        params = dict((key, val) for key, val in request.DATA.iteritems())
         params.update(request.QUERY_PARAMS)
         params['user_id'] = user_id
         form = PutForm(params)
@@ -98,7 +98,7 @@ class UserSingle(APIView):
         '''
             Method for deleting a a User.
         '''
-        params = { key : val for key, val in request.QUERY_PARAMS.iteritems() }
+        params = dict((key, val) for key, val in request.QUERY_PARAMS.iteritems())
         params['user_id'] = user_id
         form = DeleteForm(params)
 

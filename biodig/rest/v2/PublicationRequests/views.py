@@ -15,7 +15,7 @@ class PublicationRequestList(APIView):
             Method for getting multiple PublicationRequests either through search
             or general listing.
         '''
-        params = { key : val for key, val in request.QUERY_PARAMS.iteritems() }
+        params = dict((key, val) for key, val in request.QUERY_PARAMS.iteritems())
         params['image_id'] = image_id
         form = MultiGetForm(params)
 
@@ -28,7 +28,7 @@ class PublicationRequestList(APIView):
         '''
             Method for creating a new PublicationRequest.
         '''
-        params = { key : val for key, val in request.DATA.iteritems() }
+        params = dict((key, val) for key, val in request.DATA.iteritems())
         params.update(request.QUERY_PARAMS)
         params['image_id'] = image_id
         form = PostForm(params)
@@ -49,7 +49,7 @@ class PublicationRequestSingle(APIView):
         '''
             Method for getting an PublicationRequest.
         '''
-        params = { key : val for key, val in request.QUERY_PARAMS.iteritems() }
+        params = dict((key, val) for key, val in request.QUERY_PARAMS.iteritems())
         params['image_id'] = image_id
         params['organism_id'] = organism_id
         form = SingleGetForm(params)
@@ -63,7 +63,7 @@ class PublicationRequestSingle(APIView):
         '''
             Method for deleting an PublicationRequest.
         '''
-        params = { key : val for key, val in request.QUERY_PARAMS.iteritems() }
+        params = dict((key, val) for key, val in request.QUERY_PARAMS.iteritems())
         params['image_id'] = image_id
         params['organism_id'] = organism_id
         form = DeleteForm(params)
