@@ -89,7 +89,7 @@ class SecretTagSerializer(serializers.ModelSerializer):
 
 class FeatureTypeField(serializers.RelatedField):
     def to_native(self, value):
-        return str(value.type.name)
+        return str(value.name)
 
 class FeatureSerializer(serializers.ModelSerializer):
     type = FeatureTypeField()
