@@ -1,27 +1,27 @@
 <head>
-	<style>    
-	    {% for pendingImg in pendingImages %}
-	    .image{{pendingImg.pk}} {
-	        width: {{ pendingImg.image.width }}; 
-	        height: {{ pendingImg.image.height }};
-	        background-color: lightgrey;
-	    }
-	    {% endfor %}
-	</style>
+    <style>    
+        {% for pendingImg in pendingImages %}
+        .image{{pendingImg.pk}} {
+            width: {{ pendingImg.image.width }}; 
+            height: {{ pendingImg.image.height }};
+            background-color: lightgrey;
+        }
+        {% endfor %}
+    </style>
 </head>
 <body>
-	<ul id="slider" class="anythingBase">
-	    {% for pendingImg in pendingImages %}
-		<li class="panel">
-	        <div class="image{{pendingImg.pk}}">                    
-	            <div class="ui-state-default ui-corner-all top-right-float" title=".ui-icon-close">                        
-	                <span class="ui-icon ui-icon-trash"></span> 
-	            </div>
-	            <img class="slider_image" src="{{ MEDIA_URL }}{{pendingImg.image}}"></img>
-	        </div>  
-	    </li>
-	    {% endfor %}
-	</ul>
+    <ul id="slider" class="anythingBase">
+        {% for pendingImg in pendingImages %}
+        <li class="panel">
+            <div class="image{{pendingImg.pk}}">                    
+                <div class="ui-state-default ui-corner-all top-right-float" title=".ui-icon-close">                        
+                    <span class="ui-icon ui-icon-trash"></span> 
+                </div>
+                <img class="slider_image" src="{{ MEDIA_URL }}{{pendingImg.image}}"></img>
+            </div>  
+        </li>
+        {% endfor %}
+    </ul>
 </body>
 <script type="text/javascript">
     function fixSliderDisplay() {

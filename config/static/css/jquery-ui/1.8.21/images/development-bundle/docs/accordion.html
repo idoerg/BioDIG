@@ -25,17 +25,17 @@
 <div class="editsection" style="float:right;margin-left:5px;">[<a href="http://docs.jquery.com/action/edit/UI/API/1.8/Accordion?section=1" title="Edit section: NOTE: If you want multiple sections open at once, don't use an accordion">edit</a>]</div><a name="NOTE:_If_you_want_multiple_sections_open_at_once.2C_don.27t_use_an_accordion"></a><h4>NOTE: If you want multiple sections open at once, don't use an accordion</h4>
 <p>An accordion doesn't allow more than one content panel to be open at the same time, and it takes a lot of effort to do that. If you are looking for a widget that allows more than one content panel to be open, don't use this. Usually it can be written with a few lines of jQuery instead, something like this:</p>
 <pre>jQuery(document).ready(function(){
-	$('.accordion .head').click(function() {
-		$(this).next().toggle();
-		return false;
-	}).next().hide();
+    $('.accordion .head').click(function() {
+        $(this).next().toggle();
+        return false;
+    }).next().hide();
 });</pre>
 <p>Or animated:</p>
 <pre>jQuery(document).ready(function(){
-	$('.accordion .head').click(function() {
-		$(this).next().toggle('slow');
-		return false;
-	}).next().hide();
+    $('.accordion .head').click(function() {
+        $(this).next().toggle('slow');
+        return false;
+    }).next().hide();
 });</pre>
     </div>
     <div id="overview-dependencies">
@@ -73,52 +73,52 @@ A simple jQuery UI Accordion.<br />
 &lt;body style="font-size:62.5%;"&gt;
   
 &lt;div id=&quot;accordion&quot;&gt;
-	&lt;h3&gt;&lt;a href=&quot;#&quot;&gt;Section 1&lt;/a&gt;&lt;/h3&gt;
-	&lt;div&gt;
-		&lt;p&gt;
-		Mauris mauris ante, blandit et, ultrices a, suscipit eget, quam. Integer
-		ut neque. Vivamus nisi metus, molestie vel, gravida in, condimentum sit
-		amet, nunc. Nam a nibh. Donec suscipit eros. Nam mi. Proin viverra leo ut
-		odio. Curabitur malesuada. Vestibulum a velit eu ante scelerisque vulputate.
-		&lt;/p&gt;
-	&lt;/div&gt;
-	&lt;h3&gt;&lt;a href=&quot;#&quot;&gt;Section 2&lt;/a&gt;&lt;/h3&gt;
-	&lt;div&gt;
-		&lt;p&gt;
-		Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet
-		purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor
-		velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In
-		suscipit faucibus urna.
-		&lt;/p&gt;
-	&lt;/div&gt;
-	&lt;h3&gt;&lt;a href=&quot;#&quot;&gt;Section 3&lt;/a&gt;&lt;/h3&gt;
-	&lt;div&gt;
-		&lt;p&gt;
-		Nam enim risus, molestie et, porta ac, aliquam ac, risus. Quisque lobortis.
-		Phasellus pellentesque purus in massa. Aenean in pede. Phasellus ac libero
-		ac tellus pellentesque semper. Sed ac felis. Sed commodo, magna quis
-		lacinia ornare, quam ante aliquam nisi, eu iaculis leo purus venenatis dui.
-		&lt;/p&gt;
-		&lt;ul&gt;
-			&lt;li&gt;List item one&lt;/li&gt;
-			&lt;li&gt;List item two&lt;/li&gt;
-			&lt;li&gt;List item three&lt;/li&gt;
-		&lt;/ul&gt;
-	&lt;/div&gt;
-	&lt;h3&gt;&lt;a href=&quot;#&quot;&gt;Section 4&lt;/a&gt;&lt;/h3&gt;
-	&lt;div&gt;
-		&lt;p&gt;
-		Cras dictum. Pellentesque habitant morbi tristique senectus et netus
-		et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in
-		faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia
-		mauris vel est.
-		&lt;/p&gt;
-		&lt;p&gt;
-		Suspendisse eu nisl. Nullam ut libero. Integer dignissim consequat lectus.
-		Class aptent taciti sociosqu ad litora torquent per conubia nostra, per
-		inceptos himenaeos.
-		&lt;/p&gt;
-	&lt;/div&gt;
+    &lt;h3&gt;&lt;a href=&quot;#&quot;&gt;Section 1&lt;/a&gt;&lt;/h3&gt;
+    &lt;div&gt;
+        &lt;p&gt;
+        Mauris mauris ante, blandit et, ultrices a, suscipit eget, quam. Integer
+        ut neque. Vivamus nisi metus, molestie vel, gravida in, condimentum sit
+        amet, nunc. Nam a nibh. Donec suscipit eros. Nam mi. Proin viverra leo ut
+        odio. Curabitur malesuada. Vestibulum a velit eu ante scelerisque vulputate.
+        &lt;/p&gt;
+    &lt;/div&gt;
+    &lt;h3&gt;&lt;a href=&quot;#&quot;&gt;Section 2&lt;/a&gt;&lt;/h3&gt;
+    &lt;div&gt;
+        &lt;p&gt;
+        Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet
+        purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor
+        velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In
+        suscipit faucibus urna.
+        &lt;/p&gt;
+    &lt;/div&gt;
+    &lt;h3&gt;&lt;a href=&quot;#&quot;&gt;Section 3&lt;/a&gt;&lt;/h3&gt;
+    &lt;div&gt;
+        &lt;p&gt;
+        Nam enim risus, molestie et, porta ac, aliquam ac, risus. Quisque lobortis.
+        Phasellus pellentesque purus in massa. Aenean in pede. Phasellus ac libero
+        ac tellus pellentesque semper. Sed ac felis. Sed commodo, magna quis
+        lacinia ornare, quam ante aliquam nisi, eu iaculis leo purus venenatis dui.
+        &lt;/p&gt;
+        &lt;ul&gt;
+            &lt;li&gt;List item one&lt;/li&gt;
+            &lt;li&gt;List item two&lt;/li&gt;
+            &lt;li&gt;List item three&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+    &lt;h3&gt;&lt;a href=&quot;#&quot;&gt;Section 4&lt;/a&gt;&lt;/h3&gt;
+    &lt;div&gt;
+        &lt;p&gt;
+        Cras dictum. Pellentesque habitant morbi tristique senectus et netus
+        et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in
+        faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia
+        mauris vel est.
+        &lt;/p&gt;
+        &lt;p&gt;
+        Suspendisse eu nisl. Nullam ut libero. Integer dignissim consequat lectus.
+        Class aptent taciti sociosqu ad litora torquent per conubia nostra, per
+        inceptos himenaeos.
+        &lt;/p&gt;
+    &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;/body&gt;

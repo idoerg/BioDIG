@@ -1,36 +1,36 @@
 <head>
-	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/blast.css" />
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/blast.css" />
 </head>
 <body>
-	<div id="form_holder">
-		<form name="blast_input" action="submit/" method="post" enctype="multipart/form-data">
-			<div id="blast_title">BLAST</div>
-			<br />	
-			<div>
-				<div class="form_div"><label for="sequence_file"> Sequence File </label></div>
-				<div class="form_div_right"><input name="file" id = "sequence_file" type="file" chars="25" /></div>
-			</div>
-			<br />
-			<div>
-				<div class="form_div"><label for="sequence"> Sequence </label> </div> 
-				<div class="form_div_right"><textarea name = "sequence" id="sequence" name="sequence" rows="6" cols="55"></textarea></div>
-			</div>
-			<div>
-				<div class="form_div">
-					<label>Database</label> <br />
-					<select name="blast_db">
-					{% for option in blastOptions %}
-						<option value="{{option.organism_id}}">
-							<label for="blast_db">{{option.genus}} {{option.species}}</label>
-						</option>
-					{% endfor %}
-					</select>
-				</div>
-			</div>
-			<br />
-			<div id="submit_div">
-				<input type="submit" name="blast_submit" value="BLAST" />
-			</div> 
-		</form>
-	</div>
+    <div id="form_holder">
+        <form name="blast_input" action="submit/" method="post" enctype="multipart/form-data">
+            <div id="blast_title">BLAST</div>
+            <br />    
+            <div>
+                <div class="form_div"><label for="sequence_file"> Sequence File </label></div>
+                <div class="form_div_right"><input name="file" id = "sequence_file" type="file" chars="25" /></div>
+            </div>
+            <br />
+            <div>
+                <div class="form_div"><label for="sequence"> Sequence </label> </div> 
+                <div class="form_div_right"><textarea name = "sequence" id="sequence" name="sequence" rows="6" cols="55"></textarea></div>
+            </div>
+            <div>
+                <div class="form_div">
+                    <label>Database</label> <br />
+                    <select name="blast_db">
+                    {% for option in blastOptions %}
+                        <option value="{{option.organism_id}}">
+                            <label for="blast_db">{{option.genus}} {{option.species}}</label>
+                        </option>
+                    {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <br />
+            <div id="submit_div">
+                <input type="submit" name="blast_submit" value="BLAST" />
+            </div> 
+        </form>
+    </div>
 </body>

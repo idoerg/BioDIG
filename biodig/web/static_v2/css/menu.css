@@ -1,68 +1,68 @@
 .toolbar-section-container {
-	display: inline-table;
+    display: inline-table;
 }
 
 .toolbar-section {
-	margin-right: 15px;
-	padding-right: 7px;
-	border-radius: 5px;
+    margin-right: 15px;
+    padding-right: 7px;
+    border-radius: 5px;
 }
 
 .toolbar-section:hover {
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#CCCCCC), to(#DDDDDD));
-	background-image: -moz-linear-gradient(top, #CCCCCC, #DDDDDD); /* for firefox 3.6+ */
-	filter: DXImageTransform.Microsoft.gradient(startColorstr='#CCCCCC', endColorstr='#DDDDDD'); /*For IE */
-	cursor: default;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#CCCCCC), to(#DDDDDD));
+    background-image: -moz-linear-gradient(top, #CCCCCC, #DDDDDD); /* for firefox 3.6+ */
+    filter: DXImageTransform.Microsoft.gradient(startColorstr='#CCCCCC', endColorstr='#DDDDDD'); /*For IE */
+    cursor: default;
 }
 
 .toolbar-section-icon {
-	height: 25px;
+    height: 25px;
 }
 
 .toolbar-section-text {
-	font-family: Times New Roman;
-	font-size: 14px;
-	display: inline-block;
+    font-family: Times New Roman;
+    font-size: 14px;
+    display: inline-block;
 }
 
 .toolbar-container {
-	background-color: #CCCCCC;
-	padding-top: 3px;
-	padding-bottom: 1px;
-	height: 30px;
-	border-top: 1px solid #DFDFDF;
-	border-bottom: 1px solid #CBCBCB;
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#EEEEEE), to(#CCCCCC));
-	background-image: -moz-linear-gradient(top, #EEEEEE, #CCCCCC); /* for firefox 3.6+ */
-	filter: DXImageTransform.Microsoft.gradient(startColorstr='#EEEEEE', endColorstr='#CCCCCC'); /*For IE */
+    background-color: #CCCCCC;
+    padding-top: 3px;
+    padding-bottom: 1px;
+    height: 30px;
+    border-top: 1px solid #DFDFDF;
+    border-bottom: 1px solid #CBCBCB;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#EEEEEE), to(#CCCCCC));
+    background-image: -moz-linear-gradient(top, #EEEEEE, #CCCCCC); /* for firefox 3.6+ */
+    filter: DXImageTransform.Microsoft.gradient(startColorstr='#EEEEEE', endColorstr='#CCCCCC'); /*For IE */
 }
 
 .toolbar-menu {
-	position: absolute;
-	font-size: 11px;
-	z-index: 12000;
-	display: none;
+    position: absolute;
+    font-size: 11px;
+    z-index: 12000;
+    display: none;
 }
 
 .toolbar-menu-item {
-	padding-right: 30px;
-	cursor: default;
+    padding-right: 30px;
+    cursor: default;
 }
 
 .toolbar-menu-item:hover {
-	background-color: #EEE;
+    background-color: #EEE;
 }
 
 .toolbar-menu-icon {
-	display: inline-block;
+    display: inline-block;
     height: 15px;
     margin-right: 5px;
     vertical-align: middle;
-	position: static !important;
+    position: static !important;
 }
 
 .toolbar-menu-text {
-	display: inline-block;
-	padding: 1px;
-	vertical-align: top;
+    display: inline-block;
+    padding: 1px;
+    vertical-align: top;
 }

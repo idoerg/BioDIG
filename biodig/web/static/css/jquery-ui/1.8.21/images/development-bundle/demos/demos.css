@@ -1,43 +1,43 @@
 body {
-	font-size: 62.5%;
+    font-size: 62.5%;
 }
 
 table {
-	font-size: 1em;
+    font-size: 1em;
 }
 
 /* Site
    -------------------------------- */
 
 body {
-	font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
+    font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
 }
 
 /* Layout
    -------------------------------- */
 
 .layout-grid {
-	width: 960px;
+    width: 960px;
 }
 
 .layout-grid td {
-	vertical-align: top;
+    vertical-align: top;
 }
 
 .layout-grid td.left-nav {
-	width: 140px;
+    width: 140px;
 }
 
 .layout-grid td.normal {
-	border-left: 1px solid #eee;
-	padding: 20px 24px;
-	font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
+    border-left: 1px solid #eee;
+    padding: 20px 24px;
+    font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
 }
 
 .layout-grid td.demos {
-	background: url('/images/demos_bg.jpg') no-repeat;
-	height: 337px;
-	overflow: hidden;
+    background: url('/images/demos_bg.jpg') no-repeat;
+    height: 337px;
+    overflow: hidden;
 }
 
 /* Normal
@@ -45,81 +45,81 @@ body {
 
 .normal h3,
 .normal h4 {
-	margin: 0;
-	font-weight: normal;
+    margin: 0;
+    font-weight: normal;
 }
 
 .normal h3 {
-	padding: 0 0 9px;
-	font-size: 1.8em;
+    padding: 0 0 9px;
+    font-size: 1.8em;
 }
 
 .normal h4 {
-	padding-bottom: 21px;
-	border-bottom: 1px dashed #999;
-	font-size: 1.2em;
-	font-weight: bold;
+    padding-bottom: 21px;
+    border-bottom: 1px dashed #999;
+    font-size: 1.2em;
+    font-weight: bold;
 }
 
 .normal p {
-	font-size: 1.2em;
+    font-size: 1.2em;
 }
 
 /* Demos */
 
 .demos-nav, .demos-nav dt, .demos-nav dd, .demos-nav ul, .demos-nav li {
-	margin: 0;
-	padding: 0
+    margin: 0;
+    padding: 0
 }
 
 .demos-nav {
-	float: left;
-	width: 170px;
-	font-size: 1.3em;
+    float: left;
+    width: 170px;
+    font-size: 1.3em;
 }
 
 .demos-nav dt,
 .demos-nav h4 {
-	margin: 0;
-	padding: 0;
-	font: normal 1.1em "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
-	color: #e87b10;
+    margin: 0;
+    padding: 0;
+    font: normal 1.1em "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
+    color: #e87b10;
 }
 
 .demos-nav dt,
 .demos-nav h4 {
-	margin-top: 1.5em;
-	margin-bottom: 0;
-	padding-left: 8px;
-	padding-bottom:5px;
-	line-height: 1.2em;
-	border-bottom: 1px solid #F4F4F4;
+    margin-top: 1.5em;
+    margin-bottom: 0;
+    padding-left: 8px;
+    padding-bottom:5px;
+    line-height: 1.2em;
+    border-bottom: 1px solid #F4F4F4;
 }
 
 .demos-nav dd a,
 .demos-nav li a {
-	border-bottom: 1px solid #F4F4F4;
-	display:block;
-	padding: 4px 3px 4px 8px;
-	font-size: 90%;
-	text-decoration: none;
-	color: #555 ;
-	margin:2px 0;
-	height:13px;
+    border-bottom: 1px solid #F4F4F4;
+    display:block;
+    padding: 4px 3px 4px 8px;
+    font-size: 90%;
+    text-decoration: none;
+    color: #555 ;
+    margin:2px 0;
+    height:13px;
 }
 
 .demos-nav dd a:hover,
 .demos-nav dd a:focus,
 .demos-nav dd a:hover,
 .demos-nav dd a:focus {
-	background: #f3f3f3;
-	color:#000;
-	-moz-border-radius: 5px; -webkit-border-radius: 5px;
+    background: #f3f3f3;
+    color:#000;
+    -moz-border-radius: 5px; -webkit-border-radius: 5px;
 }
  .demos-nav dd a.selected {
-	background: #555;
-	color:#ffffff;
-	-moz-border-radius: 5px; -webkit-border-radius: 5px;
+    background: #555;
+    color:#ffffff;
+    -moz-border-radius: 5px; -webkit-border-radius: 5px;
 }
 
 
@@ -161,9 +161,9 @@ eventually we should convert the font sizes to ems -- using px for now to minimi
 #demo-config-menu li.demo-config-on a:active { background: url(images/demo-config-on.gif) no-repeat left; padding-left:18px; color:#fff; border:0; margin-left:-10px; margin-top: 0px; margin-bottom: 0px; }
 
 #demo-source, #demo-notes {
-	clear: both;
-	padding: 20px 0 0;
-	font-size: 1.3em;
+    clear: both;
+    padding: 20px 0 0;
+    font-size: 1.3em;
 }
 
 #demo-notes { width:520px; color:#333; font-size: 1em; }
@@ -187,26 +187,26 @@ code, pre { padding:8px 0 8px 20px ; font-size: 1.2em; line-height:130%;  }
 #demo-source a.source-closed:active { background-image: url(images/demo-spindown-closed.gif); }
 
 div.demo {
-	padding:12px;
-	font-family: "Trebuchet MS", "Arial", "Helvetica", "Verdana", "sans-serif";
+    padding:12px;
+    font-family: "Trebuchet MS", "Arial", "Helvetica", "Verdana", "sans-serif";
 }
 
 div.demo h3.docs { clear:left; font-size:12px; font-weight:normal; padding:0 0 1em; margin:0; }
 
 div.demo-description {
-	clear:both;
-	padding:12px;
-	font-family: "Trebuchet MS", "Arial", "Helvetica", "Verdana", "sans-serif";
-	font-size: 1.3em;
-	line-height: 1.4em;
+    clear:both;
+    padding:12px;
+    font-family: "Trebuchet MS", "Arial", "Helvetica", "Verdana", "sans-serif";
+    font-size: 1.3em;
+    line-height: 1.4em;
 }
 
 .ui-draggable, .ui-droppable {
-	background-position: top left;
+    background-position: top left;
 }
 
 .left-nav .demos-nav {
-	padding-right: 10px;
+    padding-right: 10px;
 }
 
 #demo-link { font-size:11px;  padding-top: 6px; clear: both; overflow: hidden; }

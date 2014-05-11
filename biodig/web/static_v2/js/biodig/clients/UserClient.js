@@ -31,12 +31,12 @@ define(deps, function($, settings, util, URLBuilderFactory) {
 
                 },
                 get: function(id) {
-                	if (!id || isNaN(id)) throw { detail : 'The id is not a valid positive number' }
+                    if (!id || isNaN(id)) throw { detail : 'The id is not a valid positive number' }
                 },
                 update: function(id, opts) {
-                	if (!id || isNaN(id)) throw { detail : 'The id is not a valid positive number' }
+                    if (!id || isNaN(id)) throw { detail : 'The id is not a valid positive number' }
 
-                	if ($.isEmptyObject(opts))
+                    if ($.isEmptyObject(opts))
                         throw { detail : 'No changes have been made to this user' }
                 },
                 delete: function(id) {
@@ -131,27 +131,27 @@ define(deps, function($, settings, util, URLBuilderFactory) {
      *  @param opts: The optional query parameters for the list function.
      *               Takes the following properties:
      *
-     *  		     owner: The username of the owner to search.
-     *  			 dateCreated: The formatted date string for the date created.
-     *  			 lastModified: The formatted date string for the date last modified.
-     *  			 limit: The number of entries to retrieve.
+     *               owner: The username of the owner to search.
+     *               dateCreated: The formatted date string for the date created.
+     *               lastModified: The formatted date string for the date last modified.
+     *               limit: The number of entries to retrieve.
      *               offset: The number of entries to skip before listing.
     **/
     UserClient.prototype.list = function(opts) {
-    	var urlBuilder = URLBuilderFactory.newBuilder(this.url);
-    	$.each(opts, function(key, val) {
-    		urlBuilder.addQuery(key, val, URLBuilderFactory.NOT_EMPTY);
-    	});
+        var urlBuilder = URLBuilderFactory.newBuilder(this.url);
+        $.each(opts, function(key, val) {
+            urlBuilder.addQuery(key, val, URLBuilderFactory.NOT_EMPTY);
+        });
 
         // Add the Authorization Header only if the token is set
         var self = this;
 
-    	return $.Deferred(function(deferredObj) {
-    		$.ajax({
-    			url: urlBuilder.complete(),
+        return $.Deferred(function(deferredObj) {
+            $.ajax({
+                url: urlBuilder.complete(),
                 beforeSend: util.auth(self.token),
-    			method: 'GET',
-    			success: function(data, textStatus, jqXHR) {
+                method: 'GET',
+                success: function(data, textStatus, jqXHR) {
                     deferredObj.resolve(data);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
@@ -163,8 +163,8 @@ define(deps, function($, settings, util, URLBuilderFactory) {
                         deferredObj.reject({ detail: 'An unidentified error occurred with the server.'});
                     }
                 }
-    		});
-    	}).promise();
+            });
+        }).promise();
     };
 
     /**
@@ -173,23 +173,23 @@ define(deps, function($, settings, util, URLBuilderFactory) {
      *  @param id: The id of the User.
     **/
     UserClient.prototype.get = function(id) {
-    	try {
-    		this.validator.get(id);
-    	}
-    	catch (e) {
-    		return $.Deferred(function(deferredObj) {
-    			deferredObj.reject(e);
-    		});
-    	}
+        try {
+            this.validator.get(id);
+        }
+        catch (e) {
+            return $.Deferred(function(deferredObj) {
+                deferredObj.reject(e);
+            });
+        }
 
         var self = this;
 
-    	return $.Deferred(function(deferredObj) {
-    		$.ajax({
-    			url: self.url + id,
-    			beforeSend: util.auth(self.token),
+        return $.Deferred(function(deferredObj) {
+            $.ajax({
+                url: self.url + id,
+                beforeSend: util.auth(self.token),
                 method: 'GET',
-    			success: function(data, textStatus, jqXHR) {
+                success: function(data, textStatus, jqXHR) {
                     deferredObj.resolve(data);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
@@ -201,8 +201,8 @@ define(deps, function($, settings, util, URLBuilderFactory) {
                         deferredObj.reject({ detail: 'An unidentified error occurred with the server.'});
                     }
                 }
-    		});
-    	}).promise();
+            });
+        }).promise();
     };
 
     /**
@@ -213,27 +213,27 @@ define(deps, function($, settings, util, URLBuilderFactory) {
      *  @param altText: The new altText for the User.
     **/
     UserClient.prototype.update = function(id, opts) {
-    	try {
-    		this.validator.update(id, opts);
-    	}
-    	catch (e) {
-    		return $.Deferred(function(deferredObj) {
+        try {
+            this.validator.update(id, opts);
+        }
+        catch (e) {
+            return $.Deferred(function(deferredObj) {
                 deferredObj.reject(e);
             }).promise();
-    	}
+        }
 
         var self = this;
 
-    	return $.Deferred(function(deferredObj) {
-    		$.ajax({
-    			url: self.url + id,
+        return $.Deferred(function(deferredObj) {
+            $.ajax({
+                url: self.url + id,
                 beforeSend: util.auth(self.token),
-    			method: 'PUT',
-    			data: opts,
-    			success: function(data) {
-    				deferredObj.resolve(data);
-    			},
-    			error: function(jqXHR, textStatus, errorThrown) {
+                method: 'PUT',
+                data: opts,
+                success: function(data) {
+                    deferredObj.resolve(data);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
                     try {
                         var e = $.parseJSON(jqXHR.responseText);
                         deferredObj.reject(e);
@@ -242,8 +242,8 @@ define(deps, function($, settings, util, URLBuilderFactory) {
                         deferredObj.reject({ detail: 'An unidentified error occurred with the server.'});
                     }
                 }
-    		});
-    	}).promise();
+            });
+        }).promise();
     };
 
     UserClient.prototype.delete = function(id) {

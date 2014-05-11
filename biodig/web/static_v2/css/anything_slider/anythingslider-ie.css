@@ -2,19 +2,19 @@
 
 /* Navigation Arrows */
 div.anythingSlider .arrow {
-	top: 35% !important;
+    top: 35% !important;
 }
 div.anythingSlider-metallic .arrow {
-	top: 40% !important;
+    top: 40% !important;
 }
 div.anythingSlider-construction .arrow {
-	top: 14% !important;
+    top: 14% !important;
 }
 div.anythingSlider-minimalist-round .arrow , div.anythingSlider-minimalist-square .arrow {
-	top: 45% !important;
+    top: 45% !important;
 }
 div.anythingSlider-cs-portfolio .arrow {
-	bottom: -24px !important;
+    bottom: -24px !important;
 }
 
 div.anythingSlider .arrow a,
@@ -22,7 +22,7 @@ div.anythingSlider-metallic .arrow a,
 div.anythingSlider-minimalist-square .arrow a,
 div.anythingSlider-construction .arrow a,
 div.anythingSlider-minimalist-round .arrow a {
-	margin: 0 !important;
+    margin: 0 !important;
 }
 
 div.anythingSlider .thumbNav a { display: inline !important; }

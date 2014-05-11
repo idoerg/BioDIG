@@ -7,12 +7,12 @@
  * @return
  */
 function DrawingAPI(tagBoard, dialogs, siteUrl, originalData, image, imageMetadata, genomicInfo) {
-	this.tagBoard = new TagBoard(tagBoard, originalData, image, imageMetadata, genomicInfo, siteUrl);
-	this.dialogs = dialogs;
-	this.dialogs['changeCurrentGroups'].setTagBoard(this.tagBoard);
-	this.dialogs['downloadImageData'].setTagBoard(this.tagBoard);
+    this.tagBoard = new TagBoard(tagBoard, originalData, image, imageMetadata, genomicInfo, siteUrl);
+    this.dialogs = dialogs;
+    this.dialogs['changeCurrentGroups'].setTagBoard(this.tagBoard);
+    this.dialogs['downloadImageData'].setTagBoard(this.tagBoard);
 };
 
 DrawingAPI.prototype.getTagBoard = function() {
-	return this.tagBoard;
+    return this.tagBoard;
 }

@@ -1,22 +1,22 @@
 function GeneLink(id, feature) {
-	this.id = id;
-	this.name = feature.name;
-	this.uniqueName = feature.uniqueName;
-	this.organismId = feature.organismId;
+    this.id = id;
+    this.name = feature.name;
+    this.uniqueName = feature.uniqueName;
+    this.organismId = feature.organismId;
 };
 
 GeneLink.prototype.getId = function() {
-	return this.id;
+    return this.id;
 };
 
 GeneLink.prototype.getUniqueName = function() {
-	return this.uniqueName;
+    return this.uniqueName;
 };
 
 GeneLink.prototype.getName = function() {
-	return this.name;
+    return this.name;
 };
 
 GeneLink.prototype.getOrganismId = function() {
-	return this.organismId;
+    return this.organismId;
 };

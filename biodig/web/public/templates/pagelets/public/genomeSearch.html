@@ -1,82 +1,82 @@
 {% load template_tags %}
 <head>
-	<script type="text/javascript" src="{{ STATIC_URL }}js/collapser/collapser.js" ></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/collapser/collapser.js" ></script>
 </head>
 <body>
-	<div class="results">
-		<div id="collapse-holder-genomes" class="collapse_holder">
-		    <img class="collapse" id="collapse-genomes" src="{{ STATIC_URL }}images/arrow_down.png"></img>
-		    <span>Genome Results for {{ query }}</span>
-		</div>
-		<div id="genome-search-container">
-			<div class="results-menu">
-				<div class="tabTitle">
-					<span>Organisms Found</span>
-					<img class="max" id="minimizeGenomeResults" title="Click to minimize/maximize the navigation" src="{{ STATIC_URL }}images/minimizeLeft.png"></img>
-				</div>
-			 	{% for candidate in candidateInfo %}
-				<div id="genomeTab{{ candidate.2 }}" class="tab{% if forloop.counter0|isZero %} activeTab{% endif %}">{{ candidate.1 }}</div>
-				{% endfor %}
-			</div>
-			<div class="results-container">
-				{% for candidate in candidateInfo %}
-				<div id="genomeResult{{ candidate.2 }}" class="genome-content{% if forloop.counter0|isZero %} activeContent{% endif %}">
-					{% if candidate.3 %}
-					<iframe class="genome_browser" src="/gb2/gbrowse/organismId{{candidate.2}}/" width="100%" height="100%"></iframe>
-					{% else %}
-					<div class="sorry"><img src="{{ STATIC_URL }}images/caution.png"></img><span>Sorry, there is no genome for this organism.</span></div>
-					{% endif %}
-				</div>
-				{% endfor %}
-			</div>
-		</div>
-	</div>
+    <div class="results">
+        <div id="collapse-holder-genomes" class="collapse_holder">
+            <img class="collapse" id="collapse-genomes" src="{{ STATIC_URL }}images/arrow_down.png"></img>
+            <span>Genome Results for {{ query }}</span>
+        </div>
+        <div id="genome-search-container">
+            <div class="results-menu">
+                <div class="tabTitle">
+                    <span>Organisms Found</span>
+                    <img class="max" id="minimizeGenomeResults" title="Click to minimize/maximize the navigation" src="{{ STATIC_URL }}images/minimizeLeft.png"></img>
+                </div>
+                 {% for candidate in candidateInfo %}
+                <div id="genomeTab{{ candidate.2 }}" class="tab{% if forloop.counter0|isZero %} activeTab{% endif %}">{{ candidate.1 }}</div>
+                {% endfor %}
+            </div>
+            <div class="results-container">
+                {% for candidate in candidateInfo %}
+                <div id="genomeResult{{ candidate.2 }}" class="genome-content{% if forloop.counter0|isZero %} activeContent{% endif %}">
+                    {% if candidate.3 %}
+                    <iframe class="genome_browser" src="/gb2/gbrowse/organismId{{candidate.2}}/" width="100%" height="100%"></iframe>
+                    {% else %}
+                    <div class="sorry"><img src="{{ STATIC_URL }}images/caution.png"></img><span>Sorry, there is no genome for this organism.</span></div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 </body>
 <script type="text/javascript">
-	(function($) {
-		$(document).ready(function() {
-			$('#collapse-holder-genomes').collapser({
-				selector: '#genome-search-container'
-			});
+    (function($) {
+        $(document).ready(function() {
+            $('#collapse-holder-genomes').collapser({
+                selector: '#genome-search-container'
+            });
 
-			$('#minimizeGenomeResults').on('click', function() {
-				if ($(this).hasClass('max')) {
-					$(this).removeClass('max').addClass('min');
-					var resultsMenu = $('#genome-search-container > .results-menu');
-					resultsMenu.children('.tab').hide();
-					resultsMenu.children('.tabTitle').children('span').hide();
-					resultsMenu.css('position', 'absolute').css('height', 'auto').width(35);
-					$('#genome-search-container > .results-container').css('width', '100%');
-					$(this).attr('src', '{{ STATIC_URL }}images/minimizeRight.png');
-				}
-				else {
-					$(this).removeClass('min').addClass('max');
-					var resultsMenu = $('#genome-search-container > .results-menu');
-					resultsMenu.children('.tab').show();
-					resultsMenu.children('.tabTitle').css('padding', '3px 10px').children('span').show();
-					resultsMenu.css('position', 'relative').height(400).width(200);
-					$('#genome-search-container > .results-container').css('width', 738);
-					$(this).attr('src', '{{ STATIC_URL }}images/minimizeLeft.png');
-				}
-			});
-			
-			$('#genome-search-container .tab').on('click', function() {
-				if (!$(this).hasClass('activeTab')) {
-					$('#genome-search-container .activeTab').removeClass('activeTab');
-					$('#genome-search-container .activeContent').removeClass('activeContent').hide();
-					
-					$(this).addClass('activeTab');
-					var contentId = $(this).attr('id').split('genomeTab')[1];
-					contentId = '#genomeResult' + contentId;
-					$(contentId).addClass('activeContent').show();
-				}
-			});
-		
-			$(window).load(function() {
-				//
-			});
-			
-	        $('#genome-search-container .results-container .activeContent').show();
-		});
-	})(jQuery);
+            $('#minimizeGenomeResults').on('click', function() {
+                if ($(this).hasClass('max')) {
+                    $(this).removeClass('max').addClass('min');
+                    var resultsMenu = $('#genome-search-container > .results-menu');
+                    resultsMenu.children('.tab').hide();
+                    resultsMenu.children('.tabTitle').children('span').hide();
+                    resultsMenu.css('position', 'absolute').css('height', 'auto').width(35);
+                    $('#genome-search-container > .results-container').css('width', '100%');
+                    $(this).attr('src', '{{ STATIC_URL }}images/minimizeRight.png');
+                }
+                else {
+                    $(this).removeClass('min').addClass('max');
+                    var resultsMenu = $('#genome-search-container > .results-menu');
+                    resultsMenu.children('.tab').show();
+                    resultsMenu.children('.tabTitle').css('padding', '3px 10px').children('span').show();
+                    resultsMenu.css('position', 'relative').height(400).width(200);
+                    $('#genome-search-container > .results-container').css('width', 738);
+                    $(this).attr('src', '{{ STATIC_URL }}images/minimizeLeft.png');
+                }
+            });
+            
+            $('#genome-search-container .tab').on('click', function() {
+                if (!$(this).hasClass('activeTab')) {
+                    $('#genome-search-container .activeTab').removeClass('activeTab');
+                    $('#genome-search-container .activeContent').removeClass('activeContent').hide();
+                    
+                    $(this).addClass('activeTab');
+                    var contentId = $(this).attr('id').split('genomeTab')[1];
+                    contentId = '#genomeResult' + contentId;
+                    $(contentId).addClass('activeContent').show();
+                }
+            });
+        
+            $(window).load(function() {
+                //
+            });
+            
+            $('#genome-search-container .results-container .activeContent').show();
+        });
+    })(jQuery);
 </script>

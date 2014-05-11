@@ -629,11 +629,11 @@ function array_to_json( $array ){
 
 $result = array();
 foreach ($items as $key=>$value) {
-	if (strpos(strtolower($key), $q) !== false) {
-		array_push($result, array("id"=>$value, "label"=>$key, "value" => strip_tags($key)));
-	}
-	if (count($result) > 11)
-		break;
+    if (strpos(strtolower($key), $q) !== false) {
+        array_push($result, array("id"=>$value, "label"=>$key, "value" => strip_tags($key)));
+    }
+    if (count($result) > 11)
+        break;
 }
 echo array_to_json($result);
 

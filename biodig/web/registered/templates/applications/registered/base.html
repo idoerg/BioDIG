@@ -1,22 +1,22 @@
 <html>
-	<head>
-		<title>BioDIG {{ title }}</title>
-		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/adminLayout.css" />
-		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/jquery-ui/1.10.4/jquery-ui-1.10.4.min.css" />
-		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap/bootstrap.min.css" />
-	</head>
-	<body>
-		<div>
-			<renderSlot name="navBar" />
-		</div>
-		<div id="container_holder">
-		    <div id="container">
-				<renderSlot name="center-1" />
-		    </div>
-		    <br />
-		</div>
-		<div>
-			<renderslot name="footer" />
-		</div>
-	</body>
+    <head>
+        <title>BioDIG {{ title }}</title>
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/adminLayout.css" />
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/jquery-ui/1.10.4/jquery-ui-1.10.4.min.css" />
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap/bootstrap.min.css" />
+    </head>
+    <body>
+        <div>
+            <renderSlot name="navBar" />
+        </div>
+        <div id="container_holder">
+            <div id="container">
+                <renderSlot name="center-1" />
+            </div>
+            <br />
+        </div>
+        <div>
+            <renderslot name="footer" />
+        </div>
+    </body>
 </html>

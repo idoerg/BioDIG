@@ -1,199 +1,199 @@
 .drawing-board {
-	display: block;
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	z-index: 0;
+    display: block;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 0;
 }
 
 .tag-board {
-	display: block;
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	z-index: 250;
+    display: block;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 250;
 }
 
 .toolbar-item {
-	display: inline-block;
+    display: inline-block;
 }
 
 .change-color {
-	border: 1px solid black;
-	vertical-align: top;
-	height: 25px;
-	width: 25px;
-	margin-right: 3px;
+    border: 1px solid black;
+    vertical-align: top;
+    height: 25px;
+    width: 25px;
+    margin-right: 3px;
 }
 
 .change-color:hover {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 .tagging-button {
-	border: 1px solid #AAAAAA;
-	background-color: #EEEEEE;
-	vertical-align: top;
-	border-radius: 5px;
+    border: 1px solid #AAAAAA;
+    background-color: #EEEEEE;
+    vertical-align: top;
+    border-radius: 5px;
 }
 
 .tagging-button img {
-	height: 23px;
+    height: 23px;
 }
 
 .tagging-button:hover {
-	cursor: pointer;
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#EEEEEE), to(#CCCCCC));
-	background-image: -moz-linear-gradient(top, #EEEEEE, #CCCCCC); /* for firefox 3.6+ */
-	filter: DXImageTransform.Microsoft.gradient(startColorstr='#EEEEEE', endColorstr='#CCCCCC'); /*For IE */
-	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-	border: 1px solid #777777;
+    cursor: pointer;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#EEEEEE), to(#CCCCCC));
+    background-image: -moz-linear-gradient(top, #EEEEEE, #CCCCCC); /* for firefox 3.6+ */
+    filter: DXImageTransform.Microsoft.gradient(startColorstr='#EEEEEE', endColorstr='#CCCCCC'); /*For IE */
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #777777;
 }
 
 .toolbar-icon {
-	height: 35px;
-	margin-top: 9px;
-	border-right: 1px solid #777777;
+    height: 35px;
+    margin-top: 9px;
+    border-right: 1px solid #777777;
 }
 
 .toolbar-icon:hover {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 .toolbar-container table {
-	display: inline-block;
-	height: 50px;
+    display: inline-block;
+    height: 50px;
 }
 
 .toolbar-container table td {
-	padding-left: 20px;
-	padding-right: 20px;
-	vertical-align: top;
+    padding-left: 20px;
+    padding-right: 20px;
+    vertical-align: top;
 }
 
 .add-tag {
-	height: 30px;
-	margin-top: 15px;
-	border-right: none;
+    height: 30px;
+    margin-top: 15px;
+    border-right: none;
 }
 
 .add-tag:hover {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 .add-tag-hidden {
-	display: none;
+    display: none;
 }
 
 .desc-form .desc {
-	height: 25px;
-	font-size: 12px;
-	border: 1px solid grey;
-	padding: 3px;
-	width: 250px;
+    height: 25px;
+    font-size: 12px;
+    border: 1px solid grey;
+    padding: 3px;
+    width: 250px;
 }
 
 .taggable-button {
-	border: 1px solid #AAAAAA;
-	background-color: #EEEEEE;
-	vertical-align: top;
-	border-radius: 5px;
-	padding: 2px;
-	margin-right: 5px;
+    border: 1px solid #AAAAAA;
+    background-color: #EEEEEE;
+    vertical-align: top;
+    border-radius: 5px;
+    padding: 2px;
+    margin-right: 5px;
 }
 
 .taggable-button:hover {
-	cursor: pointer;
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#EEEEEE), to(#CCCCCC));
-	background-image: -moz-linear-gradient(top, #EEEEEE, #CCCCCC); /* for firefox 3.6+ */
-	filter: DXImageTransform.Microsoft.gradient(startColorstr='#EEEEEE', endColorstr='#CCCCCC'); /*For IE */
-	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-	border: 1px solid #777777;
+    cursor: pointer;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#EEEEEE), to(#CCCCCC));
+    background-image: -moz-linear-gradient(top, #EEEEEE, #CCCCCC); /* for firefox 3.6+ */
+    filter: DXImageTransform.Microsoft.gradient(startColorstr='#EEEEEE', endColorstr='#CCCCCC'); /*For IE */
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #777777;
 }
 
 #tagPoints {
-	display: none;
+    display: none;
 }
 
 th {
-	font-weight: normal;
-	font-size: 12px;
-	font-family: Lucida Grande;
+    font-weight: normal;
+    font-size: 12px;
+    font-family: Lucida Grande;
 }
 #taggable-tooltip {
-	position: fixed;
-	padding: 3px 5px;
-	background-color: white;
-	border-radius: 7px;
-	border: 1px solid #CCCCCC;
+    position: fixed;
+    padding: 3px 5px;
+    background-color: white;
+    border-radius: 7px;
+    border: 1px solid #CCCCCC;
 }
 
 .geneLinksMenu {
-	display: none;	
+    display: none;    
 }
 
 .page-block {
-	background-color: #666;
-	opacity: 0.1;
-	position: fixed;
-	top: 0;
-	z-index: 13000;
+    background-color: #666;
+    opacity: 0.1;
+    position: fixed;
+    top: 0;
+    z-index: 13000;
 }
 
 .tag-saving-dialog {
-	position: fixed;
-	background-color: #292828;
-	top: 50%;
-	left: 50%;
-	height: 250px;
-	width: 500px;
-	margin-left: -150px;
-	margin-top: -125px;
-	border-radius: 7px;
-	z-index: 7000;
+    position: fixed;
+    background-color: #292828;
+    top: 50%;
+    left: 50%;
+    height: 250px;
+    width: 500px;
+    margin-left: -150px;
+    margin-top: -125px;
+    border-radius: 7px;
+    z-index: 7000;
 }
 
 .tagging-menu-box {
-	width: 155px;
-	z-index: 11000;
-	background-color: white;
-	border-radius: 7px;
-	border: 1px solid #CCC;
-	position: absolute !important;
-	left: 25px;
-	top: 357px;
-	cursor: default;
-	display: none;
-	box-shadow: -1px 2px 6px 1px #333333;
+    width: 155px;
+    z-index: 11000;
+    background-color: white;
+    border-radius: 7px;
+    border: 1px solid #CCC;
+    position: absolute !important;
+    left: 25px;
+    top: 357px;
+    cursor: default;
+    display: none;
+    box-shadow: -1px 2px 6px 1px #333333;
 }
 
 .tagging-menu-box > div {
-	padding: 5px;	
+    padding: 5px;    
 }
 
 .tagging-menu-box-title {
-	text-align: center;
-	font-size: 15px;
-	background-color: #CCC;
-	border-radius: 7px 7px 0px 0px;
+    text-align: center;
+    font-size: 15px;
+    background-color: #CCC;
+    border-radius: 7px 7px 0px 0px;
 }
 
 .tagging-menu-box-section-title {
-	border-bottom: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
     font-size: 13px;
     margin-bottom: 5px;
 }
 
 .tagging-menu-box-section-body {
-	text-align: center;
+    text-align: center;
 }
 
 .tagging-menu-color-container {
-	margin-bottom: 4px;
+    margin-bottom: 4px;
 }
 
 .tagging-dialog {
-	background-color: white;
+    background-color: white;
     border: 1px solid black;
     border-radius: 7px 7px 7px 7px;
     left: 45%;
@@ -205,7 +205,7 @@ th {
 }
 
 .tagging-dialog-title {
-	background-color: #CCCCCC;
+    background-color: #CCCCCC;
     border-bottom: 1px solid #AAA;
     border-radius: 7px 7px 0 0;
     margin-bottom: 15px;
@@ -217,29 +217,29 @@ th {
 }
 
 .tagging-dialog-title .close-button {
-	float: right;	
+    float: right;    
 }
 
 .tagging-dialog-title .close-button {
-	cursor: pointer;	
+    cursor: pointer;    
 }
 
 .tagging-dialog-contents {
-	padding-left: 10px;
-	padding-right: 10px;
-	padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
 }
 
 .dialog-table {
-	width: 100%;
+    width: 100%;
 }
 
 .dialog-table td {
-	text-align: left;
+    text-align: left;
 }
 
 .organismTitle {
-	border-bottom: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
     font-size: 23px;
     font-variant: small-caps;
     font-weight: bold;
@@ -247,32 +247,32 @@ th {
 }
 
 .speciesInfo table {
-	border: 1px solid #CCCCCC;
+    border: 1px solid #CCCCCC;
     margin-bottom: 10px;
     margin-top: 10px;
     width: 100%;
 }
 
 .speciesInfo table tbody tr.even {
-	background-color: Lavender;
+    background-color: Lavender;
 }
 
 .speciesInfo table tbody tr td {
-	padding-bottom: 2px;
+    padding-bottom: 2px;
     padding-left: 5px;
     padding-top: 2px;
     padding-right: 5px;
 }
 
 .tag-info .color-box {
-	background-color: rgba(0, 255, 0, 0.5);
-	border: 1px solid black;
-	padding-bottom: 0;
-	padding-right: 20px;
+    background-color: rgba(0, 255, 0, 0.5);
+    border: 1px solid black;
+    padding-bottom: 0;
+    padding-right: 20px;
 }
 
 .geneLinksInfoTitle {
-	border-bottom: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
     display: block;
     font-size: 22px;
     font-variant: small-caps;
@@ -286,48 +286,48 @@ th {
 }
 
 .geneLinksInfo table tbody tr td {
-	padding-bottom: 2px;
+    padding-bottom: 2px;
     padding-left: 5px;
     padding-top: 2px;
     padding-right: 5px;
 }
 
 .tag-info {
-	border: 1px solid #CCCCCC;
+    border: 1px solid #CCCCCC;
     margin-top: 10px;
 }
 
 .tag-info div {
-	text-align: center;
+    text-align: center;
 }
 
 .geneLinksInfo table tbody tr.even {
-	background-color: Lavender;
+    background-color: Lavender;
 }
 
 .tagInfoContainer {
-	overflow-y: auto;
+    overflow-y: auto;
 }
 
 .current-tag-group-text {
-	font-size: 12px;
+    font-size: 12px;
 }
 
 .download-image-data-dialog-content-section-title {
-	border-bottom: 1px solid #CCC;
-	margin-top: 15px;
+    border-bottom: 1px solid #CCC;
+    margin-top: 15px;
 }
 
 .download-image-data-dialog-content-section table {
-	width: 100%;
-	font-size: 12px;
+    width: 100%;
+    font-size: 12px;
 }
 
 .imageInfo {
-	overflow-y: auto;
-	height: 450px;
+    overflow-y: auto;
+    height: 450px;
 }
 
 .geneLinkLabel {
-	width: 110px;
+    width: 110px;
 }

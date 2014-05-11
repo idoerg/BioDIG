@@ -1,16 +1,16 @@
 div#organism_selector_menu {
-	height: 750px;
-	overflow-y: scroll;
-	width: auto;
-	margin-right: 10px;
+    height: 750px;
+    overflow-y: scroll;
+    width: auto;
+    margin-right: 10px;
 }
 
 div#search_selected {
-	width: auto;
-	height: auto;
-	border-bottom: 1px solid #CCCCCC;
-	margin-bottom: 15px;
-	padding: 5px;
+    width: auto;
+    height: auto;
+    border-bottom: 1px solid #CCCCCC;
+    margin-bottom: 15px;
+    padding: 5px;
 }
 
 .page_container {
@@ -18,9 +18,9 @@ div#search_selected {
 }
 
 #helpBox {
-	font-size: 13px;
+    font-size: 13px;
 }
 
 .organismInfoImg {
-	height: 20px;
+    height: 20px;
 }

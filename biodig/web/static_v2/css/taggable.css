@@ -1,225 +1,225 @@
 .taggable-left {
-	border: 1px solid #CCCCCC;
-	display: inline-block;
+    border: 1px solid #CCCCCC;
+    display: inline-block;
 }
 
 .taggable-right {
-	border: 1px solid #CCCCCC;
-	display: inline-block;
-	float: right;
+    border: 1px solid #CCCCCC;
+    display: inline-block;
+    float: right;
 }
 
 .drawing-board {
-	display: block;
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	z-index: 0;
+    display: block;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 0;
 }
 
 .tag-board {
-	display: block;
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	z-index: 250;
+    display: block;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 250;
 }
 
 .toolbar-item {
-	display: inline-block;
+    display: inline-block;
 }
 
 .info-container {
-	width: 360px;
-	height: 520px;
-	padding: 10px;
+    width: 360px;
+    height: 520px;
+    padding: 10px;
 }
 
 .change-color {
-	border: 1px solid black;
-	vertical-align: top;
-	height: 25px;
-	width: 25px;
-	margin-right: 3px;
+    border: 1px solid black;
+    vertical-align: top;
+    height: 25px;
+    width: 25px;
+    margin-right: 3px;
 }
 
 .change-color:hover {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 .drawing-button {
-	border: 1px solid #AAAAAA;
-	background-color: #EEEEEE;
-	vertical-align: top;
-	border-radius: 5px;
+    border: 1px solid #AAAAAA;
+    background-color: #EEEEEE;
+    vertical-align: top;
+    border-radius: 5px;
 }
 
 .drawing-button img {
-	height: 23px;
+    height: 23px;
 }
 
 .drawing-button:hover {
-	cursor: pointer;
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#EEEEEE), to(#CCCCCC));
-	background-image: -moz-linear-gradient(top, #EEEEEE, #CCCCCC); /* for firefox 3.6+ */
-	filter: DXImageTransform.Microsoft.gradient(startColorstr='#EEEEEE', endColorstr='#CCCCCC'); /*For IE */
-	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-	border: 1px solid #777777;
+    cursor: pointer;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#EEEEEE), to(#CCCCCC));
+    background-image: -moz-linear-gradient(top, #EEEEEE, #CCCCCC); /* for firefox 3.6+ */
+    filter: DXImageTransform.Microsoft.gradient(startColorstr='#EEEEEE', endColorstr='#CCCCCC'); /*For IE */
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #777777;
 }
 
 .status-messages-container {
-	min-height: 30px;
-	width: 100%;
-	position: absolute;
-	z-index: 1000;
+    min-height: 30px;
+    width: 100%;
+    position: absolute;
+    z-index: 1000;
 }
 
 .toolbar-icon {
-	height: 35px;
-	margin-top: 9px;
-	border-right: 1px solid #777777;
+    height: 35px;
+    margin-top: 9px;
+    border-right: 1px solid #777777;
 }
 
 .toolbar-icon:hover {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 .toolbar-container table {
-	display: inline-block;
-	height: 50px;
+    display: inline-block;
+    height: 50px;
 }
 
 .toolbar-container table td {
-	padding-left: 20px;
-	padding-right: 20px;
-	vertical-align: top;
+    padding-left: 20px;
+    padding-right: 20px;
+    vertical-align: top;
 }
 
 .add-tag {
-	height: 30px;
-	margin-top: 15px;
-	border-right: none;
+    height: 30px;
+    margin-top: 15px;
+    border-right: none;
 }
 
 .add-tag:hover {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 .add-tag-hidden {
-	display: none;
+    display: none;
 }
 
 .desc-form .desc {
-	height: 25px;
-	font-size: 12px;
-	border: 1px solid grey;
-	padding: 3px;
-	width: 250px;
+    height: 25px;
+    font-size: 12px;
+    border: 1px solid grey;
+    padding: 3px;
+    width: 250px;
 }
 
 .taggable-button {
-	border: 1px solid #AAAAAA;
-	background-color: #EEEEEE;
-	vertical-align: top;
-	border-radius: 5px;
-	padding: 2px;
-	margin-right: 5px;
+    border: 1px solid #AAAAAA;
+    background-color: #EEEEEE;
+    vertical-align: top;
+    border-radius: 5px;
+    padding: 2px;
+    margin-right: 5px;
 }
 
 .taggable-button:hover {
-	cursor: pointer;
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#EEEEEE), to(#CCCCCC));
-	background-image: -moz-linear-gradient(top, #EEEEEE, #CCCCCC); /* for firefox 3.6+ */
-	filter: DXImageTransform.Microsoft.gradient(startColorstr='#EEEEEE', endColorstr='#CCCCCC'); /*For IE */
-	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-	border: 1px solid #777777;
+    cursor: pointer;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#EEEEEE), to(#CCCCCC));
+    background-image: -moz-linear-gradient(top, #EEEEEE, #CCCCCC); /* for firefox 3.6+ */
+    filter: DXImageTransform.Microsoft.gradient(startColorstr='#EEEEEE', endColorstr='#CCCCCC'); /*For IE */
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #777777;
 }
 
 #tagPoints {
-	display: none;
+    display: none;
 }
 
 th {
-	font-weight: normal;
-	font-size: 12px;
-	font-family: Lucida Grande;
+    font-weight: normal;
+    font-size: 12px;
+    font-family: Lucida Grande;
 }
 #taggable-tooltip {
-	position: fixed;
-	padding: 3px 5px;
-	background-color: white;
-	border-radius: 7px;
-	border: 1px solid #CCCCCC;
+    position: fixed;
+    padding: 3px 5px;
+    background-color: white;
+    border-radius: 7px;
+    border: 1px solid #CCCCCC;
 }
 
 .geneLinksMenu {
-	display: none;
+    display: none;
 }
 
 .tag-saving-dialog {
-	position: fixed;
-	background-color: #292828;
-	top: 50%;
-	left: 50%;
-	height: 250px;
-	width: 500px;
-	margin-left: -150px;
-	margin-top: -125px;
-	border-radius: 7px;
-	z-index: 7000;
+    position: fixed;
+    background-color: #292828;
+    top: 50%;
+    left: 50%;
+    height: 250px;
+    width: 500px;
+    margin-left: -150px;
+    margin-top: -125px;
+    border-radius: 7px;
+    z-index: 7000;
 }
 
 .color-picker {
-	background-size: 121%;
-	background-position: -3px -3px;
-	border-radius: 3px 3px 3px 3px;
-	border: none !important;
+    background-size: 121%;
+    background-position: -3px -3px;
+    border-radius: 3px 3px 3px 3px;
+    border: none !important;
 }
 
 .colorpicker {
-	z-index: 1001;
+    z-index: 1001;
 }
 
 .drawing-menu-box {
-	width: 180px;
-	z-index: 1000;
-	background-color: white;
-	border-radius: 7px;
-	border: 1px solid #CCC;
-	position: absolute !important;
-	left: 25px;
-	top: 357px;
-	cursor: default;
-	display: none;
-	box-shadow: -1px 2px 6px 1px #333333;
+    width: 180px;
+    z-index: 1000;
+    background-color: white;
+    border-radius: 7px;
+    border: 1px solid #CCC;
+    position: absolute !important;
+    left: 25px;
+    top: 357px;
+    cursor: default;
+    display: none;
+    box-shadow: -1px 2px 6px 1px #333333;
 }
 
 .drawing-menu-box > div {
-	padding: 10px;
+    padding: 10px;
 }
 
 .drawing-menu-box-title {
-	font-size: 15px;
-	background-color: #CCC;
-	border-radius: 7px 7px 0px 0px;
+    font-size: 15px;
+    background-color: #CCC;
+    border-radius: 7px 7px 0px 0px;
 }
 
 .drawing-menu-box-section-title {
-	border-bottom: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
     font-size: 13px;
     margin-bottom: 5px;
 }
 
 .drawing-menu-box-section-body {
-	text-align: center;
+    text-align: center;
 }
 
 .drawing-menu-color-container {
-	margin-bottom: 4px;
+    margin-bottom: 4px;
 }
 
 .drawing-dialog {
-	background-color: white;
+    background-color: white;
     border: 1px solid black;
     border-radius: 7px 7px 7px 7px;
     left: 45%;
@@ -231,7 +231,7 @@ th {
 }
 
 .drawing-dialog-title {
-	background-color: #CCCCCC;
+    background-color: #CCCCCC;
     border-bottom: 1px solid #AAA;
     border-radius: 7px 7px 0 0;
     margin-bottom: 15px;
@@ -243,29 +243,29 @@ th {
 }
 
 .drawing-dialog-title .close-button {
-	float: right;
+    float: right;
 }
 
 .drawing-dialog-title .close-button {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 .drawing-dialog-contents {
-	padding-left: 10px;
-	padding-right: 10px;
-	padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
 }
 
 .dialog-table {
-	width: 100%;
+    width: 100%;
 }
 
 .dialog-table td {
-	text-align: left;
+    text-align: left;
 }
 
 .organism-title {
-	border-bottom: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
     font-size: 23px;
     font-variant: small-caps;
     font-weight: bold;
@@ -273,34 +273,34 @@ th {
 }
 
 .image-metadata table {
-	border: 1px solid #CCCCCC;
+    border: 1px solid #CCCCCC;
     margin-bottom: 10px;
     margin-top: 10px;
     width: 100%;
 }
 
 .tag-list table tbody tr.even {
-	background-color: Lavender;
+    background-color: Lavender;
 }
 
 .tag-list table tbody tr td {
-	padding-bottom: 2px;
+    padding-bottom: 2px;
     padding-left: 5px;
     padding-top: 2px;
     padding-right: 5px;
 }
 
 .tag-info-color {
-	width: 100%;
-	height: 20px;
+    width: 100%;
+    height: 20px;
 }
 
 .tag-info > table > tbody > tr > td:first-child {
-	width: 90px;
+    width: 90px;
 }
 
 .tag-list-title {
-	border-bottom: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
     display: block;
     font-size: 22px;
     font-variant: small-caps;
@@ -313,7 +313,7 @@ th {
 }
 
 .tag-list table tbody tr td {
-	padding-bottom: 2px;
+    padding-bottom: 2px;
     padding-left: 5px;
     padding-top: 2px;
     padding-right: 5px;
@@ -324,33 +324,33 @@ th {
 }
 
 .tag-list table tbody tr.even {
-	background-color: Lavender;
+    background-color: Lavender;
 }
 
 .tag-list-container {
-	overflow-y: scroll;
-	height: 325px;
+    overflow-y: scroll;
+    height: 325px;
 }
 
 .current-tag-group-text {
-	font-size: 12px;
+    font-size: 12px;
 }
 
 .download-image-data-dialog-content-section-title {
-	border-bottom: 1px solid #CCC;
-	margin-top: 15px;
+    border-bottom: 1px solid #CCC;
+    margin-top: 15px;
 }
 
 .download-image-data-dialog-content-section table {
-	width: 100%;
-	font-size: 12px;
+    width: 100%;
+    font-size: 12px;
 }
 
 .imageInfo {
-	overflow-y: auto;
-	height: 450px;
+    overflow-y: auto;
+    height: 450px;
 }
 
 .geneLinkLabel {
-	width: 110px;
+    width: 110px;
 }

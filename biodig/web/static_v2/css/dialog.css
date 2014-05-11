@@ -1,5 +1,5 @@
 .dialog {
-	background-color: white;
+    background-color: white;
     border: 1px solid black;
     border-radius: 7px 7px 7px 7px;
     left: 45%;
@@ -11,7 +11,7 @@
 }
 
 .dialog-title {
-	background-color: #CCCCCC;
+    background-color: #CCCCCC;
     border-bottom: 1px solid #AAA;
     border-radius: 7px 7px 0 0;
     margin-bottom: 15px;
@@ -23,43 +23,43 @@
 }
 
 .dialog-title .close-button {
-	float: right;	
+    float: right;    
 }
 
 .dialog-title .close-button {
-	cursor: pointer;	
+    cursor: pointer;    
 }
 
 .dialog-contents {
-	padding-left: 10px;
-	padding-right: 10px;
-	padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
 }
 
 .dialog-button {
-	border: 1px solid #AAAAAA;
-	background-color: #EEEEEE;
-	vertical-align: top;
-	border-radius: 5px;
+    border: 1px solid #AAAAAA;
+    background-color: #EEEEEE;
+    vertical-align: top;
+    border-radius: 5px;
 }
 
 .dialog-button img {
-	height: 23px;
+    height: 23px;
 }
 
 .dialog-button:hover {
-	cursor: pointer;
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#EEEEEE), to(#CCCCCC));
-	background-image: -moz-linear-gradient(top, #EEEEEE, #CCCCCC); /* for firefox 3.6+ */
-	filter: DXImageTransform.Microsoft.gradient(startColorstr='#EEEEEE', endColorstr='#CCCCCC'); /*For IE */
-	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-	border: 1px solid #777777;
+    cursor: pointer;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#EEEEEE), to(#CCCCCC));
+    background-image: -moz-linear-gradient(top, #EEEEEE, #CCCCCC); /* for firefox 3.6+ */
+    filter: DXImageTransform.Microsoft.gradient(startColorstr='#EEEEEE', endColorstr='#CCCCCC'); /*For IE */
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #777777;
 }
 
 .page-block {
-	background-color: #666;
-	opacity: 0.1;
-	position: fixed;
-	top: 0;
-	z-index: 13000;
+    background-color: #666;
+    opacity: 0.1;
+    position: fixed;
+    top: 0;
+    z-index: 13000;
 }

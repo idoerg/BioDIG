@@ -51,12 +51,12 @@ require(deps, function($, TagGroupClientFactory,URLBuilder) {
     // setting up list tester
     $('#ListForm #l').on('click', function() {
 
-	var opts = {
-		ldate : $('#ListForm input[name=ldate]').val(),
-		cdate : $('#ListForm input[name=cdate]').val(),
+    var opts = {
+        ldate : $('#ListForm input[name=ldate]').val(),
+        cdate : $('#ListForm input[name=cdate]').val(),
                 owner : $('#ListForm input[name=owner]').val(),
                 name : $('#ListForm input[name=name]').val()
-	          };
+              };
        
         $.when(tagGroupClient.list(opts))
             .done(function(data) {

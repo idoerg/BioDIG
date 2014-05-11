@@ -100,28 +100,28 @@ define(deps, function($, settings, URLBuilderFactory, util) {
      *  @param opts: The optional query parameters for the list function.
      *               Takes the following properties:
      *
-     *  		     owner: The username of the owner to search.
-     *  			 dateCreated: The formatted date string for the date created.
-     *  			 lastModified: The formatted date string for the date last modified.
-     *  			 limit: The number of entries to retrieve.
+     *               owner: The username of the owner to search.
+     *               dateCreated: The formatted date string for the date created.
+     *               lastModified: The formatted date string for the date last modified.
+     *               limit: The number of entries to retrieve.
      *               offset: The number of entries to skip before listing.
     **/
     ImageOrganismClient.prototype.list = function(opts) {
         if (!opts) opts = {};
-    	var urlBuilder = URLBuilderFactory.newBuilder(this.url);
-    	$.each(opts, function(key, val) {
-    		urlBuilder.addQuery(key, val, URLBuilderFactory.NOT_EMPTY);
-    	});
+        var urlBuilder = URLBuilderFactory.newBuilder(this.url);
+        $.each(opts, function(key, val) {
+            urlBuilder.addQuery(key, val, URLBuilderFactory.NOT_EMPTY);
+        });
 
         // Add the Authorization Header only if the token is set
         var self = this;
 
-    	return $.Deferred(function(deferredObj) {
-    		$.ajax({
-    			url: urlBuilder.complete(),
+        return $.Deferred(function(deferredObj) {
+            $.ajax({
+                url: urlBuilder.complete(),
                 beforeSend: util.auth(self.token),
-    			method: 'GET',
-    			success: function(data, textStatus, jqXHR) {
+                method: 'GET',
+                success: function(data, textStatus, jqXHR) {
                     deferredObj.resolve(data);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
@@ -133,8 +133,8 @@ define(deps, function($, settings, URLBuilderFactory, util) {
                         deferredObj.reject({ detail: 'An unidentified error occurred with the server.'});
                     }
                 }
-    		});
-    	}).promise();
+            });
+        }).promise();
     };
 
     /**

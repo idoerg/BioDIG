@@ -1,149 +1,149 @@
 .workbench-title {
-	background-color: transparent;
-	color: white;
-	font-family: Times New Roman;
-	font-variant: small-caps;
-	font-size: 30px;
-	font-family: lighter;
-	padding: 4px;
-	text-align: center;
+    background-color: transparent;
+    color: white;
+    font-family: Times New Roman;
+    font-variant: small-caps;
+    font-size: 30px;
+    font-family: lighter;
+    padding: 4px;
+    text-align: center;
 }
 
 .workbench-area {
-	background-color: white;
-	border-radius: 7px 7px 7px 7px;
-	margin-bottom: 10px;
+    background-color: white;
+    border-radius: 7px 7px 7px 7px;
+    margin-bottom: 10px;
 }
 
 .work-area {
-	height: 633px;
-	width: 960px;
-	padding-top: 65px;
-	margin: 0 auto;
+    height: 633px;
+    width: 960px;
+    padding-top: 65px;
+    margin: 0 auto;
 }
 
 .center-work-area {
-	width: calc(100% - 300px);
-	width: -webkit-calc(100% - 300px);
-	width: -moz-calc(100% - 300px);
-	display: inline-table;
-	white-space: normal;
+    width: calc(100% - 300px);
+    width: -webkit-calc(100% - 300px);
+    width: -moz-calc(100% - 300px);
+    display: inline-table;
+    white-space: normal;
 }
 
 .workbench-toolbar-outside {
-	width: 290px;
-	display: inline-table;
-	white-space: normal;
+    width: 290px;
+    display: inline-table;
+    white-space: normal;
 }
 
 .workbench-toolbar-container {
-	height: 702px;
-	overflow-y: auto;
-	direction: rtl;
-	padding-left: 7px;
-	padding-top: 4px;
+    height: 702px;
+    overflow-y: auto;
+    direction: rtl;
+    padding-left: 7px;
+    padding-top: 4px;
 }
 
 .workbench-toolbar-container div {
-	direction: ltr;
+    direction: ltr;
 }
 
 .toolbar {
-	padding: 3px;
+    padding: 3px;
 }
 
 .toolbar-header {
-	min-height: 25px;
-	padding-top: 3px;
-	padding-bottom: 3px;
-	border-bottom: 1px solid #CCC;
+    min-height: 25px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid #CCC;
 }
 
 .toolbar-header:hover {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 .toolbar-header > div {
-	display: inline-block;
+    display: inline-block;
 }
 
 .collapse-button {
-	padding: 3px 5px 3px 8px;
+    padding: 3px 5px 3px 8px;
 }
 
 .toolbar-title {
-	font-family: Lucida Grande;
-	font-size: 14px;
+    font-family: Lucida Grande;
+    font-size: 14px;
 }
 
 .toolbar-title-header {
-	margin-top: 12px;
+    margin-top: 12px;
     font-size: 20px;
     color: white;
     font-variant: small-caps;
 }
 
 .toolbar-options {
-	color: #333333;
+    color: #333333;
     font-family: Lucida Grande;
     font-size: 10px;
     float: right;
 }
 
 .toolbar-options > span {
-	vertical-align: super;
+    vertical-align: super;
 }
 
 .image-thumbnail-container {
-	overflow-y: auto;
-	min-height: 100px;
-	max-height: 510px;
+    overflow-y: auto;
+    min-height: 100px;
+    max-height: 510px;
 }
 
 .my-pictures-image-holder {
-	height: 100px;
-	width: 100px;
-	overflow: hidden;
-	display: inline-block;
-	padding: 5px;
-	margin-left: 5px;
-	background-color: #F5F5F5;
+    height: 100px;
+    width: 100px;
+    overflow: hidden;
+    display: inline-block;
+    padding: 5px;
+    margin-left: 5px;
+    background-color: #F5F5F5;
 }
 
 .my-pictures-image-holder:hover {
-	background-color: #AAAAAA;
+    background-color: #AAAAAA;
 }
 
 .my-tags-image-holder {
-	height: 50px;
-	width: 50px;
-	overflow: hidden;
-	display: inline-block;
-	padding: 5px;
-	background-color: #F5F5F5;
+    height: 50px;
+    width: 50px;
+    overflow: hidden;
+    display: inline-block;
+    padding: 5px;
+    background-color: #F5F5F5;
 }
 
 .scaled-image {
-	position: relative;
-	display: block;
+    position: relative;
+    display: block;
 }
 
 .scaled-image:hover {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 .edit-image-container {
-	z-index: 1000;
-	left: 0;
-	position: absolute;
-	padding: 15px;
-	display: none;
+    z-index: 1000;
+    left: 0;
+    position: absolute;
+    padding: 15px;
+    display: none;
 }
 
 .edit-image-button > img {
-	height: 20px;
-	margin-left: -5px;
-	vertical-align: middle;
+    height: 20px;
+    margin-left: -5px;
+    vertical-align: middle;
 }
 
 .top-right-float {
@@ -153,52 +153,52 @@
 }
 
 .delete-image-button {
-	position: absolute;
-	right: 0;
-	display: none;
+    position: absolute;
+    right: 0;
+    display: none;
 }
 
 .delete-image-button:hover {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 .item {
-	border-bottom: 1px solid #CCC;
-	cursor: pointer;
+    border-bottom: 1px solid #CCC;
+    cursor: pointer;
 }
 
 .item:hover {
-	background-color: #CCC;
+    background-color: #CCC;
 }
 
 .item td {
-	vertical-align: top;
+    vertical-align: top;
     padding: 2px;
 }
 
 .item-text {
-	color: #222;
+    color: #222;
     font-family: Lucida Grande;
     font-size: 11px;
     padding-left: 3px;
 }
 
 .item-label {
-	width: 44px;
+    width: 44px;
 }
 
 .item-info {
-	width: 95px;
+    width: 95px;
 }
 
 .colorBox {
-	height: 12px;
-	width: 12px;
-	border-radius: 2px;
+    height: 12px;
+    width: 12px;
+    border-radius: 2px;
 }
 
 #minMaxNav {
-	background-color: white;
+    background-color: white;
     border-radius: 3px 3px 3px 3px;
     cursor: pointer;
     display: block;
@@ -209,14 +209,14 @@
 }
 
 #minMaxNav img {
-	width: 20px;
+    width: 20px;
 }
 
 .edit-button {
-	padding: 2px;
+    padding: 2px;
 }
 
 .edit-button:hover {
-	background-color: #EEEEEE;
-	cursor: pointer;
+    background-color: #EEEEEE;
+    cursor: pointer;
 }

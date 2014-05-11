@@ -15,12 +15,12 @@ define(['jquery', 'URLBuilder'], function($, URLBuilder) {
                     if (!altText) throw { validation_error : 'The alternate text for this image is empty' }
                 },
                 get: function(id) {
-                	if (!id || isNan(id)) throw { validation_error : 'The id is not a valid positive number' }
+                    if (!id || isNan(id)) throw { validation_error : 'The id is not a valid positive number' }
                 },
                 update: function(id, description, altText) {
-                	if (!id || isNan(id)) throw { validation_error : 'The id is not a valid positive number' }
-                	
-                	if (!description && !altText) throw { validation_error : 'No changes have been made to this image' }
+                    if (!id || isNan(id)) throw { validation_error : 'The id is not a valid positive number' }
+                    
+                    if (!description && !altText) throw { validation_error : 'No changes have been made to this image' }
                 }
             }
         }
@@ -92,31 +92,31 @@ define(['jquery', 'URLBuilder'], function($, URLBuilder) {
      *  @param opts: The optional query parameters for the list function.
      *               Takes the following properties:
      *  
-     *  		     owner: The username of the owner to search.
-     *  			 dateCreated: The formatted date string for the date created.
-     *  			 lastModified: The formatted date string for the date last modified.	
-     *  			 limit: The number of entries to retrieve.
+     *               owner: The username of the owner to search.
+     *               dateCreated: The formatted date string for the date created.
+     *               lastModified: The formatted date string for the date last modified.    
+     *               limit: The number of entries to retrieve.
      *               offset: The number of entries to skip before listing.
     **/
     ImageClient.prototype.list = function(opts) {
-    	var urlBuilder = URLBuilderFactory.newBuilder(this.url);
-    	$.each(opts, function(key, val) {
-    		urlBuilder.addQuery(key, val, URLBuilderFactory.NOT_EMPTY);
-    	});
-    	
-    	return $.Deferred(function(deferredObj) {
-    		$.ajax({
-    			url: urlBuilder.complete(),
-    			method: 'GET',
-    			success: function(data, textStatus, jqXHR) {
+        var urlBuilder = URLBuilderFactory.newBuilder(this.url);
+        $.each(opts, function(key, val) {
+            urlBuilder.addQuery(key, val, URLBuilderFactory.NOT_EMPTY);
+        });
+        
+        return $.Deferred(function(deferredObj) {
+            $.ajax({
+                url: urlBuilder.complete(),
+                method: 'GET',
+                success: function(data, textStatus, jqXHR) {
                     deferredObj.resolve(data);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     var e = $.parseJSON(jqXHR.responseText);
                     deferredObj.reject(e);
                 }
-    		});
-    	}).promise();
+            });
+        }).promise();
     };
 
     /**
@@ -125,28 +125,28 @@ define(['jquery', 'URLBuilder'], function($, URLBuilder) {
      *  @param id: The id of the image.
     **/
     ImageClient.prototype.get = function(id) {
-    	try {
-    		this.validator.get(id);
-    	}
-    	catch (e) {
-    		return $.Deferred(function(deferredObj) {
-    			deferredObj.reject(e);
-    		});
-    	}
-    	
-    	return $.Deferred(function(deferredObj) {
-    		$.ajax({
-    			url: this.url + id,
-    			method: 'GET',
-    			success: function(data, textStatus, jqXHR) {
+        try {
+            this.validator.get(id);
+        }
+        catch (e) {
+            return $.Deferred(function(deferredObj) {
+                deferredObj.reject(e);
+            });
+        }
+        
+        return $.Deferred(function(deferredObj) {
+            $.ajax({
+                url: this.url + id,
+                method: 'GET',
+                success: function(data, textStatus, jqXHR) {
                     deferredObj.resolve(data);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     var e = $.parseJSON(jqXHR.responseText);
                     deferredObj.reject(e);
                 }
-    		});
-    	}).promise();
+            });
+        }).promise();
     };
     
     /**
@@ -157,33 +157,33 @@ define(['jquery', 'URLBuilder'], function($, URLBuilder) {
      *  @param altText: The new altText for the image.
     **/
     ImageClient.prototype.update = function(id, description, altText) {
-    	try {
-    		this.validator.update(id, description, altText);
-    	}
-    	catch (e) {
-    		return $.Deferred(function(deferredObj) {
+        try {
+            this.validator.update(id, description, altText);
+        }
+        catch (e) {
+            return $.Deferred(function(deferredObj) {
                 deferredObj.reject(e);
             }).promise();
-    	}
-    	
-    	var data = {};
-    	if (description) data['description'] = description;
-    	if (altText) data['altText'] = altText;
-    	
-    	return $.Deferred(function(deferredObj) {
-    		$.ajax({
-    			url: this.url + id,
-    			method: 'PUT',
-    			data: data,
-    			success: function(data) {
-    				deferredObj.resolve(data);
-    			},
-    			error: function(jqXHR, textStatus, errorThrown) {
+        }
+        
+        var data = {};
+        if (description) data['description'] = description;
+        if (altText) data['altText'] = altText;
+        
+        return $.Deferred(function(deferredObj) {
+            $.ajax({
+                url: this.url + id,
+                method: 'PUT',
+                data: data,
+                success: function(data) {
+                    deferredObj.resolve(data);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
                     var e = $.parseJSON(jqXHR.responseText);
                     deferredObj.reject(e);
                 }
-    		});
-    	}).promise();
+            });
+        }).promise();
     };
 
     // default settings for an ImageClient

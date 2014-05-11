@@ -1,53 +1,53 @@
 {% load template_tags %}
 <head>
-	<link rel="stylesheet" href="{{ STATIC_URL }}css/home.css" type="text/css" />
-	<link rel="stylesheet" href="{{ STATIC_URL }}css/zoomable.css" type="text/css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/home.css" type="text/css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/zoomable.css" type="text/css" />
 </head>
 <div class="page_container">
 <div class="row">
-	<div class="col-sm-9">
-		<img id="phylogenetic_tree" src="{{ STATIC_URL }}images/mycoplasma_tree_lowRes.png" alt="Phylogenetic Tree" title="Phylogenetic Tree" />
-	</div>
-	<div class="col-sm-3">
-		<div id="search_selected" class="row">
-			<div class="col-sm-9">
+    <div class="col-sm-9">
+        <img id="phylogenetic_tree" src="{{ STATIC_URL }}images/mycoplasma_tree_lowRes.png" alt="Phylogenetic Tree" title="Phylogenetic Tree" />
+    </div>
+    <div class="col-sm-3">
+        <div id="search_selected" class="row">
+            <div class="col-sm-9">
                 <div class="row">
-				    <div class="col-sm-6" style="line-height: 2.4;">
+                    <div class="col-sm-6" style="line-height: 2.4;">
                         <label>Image</label><input id="searchImages" name="searchImages" type="checkbox" checked="checked" value="true" />
-				    </div>
+                    </div>
                     <div class="col-sm-6" style="line-height: 2.4;">
                         <label>Genes</label><input id="searchGenomes" name="searchGenomes" type="checkbox" checked="checked" value="true" />
-			        </div>
+                    </div>
                 </div>
             </div>
-			<div class="col-sm-3">
-				<button class="btn btn-primary">Go</button>
-			</div>
-		</div>
-		<div id="organism_selector_menu">
-			<ol id="selectable">
-			{% for organism in all_mycoplasma %}
-				<li class="ui-widget-content" id="{{organism.pk}}">
-					<span>{{organism.common_name}}</span>
-					{% if organism.pk|inList:all_genomes %}
-					<img class="organismInfoImg" style="height:18px" src="{{ STATIC_URL }}images/dnaIcon.png" />
-					{% endif %}
-					{% if organism.pk|inList:all_images %}
-					<img class="organismInfoImg" src="{{ STATIC_URL }}images/imageIcon.png" />
-					{% endif %}
-					{% if organism.pk|inList:all_tags %}
-					<img class="organismInfoImg" style="height: 25px; margin-left: -5px; vertical-align: bottom;" src="{{ STATIC_URL }}images/tag.png" />
-					{% endif %}
-				</li>
-			{% endfor %}
-			</ol>
-		</div>
-	</div>
+            <div class="col-sm-3">
+                <button class="btn btn-primary">Go</button>
+            </div>
+        </div>
+        <div id="organism_selector_menu">
+            <ol id="selectable">
+            {% for organism in all_mycoplasma %}
+                <li class="ui-widget-content" id="{{organism.pk}}">
+                    <span>{{organism.common_name}}</span>
+                    {% if organism.pk|inList:all_genomes %}
+                    <img class="organismInfoImg" style="height:18px" src="{{ STATIC_URL }}images/dnaIcon.png" />
+                    {% endif %}
+                    {% if organism.pk|inList:all_images %}
+                    <img class="organismInfoImg" src="{{ STATIC_URL }}images/imageIcon.png" />
+                    {% endif %}
+                    {% if organism.pk|inList:all_tags %}
+                    <img class="organismInfoImg" style="height: 25px; margin-left: -5px; vertical-align: bottom;" src="{{ STATIC_URL }}images/tag.png" />
+                    {% endif %}
+                </li>
+            {% endfor %}
+            </ol>
+        </div>
+    </div>
 </div>
 </div>
 <style>
-	#selectable .ui-selecting { background: paleblue; cursor: pointer;}
-	#selectable .ui-selected { background: #AAAAAA; color: white; }
+    #selectable .ui-selecting { background: paleblue; cursor: pointer;}
+    #selectable .ui-selected { background: #AAAAAA; color: white; }
     #selectable { list-style-type: none; margin: 0; padding: 0; width: 100%; }
     #selectable li { margin: 3px; padding: 0.4em; font-size: 15; border-bottom: 1px solid #CCCCCC;}
     #selectable li:hover { cursor: pointer; }
@@ -55,7 +55,7 @@
 <!-- Allows us to overwrite the base URL for all modules to the static js directory -->
 <script type="text/javascript">
     var require = {
-	    baseUrl: '{{ STATIC_URL }}js/'
-	};
+        baseUrl: '{{ STATIC_URL }}js/'
+    };
 </script>
 <script type="text/javascript" data-main="{{ STATIC_URL }}js/biodig/pages/home.js" src="{{ STATIC_URL }}js/lib/require.js"></script>

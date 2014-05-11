@@ -1,22 +1,22 @@
 .uploader-container {
-	width: 918px;
+    width: 918px;
 }
 
 .uploader-menu {
-	border-bottom: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
     padding: 10px;
-	background-color: #DDDDDD;
+    background-color: #DDDDDD;
 }
 
 .uploader-body {
-	background-color: white;
-	min-height: 200px;
-	max-height: 600px;
-	overflow-y: auto;
+    background-color: white;
+    min-height: 200px;
+    max-height: 600px;
+    overflow-y: auto;
 }
 
 .uploader-menu-button {
-	border: 1px solid #CCCCCC;
+    border: 1px solid #CCCCCC;
     border-radius: 7px 7px 7px 7px;
     height: 55px;
     width: 115px;
@@ -26,14 +26,14 @@
 }
 
 .uploader-menu-button:hover {
-	background-image: -moz-linear-gradient(center top , #EEEEEE, #CCCCCC);
+    background-image: -moz-linear-gradient(center top , #EEEEEE, #CCCCCC);
     border: 1px solid #777777;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
     cursor: pointer;
 }
 
 .small-manager-button {
-	border: 1px solid #CCCCCC;
+    border: 1px solid #CCCCCC;
     border-radius: 7px 7px 7px 7px;
     background-color: #EEEEEE;
     border: 1px solid #AAAAAA;
@@ -42,37 +42,37 @@
 }
 
 .small-manager-button img {
-	height: 20px;
+    height: 20px;
 }
 
 .small-manager-button:hover {
-	background-image: -moz-linear-gradient(center top , #EEEEEE, #CCCCCC);
+    background-image: -moz-linear-gradient(center top , #EEEEEE, #CCCCCC);
     border: 1px solid #777777;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
     cursor: pointer;
 }
 
 .uploader-menu-button-hover {
-	background-image: -moz-linear-gradient(center top , #EEEEEE, #CCCCCC);
+    background-image: -moz-linear-gradient(center top , #EEEEEE, #CCCCCC);
     border: 1px solid #777777;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
     cursor: pointer;
 }
 
 .uploader-menu-button-container {
-	display: inline-table;
+    display: inline-table;
     position: relative;
 }
 
 .small-manager-label {
-	color: #292828;
+    color: #292828;
     line-height: 30px;
     vertical-align: top;
     padding-left: 5px;
 }
 
 input[name="add-images"] {
-	font-size: x-large;
+    font-size: x-large;
     height: 55px;
     left: -327px;
     position: relative;
@@ -82,7 +82,7 @@ input[name="add-images"] {
 }
 
 .add-images-container {
-	height: 55px;
+    height: 55px;
     overflow: hidden;
     position: absolute;
     top: 0;
@@ -90,53 +90,53 @@ input[name="add-images"] {
 }
 
 .upload-item {
-	border-bottom: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
     padding: 10px;
 }
 
 .preview-thumbnail {
-	position: relative;
-	display: block;
+    position: relative;
+    display: block;
 }
 
 .preview-thumbnail-container {
-	width: 60px;
-	height: 60px;
-	border: 1px solid #CCC;
-	padding: 5px;
+    width: 60px;
+    height: 60px;
+    border: 1px solid #CCC;
+    padding: 5px;
 }
 
 .cell-container {
-	margin-top: 25px;
+    margin-top: 25px;
 }
 
 .filename-container {
-	width: 460px;
+    width: 460px;
 }
 
 .top-align {
-	line-height: 35px;
-	vertical-align: top;
-	color: #292828;
+    line-height: 35px;
+    vertical-align: top;
+    color: #292828;
 }
 
 textarea[name="description"], textarea[name="alt-text"] {
-	height: 64px;
+    height: 64px;
     width: 340px;
     resize: vertical;
 }
 
 .disabled-cell-container button.smallManagerButton img {
-	opacity: 0.5;
+    opacity: 0.5;
 }
 
 .disabled-cell-container span.smallManagerLabel {
-	color: #777;
+    color: #777;
 }
 
 .disabled-cell-container button.smallManagerButton:hover {
-	background-color: #EEEEEE;
-	background-image: none;
+    background-color: #EEEEEE;
+    background-image: none;
     border: 1px solid #AAAAAA;
     border-radius: 5px 5px 5px 5px;
     padding: 2px 6px;
@@ -145,39 +145,39 @@ textarea[name="description"], textarea[name="alt-text"] {
 }
 
 .uploader-row .cell {
-	display: inline-table;
+    display: inline-table;
     vertical-align: top;
 }
 
 .filename {
-	color: #292828;
+    color: #292828;
     font-family: Lucida Grande;
     font-size: 17px;
     padding: 0 16px 16px 60px
 }
 
 .filename-container > div {
-	overflow: hidden;
+    overflow: hidden;
     text-overflow: ellipsis;
     width: 615px;
 }
 
 .status {
-	width: 60px;
+    width: 60px;
 }
 
 .status-container {
-	position: absolute;
-	padding: 30px;
+    position: absolute;
+    padding: 30px;
 }
 
 .close-button {
-	float: right;
-	height: 18px;
+    float: right;
+    height: 18px;
     width: 18px;
 }
 
 .close-button:hover {
-	background-color: #CCC;
-	cursor: pointer;
+    background-color: #CCC;
+    cursor: pointer;
 }

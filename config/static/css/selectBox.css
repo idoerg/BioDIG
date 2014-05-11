@@ -1,13 +1,13 @@
 .selectView {
-	border: 1px solid #BBBBBB;
+    border: 1px solid #BBBBBB;
     padding: 5px;
     cursor: pointer;
 }
 
 .selectMenu {
-	border-bottom: 1px solid #BBBBBB;
-	border-left: 1px solid #BBBBBB;
-	border-right: 1px solid #BBBBBB;
+    border-bottom: 1px solid #BBBBBB;
+    border-left: 1px solid #BBBBBB;
+    border-right: 1px solid #BBBBBB;
     cursor: pointer;
     position: absolute;
     background-color: white;
@@ -15,15 +15,15 @@
 }
 
 .selectOption {
-	padding: 5px;
+    padding: 5px;
 }
 
 .selectOption:hover {
-	background-color: #DFDFDF;
+    background-color: #DFDFDF;
 }
 
 .selectIcon {
-	display: block;
+    display: block;
     float: right;
     padding: 7px;
 }
