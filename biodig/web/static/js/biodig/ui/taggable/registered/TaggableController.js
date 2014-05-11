@@ -287,7 +287,7 @@ define(deps, function($, util) {
                             .fail(function(e) {
                                 deferred_object.reject();
                             });
-                        }).promise();
+                        }).promise()
                     );
 
                     $.when.apply($, promises).always(function() {
