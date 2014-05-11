@@ -1,5 +1,5 @@
 var deps = [
-    'jquery', 'underscore', 'biodig/client/ImageClient', 'biodig/ui/workbench/ImageItem',
+    'jquery', 'underscore', 'biodig/clients/ImageClient', 'biodig/ui/workbench/ImageItem',
     'text!biodig/tmpl/workbench/toolbar-menu.html'
 ];
 

@@ -1,5 +1,5 @@
 var deps = [
-    'jqeuery', 'underscore', 'text!biodig/tmpl/workbench/imageitem.html'
+    'jquery', 'underscore', 'text!biodig/tmpl/workbench/imageitem.html'
 ];
 
 define(deps, function($, _, ImageItemTmpl) {
