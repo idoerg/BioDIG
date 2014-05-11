@@ -1,9 +1,9 @@
 var deps = [
-    'jquery', 'underscore', 'biodig/clients/ImageClient', 'biodig/ui/workbench/ImageItem',
+    'jquery', 'underscore', 'settings', 'biodig/clients/ImageClient', 'biodig/ui/workbench/ImageItem',
     'text!biodig/tmpl/workbench/toolbar-menu.html'
 ];
 
-define(deps, function($, _, ImageClient, ImageItem, ToolbarMenuTmpl) {
+define(deps, function($, _, settings, ImageClient, ImageItem, ToolbarMenuTmpl) {
 
     var ToolbarMenuTemplate = _.template(ToolbarMenuTmpl);
 
