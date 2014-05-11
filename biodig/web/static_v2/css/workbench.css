@@ -4,14 +4,14 @@
 	margin-bottom: 10px;
 }
 
-#work-area {
+.work-area {
 	height: 633px;
 	width: 960px;
 	padding-top: 65px;
 	margin: 0 auto;
 }
 
-#center-work-area {
+.center-work-area {
 	width: calc(100% - 300px);
 	width: -webkit-calc(100% - 300px);
 	width: -moz-calc(100% - 300px);
@@ -19,7 +19,7 @@
 	white-space: normal;
 }
 
-#left-toolbar {
+.workbench-toolbar-parent {
 	width: 290px;
 	display: inline-table;
 	white-space: normal;
@@ -137,18 +137,18 @@
 
 .top-right-float {
     position: relative;
-    float: right;        
+    float: right;
     z-index: 2;
 }
 
 .delete-image-button {
 	position: absolute;
-	right: 0;	
+	right: 0;
 	display: none;
 }
 
 .delete-image-button:hover {
-	cursor: pointer;	
+	cursor: pointer;
 }
 
 .item {
@@ -216,7 +216,7 @@
 }
 
 .tag-group-info-right table {
-	width: 100%;	
+	width: 100%;
 }
 
 .tag-group-info-right table tbody tr td {
