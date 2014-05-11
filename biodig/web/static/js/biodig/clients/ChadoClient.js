@@ -11,7 +11,7 @@ define(deps, function($, settings, URLBuilderFactory, util) {
      *
      *  @param opts: The options to customize this client.
     **/
-    function OrganismClient(opts) {
+    function ChadoClient(opts) {
         this.url = opts.url;
         if (this.url[this.url.length -1] != '/') {
             this.url += '/';
@@ -33,9 +33,9 @@ define(deps, function($, settings, URLBuilderFactory, util) {
      *               limit: The number of entries to retrieve.
      *               offset: The number of entries to skip before listing.
     **/
-    OrganismClient.prototype.list = function(opts) {
+    ChadoClient.prototype.organisms = function(opts) {
         if (!opts) opts = {};
-        var urlBuilder = URLBuilderFactory.newBuilder(this.url);
+        var urlBuilder = URLBuilderFactory.newBuilder(this.url + 'organisms/');
         $.each(opts, function(key, val) {
             urlBuilder.addQuery(key, val, URLBuilderFactory.NOT_EMPTY);
         });
@@ -64,9 +64,57 @@ define(deps, function($, settings, URLBuilderFactory, util) {
         }).promise();
     };
 
+    ChadoClient.prototype.features = function(organism_id) {
+        var self = this;
+
+        return $.Deferred(function(deferredObj) {
+            $.ajax({
+                url: self.url + 'organisms/' + organism_id + '/features/',
+                beforeSend: util.auth(self.token),
+                method: 'GET',
+                success: function(data, textStatus, jqXHR) {
+                    deferredObj.resolve(data);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    try {
+                        var e = $.parseJSON(jqXHR.responseText);
+                        deferredObj.reject(e);
+                    }
+                    catch (e) {
+                        deferredObj.reject({ detail: 'An unidentified error occurred with the server.'});
+                    }
+                }
+            });
+        }).promise();
+    };
+
+    ChadoClient.prototype.cvterms = function(cv) {
+        var self = this;
+
+        return $.Deferred(function(deferredObj) {
+            $.ajax({
+                url: self.url + 'cv/' + cv + '/terms/',
+                beforeSend: util.auth(self.token),
+                method: 'GET',
+                success: function(data, textStatus, jqXHR) {
+                    deferredObj.resolve(data);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    try {
+                        var e = $.parseJSON(jqXHR.responseText);
+                        deferredObj.reject(e);
+                    }
+                    catch (e) {
+                        deferredObj.reject({ detail: 'An unidentified error occurred with the server.'});
+                    }
+                }
+            });
+        }).promise();
+    };
+
     // default settings for an ImageClient
     var defaults = {
-        url: settings.SITE_URL + 'rest/v2/organisms/',
+        url: settings.SITE_URL + 'rest/v2/chado/',
         token: null
     };
 
@@ -75,7 +123,7 @@ define(deps, function($, settings, URLBuilderFactory, util) {
          *  Creates an instance of the Image Client.
         **/
         create: function(opts) {
-            return new OrganismClient($.extend({}, defaults, opts));
+            return new ChadoClient($.extend({}, defaults, opts));
         }
     };
 });

@@ -6,10 +6,16 @@ define([], function() {
         this.mydata = null;
         this.nextNode = null;
         this.prevNode = null;
+        this.$view = null;
     }
 
     FlowNode.prototype.data = function(data) {
-        this.mydata = data;
+        if (data) {
+            this.mydata = data;
+        }
+        else {
+            return this.mydata;
+        }
     };
 
     FlowNode.prototype.next = function(node) {
@@ -39,11 +45,17 @@ define([], function() {
     };
 
     FlowNode.prototype.nextData = function() {
-        return this.transition.apply(null, arguments);
+        return this.transition.apply(this, arguments);
     };
 
     FlowNode.prototype.view = function() {
-        return this.template(this.mydata);
+        if (this.$view == null) {
+            this.$view = $(this.template(this.mydata));
+        }
+
+        $(this).trigger('view');
+
+        return this.$view;
     };
 
     FlowNode.prototype.before = function(callback) {

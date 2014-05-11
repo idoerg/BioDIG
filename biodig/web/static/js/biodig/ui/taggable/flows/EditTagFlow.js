@@ -1,11 +1,11 @@
 var deps = [
-    'jquery', 'biodig/ui/dialogs/FlowNode',
+    'jquery', 'underscore', 'biodig/ui/dialogs/FlowNode',
     'text!biodig/tmpl/taggable/dialogs/choose-tag-group.html',
     'text!biodig/tmpl/taggable/dialogs/choose-tag.html',
     'text!biodig/tmpl/taggable/dialogs/edit-tag.html'
 ];
 
-define(deps, function($, FlowNode, ChooseTagGroupTmpl, ChooseTagTmpl, EditTagTmpl) {
+define(deps, function($, _, FlowNode, ChooseTagGroupTmpl, ChooseTagTmpl, EditTagTmpl) {
     // When editing a tag one must first choose the tag group and then choose the
     // tag to edit (needs to be elastic enough to allow for )
     var EditTagFlow = [

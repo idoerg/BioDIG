@@ -1,7 +1,7 @@
 '''
     This file holds all of the forms for the cleaning and validation of
     the parameters being used for GeneLinks.
-    
+
     Created on April 9, 2014
 
     @author: Andrew Oberlin
@@ -10,7 +10,7 @@ from django import forms
 from biodig.base.models import Image, TagGroup, Tag, GeneLink, Feature
 from biodig.base import forms as bioforms
 from biodig.base.serializers import GeneLinkSerializer, FeatureSerializer
-from biodig.base.exceptions import ImageDoesNotExist, GeneLinkDoesNotExist, TagDoesNotExist, DatabaseIntegrity, TagGroupDoesNotExist
+from biodig.base.exceptions import OrganismDoesNotExist, ImageDoesNotExist, GeneLinkDoesNotExist, TagDoesNotExist, DatabaseIntegrity, TagGroupDoesNotExist
 from rest_framework.exceptions import PermissionDenied
 from django.db import transaction, DatabaseError
 from django.core.exceptions import ValidationError
@@ -18,13 +18,29 @@ import numbers
 
 class FormUtil:
     @staticmethod
+    def clean_organism_id(data):
+        '''
+            Checks that the organism_id is a positive number..
+        '''
+        if data['organism_id'] < 0: raise ValidationError("The given organism id is incorrect.")
+        return data['organism_id']
+
+    @staticmethod
+    def clean_feature_id(data):
+        '''
+            Checks that the feature_id is a positive number..
+        '''
+        if data['feature_id'] < 0: raise ValidationError("The given feature id is incorrect.")
+        return data['feature_id']
+
+    @staticmethod
     def clean_image_id(data):
         '''
             Checks that the image_id is a positive integer.
         '''
         if data['image_id'] < 0: raise ValidationError("The given image id is incorrect.")
         return data['image_id']
-    
+
     @staticmethod
     def clean_tag_group_id(data):
         '''
@@ -32,7 +48,7 @@ class FormUtil:
         '''
         if data['tag_group_id'] < 0: raise ValidationError("The given tag group id is incorrect.")
         return data['tag_group_id']
-    
+
     @staticmethod
     def clean_tag_id(data):
         '''
@@ -47,8 +63,8 @@ class FormUtil:
             Checks that the gene_link_id is a positive number..
         '''
         if data['gene_link_id'] < 0: raise ValidationError("The given gene link id is incorrect.")
-        return data['gene_link_id'] 
-    
+        return data['gene_link_id']
+
     @staticmethod
     def check_permissions(table, user, readonly=True):
         if readonly:
@@ -93,7 +109,7 @@ class MultiGetForm(forms.Form):
     lastModified = bioforms.DateTimeRangeField(required=False)
     dateCreated = bioforms.DateTimeRangeField(required=False)
     user = forms.IntegerField(required=False)
-    
+
     # Path Parameters
     image_id = forms.IntegerField(required=True)
     tag_group_id = forms.IntegerField(required=True)
@@ -119,10 +135,10 @@ class MultiGetForm(forms.Form):
             once the form has cleaned the input data.
         '''
         qbuild = bioforms.QueryBuilder(GeneLink)
-        
+
         # find the tag group that contains the tag
         image, group, tag = FormUtil.get_containers(self.cleaned_data['image_id'], self.cleaned_data['tag_group_id'],
-            self.cleaned_data['tag_id'], request.user)        
+            self.cleaned_data['tag_id'], request.user)
 
         # add permissions to query
         if request.user and request.user.is_authenticated():
@@ -130,11 +146,11 @@ class MultiGetForm(forms.Form):
                 qbuild.q = qbuild().filter(isPrivate=False) | GeneLink.objects.filter(user__pk__exact=request.user.pk)
         else:
             qbuild.q = qbuild().filter(isPrivate=False)
-        
+
         filterkeys = ['user', 'lastModified', 'dateCreated']
         for key in filterkeys:
             qbuild.filter(key, self.cleaned_data[key])
-            
+
         if not self.cleaned_data['limit'] or self.cleaned_data['limit'] < 0:
             qbuild.q = qbuild()[self.cleaned_data['offset']:]
         else:
@@ -149,13 +165,14 @@ class PostForm(forms.Form):
     tag_id = forms.IntegerField(required=True)
 
     # POST body data
+    feature_id = forms.IntegerField(required=True)
     organism_id = forms.IntegerField(required=True)
-    name = forms.CharField(required=True)
-    type = forms.CharField(required=True)
-    uniquename = forms.CharField(required=False)
 
     def clean_organism_id(self):
         return FormUtil.clean_organism_id(self.cleaned_data)
+
+    def clean_feature_id(self):
+        return FormUtil.clean_feature_id(self.cleaned_data)
 
     def clean_image_id(self):
         return FormUtil.clean_image_id(self.cleaned_data)
@@ -165,7 +182,7 @@ class PostForm(forms.Form):
 
     def clean_tag_id(self):
         return FormUtil.clean_points(self.cleaned_data)
-    
+
     @transaction.commit_on_success
     def submit(self, request):
         '''
@@ -175,25 +192,18 @@ class PostForm(forms.Form):
         image, group, tag = FormUtil.get_containers(self.cleaned_data['image_id'], self.cleaned_data['tag_group_id'],
             self.cleaned_data['tag_id'], request.user, readonly=False)
 
-        feature = None
         try:
-            cvterm = Cvterm.objects.get(name=self.cleaned_data['type'], cv=Cv.objects.get(name='sequence'))
-        except Cvterm.DoesNotExist:
-            raise FeatureTypeDoesNotExist()
-        except Cv.DoesNotExist:
-            raise SequenceCvDoesNotExist() # fatal talk to sys admin about Chado
-        
-        features = Feature.objects.filter(name=self.cleaned_data['name'], type=cvterm, organism=self.cleaned_data['organism_id'])
-        if self.cleaned_data['uniquename']:
-            features = features & Feature.objects.filter(uniquename=self.cleaned_data['uniquename'])
+            organism = Organism.objects.get(pk__exact=self.cleaned_data['organism_id'])
+        except Organism.DoesNotExist:
+            raise OrganismDoesNotExist()
 
-        if len(features) == 0: # That didn't match any features
+        try:
+            feature = Feature.objects.get(pk__exact=self.cleaned_data['feature_id'], organism__exact=organism)
+        except Feature.DoesNotExist:
             raise FeatureDoesNotExist()
-        elif len(features) > 1: # not enough information to identify the feature
-            raise MultipleFeaturesReturned(FeatureSerializer(features, many=True).data)
-        
-        geneLink = GeneLink(tag=tag, feature=features[0], user=request.user)
-        
+
+        geneLink = GeneLink(tag=tag, feature=feature, user=request.user)
+
         try:
             geneLink.save()
             tag.save()
@@ -203,7 +213,7 @@ class PostForm(forms.Form):
             transaction.rollback()
             raise DatabaseIntegrity()
 
-        return GeneLinkSerializer(geneLink).data 
+        return GeneLinkSerializer(geneLink).data
 
 
 class DeleteForm(forms.Form):
@@ -221,10 +231,10 @@ class DeleteForm(forms.Form):
 
     def clean_tag_group_id(self):
         return FormCleaningUtil.clean_tag_group_id(self.cleaned_data)
-    
+
     def clean_image_id(self):
         return FormCleaningUtil.clean_image_id(self.cleaned_data)
-    
+
     @transaction.commit_on_success
     def submit(self, request):
         '''
@@ -240,7 +250,7 @@ class DeleteForm(forms.Form):
             raise GeneLinkDoesNotExist()
 
         serialized = GeneLinkSerializer(geneLink).data
-        
+
         try:
             geneLink.delete()
             tag.save()
@@ -249,7 +259,7 @@ class DeleteForm(forms.Form):
         except DatabaseError:
             transaction.rollback()
             raise DatabaseIntegrity()
-        
+
         return serialized
 
 class SingleGetForm(forms.Form):
@@ -267,7 +277,7 @@ class SingleGetForm(forms.Form):
 
     def clean_tag_group_id(self):
         return FormCleaningUtil.clean_tag_group_id(self.cleaned_data)
-    
+
     def clean_image_id(self):
         return FormCleaningUtil.clean_image_id(self.cleaned_data)
 

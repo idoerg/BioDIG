@@ -18,7 +18,7 @@ from django.conf import settings
 
 class FormUtil:
     @staticmethod
-    def clean_user_id(data):
+    def clean_organism_id(data):
         '''
             Cleans an user id ensuring that it is a positive integer.
         '''

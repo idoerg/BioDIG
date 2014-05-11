@@ -70,12 +70,12 @@ class FeatureTypeDoesNotExist(APIException):
     status_code = 404
     default_detail = "The type indicated for the feature does not exist in this database or is invalid."
 
-class SequenceCvDoesNotExist(APIException):
+class CvDoesNotExist(APIException):
     '''
-        Sequence Cv does not exist error.
+        Cv does not exist error.
     '''
     status_code = 404
-    default_detail = "The sequence controlled vocabulary does not seem to be installed in Chado. Please consult your system administrator."
+    default_detail = "The requested controlled vocabulary does not seem to be installed in Chado. Please consult your system administrator."
 
 class MultipleFeaturesReturned(APIException):
     def __init__(self, data):

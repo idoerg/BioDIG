@@ -335,7 +335,6 @@ class Cvterm(models.Model):
     is_relationshiptype = models.IntegerField()
     class Meta:
         db_table = u'cvterm'
-
         app_label = u'base'
 
 

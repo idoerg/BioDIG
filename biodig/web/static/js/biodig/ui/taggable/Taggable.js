@@ -1,6 +1,6 @@
 var deps = [
     'jquery', 'underscore', 'biodig/ui/zoomable/Zoomable', 'biodig/ui/taggable/TagBoard',
-    'biodig/storage/ImageDao', 'biodig/storage/OrganismDao', 'biodig/ui/taggable/ImageMenu',
+    'biodig/storage/ImageDao', 'biodig/storage/ChadoDao', 'biodig/ui/taggable/ImageMenu',
     'biodig/ui/taggable/DialogManager', 'biodig/ui/taggable/StatusMessager',
     'biodig/ui/taggable/TagInfoView', 'biodig/ui/taggable/public/TaggableController',
     'biodig/ui/taggable/DrawingMenu', 'biodig/ui/taggable/DrawingBoard',
@@ -8,7 +8,7 @@ var deps = [
     'text!biodig/tmpl/taggable/structure.html', 'text!biodig/tmpl/taggable/image-metadata.html'
 ];
 
-define(deps, function($, _, Zoomable, TagBoard, ImageDao, OrganismDao, ImageMenu, DialogManager,
+define(deps, function($, _, Zoomable, TagBoard, ImageDao, ChadoDao, ImageMenu, DialogManager,
     StatusMessager, TagInfoView, PublicTaggableController, DrawingMenu, DrawingBoard,
     RegisteredTaggableController, util, TaggableTmpl, MetadataTmpl) {
 
@@ -143,7 +143,7 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, OrganismDao, ImageMenu
                 this.drawingMenu = DrawingMenu.create();
                 this.registeredController = RegisteredTaggableController.create(this);
 
-                this.organismDao = OrganismDao.create();
+                this.chadoDao = ChadoDao.create();
 
                 // start off by allowing the drawing menu to affect the drawing board
                 // and the main menu to control the drawing/tag board

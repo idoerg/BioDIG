@@ -1,10 +1,10 @@
 var deps = [
-    'jquery', 'biodig/ui/dialogs/FlowNode',
+    'jquery', 'underscore', 'biodig/ui/dialogs/FlowNode',
     'text!biodig/tmpl/taggable/dialogs/choose-tag-group.html',
     'text!biodig/tmpl/taggable/dialogs/edit-tag.html'
 ];
 
-define(deps, function($, FlowNode, ChooseTagGroupTmpl, EditTagTmpl) {
+define(deps, function($, _, FlowNode, ChooseTagGroupTmpl, EditTagTmpl) {
 
     var AddTagFlow = [
         FlowNode.create(_.template(ChooseTagGroupTmpl), function(body) {

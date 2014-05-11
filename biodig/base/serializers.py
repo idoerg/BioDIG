@@ -93,9 +93,11 @@ class FeatureTypeField(serializers.RelatedField):
 
 class FeatureSerializer(serializers.ModelSerializer):
     type = FeatureTypeField()
+    id = serializers.PrimaryKeyField(source='feature_id')
+    
     class Meta:
         model = Feature
-        fields = ('name', 'uniquename', 'type')
+        fields = ('id', 'name', 'uniquename', 'type')
 
 class GeneLinkSerializer(serializers.ModelSerializer):
     owner = serializers.PrimaryKeyRelatedField(source='user')

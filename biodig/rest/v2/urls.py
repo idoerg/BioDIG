@@ -7,6 +7,7 @@ from biodig.rest.v2.ImageOrganisms.views import ImageOrganismList, ImageOrganism
 from biodig.rest.v2.TagGroups.views import TagGroupList, TagGroupSingle
 from biodig.rest.v2.Tags.views import TagList, TagSingle
 from biodig.rest.v2.GeneLinks.views import GeneLinkList, GeneLinkSingle
+from biodig.rest.v2.Cvterm.views import CvtermList, CvtermSingle
 
 urlpatterns = patterns('',
     url(r'^images/(\d+)/tagGroups/(\d+)/tags/(\d+)/geneLinks/(\d+)/?$', GeneLinkSingle.as_view(), name="Gene Links Single View"),
@@ -19,8 +20,11 @@ urlpatterns = patterns('',
     url(r'^images/(\d+)/organisms/?$', ImageOrganismList.as_view(), name="Image Organism Multiple View"),
     url(r'^images/(\d+)/?$', ImageSingle.as_view(), name="Image Single View"),
     url(r'^images/?$', ImageList.as_view(), name="Image Multiple View"),
-    url(r'^organisms/(\d+)/?$', OrganismSingle.as_view(), name="Organism Single View"),
-    url(r'^organisms/?$', OrganismList.as_view(), name="Organism List View")
+    url(r'^chado/organisms/(\d+)/features?$', OrganismFeaturesList.as_view(), name="Organism Features List View"),
+    url(r'^chado/organisms/(\d+)/?$', OrganismSingle.as_view(), name="Organism Single View"),
+    url(r'^chado/organisms/?$', OrganismList.as_view(), name="Organism List View"),
+    url(r'^chado/cv/([\w]+)/terms/(\d+)/?$', CvtermSingle.as_view(), name="Controlled Vocabulary Term Single View"),
+    url(r'^chado/cv/([\w]+)/terms/?$', CvtermList.as_view(), name="Controlled Vocabulary Term List View")
 )
 
 urlpatterns += patterns('',

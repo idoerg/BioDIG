@@ -109,7 +109,7 @@ define(deps, function($, util) {
                 var self = this;
                 // handle the events for clicking to manage organisms on the image
                 this.menu.section('organisms').item('add').on('click', function() {
-                    $.when(self.organismDao.organisms())
+                    $.when(self.chadoDao.organisms())
                         .done(function(organisms) {
                             self.dialogs.get('AddOrganism').show({ 'organisms' : organisms });
                         })
@@ -213,20 +213,93 @@ define(deps, function($, util) {
             geneLinks: function() {
                 var self = this;
                 this.menu.section('geneLinks').item('add').on('click', function() {
+                    var data = {};
+                    var errors = [];
+                    var promises = [];
+
                     if ($.isEmptyObject(self.tagBoard.selected())) {
-                        // no tags are selected so we will show all tags
-                        $.when(self.imageDao.tags())
-                            .done(function(tags) {
-                                self.dialogs.get('AddGeneLink').show(tags);
-                            })
-                            .fail(function(e) {
-                                console.error(e.detail || e.message);
-                            });
+                        // get the tag groups and group the tags into the tag groups
+                        promises.push($.Deferred(function(deferred_object) {
+                            self.imageDao.tagGroups()
+                                .done(function(tagGroups) {
+                                    var ids = $.map(tagGroups, function(tagGroup) {
+                                        tagGroup.tags = {};
+                                        return tagGroup.id;
+                                    });
+
+                                    $.when(self.imageDao.tags(ids))
+                                        .done(function(tags) {
+                                            $.each(tags, function(id, tag) {
+                                                tagGroups[tag.group].tags[id] = tag;
+                                            });
+
+                                            data['tagGroups'] = tagGroups;
+
+                                            deferred_object.resolve();
+                                        })
+                                        .fail(function(e) {
+                                            errors.push(e);
+                                            deferred_object.reject();
+                                        });
+                                })
+                                .fail(function(e) {
+                                    errors.push(e);
+                                    deferred_object.reject();
+                                })
+                            }).promise()
+                        );
                     }
                     else {
                         // if tags are selected then we want to only show those
-                        self.dialogs.get('DeleteTag').show(self.tagBoard.selected());
+                        data['tags'] = self.tagBoard.selected();
                     }
+
+                    // get the organisms on this image and lookup
+                    // the features associated with those organisms
+                    promises.push($.Deferred(function(deferred_object) {
+                        $.when(self.imageDao.organisms())
+                            .done(function(organisms) {
+                                $.when(self.chadoDao.features(organisms))
+                                    .done(function(features) {
+                                        data['features'] = features;
+                                        data['organisms'] = organisms;
+                                        deferred_object.resolve();
+                                    })
+                                    .fail(function(e) {
+                                        errors.push(e);
+                                        deferred_object.reject();
+                                    });
+                            })
+                            .fail(function(e) {
+                                errors.push(e);
+                                deferred_object.reject();
+                            });
+                        }).promise();
+                    );
+
+                    // get the types of features
+                    promises.push($.Deferred(function(deferred_object) {
+                        $.when(self.chadoDao.types())
+                            .done(function(types) {
+                                data['types'] = types;
+                                deferred_object.resolve();
+                            })
+                            .fail(function(e) {
+                                deferred_object.reject();
+                            });
+                        }).promise();
+                    );
+
+                    $.when.apply($, promises).always(function() {
+                        if (errors) {
+                            $.each(errors, function(index, error) {
+                                self.messager.add(self.messager.ERROR, error.detail || error.message);
+                            });
+                        }
+                        else {
+                            self.dialogs.get('AddGeneLink').show(data);
+                        }
+                    });
                 });
 
                 this.menu.section('geneLinks').item('delete').on('click', function() {

@@ -3,20 +3,22 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 
-from biodig.rest.v2.Organisms.forms import MultiGetForm, SingleGetForm
+from biodig.rest.v2.Cvterms.forms import MultiGetForm, SingleGetForm
 
-class OrganismList(APIView):
+class CvtermList(APIView):
+    permission_classes = (AllowAny, )
 
     '''
-       Class for rendering the view for searching through the Organisms.
+       Class for rendering the view for searching through the Cvterms.
     '''
 
-    def get(self, request):
+    def get(self, request, cv):
         '''
-            Method for getting multiple Organisms either through search
+            Method for getting multiple Cvterms either through search
             or general listing.
         '''
         params = dict((key, val) for key, val in request.QUERY_PARAMS.iteritems())
+        params['cv'] = cv
         form = MultiGetForm(params)
 
         if not form.is_valid():
@@ -25,18 +27,21 @@ class OrganismList(APIView):
         return Response(form.submit(request))
 
 
-class OrganismSingle(APIView):
+class CvtermSingle(APIView):
+    permission_classes = (AllowAny, )
+
     '''
-       Class for rendering the view for getting a Organism.
+       Class for rendering the view for getting a Cvterm.
     '''
 
-    def get(self, request, organism_id):
+    def get(self, request, cv, Cvterm_id):
         '''
-            Method for getting multiple Organisms either through search
+            Method for getting multiple Cvterms either through search
             or general listing.
         '''
         params = dict((key, val) for key, val in request.QUERY_PARAMS.iteritems())
-        params['organism_id'] = organism_id
+        params['Cvterm_id'] = Cvterm_id
+        params['cv'] = cv
         form = SingleGetForm(params)
 
         if not form.is_valid():
