@@ -7,7 +7,7 @@ from biodig.rest.v2.ImageOrganisms.views import ImageOrganismList, ImageOrganism
 from biodig.rest.v2.TagGroups.views import TagGroupList, TagGroupSingle
 from biodig.rest.v2.Tags.views import TagList, TagSingle
 from biodig.rest.v2.GeneLinks.views import GeneLinkList, GeneLinkSingle
-from biodig.rest.v2.Cvterm.views import CvtermList, CvtermSingle
+from biodig.rest.v2.Cvterms.views import CvtermList, CvtermSingle
 
 urlpatterns = patterns('',
     url(r'^images/(\d+)/tagGroups/(\d+)/tags/(\d+)/geneLinks/(\d+)/?$', GeneLinkSingle.as_view(), name="Gene Links Single View"),
