@@ -8,7 +8,10 @@ define(deps, function($, _, ImageClient, ImageItem, ToolbarMenuTmpl) {
     var ToolbarMenuTemplate = _.template(ToolbarMenuTmpl);
 
     function MyImages(user) {
-        this.$el = $(ToolbarMenuTemplate());
+        this.$el = $(ToolbarMenuTemplate({
+            'settings': settings,
+            'title': 'My Images'
+        }));
         this.$body = this.$el.find('.toolbar-body');
         this.client = ImageClient.create();
 
