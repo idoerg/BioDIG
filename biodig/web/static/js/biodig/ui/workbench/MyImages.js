@@ -5,7 +5,7 @@ var deps = [
 
 define(deps, function($, _, settings, ImageClient, ImageItem, ToolbarMenuTmpl) {
 
-    var ToolbarMenuTemplate = _.template(ToolbarMenuTmpl);
+    var ToolbarMenuTemplate = _.template($.trim(ToolbarMenuTmpl));
 
     function MyImages(user) {
         this.$el = $(ToolbarMenuTemplate({
