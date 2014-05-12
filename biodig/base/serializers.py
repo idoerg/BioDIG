@@ -106,8 +106,8 @@ class BooleanIntegerField(serializers.RelatedField):
 class CvtermSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(source='cvterm_id')
     cv = serializers.PrimaryKeyRelatedField(source='cv')
-    is_relationshiptype = serializers.BooleanIntegerField()
-    is_obsolete = serializers.BooleanIntegerField()
+    is_relationshiptype = BooleanIntegerField()
+    is_obsolete = BooleanIntegerField()
 
     class Meta:
         model = Cvterm
