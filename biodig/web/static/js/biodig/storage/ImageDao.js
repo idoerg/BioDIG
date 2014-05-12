@@ -566,7 +566,7 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
 
             $.when(client.delete(id))
                 .done(function(geneLink) {
-                    delete self.geneLinks_cache[link.group][link.id].geneLinks[id];
+                    delete self.geneLinks_cache[link.group][link.tag].geneLinks[id];
                     delete self.geneLinks_cache.all[id];
 
                     // emit event so that UI components can update
