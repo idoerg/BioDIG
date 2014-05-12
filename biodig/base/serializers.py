@@ -105,7 +105,7 @@ class CvtermSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Feature
-        fields = ('id', 'name', 'cv', 'description')
+        fields = ('id', 'name', 'cv', 'definition')
 
 class GeneLinkSerializer(serializers.ModelSerializer):
     owner = serializers.PrimaryKeyRelatedField(source='user')
