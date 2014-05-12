@@ -20,7 +20,6 @@ define(deps, function($, _, settings, util, LoadingTmpl) {
         }
         else {
             this.$el.appendTo($('body'));
-            this.$el.find('.modal-body').empty().append(this.tmpl(data));
             this.$el.modal();
         }
     };
