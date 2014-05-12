@@ -1,0 +1,25 @@
+<div id="<%= uuid %>" class="center-block">
+    <div>
+        <h2>Select a Feature</h2>
+    </div>
+    <div>
+        <label for="select-organism">Organism</label>
+        <select name="select-organism" class="select-organism form-control">
+            <% _.each(organisms, function(organism, id) { %>
+                <option data-organism="<%= escape(JSON.stringify(organism)) %>"><%= organism.common_name %></option>
+            <% }); %>
+        </select>
+    </div>
+    <div>
+        <label for="select-type">Type</label>
+        <select name="select-type" class="select-type form-control">
+            <% _.each(types, function(type, id) { %>
+                <option data-type="<%= escape(JSON.stringify(type)) %>"><%= type.name %></option>
+            <% }); %>
+        </select>
+    </div>
+    <div>
+        <label for="select-feature">Feature</label>
+        <select name="select-feature" class="select-feature form-control"></select>
+    </div>
+</div>

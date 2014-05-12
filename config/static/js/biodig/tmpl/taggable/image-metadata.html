@@ -1,0 +1,22 @@
+<div class="table-responsive">
+    <table class="table-condensed table-striped table-bordered">
+        <tbody>
+            <% if (description) { %>
+            <tr>
+                <td>Description:</td>
+                <td><%= description %></td>
+            </tr>
+            <%
+                }
+            %>
+            <tr>
+                <td>Uploaded on:</td>
+                <td><%= dateCreated %></td>
+            </tr>
+            <tr>
+                <td>Owner:</td>
+                <td><%= owner %></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,4 +1,4 @@
-      
+
 img.imageDisplay {
     border: 1px solid black;
 }
@@ -12,9 +12,13 @@ div.description {
     color: white;
 }
 
-td.table_cell {
+.table-cell {
+    display: table-cell;
+    padding: 2px;
+}
+
+.image-cell {
     vertical-align: top;
-    width: 180px;
     border: 1px solid black;
     background: #e0e0e0; /* Old browsers */
     background: -moz-linear-gradient(top, #e0e0e0 1%, #444444 100%); /* FF3.6+ */
@@ -24,6 +28,14 @@ td.table_cell {
     background: -ms-linear-gradient(top, #e0e0e0 1%,#444444 100%); /* IE10+ */
     background: linear-gradient(to bottom, #e0e0e0 1%,#444444 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e0e0e0', endColorstr='#444444',GradientType=0 ); /* IE6-9 */
+}
+
+.error-message-container {
+    width: 90%;
+}
+
+.image-container {
+    background-color: #292828;
 }
 
 .image-pagination {
@@ -53,7 +65,7 @@ td.table_cell {
 }
 
 .pagination-control {
-    float: right;    
+    float: right;
 }
 
 .pagination-control:hover {

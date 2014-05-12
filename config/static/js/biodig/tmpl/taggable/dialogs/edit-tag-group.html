@@ -1,0 +1,10 @@
+<div class="center-block">
+    <div class="form-group">
+        <input type="hidden" name="id"
+            <% if (typeof id !== "undefined") { %> value="<%= id %>" <% } %> >
+        <label for="name">Name</label>
+        <input type="text" class="form-control" name="name"
+            <% if (typeof name !== "undefined") { %> value="<%= name %>" <% } %>
+            placeholder="Enter name. i.e. &quot;default&quot;">
+    </div>
+</div>

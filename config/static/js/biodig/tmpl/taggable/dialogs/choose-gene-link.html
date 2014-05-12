@@ -1,0 +1,14 @@
+<div class="center-block">
+    <div>
+        <h2>Select a Gene Link</h2>
+    </div>
+    <div>
+        <select class="select-gene-link form-control">
+            <% _.each(geneLinks, function(geneLink, id) { %>
+                <option data-gene-link="<%= escape(JSON.stringify(geneLink)) %>">
+                    <%= geneLink.feature.name %> - <%= geneLink.feature.uniquename %>
+                </option>
+            <% }); %>
+        </select>
+    </div>
+</div>

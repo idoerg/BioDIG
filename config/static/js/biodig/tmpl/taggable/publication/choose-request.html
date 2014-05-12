@@ -1,0 +1,14 @@
+<div class="center-block">
+    <div>
+        <h2>Select a Publication Request</h2>
+    </div>
+    <div>
+        <select class="select-publication-request form-control">
+            <% _.each(publicationRequests, function(publicationRequest, id) { %>
+                <option data-publication-request="<%= escape(JSON.stringify(publicationRequest)) %>">
+                    Target image: <%= publicationRequest.target %> on <%= publicationRequest.dateCreated %>
+                </option>
+            <% }); %>
+        </select>
+    </div>
+</div>

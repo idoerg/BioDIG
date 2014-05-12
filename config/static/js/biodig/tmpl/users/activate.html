@@ -1,0 +1,34 @@
+<div class="center-block" style="width: 500px;">
+    <div class="text-center">
+        <h2>User Activation</h2>
+    </div>
+    <% if (status == 'BEGIN') { %>
+        <div>
+            <img class="center-block" width="200" src="<%= settings.STATIC_URL %>images/loading.gif" alt="Loading..."></img>
+        </div>
+        <div>
+            Please wait while we activate your account...
+        </div>
+    <%
+       }
+       else if (status == 'SUCCESS') {
+    %>
+        <div>
+            <img class="center-block" width="200" src="<%= settings.STATIC_URL %>images/success.png" alt="Success!"></img>
+        </div>
+        <div>
+            Activation of <strong><%= user.username %></strong> was successful! Please login to continue!
+        </div>
+    <%
+       }
+       else { // Treat state as an "ERROR" state
+    %>
+        <div>
+            <img class="center-block" width="200" src="<%= settings.STATIC_URL %>images/caution.png" alt="Success!"></img>
+        </div>
+        <div>
+            Sorry we could not activate you account at this time! Please check that this
+            address matches the one sent in your Activation Email.
+        </div>
+    <% } %>
+</div>

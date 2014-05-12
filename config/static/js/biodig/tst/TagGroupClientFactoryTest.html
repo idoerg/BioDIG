@@ -1,0 +1,32 @@
+<html>
+    <head>
+
+    </head>
+    <body>
+        <form id="PostTagGroupForm">
+            Enter Name: <input id="pn" type="text" name="name" />
+            <button type="button" id="p">POST</button><br>
+            <br>
+    </form>
+        <form id="GetTagGroupForm">
+            Enter Tag Group Id: <input id="t" type="integer" name="TagGroupId" />
+            <button type="button" id="g">GET</button><br>
+            <br>
+        </form>
+        <form id="ListForm">
+            Enter Last Modified: <input id="l_m" type="date" name="ldate" /><br>
+            Enter Date Created: <input id="d_c" type="date" name="cdate" /><br>
+            Enter Owner: <input id="u" type="integer" name="owner" /><br>
+            Enter Name: <input id="ngm" type="text" name="name"/><br>
+            <button type="button" id="l">GET MULTIPLE</button><br>
+            <br>
+        </form>
+         <form id="UpdateForm">    
+            Enter Tag Group Id: <input id="t_u" type="text" name="TagGroupId" />
+            <button type="button" id="u">UPDATE</button>
+            <br>
+        </form>
+    </body>
+    <script type="text/javascript" data-main="/static_v2/js/biodig/tst/TagGroupClientFactoryTest" src="/static_v2/js/lib/require.js">
+    </script>
+</html>

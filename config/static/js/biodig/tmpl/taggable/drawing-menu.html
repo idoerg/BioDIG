@@ -1,0 +1,60 @@
+<div class="drawing-menu-box hidden">
+    <div class="drawing-menu-box-title">
+        <span>Drawing Tools</span>
+        <button type="button" class="close" aria-hidden="true">×</button>
+    </div>
+    <div class="drawing-menu-box-section">
+        <div class="drawing-menu-box-section-title">Colors</div>
+        <div class="drawing-menu-box-section-body">
+            <div class="drawing-menu-color-container">
+                <% for (var i = 0; i < colors.length / 2; i++) { %>
+                <button data-color="<%= escape(JSON.stringify(colors[i])) %>"
+                    class="change-color toolbar-item"
+                    style="background-color: rgb(<%= colors[i].r %>, <%= colors[i].g %>, <%= colors[i].b %>);">
+                </button>
+                <% } %>
+            </div>
+            <div class="drawing-menu-color-container">
+                <% for (var i = Math.ceil(colors.length / 2); i < colors.length; i++) { %>
+                <button data-color="<%= escape(JSON.stringify(colors[i])) %>"
+                    class="change-color toolbar-item"
+                    style="background-color: rgb(<%= colors[i].r %>, <%= colors[i].g %>, <%= colors[i].b %>);">
+                </button>
+                <% } %>
+                <div class="color-picker change-color toolbar-item"
+                    style="background-image: url(<%= settings.STATIC_URL %>images/color-select.png)"></div>
+            </div>
+        </div>
+    </div>
+    <div class="drawing-menu-box-section">
+        <div class="drawing-menu-box-section-title">Alpha</div>
+        <div class="drawing-menu-box-section-body">
+            <div>
+                <div class="toolbar-item" style="width: 27%; min-width: 45px;">
+                    <span class="alpha-text" style="width: 100%;">100%</span>
+                </div>
+                <div class="toolbar-item" style="width: 63%;">
+                    <div class="alpha-slider"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="drawing-menu-box-section">
+        <div class="drawing-menu-box-section-title">Style</div>
+        <div class="drawing-menu-box-section-body">
+            <button class="draw-rect drawing-button toolbar-item">
+                <img src="<%= settings.STATIC_URL %>images/rectButtonIcon.png" style="height: 20px;" />
+            </button>
+            <button class="draw-poly drawing-button toolbar-item" style="margin-left: 30px">
+                <img src="<%= settings.STATIC_URL %>images/polygonButtonIcon.png" style="height: 20px;" />
+            </button>
+        </div>
+    </div>
+    <div class="drawing-menu-box-section">
+        <div class="drawing-menu-box-section-body"
+            style="border-top-width: 1px; border-top-style: solid; border-top-color: rgb(204, 204, 204); padding-top: 5px;">
+            <button class="cancel btn btn-default">Cancel</button>
+            <button class="submit btn btn-primary" style="margin-left: 10px">Submit</button>
+        </div>
+    </div>
+</div>
