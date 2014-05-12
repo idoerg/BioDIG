@@ -36,8 +36,8 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
         var self = this;
         return $.Deferred(function(deferred_obj) {
             require(registeredDeps, function(DynamicFlowDialog, EditTagGroupFlow,
-                EditTagFlow, AddTagFlow, ChooseOrganismTmpl, ChooseTagGroupTmpl, ChooseTagTmpl,
-                EditTagGroupTmpl, AddGeneLinkTmpl) {
+                EditTagFlow, AddTagFlow, AddGeneLinkFlow, ChooseOrganismTmpl, ChooseTagGroupTmpl, ChooseTagTmpl,
+                EditTagGroupTmpl) {
 
                 /*var addGeneLinkFlow = [
                     FlowNode.create(_.template(ChooseTagTmpl), function(body) {
