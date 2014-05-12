@@ -491,7 +491,9 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
 
                 $.when(client.create(opts.tag, opts.organism, opts.feature))
                     .done(function(geneLink) {
-                        self.geneLinks_cache[opts.group][opts.tag].geneLinks = {};
+                        if (!self.geneLinks_cache[opts.group][opts.tag].geneLinks) {
+                            self.geneLinks_cache[opts.group][opts.tag].geneLinks = {};
+                        }
                         self.geneLinks_cache.all[geneLink.id] = {
                             'group': opts.group,
                             'tag': opts.tag
