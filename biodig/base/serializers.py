@@ -4,7 +4,7 @@ Created on Nov 3, 2013
 @author: Andrew Oberlin
 '''
 from django.contrib.auth.models import User
-from models import Image, TagGroup, Tag, TagPoint, TagColor, GeneLink, Organism, Feature
+from models import Image, TagGroup, Tag, TagPoint, TagColor, GeneLink, Organism, Feature, Cvterm
 from rest_framework import serializers
 import biodig.swagger.decorators.Models as Models
 import biodig.swagger.decorators.Types as Types
@@ -104,7 +104,7 @@ class CvtermSerializer(serializers.ModelSerializer):
     cv = serializers.PrimaryKeyRelatedField(source='cv')
 
     class Meta:
-        model = Feature
+        model = Cvterm
         fields = ('id', 'name', 'cv', 'definition')
 
 class GeneLinkSerializer(serializers.ModelSerializer):
