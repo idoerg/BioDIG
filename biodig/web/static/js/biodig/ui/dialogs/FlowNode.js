@@ -51,9 +51,8 @@ define([], function() {
     FlowNode.prototype.view = function() {
         if (this.$view == null) {
             this.$view = $(this.template(this.mydata));
+            $(this).trigger('render');
         }
-
-        $(this).trigger('render');
 
         return this.$view;
     };
