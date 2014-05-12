@@ -7,10 +7,10 @@ define(deps, function($, _, settings, util, LoadingTmpl) {
     var LoadingTemplate = _.template(LoadingTmpl);
 
     function LoadingDialog() {
-        this.$el = LoadingTemplate({
+        this.$el = $(LoadingTemplate({
             'name': 'loading-' + util.uuid4(),
             'settings': settings
-        });
+        }));
     }
 
     LoadingDialog.prototype.show = function() {
