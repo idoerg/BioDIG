@@ -314,7 +314,6 @@ define(deps, function($, util) {
                 });
 
                 this.menu.section('geneLinks').item('delete').on('click', function() {
-                    var self = this;
                     if ($.isEmptyObject(self.tagBoard.selected())) {
                         self.loading.show();
                         $.when(self.imageDao.tagGroups())
