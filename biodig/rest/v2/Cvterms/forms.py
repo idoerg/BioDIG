@@ -47,7 +47,7 @@ class MultiGetForm(forms.Form):
             Submits the form for getting multiple Cvterms
             once the form has cleaned the input data.
         '''
-        qbuild = bioforms.QueryBuilder()
+        qbuild = bioforms.QueryBuilder(Cvterm)
 
         try:
             self.cleaned_data['cv'] = Cv.objects.get(name=self.cleaned_data['cv'])
