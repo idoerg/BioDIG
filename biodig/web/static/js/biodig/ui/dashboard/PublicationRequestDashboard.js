@@ -35,7 +35,7 @@ define(deps, function($, _, util, PublicationRequestClient, UserClient, ImageCli
                         .done(function(user) {
                             $.when(self.imageClient.get(publicationReq.target))
                                 .done(function(image) {
-                                    publicationReq.owner = user;
+                                    publicationReq.user = user;
                                     publicationReq.image = image;
                                     publicationReq.dateCreated = util.prettyDate(publicationReq.dateCreated);
                                     var $req = $(PublicationRequestTemplate(publicationReq));
