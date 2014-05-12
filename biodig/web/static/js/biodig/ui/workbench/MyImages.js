@@ -36,6 +36,8 @@ define(deps, function($, _, settings, ImageClient, ImageItem, ToolbarMenuTmpl) {
                             });
                     });
                 });
+
+                $(self).trigger('render');
             })
             .fail(function(e) {
                 self.$body.text("Unable to retrieve images");

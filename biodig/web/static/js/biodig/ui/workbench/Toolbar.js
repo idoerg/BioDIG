@@ -17,21 +17,23 @@ define(deps, function($, _, MyImages, ToolbarTmpl) {
         //this.add(RecentlyViewedImages.create());
         var myImages = MyImages.create(user);
         this.add(myImages);
-        myImages.view().find('.scaled-image').each(function() {
-            var $img = $(this);
-            var $container = $(this).parent();
-            var imgRatio = $img.width()/$img.height();
-            var containerRatio = $container.width()/$container.height();
-            if (imgRatio > containerRatio) {
-                $img.css('width', $container.width());
-                var topVal = ($container.height() - $img.height())/2;
-                $img.css('top', topVal);
-            }
-            else if (imgRatio < containerRatio) {
-                $img.css('height', $container.height());
-                var leftVal = ($container.width() - $img.width())/2;
-                $img.css('left', leftVal);
-            }
+        myImages.on('render', function() {
+            myImages.view().find('.scaled-image').each(function() {
+                var $img = $(this);
+                var $container = $(this).parent();
+                var imgRatio = $img.width()/$img.height();
+                var containerRatio = $container.width()/$container.height();
+                if (imgRatio > containerRatio) {
+                    $img.css('width', $container.width());
+                    var topVal = ($container.height() - $img.height())/2;
+                    $img.css('top', topVal);
+                }
+                else if (imgRatio < containerRatio) {
+                    $img.css('height', $container.height());
+                    var leftVal = ($container.width() - $img.width())/2;
+                    $img.css('left', leftVal);
+                }
+            });
         });
     }
 
