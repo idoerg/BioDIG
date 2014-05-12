@@ -40,9 +40,6 @@ class MultiGetForm(forms.Form):
     is_obsolete = forms.CharField(required=False)
 
     def clean(self):
-        e = DatabaseIntegrity()
-        e.detail = self.cleaned_data['is_relationshiptype']
-        raise e
         is_rel = self.cleaned_data['is_relationshiptype'].lower()
         if is_rel:
             converted = 1 if is_rel == "true" else (0 if is_rel == "false" else None)
@@ -76,6 +73,10 @@ class MultiGetForm(forms.Form):
         filterkeys = ['name', 'cv']
         for key in filterkeys:
             qbuild.filter(key, self.cleaned_data[key])
+
+        e = DatabaseIntegrity()
+        e.detail = self.cleaned_data['is_relationshiptype']
+        raise e
 
         if self.cleaned_data['is_relationshiptype'] is not None:
             qbuild.filter('is_relationshiptype', self.cleaned_data['is_relationshiptype'])
