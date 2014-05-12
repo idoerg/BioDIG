@@ -17,7 +17,7 @@ define(deps, function($, _, MyImages, ToolbarTmpl) {
         //this.add(RecentlyViewedImages.create());
         var myImages = MyImages.create(user);
         this.add(myImages);
-        myImages.on('render', function() {
+        $(myImages).on('render', function() {
             myImages.view().find('.scaled-image').each(function() {
                 var $img = $(this);
                 var $container = $(this).parent();
