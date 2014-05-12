@@ -229,16 +229,16 @@ class DeleteForm(forms.Form):
     gene_link_id = forms.IntegerField(required=True)
 
     def clean_gene_link_id(self):
-        return FormCleaningUtil.clean_gene_link_id(self.cleaned_data)
+        return FormUtil.clean_gene_link_id(self.cleaned_data)
 
     def clean_tag_id(self):
-        return FormCleaningUtil.clean_tag_id(self.cleaned_data)
+        return FormUtil.clean_tag_id(self.cleaned_data)
 
     def clean_tag_group_id(self):
-        return FormCleaningUtil.clean_tag_group_id(self.cleaned_data)
+        return FormUtil.clean_tag_group_id(self.cleaned_data)
 
     def clean_image_id(self):
-        return FormCleaningUtil.clean_image_id(self.cleaned_data)
+        return FormUtil.clean_image_id(self.cleaned_data)
 
     @transaction.commit_on_success
     def submit(self, request):
@@ -275,16 +275,16 @@ class SingleGetForm(forms.Form):
     gene_link_id = forms.IntegerField(required=True)
 
     def clean_gene_link_id(self):
-        return FormCleaningUtil.clean_gene_link_id(self.cleaned_data)
+        return FormUtil.clean_gene_link_id(self.cleaned_data)
 
     def clean_tag_id(self):
-        return FormCleaningUtil.clean_tag_id(self.cleaned_data)
+        return FormUtil.clean_tag_id(self.cleaned_data)
 
     def clean_tag_group_id(self):
-        return FormCleaningUtil.clean_tag_group_id(self.cleaned_data)
+        return FormUtil.clean_tag_group_id(self.cleaned_data)
 
     def clean_image_id(self):
-        return FormCleaningUtil.clean_image_id(self.cleaned_data)
+        return FormUtil.clean_image_id(self.cleaned_data)
 
     def submit(self, request):
         '''
