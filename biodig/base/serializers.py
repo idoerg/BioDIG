@@ -94,10 +94,11 @@ class FeatureTypeField(serializers.RelatedField):
 class FeatureSerializer(serializers.ModelSerializer):
     type = FeatureTypeField()
     id = serializers.IntegerField(source='feature_id')
+    organism = serializers.PrimaryKeyRelatedField(source='organism')
 
     class Meta:
         model = Feature
-        fields = ('id', 'name', 'uniquename', 'type')
+        fields = ('id', 'name', 'organism', 'uniquename', 'type')
 
 class BooleanIntegerField(serializers.RelatedField):
     def to_native(self, value):

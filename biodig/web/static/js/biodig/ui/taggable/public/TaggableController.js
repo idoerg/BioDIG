@@ -117,8 +117,17 @@ define(deps, function($, util) {
 
                         var display = {};
                         $.each(tags, function(id, tag) {
-                            display[id] = $.extend({}, tag, { 'group': tagGroups[tag.group].name });
-                            display[id].geneLinks = {};
+                            var query = {
+                                tag.group: [tag.id]    
+                            };
+                            $.when(self.imageDao.geneLinks(query))
+                                .done(function(geneLinks) {
+                                    display[id] = $.extend({}, tag, { 'group': tagGroups[tag.group].name });
+                                    display[id].geneLinks = geneLinks;
+                                })
+                                .fail(function(e) {
+                                    console.error(e.detail || e.message);
+                                });
                         });
 
                         self.tagInfo.update(display);

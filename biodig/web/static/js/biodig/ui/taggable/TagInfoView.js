@@ -1,8 +1,8 @@
 var deps = [
-    'jquery', 'underscore', 'text!biodig/tmpl/taggable/tag-info.html'
+    'jquery', 'underscore', 'settings', 'text!biodig/tmpl/taggable/tag-info.html'
 ];
 
-define(deps, function($, _, TagInfoTmpl) {
+define(deps, function($, _, settings, TagInfoTmpl) {
 
     var TagInfoTemplate = _.template(TagInfoTmpl);
 
@@ -15,6 +15,7 @@ define(deps, function($, _, TagInfoTmpl) {
         this.clear();
 
         $.each(tags, function(id, tag) {
+            tag.settings = settings;
             var $info = $(TagInfoTemplate(tag));
             self.$container.append($info);
         });

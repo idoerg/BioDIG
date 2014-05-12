@@ -32,7 +32,14 @@
                             <tbody>
                                 <% _.each(geneLinks, function(gene) { %>
                                     <tr>
-                                        <td></td>
+                                        <td>
+                                            <a href="<%= settings.SITE_URL %>genome_browser?organismId=<%= gene.feature.organism %>&name=<%= gene.feature.name %>">
+                                                <%= gene.feature.name %>
+                                            </a>
+                                        </td>
+                                        <a href="<%= settings.SITE_URL %>genome_browser?organismId=<%= gene.feature.organism %>&uniquename=<%= gene.feature.uniquename %>">
+                                            <%= gene.feature.uniquename %>
+                                        </a>
                                     </tr>
                                 <% }); %>
                             </tbody>
