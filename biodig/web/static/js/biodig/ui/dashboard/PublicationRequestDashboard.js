@@ -15,7 +15,7 @@ define(deps, function($, _, util, PublicationRequestClient, UserClient, ImageCli
 
     function PublicationRequestDashboard(selector) {
         this.$container = $(selector);
-        this.$el = PublicationRequestContainerTemplate();
+        this.$el = $(PublicationRequestContainerTemplate());
         this.$container.append(this.$el);
 
         this.preview = DynamicDialog.create('PublicationRequestPreview', 'Publication Request Preview',
