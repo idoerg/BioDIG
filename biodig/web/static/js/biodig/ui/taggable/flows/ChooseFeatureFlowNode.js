@@ -14,16 +14,16 @@ define(deps, function($, _, FlowNode, ChooseFeatureTmpl) {
             // add the controls onto the FlowNode for displaying
             // the limiting of features
             $(node).on('render', function() {
-                var organism_selector = '#' + node.uid() + ' select[name="select-organism"] option:selected';
-                var type_selector = '#' + node.uid() + ' select[name="select-type"] option:selected';
-                var feature_selector = '#' + node.uid() + ' select[name="select-feature"] option:selected';
+                var organism_selector = '#' + node.uid() + ' select[name="select-organism"]';
+                var type_selector = '#' + node.uid() + ' select[name="select-type"]';
+                var feature_selector = '#' + node.uid() + ' select[name="select-feature"]';
 
                 var changeFn = function() {
                     var organism = $.parseJSON(
-                        unescape($(organism_selector).data('organism'))
+                        unescape($(organism_selector + ' option:selected').data('organism'))
                     );
                     var type = $.parseJSON(
-                        unescape($(type_selector).data('type'))
+                        unescape($(type_selector + ' option:selected').data('type'))
                     );
 
                     // clear out the feature select box
