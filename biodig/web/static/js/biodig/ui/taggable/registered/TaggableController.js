@@ -324,14 +324,17 @@ define(deps, function($, util) {
 
                                 $.when(self.imageDao.tags(ids))
                                     .done(function(tags) {
+                                        var query = {};
                                         $.each(tags, function(id, tag) {
                                             if (!tagGroups[tag.group].tags) {
                                                 tagGroups[tag.group].tags = {};
+                                                query[tag.group] = [];
                                             }
                                             tagGroups[tag.group] = tag;
+                                            query[tag.group].push(tag.id);
                                         });
 
-                                        $.when(self.imageDao.geneLinks())
+                                        $.when(self.imageDao.geneLinks(query))
                                             .done(function(geneLinks) {
                                                 $.each(geneLinks, function(id, geneLink) {
                                                     var group = tags[geneLink.tag].group;
