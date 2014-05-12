@@ -22,7 +22,7 @@ define(deps, function($, _, settings, Toolbar, Taggable, StructureTmpl) {
             self.$workArea.empty();
 
             // make the img tag for the Taggable plugin from the image data
-            var $image = $('<img />').attr('src', image.url).data('imageId', image.id);
+            var $image = $('<img />').width(560).attr('src', image.url).data('imageId', image.id);
             self.$workArea.append($image);
 
             Taggable.create($image, { 'mode' : Taggable.MODES.REGISTERED, 'alreadyLoaded': false });
