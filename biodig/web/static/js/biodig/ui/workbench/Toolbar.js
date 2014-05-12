@@ -15,7 +15,8 @@ define(deps, function($, _, MyImages, ToolbarTmpl) {
         this.menus = {};
 
         //this.add(RecentlyViewedImages.create());
-        $(document).on('load', '.scaled-image', function() {
+        this.add(MyImages.create(user));
+        $('.scaled-image').each(function() {
             var $img = $(this);
             var $container = $(this).parent();
             var imgRatio = $img.width()/$img.height();
@@ -31,8 +32,6 @@ define(deps, function($, _, MyImages, ToolbarTmpl) {
                 $img.css('left', leftVal);
             }
         });
-
-        this.add(MyImages.create(user));
     }
 
     Toolbar.prototype.add = function(menu) {
