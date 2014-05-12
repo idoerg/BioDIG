@@ -7,7 +7,7 @@
     @author: Andrew Oberlin
 '''
 from django import forms
-from biodig.base.models import Image, TagGroup, Tag, GeneLink, Feature
+from biodig.base.models import Image, TagGroup, Tag, GeneLink, Feature, Organism
 from biodig.base import forms as bioforms
 from biodig.base.serializers import GeneLinkSerializer, FeatureSerializer
 from biodig.base.exceptions import OrganismDoesNotExist, ImageDoesNotExist, GeneLinkDoesNotExist, TagDoesNotExist, DatabaseIntegrity, TagGroupDoesNotExist
