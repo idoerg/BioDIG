@@ -101,22 +101,23 @@ class PostForm(forms.Form):
             # get the image that has been targeted and make it public
             image.isPrivate = False
 
+            now = datetime.now()
             # get all the tag groups that are private and were created before the timestamp
             # on the request and were on the image targeted and were created by the request's user
             tagGroups = TagGroup.objects.filter(image=image, isPrivate=True, user=pubrequest.user,
-                dateCreated__lt=pubrequest.dateCreated)
+                dateCreated__lt=now)
 
             # get all the tags that are private and were created before the timestamp on the
             # request and were in one of the tag groups being updated and were created by the
             # request's user
             tags = Tag.objects.filter(group__in=tagGroups, isPrivate=True, user=pubrequest.user,
-                dateCreated__lt=pubrequest.dateCreated)
+                dateCreated__lt=now)
 
             # get all the gene links that are private and were created before the timestamp on the
             # request and were in one of the tags being updated and were created by the
             # request's user
             geneLinks = GeneLink.objects.filter(tag__in=tags, isPrivate=True, user=pubrequest.user,
-                dateCreated__lt=pubrequest.dateCreated)
+                dateCreated__lt=now)
 
             for tagGroup in tagGroups:
                 tagGroup.isPrivate = False
