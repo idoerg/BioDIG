@@ -1,8 +1,8 @@
 var deps = [
     'jquery', 'underscore', 'lib/util', 'biodig/clients/PublicationRequestClient', 'biodig/clients/UserClient',
     'biodig/ui/dialogs/DynamicDialog', 'text!biodig/tmpl/taggable/publication/request-preview.html',
-    'text!biodig/tmpl/dashboard/publication-request-container',
-    'text!biodig/tmpl/dashboard/publication-request'
+    'text!biodig/tmpl/dashboard/publication-request-container.html',
+    'text!biodig/tmpl/dashboard/publication-request.html'
 ];
 
 define(deps, function($, _, util, PublicationRequestClient, UserClient, DynamicDialog, PublicationRequestPreviewTmpl,
