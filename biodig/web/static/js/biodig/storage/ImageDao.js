@@ -427,7 +427,11 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
             $.each(tag_ids, function(index, tag_id) {
                 if (!self.geneLinks_cache[group][tag_id]) {
                     self.geneLinks_cache[group][tag_id] = {
-                        'client': GeneLinkClient.create(self.image_id, group, tag_id),
+                        'client': GeneLinkClient.create({
+                            'image_id': self.image_id,
+                            'tag_group_id': group,
+                            'tag_id': tag_id
+                        }),
                         'geneLinks': null
                     };
                 }

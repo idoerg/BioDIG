@@ -54,13 +54,13 @@ define(deps, function($, util, settings, URLBuilder) {
     **/
     function GeneLinkClient(opts) {
         if (! ('image_id' in opts)){
-            throw { detail : 'Image ID is necessary for Tag Client use' };
+            throw { detail : 'Image ID is necessary for GeneLink Client use' };
         }
         if (! ('tag_group_id' in opts)){
-            throw { detail : 'Tag Group ID is necessary for Tag Client use' };
+            throw { detail : 'Tag Group ID is necessary for GeneLink Client use' };
         }
         if (! ('tag_id' in opts)){
-            throw { detail : 'Tag ID is necessary for Tag Client use' };
+            throw { detail : 'Tag ID is necessary for GeneLink Client use' };
         }
 
         this.url = util.format(opts.url, opts.image_id, opts.tag_group_id, opts.tag_id);
