@@ -16,7 +16,7 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
         this.tags_cache = {
             'all': {}
         };
-        this.geneLinks_cache = null;
+        this.geneLinks_cache = {};
         this.metadata_cache = null;
     }
 
@@ -495,7 +495,8 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
             }).promise();
         };
 
-        if (this.geneLinks_cache[opts.group][opts.tag].geneLinks == null) {
+        if (!this.geneLinks_cache[opts.group] || !this.geneLinks_cache[opts.group][opts.tag] ||
+            this.geneLinks_cache[opts.group][opts.tag] == null) {
             return $.Deferred(function(deferred_obj) {
                 self.tagGroups()
                     .done(function(tagGroups) {
@@ -524,8 +525,9 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
                                                 deferred_obj.reject(e);
                                             });
                                     })
-                                    .fail();
-
+                                    .fail(function(e) {
+                                        deferred_obj.reject(e);
+                                    });
                             })
                             .fail(function(e) {
                                 deferred_obj.reject(e);
