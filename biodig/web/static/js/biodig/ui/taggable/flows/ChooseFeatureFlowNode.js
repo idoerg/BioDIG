@@ -35,7 +35,7 @@ define(deps, function($, _, FlowNode, ChooseFeatureTmpl) {
                     $.each(node.data().features, function(id, feature) {
                         if (feature.organism == organism.id && feature.type == type.name) {
                             var $option = $('<option />').text(feature.name + " - " + feature.uniquename)
-                                .data('feature', escape(JSON.stringify(feature)));
+                                .attr('data-feature', escape(JSON.stringify(feature)));
                             $featureselect.append($option);
                         }
                     });
