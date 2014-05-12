@@ -48,16 +48,39 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
 
     ImageDao.prototype.addPublicationRequest = function() {
         var self = this;
-        return $.Deferred(function(deferred_obj) {
-            $.when(self.publicationRequestClient.create(self.image_id))
-                .done(function(publicationRequest) {
-                    self.publicationRequests_cache[publicationRequest.id] = publicationRequest;
-                    deferred_obj.resolve(publicationRequest);
-                })
-                .fail(function(e) {
-                    deferred_obj.reject(e);
-                });
-        });
+        var add = function() {
+            return $.Deferred(function(deferred_obj) {
+                $.when(self.publicationRequestClient.create(self.image_id))
+                    .done(function(publicationRequest) {
+                        self.publicationRequests_cache[publicationRequest.id] = publicationRequest;
+                        deferred_obj.resolve(publicationRequest);
+                    })
+                    .fail(function(e) {
+                        deferred_obj.reject(e);
+                    });
+            });
+        };
+
+        if (self.publicationRequests_cache == null) {
+            return $.Deferred(function(deferred_obj) {
+                $.when(self.publicationRequests())
+                    .done(function() {
+                        $.when(add())
+                            .done(function(pubrequest) {
+                                deferred_obj.resolve(pubrequest);
+                            })
+                            .fail(function(e) {
+                                deferred_obj.reject(e);
+                            });
+                    })
+                    .fail(function(e) {
+                        deferred_obj.reject(e);
+                    });
+            });
+        }
+        else {
+            return add();
+        }
     };
 
     ImageDao.prototype.previewPublicationRequest = function(image_id) {
