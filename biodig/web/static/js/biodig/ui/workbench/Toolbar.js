@@ -3,7 +3,7 @@ var deps = [
     'text!biodig/tmpl/workbench/toolbar.html'
 ];
 
-define(deps, function($, _, MyImages, ToolbarTmpl) {
+define(deps, function($, _, MyImages, PublicImages, ToolbarTmpl) {
 
     var ToolbarTemplate = _.template(ToolbarTmpl);
 
