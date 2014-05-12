@@ -15,8 +15,9 @@ define(deps, function($, _, MyImages, ToolbarTmpl) {
         this.menus = {};
 
         //this.add(RecentlyViewedImages.create());
-        this.add(MyImages.create(user));
-        $('.scaled-image').on('load', function() {
+        var myImages = MyImages.create(user);
+        this.add(myImages);
+        myImages.view().find('.scaled-image').each(function() {
             var $img = $(this);
             var $container = $(this).parent();
             var imgRatio = $img.width()/$img.height();
