@@ -74,11 +74,10 @@ class MultiGetForm(forms.Form):
         for key in filterkeys:
             qbuild.filter(key, self.cleaned_data[key])
 
-        e = DatabaseIntegrity()
-        e.detail = self.cleaned_data['is_relationshiptype']
-        raise e
-
         if self.cleaned_data['is_relationshiptype'] is not None:
+            e = DatabaseIntegrity()
+            e.detail = self.cleaned_data['is_relationshiptype']
+            raise e
             qbuild.filter('is_relationshiptype', self.cleaned_data['is_relationshiptype'])
 
         if self.cleaned_data['is_obsolete'] is not None:
