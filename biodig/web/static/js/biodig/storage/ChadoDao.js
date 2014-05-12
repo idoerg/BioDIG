@@ -83,7 +83,11 @@ define(deps, function($, ChadoClient) {
         var self = this;
         if (self.types_cache.length == 0) {
             return $.Deferred(function(deferred_obj) {
-                $.when(self.chadoClient.cvterms('sequence'))
+                var opts = {
+                    'is_relationshiptype': "false",
+                    "is_obsolete": "false"    
+                };
+                $.when(self.chadoClient.cvterms('sequence', opts))
                     .done(function(types) {
                         self.types_cache = types;
                         deferred_obj.resolve(types);

@@ -88,12 +88,18 @@ define(deps, function($, settings, URLBuilderFactory, util) {
         }).promise();
     };
 
-    ChadoClient.prototype.cvterms = function(cv) {
+    ChadoClient.prototype.cvterms = function(cv, opts) {
         var self = this;
 
         return $.Deferred(function(deferredObj) {
+            if (!opts) opts = {};
+            var urlBuilder = URLBuilderFactory.newBuilder(this.url + 'cv/' + cv + '/terms/');
+            $.each(opts, function(key, val) {
+                urlBuilder.addQuery(key, val, URLBuilderFactory.NOT_EMPTY);
+            });
+
             $.ajax({
-                url: self.url + 'cv/' + cv + '/terms/',
+                url: urlBuilder.complete(),
                 beforeSend: util.auth(self.token),
                 method: 'GET',
                 success: function(data, textStatus, jqXHR) {

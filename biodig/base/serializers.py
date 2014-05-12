@@ -99,13 +99,19 @@ class FeatureSerializer(serializers.ModelSerializer):
         model = Feature
         fields = ('id', 'name', 'uniquename', 'type')
 
+class BooleanIntegerField(serializers.RelatedField):
+    def to_native(self, value):
+        return value != 0
+
 class CvtermSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(source='cvterm_id')
     cv = serializers.PrimaryKeyRelatedField(source='cv')
+    is_relationshiptype = serializers.BooleanIntegerField()
+    is_obsolete = serializers.BooleanIntegerField()
 
     class Meta:
         model = Cvterm
-        fields = ('id', 'name', 'cv', 'definition')
+        fields = ('id', 'name', 'cv', 'definition', 'is_relationshiptype', 'is_obsolete')
 
 class GeneLinkSerializer(serializers.ModelSerializer):
     owner = serializers.PrimaryKeyRelatedField(source='user')

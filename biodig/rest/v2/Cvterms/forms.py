@@ -36,8 +36,25 @@ class MultiGetForm(forms.Form):
 
     # term filters (Query)
     name = forms.CharField(required=False)
+    is_relationshiptype = forms.CharField(required=False)
+    is_obsolete = forms.CharField(required=False)
 
     def clean(self):
+        is_rel = self.cleaned_data['is_relationshiptype'].lower()
+        if is_rel:
+            converted = 1 if is_rel == "true" else (0 if is_rel == "false" else None)
+            self.cleaned_data['is_relationshiptype'] = converted
+        else:
+            self.cleaned_data['is_relationshiptype'] = None
+
+        is_obs = self.cleaned_data['is_obsolete'].lower()
+        if is_obs:
+            converted = 1 if is_obs == "true" else (0 if is_obs == "false" else None)
+            self.cleaned_data['is_obsolete'] = converted
+        else:
+            self.cleaned_data['is_obsolete'] = None
+
+
         if not self.cleaned_data['offset']: self.cleaned_data['offset'] = 0
         return self.cleaned_data
 
@@ -57,6 +74,12 @@ class MultiGetForm(forms.Form):
         filterkeys = ['name', 'cv']
         for key in filterkeys:
             qbuild.filter(key, self.cleaned_data[key])
+
+        if self.cleaned_data['is_relationshiptype'] is not None:
+            qbuild.filter('is_relationshiptype', self.cleaned_data['is_relationshiptype'])
+
+        if self.cleaned_data['is_obsolete'] is not None:
+            qbuild.filter('is_obsolete', self.cleaned_data['is_obsolete'])
 
         if not self.cleaned_data['limit'] or self.cleaned_data['limit'] < 0:
             qbuild.q = qbuild()[self.cleaned_data['offset']:]
