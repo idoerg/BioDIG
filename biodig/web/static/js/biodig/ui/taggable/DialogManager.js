@@ -80,8 +80,8 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
                         _.template(ChooseTagTmpl)),
                     'AddGeneLink': DynamicFlowDialog.create('AddGeneLink', 'Add Gene Link',
                         AddGeneLinkFlow.get()),
-                    //'DeleteGeneLink': DynamicDialog.create('DeleteGeneLink', 'Delete Gene Link',
-                    //    _.template(ChooseGeneLinkTmpl + DeleteGeneLinkTmpl))
+                    'DeleteGeneLink': DynamicFlowDialog.create('DeleteGeneLink', 'Delete Gene Link',
+                        DeleteGeneLinkFlow.get())
                 };
 
                 $.extend(self.dialogs, dialogs);

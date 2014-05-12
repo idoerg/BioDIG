@@ -16,7 +16,9 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
         this.tags_cache = {
             'all': {}
         };
-        this.geneLinks_cache = {};
+        this.geneLinks_cache = {
+            'all': {}
+        };
         this.metadata_cache = null;
     }
 
@@ -449,6 +451,10 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
                                 self.geneLinks_cache[group][tag_id].geneLinks = {};
                                 $.each(geneLinks, function(index, geneLink) {
                                     self.geneLinks_cache[group][tag_id].geneLinks[geneLink.id] = geneLink;
+                                    self.geneLinks_cache.all[geneLink.id] = {
+                                        'tag': tag_id,
+                                        'group': group
+                                    };
                                     data[geneLink.id] = geneLink;
                                 });
 
@@ -486,6 +492,10 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
                 $.when(client.create(opts.tag, opts.organism, opts.feature))
                     .done(function(geneLink) {
                         self.geneLinks_cache[opts.group][opts.tag].geneLinks = {};
+                        self.geneLinks_cache.all[geneLink.id] = {
+                            'group': opts.group,
+                            'tag': opts.tag
+                        };
                         self.geneLinks_cache[opts.group][opts.tag].geneLinks[geneLink.id] = geneLink;
 
                         // emit event so that UI components can update
@@ -548,7 +558,26 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
     };
 
     ImageDao.prototype.deleteGeneLink = function(id) {
+        var self = this;
+        return $.Deferred(function(deferred_obj) {
+            // find the correct tag client
+            var link = self.geneLinks_cache.all[id];
+            var client = self.geneLinks_cache[link.group][link.tag].client;
 
+            $.when(client.delete(id))
+                .done(function(geneLink) {
+                    delete self.geneLinks_cache[link.group][link.id].geneLinks[id];
+                    delete self.geneLinks_cache.all[id];
+
+                    // emit event so that UI components can update
+                    $(self).trigger('geneLinks:change');
+
+                    deferred_obj.resolve(geneLink);
+                })
+                .fail(function(e) {
+                    deferred_obj.reject(e);
+                });
+        }).promise();
     };
 
     return {

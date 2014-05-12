@@ -314,7 +314,64 @@ define(deps, function($, util) {
                 });
 
                 this.menu.section('geneLinks').item('delete').on('click', function() {
+                    var self = this;
+                    if ($.isEmptyObject(self.tagBoard.selected())) {
+                        self.loading.show();
+                        $.when(self.imageDao.tagGroups())
+                            .done(function(tagGroups) {
+                                var ids = $.map(tagGroups, function(tagGroup) {
+                                    return tagGroup.id;
+                                });
 
+                                $.when(self.imageDao.tags(ids))
+                                    .done(function(tags) {
+                                        $.each(tags, function(id, tag) {
+                                            if (!tagGroups[tag.group].tags) {
+                                                tagGroups[tag.group].tags = {};
+                                            }
+                                            tagGroups[tag.group] = tag;
+                                        });
+
+                                        $.when(self.imageDao.geneLinks())
+                                            .done(function(geneLinks) {
+                                                $.each(geneLinks, function(id, geneLink) {
+                                                    var group = tags[geneLink.tag].group;
+                                                    if (!tagGroups[group].tags[geneLink.tag].geneLinks) {
+                                                        tagGroups[group].tags[geneLink.tag].geneLinks = {};
+                                                    }
+                                                    tagGroups[group].tags[geneLink.tag].geneLinks[geneLink.id] = geneLink;
+                                                });
+                                                self.loading.hide();
+                                                self.dialogs.get('DeleteGeneLink').show({ 'tagGroups' : tagGroups });
+                                            })
+                                            .fail(function(e) {
+                                                self.messager.add(self.messager.ERROR, error.detail || error.message);
+                                            });
+                                    })
+                                    .fail(function(e) {
+                                        self.messager.add(self.messager.ERROR, error.detail || error.message);
+                                    });
+                            })
+                            .fail(function(e) {
+                                self.messager.add(self.messager.ERROR, error.detail || error.message);
+                            });
+                    }
+                    else {
+                        var tags = self.tagBoard.selected();
+                        $.when(self.imageDao.geneLinks())
+                            .done(function(geneLinks) {
+                                $.each(geneLinks, function(id, geneLink) {
+                                    if (!tags[geneLink.tag].geneLinks) {
+                                        tags[geneLink.tag].geneLinks = {};
+                                    }
+                                    tags[geneLink.tag].geneLinks[geneLink.id] = geneLink;
+                                });
+                                self.dialogs.get('DeleteGeneLink').show({ 'tags' : tags });
+                            })
+                            .fail(function(e) {
+                                self.messager.add(self.messager.ERROR, error.detail || error.message);
+                            });
+                    }
                 });
             }
         },
@@ -470,6 +527,16 @@ define(deps, function($, util) {
                     $.when(self.imageDao.addGeneLink(opts))
                         .done(function(geneLink) {
                             self.messager.add(self.messager.SUCCESS, 'Added gene link "' + geneLink.feature.name + '"');
+                        })
+                        .fail(function(e) {
+                            console.error(e.detail || e.message);
+                        })
+                });
+
+                $(this.dialogs.get('DeleteGeneLink')).on('accept', function(event, $el, data) {
+                    $.when(self.imageDao.deleteGeneLink(data.id))
+                        .done(function(geneLink) {
+                            self.messager.add(self.messager.SUCCESS, 'Deleted gene link "' + geneLink.feature.name + '"');
                         })
                         .fail(function(e) {
                             console.error(e.detail || e.message);

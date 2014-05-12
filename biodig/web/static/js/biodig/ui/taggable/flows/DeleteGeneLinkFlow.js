@@ -2,13 +2,13 @@ var deps = [
     'jquery', 'underscore', 'biodig/ui/dialogs/FlowNode',
     'text!biodig/tmpl/taggable/dialogs/choose-tag-group.html',
     'text!biodig/tmpl/taggable/dialogs/choose-tag.html',
-    'text!biodig/tmpl/taggable/dialogs/edit-tag.html'
+    'text!biodig/tmpl/taggable/dialogs/choose-gene-link.html'
 ];
 
-define(deps, function($, _, FlowNode, ChooseTagGroupTmpl, ChooseTagTmpl, EditTagTmpl) {
+define(deps, function($, _, FlowNode, ChooseTagGroupTmpl, ChooseTagTmpl, ChooseGeneLinkTmpl) {
     // When editing a tag one must first choose the tag group and then choose the
     // tag to edit (needs to be elastic enough to allow for )
-    function EditTagFlow() {
+    function DeleteGeneLinkFlow() {
         var flow = [
             FlowNode.create(_.template(ChooseTagGroupTmpl), function(body) {
                 // get the json stringified tag stored in the data section
@@ -44,10 +44,9 @@ define(deps, function($, _, FlowNode, ChooseTagGroupTmpl, ChooseTagTmpl, EditTag
 
                 return false;
             }),
-            FlowNode.create(_.template(EditTagTmpl), function(body) {
+            FlowNode.create(_.template(ChooseGeneLinkTmpl), function(body) {
                 return {
-                    "id" : body.find('input[name="id"]').val(),
-                    "name" : body.find('input[name="name"]').val()
+                    "id" : body.find('input[name="id"]').val()
                 };
             })
         ];
@@ -64,7 +63,7 @@ define(deps, function($, _, FlowNode, ChooseTagGroupTmpl, ChooseTagTmpl, EditTag
 
     return {
         get: function() {
-            return EditTagFlow();
+            return DeleteGeneLinkFlow();
         }
     }
 });
