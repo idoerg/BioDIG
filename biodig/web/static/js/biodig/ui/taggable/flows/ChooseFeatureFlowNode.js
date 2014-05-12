@@ -23,7 +23,7 @@ define(deps, function($, _, FlowNode, ChooseFeatureTmpl) {
                         unescape($(organism_selector).data('organism'))
                     );
                     var type = $.parseJSON(
-                        unescape($(type_selector)).data('type'))
+                        unescape($(type_selector).data('type'))
                     );
 
                     // clear out the feature select box
