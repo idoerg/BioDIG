@@ -1,16 +1,19 @@
 var deps = [
     'jquery', 'biodig/clients/ImageClient', 'biodig/clients/ImageOrganismClient',
-    'biodig/clients/TagGroupClient', 'biodig/clients/TagClient', 'biodig/clients/GeneLinkClient'
+    'biodig/clients/TagGroupClient', 'biodig/clients/TagClient', 'biodig/clients/GeneLinkClient',
+    'biodig/clients/PublicationRequestClient'
 ];
 
-define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagClient, GeneLinkClient) {
+define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagClient, GeneLinkClient, PublicationRequestClient) {
 
     function ImageDao(image_id) {
         this.image_id = image_id;
         this.imageClient = ImageClient.create();
         this.tagGroupClient = TagGroupClient.create({ 'image_id' : image_id });
         this.imageOrganismClient = ImageOrganismClient.create({ 'image_id' : image_id });
+        this.publicationRequestClient = PublicationRequestClient.create();
 
+        this.publicationRequests_cache = null;
         this.organisms_cache = null;
         this.tagGroups_cache = null;
         this.tags_cache = {
@@ -39,6 +42,72 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
         else {
             return $.Deferred(function(deferred_obj) {
                 deferred_obj.resolve(self.metadata_cache);
+            }).promise();
+        }
+    };
+
+    ImageDao.prototype.addPublicationRequest = function() {
+        var self = this;
+        return $.Deferred(function(deferred_obj) {
+            $.when(self.publicationRequestClient.create(self.image_id))
+                .done(function(publicationRequest) {
+                    self.publicationRequests_cache[publicationRequest.id] = publicationRequest;
+                    deferred_obj.resolve(publicationRequest);
+                })
+                .fail(function(e) {
+                    deferred_obj.reject(e);
+                });
+        });
+    };
+
+    ImageDao.prototype.previewPublicationRequest = function(image_id) {
+        var self = this;
+        return $.Deferred(function(deferred_obj) {
+            $.when(self.publicationRequestClient.preview(self.image_id))
+                .done(function(preview) {
+                    deferred_obj.resolve(preview);
+                })
+                .fail(function(e) {
+                    deferred_obj.reject(e);
+                });
+        });
+    };
+
+    ImageDao.prototype.deletePublicationRequest = function(id) {
+        var self = this;
+        return $.Deferred(function(deferred_obj) {
+            $.when(self.publicationRequestClient.delete(id))
+                .done(function(publicationRequest) {
+                    delete self.publicationRequests_cache[id];
+                    deferred_obj.resolve(publicationRequest);
+                })
+                .fail(function(e) {
+                    deferred_obj.reject(e);
+                });
+        });
+    };
+
+    ImageDao.prototype.publicationRequests = function() {
+        var self = this;
+        if (this.publicationRequests_cache == null) {
+            return $.Deferred(function(deferred_obj) {
+                $.when(self.publicationRequestClient.list())
+                    .done(function(publicationRequests) {
+                        self.publicationRequests_cache = {};
+                        $.each(publicationRequests, function(id, publicationRequest) {
+                            self.publicationRequests_cache[publicationRequest.id] = publicationRequest;
+                        });
+
+                        deferred_obj.resolve(self.publicationRequests_cache);
+                    })
+                    .fail(function(e) {
+                        deferred_obj.reject(e);
+                    });
+            }).promise();
+        }
+        else {
+            return $.Deferred(function(deferred_obj) {
+                deferred_obj.resolve(self.publicationRequests_cache);
             }).promise();
         }
     };

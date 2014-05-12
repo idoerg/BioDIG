@@ -377,6 +377,28 @@ define(deps, function($, util) {
                             });
                     }
                 });
+            },
+            publicationRequests: function() {
+                var self = this;
+                this.menu.section('publication').item('add').on('click', function() {
+                    $.when(self.imageDao.previewPublicationRequest())
+                        .done(function(preview) {
+                            self.dialogs.get('AddPublicationRequest').show({ 'preview' : preview })
+                        })
+                        .fail(function(e) {
+                            self.messager.add(self.messager.ERROR, error.detail || error.message);
+                        });
+                });
+
+                this.menu.section('publication').item('delete').on('click', function() {
+                    $.when(self.imageDao.publicationRequests())
+                        .done(function(requests) {
+                            self.dialogs.get('DeletePublicationRequest').show({ 'publicationRequests' : requests })
+                        })
+                        .fail(function(e) {
+                            self.messager.add(self.messager.ERROR, error.detail || error.message);
+                        });
+                });
             }
         },
         tearDown: {
@@ -396,6 +418,10 @@ define(deps, function($, util) {
             geneLinks: function() {
                 this.menu.section('geneLinks').item('add').off('click');
                 this.menu.section('geneLinks').item('delete').off('click');
+            },
+            publicationRequests: function() {
+                this.menu.section('publication').item('add').off('click');
+                this.menu.section('publication').item('delete').off('click'
             }
         }
     };
@@ -416,18 +442,19 @@ define(deps, function($, util) {
                                 data.name + '"');
                         })
                         .fail(function(e) {
-                            console.error(e.detail || e.message);
+                            self.messager.add(self.messager.ERROR, error.detail || error.message);
                         })
                 });
 
                 $(this.dialogs.get('EditTagGroup')).on('accept', function(event, $el, data) {
                     $.when(self.imageDao.editTagGroup(data.id, data))
                         .done(function(tagGroup) {
-                            console.log("Successful save of tag group: " + tagGroup);
+                            self.messager.add(self.messager.SUCCESS, 'Edited the tag group "' +
+                                tagGroup.name + '"');
                         })
                         .fail(function(e) {
-                            console.error(e.detail || e.message);
-                        })
+                            self.messager.add(self.messager.ERROR, error.detail || error.message);
+                        });
                 });
 
                 $(this.dialogs.get('DeleteTagGroup')).on('accept', function(event, $el) {
@@ -437,11 +464,12 @@ define(deps, function($, util) {
 
                     $.when(self.imageDao.deleteTagGroup(data.id))
                         .done(function(tagGroup) {
-                            console.log("Successful deletion of tag group: " + tagGroup);
+                            self.messager.add(self.messager.SUCCESS, 'Deleted the tag group "' +
+                                tagGroup.name + '"');
                         })
                         .fail(function(e) {
-                            console.error(e.detail || e.message);
-                        })
+                            self.messager.add(self.messager.ERROR, error.detail || error.message);
+                        });
                 });
             },
             organisms: function() {
@@ -453,10 +481,11 @@ define(deps, function($, util) {
 
                     $.when(self.imageDao.addOrganism(data.id))
                         .done(function() {
-                            console.log("Successfully added organism: " + data);
+                            self.messager.add(self.messager.SUCCESS, 'Successfully added organism "' +
+                                data.common_name + '" from this image');
                         })
                         .fail(function(e) {
-                            console.error(e.detail || e.message);
+                            self.messager.add(self.messager.ERROR, error.detail || error.message);
                         })
                 });
 
@@ -467,10 +496,11 @@ define(deps, function($, util) {
 
                     $.when(self.imageDao.deleteOrganism(data.id))
                         .done(function() {
-                            console.log("Successfully deleted organism: " + data);
+                            self.messager.add(self.messager.SUCCESS, 'Deleted organism "' +
+                                data.common_name + '" from this image');
                         })
                         .fail(function(e) {
-                            console.error(e.detail || e.message);
+                            self.messager.add(self.messager.ERROR, error.detail || error.message);
                         })
                 });
             },
@@ -484,7 +514,7 @@ define(deps, function($, util) {
                             self.drawingMenu.hide();
                         })
                         .fail(function(e) {
-                            console.error(e.detail || e.message);
+                            self.messager.add(self.messager.ERROR, error.detail || error.message);
                         })
                 });
 
@@ -497,10 +527,10 @@ define(deps, function($, util) {
                 $(this.dialogs.get('EditTag')).on('accept', function(event, $el, data) {
                     $.when(self.imageDao.editTag(data.id, data))
                         .done(function(tag) {
-                            console.log("Successful save of tag group: " + tag);
+                            self.messager.add(self.messager.SUCCESS, 'Saved tag "' + tag.name + '"');
                         })
                         .fail(function(e) {
-                            console.error(e.detail || e.message);
+                            self.messager.add(self.messager.ERROR, error.detail || error.message);
                         })
                 });
 
@@ -511,10 +541,10 @@ define(deps, function($, util) {
 
                     $.when(self.imageDao.deleteTag(data.id))
                         .done(function(tag) {
-                            console.log("Successful deletion of tag: " + tag);
+                            self.messager.add(self.messager.SUCCESS, 'Deleted tag "' + tag.name + '"');
                         })
                         .fail(function(e) {
-                            console.error(e.detail || e.message);
+                            self.messager.add(self.messager.ERROR, error.detail || error.message);
                         })
                 });
             },
@@ -533,7 +563,7 @@ define(deps, function($, util) {
                             self.messager.add(self.messager.SUCCESS, 'Added gene link "' + geneLink.feature.name + '"');
                         })
                         .fail(function(e) {
-                            console.error(e.detail || e.message);
+                            self.messager.add(self.messager.ERROR, error.detail || error.message);
                         })
                 });
 
@@ -543,8 +573,34 @@ define(deps, function($, util) {
                             self.messager.add(self.messager.SUCCESS, 'Deleted gene link "' + geneLink.feature.name + '"');
                         })
                         .fail(function(e) {
-                            console.error(e.detail || e.message);
+                            self.messager.add(self.messager.ERROR, error.detail || error.message);
                         })
+                });
+            },
+            publicationRequests: function() {
+                var self = this;
+                $(this.dialogs.get('AddPublicationRequest')).on('accept', function() {
+                    $.when(self.imageDao.addPublicationRequest())
+                        .done(function(request) {
+                            self.messager.add(self.messager.SUCCESS, 'Sent publication request');
+                        })
+                        .fail(function(e) {
+                            self.messager.add(self.messager.ERROR, error.detail || error.message);
+                        });
+                });
+
+                $(this.dialogs.get('DeletePublicationRequest')).on('accept', function(event, $el) {
+                    var data = $.parseJSON(
+                        unescape($el.find('.modal-body').find('.select-publication-request option:selected').data('publicationRequest'))
+                    );
+
+                    $.when(self.imageDao.deletePublicationRequest(data.id))
+                        .done(function(request) {
+                            self.messager.add(self.messager.SUCCESS, 'Sent publication request');
+                        })
+                        .fail(function(e) {
+                            self.messager.add(self.messager.ERROR, error.detail || error.message);
+                        });
                 });
             }
         },
@@ -559,10 +615,17 @@ define(deps, function($, util) {
                 $(this.dialogs.get('DeleteOrganism')).off('accept');
             },
             tags: function() {
+                $(this.dialogs.get('AddTag')).off('accept');
                 $(this.dialogs.get('EditTag')).off('accept');
+                $(this.dialogs.get('DeleteTag')).off('accept');
             },
             geneLinks: function() {
-
+                $(this.dialogs.get('AddGeneLink')).off('accept');
+                $(this.dialogs.get('DeleteGeneLink')).off('accept');
+            },
+            publicationRequests: function() {
+                $(this.dialogs.get('AddPublicationRequest')).off('accept');
+                $(this.dialogs.get('DeletePublicationRequest')).off('accept');
             }
         }
     };

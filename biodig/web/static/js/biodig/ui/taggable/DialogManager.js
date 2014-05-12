@@ -16,7 +16,9 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
         'text!biodig/tmpl/taggable/dialogs/choose-organism.html',
         'text!biodig/tmpl/taggable/dialogs/choose-tag-group.html',
         'text!biodig/tmpl/taggable/dialogs/choose-tag.html',
-        'text!biodig/tmpl/taggable/dialogs/edit-tag-group.html'
+        'text!biodig/tmpl/taggable/dialogs/edit-tag-group.html',
+        'text!biodig/tmpl/taggable/publication/request-preview.html',
+        'text!biodig/tmpl/taggable/publication/choose-request.html'
     ];
 
     function DialogManager() {
@@ -37,7 +39,8 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
         return $.Deferred(function(deferred_obj) {
             require(registeredDeps, function(DynamicFlowDialog, EditTagGroupFlow, EditTagFlow,
                 AddTagFlow, AddGeneLinkFlow, DeleteGeneLinkFlow, ChooseOrganismTmpl,
-                ChooseTagGroupTmpl, ChooseTagTmpl, EditTagGroupTmpl) {
+                ChooseTagGroupTmpl, ChooseTagTmpl, EditTagGroupTmpl, PublicationRequestPreviewTmpl,
+                ChoosePublicationRequestTmpl) {
 
                 var dialogs = {
                     'AddOrganism': DynamicDialog.create('AddOrganism', 'Add Organism to Image',
@@ -59,7 +62,11 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
                     'AddGeneLink': DynamicFlowDialog.create('AddGeneLink', 'Add Gene Link',
                         AddGeneLinkFlow.get()),
                     'DeleteGeneLink': DynamicFlowDialog.create('DeleteGeneLink', 'Delete Gene Link',
-                        DeleteGeneLinkFlow.get())
+                        DeleteGeneLinkFlow.get()),
+                    'AddPublicationRequest': DynamicDialog.create('AddPublicationRequest', 'Send Publication Request',
+                        _.template(PublicationRequestPreviewTmpl)),
+                    'DeletePublicationRequest': DynamicDialog.create('DeletePublicationRequest', 'Cancel Publication Request',
+                        _.template(ChoosePublicationRequestTmpl)),
                 };
 
                 $.extend(self.dialogs, dialogs);

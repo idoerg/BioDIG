@@ -56,6 +56,7 @@ define(deps, function($, _, Menu, MenuSection, MenuItem, settings) {
             var publication = menu.section('publication', 'Publication', 'img[' + settings.STATIC_URL +
                 'images/publication.png]');
             publication.item('add', 'Send Request', 'ui-icon ui-icon-plusthick');
+            publication.item('delete', 'Cancel Request', 'ui-icon ui-icon-trash');
         }
     };
 

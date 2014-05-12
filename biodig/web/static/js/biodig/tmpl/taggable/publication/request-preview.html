@@ -1,0 +1,24 @@
+<div>
+    <div>
+        <label>Image</label>
+        <div><%= image.url %></div>
+    </div>
+    <div>
+        <label>Tag Groups</label>
+        <% _.each(tagGroups, function(tagGroup, index) { %>
+        <div><%= tagGroup.name %></div>
+        <% }); %>
+    </div>
+    <div>
+        <label>Tags</label>
+        <% _.each(tags, function(tag, index) { %>
+        <div><%= tag.name %></div>
+        <% }); %>
+    </div>
+    <div>
+        <label>Gene Links</label>
+        <% _.each(geneLinks, function(geneLink, index) { %>
+        <div><%= geneLink.name %> - <%= geneLink.uniquename %></div>
+        <% }); %>
+    </div>
+</div>

@@ -63,8 +63,9 @@ class MultiGetForm(forms.Form):
         return PublicationRequestSerializer(qbuild(), many=True).data
 
 class PostForm(forms.Form):
-    # Path Parameters
+    # Data Body Parameters
     image_id = forms.IntegerField(required=True)
+    preview = forms.BooleanField(required=False)
 
     def clean_image_id(self):
         return FormUtil.clean_image_id(self.cleaned_data)
@@ -87,13 +88,46 @@ class PostForm(forms.Form):
 
         pubrequest = PublicationRequest(target=image, user=request.user)
 
-        try:
-            pubrequest.save()
-        except DatabaseError:
-            transaction.rollback()
-            raise DatabaseIntegrity()
 
-        return PublicationRequestSerializer(pubrequest).data
+        if not self.cleaned_data['preview']:
+            try:
+                pubrequest.save()
+            except DatabaseError:
+                transaction.rollback()
+                raise DatabaseIntegrity()
+
+            return PublicationRequestSerializer(pubrequest).data
+        else:
+            # get the image that has been targeted and make it public
+            image.isPrivate = False
+
+            # get all the tag groups that are private and were created before the timestamp
+            # on the request and were on the image targeted and were created by the request's user
+            tagGroups = TagGroup.objects.filter(image=image, isPrivate=True, user=pubrequest.user,
+                dateCreated__lt=pubrequest.dateCreated)
+
+            # get all the tags that are private and were created before the timestamp on the
+            # request and were in one of the tag groups being updated and were created by the
+            # request's user
+            tags = Tag.objects.filter(group__in=tagGroups, isPrivate=True, user=pubrequest.user,
+                dateCreated__lt=pubrequest.dateCreated)
+
+            # get all the gene links that are private and were created before the timestamp on the
+            # request and were in one of the tags being updated and were created by the
+            # request's user
+            geneLinks = GeneLink.objects.filter(tag__in=tags, isPrivate=True, user=pubrequest.user,
+                dateCreated__lt=pubrequest.dateCreated)
+
+            for tagGroup in tagGroups:
+                tagGroup.isPrivate = False
+
+            for tag in tags:
+                tag.isPrivate = False
+
+            for geneLink in geneLinks:
+                geneLink.isPrivate = False
+
+            return PublicationRequestPreviewSerializer(image, tagGroups, tags, geneLinks).data
 
 class PutForm(forms.Form):
     # Path Parameters
