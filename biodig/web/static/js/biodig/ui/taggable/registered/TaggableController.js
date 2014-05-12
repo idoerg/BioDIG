@@ -421,7 +421,7 @@ define(deps, function($, util) {
             },
             publicationRequests: function() {
                 this.menu.section('publication').item('add').off('click');
-                this.menu.section('publication').item('delete').off('click'
+                this.menu.section('publication').item('delete').off('click');
             }
         }
     };
