@@ -30,6 +30,7 @@ define(deps, function($, _, FlowNode, ChooseFeatureTmpl) {
                     var $featureselect = $(feature_selector);
                     $featureselect.empty();
 
+
                     // refill the feature select box
                     $.each(node.data().features, function(id, feature) {
                         if (feature.organism == organism.id && feature.type == type.name) {

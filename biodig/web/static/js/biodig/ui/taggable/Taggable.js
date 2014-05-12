@@ -2,14 +2,14 @@ var deps = [
     'jquery', 'underscore', 'biodig/ui/zoomable/Zoomable', 'biodig/ui/taggable/TagBoard',
     'biodig/storage/ImageDao', 'biodig/storage/ChadoDao', 'biodig/ui/taggable/ImageMenu',
     'biodig/ui/taggable/DialogManager', 'biodig/ui/taggable/StatusMessager',
-    'biodig/ui/taggable/TagInfoView', 'biodig/ui/taggable/public/TaggableController',
-    'biodig/ui/taggable/DrawingMenu', 'biodig/ui/taggable/DrawingBoard',
-    'biodig/ui/taggable/registered/TaggableController', 'lib/util',
+    'biodig/ui/dialogs/LoadingDialog', 'biodig/ui/taggable/TagInfoView',
+    'biodig/ui/taggable/public/TaggableController', 'biodig/ui/taggable/DrawingMenu',
+    'biodig/ui/taggable/DrawingBoard', 'biodig/ui/taggable/registered/TaggableController', 'lib/util',
     'text!biodig/tmpl/taggable/structure.html', 'text!biodig/tmpl/taggable/image-metadata.html'
 ];
 
 define(deps, function($, _, Zoomable, TagBoard, ImageDao, ChadoDao, ImageMenu, DialogManager,
-    StatusMessager, TagInfoView, PublicTaggableController, DrawingMenu, DrawingBoard,
+    StatusMessager, LoadingDialog, TagInfoView, PublicTaggableController, DrawingMenu, DrawingBoard,
     RegisteredTaggableController, util, TaggableTmpl, MetadataTmpl) {
 
     var ACCEPTED_MODES = {
@@ -56,6 +56,9 @@ define(deps, function($, _, Zoomable, TagBoard, ImageDao, ChadoDao, ImageMenu, D
 
         // create the public dialog boxes
         this.dialogs = DialogManager.create();
+
+        // create the loading dialog
+        this.loading = LoadingDialog.create();
 
         // create the image data manager for storing the current internal
         // state of the image's data

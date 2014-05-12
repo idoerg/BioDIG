@@ -138,6 +138,7 @@ define(deps, function($, util) {
 
                 this.menu.section('tags').item('edit').on('click', function() {
                     if ($.isEmptyObject(self.tagBoard.selected())) {
+                        self.loading.show();
                         // no tags are selected so we will start with the
                         // tag groups and place the tags in the tag groups for
                         // future menus
@@ -149,6 +150,7 @@ define(deps, function($, util) {
 
                                 $.when(self.imageDao.tags(ids))
                                     .done(function(tags) {
+                                        self.loading.hide();
                                         // add the tags subsection
                                         $.each(tagGroups, function(id, tagGroup) {
                                             tagGroup.tags = {};
@@ -166,10 +168,12 @@ define(deps, function($, util) {
                                         });
                                     })
                                     .fail(function(e) {
+                                        self.loading.hide();
                                         console.error(e.detail || e.message);
                                     });
                             })
                             .fail(function(e) {
+                                self.loading.hide();
                                 console.error(e.detail || e.message);
                             });
                     }
@@ -184,6 +188,7 @@ define(deps, function($, util) {
 
                 this.menu.section('tags').item('delete').on('click', function() {
                     if ($.isEmptyObject(self.tagBoard.selected())) {
+                        self.loading.show();
                         $.when(self.imageDao.tagGroups())
                             .done(function(tagGroups) {
                                 var ids = $.map(tagGroups, function(tagGroup) {
@@ -192,13 +197,16 @@ define(deps, function($, util) {
                                 // no tags are selected so we will show all tags
                                 $.when(self.imageDao.tags(ids))
                                     .done(function(tags) {
+                                        self.loading.hide();
                                         self.dialogs.get('DeleteTag').show({ 'tags' : tags });
                                     })
                                     .fail(function(e) {
+                                        self.loading.hide();
                                         console.error(e.detail || e.message);
                                     });
                             })
                             .fail(function(e) {
+                                self.loading.hide();
                                 console.error(e.detail || e.message);
                             });
                     }
@@ -216,6 +224,8 @@ define(deps, function($, util) {
                     var data = {};
                     var errors = [];
                     var promises = [];
+
+                    self.loading.show();
 
                     if ($.isEmptyObject(self.tagBoard.selected())) {
                         // get the tag groups and group the tags into the tag groups
@@ -291,6 +301,7 @@ define(deps, function($, util) {
                     );
 
                     $.when.apply($, promises).always(function() {
+                        self.loading.hide();
                         if (errors.length > 0) {
                             $.each(errors, function(index, error) {
                                 self.messager.add(self.messager.ERROR, error.detail || error.message);
