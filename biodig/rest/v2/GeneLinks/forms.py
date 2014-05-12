@@ -140,6 +140,9 @@ class MultiGetForm(forms.Form):
         image, group, tag = FormUtil.get_containers(self.cleaned_data['image_id'], self.cleaned_data['tag_group_id'],
             self.cleaned_data['tag_id'], request.user)
 
+        qbuild.filter('tag', tag)
+
+
         # add permissions to query
         if request.user and request.user.is_authenticated():
             if not request.user.is_staff:
