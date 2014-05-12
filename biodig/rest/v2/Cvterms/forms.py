@@ -7,6 +7,7 @@
     @author: Andrew Oberlin
 '''
 from django import forms
+import biodig.base.forms as bioforms
 from biodig.base.models import Cvterm, Cv
 from biodig.base.serializers import CvtermSerializer
 from biodig.base.exceptions import CvDoesNotExist, DatabaseIntegrity
