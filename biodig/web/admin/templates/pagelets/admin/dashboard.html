@@ -1,0 +1,17 @@
+{% load template_tags %}
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/dashboard.css" />
+</head>
+<body>
+    <div class="page-header clearfix"><h1>Dashboard</h1></div>
+    <div class="panel panel-default">
+        <div class="panel-heading"><h3 class="panel-title">Publication Requests</h3></div>
+        <div class="publication-requests-container"></div>
+    </div>
+</body>
+<script type="text/javascript">
+    var require = {
+        baseUrl: '{{ STATIC_URL }}js/'
+    };
+</script>
+<script type="text/javascript" data-main="{{ STATIC_URL }}js/biodig/pages/dashboard.js" src="{{ STATIC_URL }}js/lib/require.js"></script>

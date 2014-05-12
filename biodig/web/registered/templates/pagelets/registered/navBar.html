@@ -29,7 +29,7 @@
             </li>
             {% if user.is_staff %}
             <li class="admin_button_item">
-                <div><a href="{{ SITE_URL }}admin/dashboard">Dashboard</a></div>
+                <div><a href="{{ SITE_URL }}super/dashboard">Dashboard</a></div>
             </li>
             {% endif %}
             <li class="admin_button_item">
@@ -73,7 +73,8 @@
                 <div>
                     <ul id="user_options">
                         <li class="logged_in_title_left"><a href="{{ SITE_URL }}registered/workbench">Workbench</a></li>
-                        <li class="logout"><a onclick="logout(event)">Log out</a></li>
+                        <li class="logged_in_title_left"><a href="{{ SITE_URL }}admin">Administration</a></li>
+                        <li class="logout"><a onclick="logout(event)">Logout</a></li>
                     </ul>
                 </div>
             {% endif %}

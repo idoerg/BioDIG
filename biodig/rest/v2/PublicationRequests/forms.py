@@ -160,19 +160,20 @@ class PutForm(forms.Form):
             raise ImageDoesNotExist()
 
         tagGroups = TagGroup.objects.filter(picture=image, isPrivate=True, user=pubrequest.user,
-            dateCreated__lt=now)
+            dateCreated__lt=pubrequest.dateCreated)
 
         # get all the tags that are private and were created before the timestamp on the
         # request and were in one of the tag groups being updated and were created by the
         # request's user
         allImageGroups = TagGroup.objects.filter(picture=image)
-        tags = Tag.objects.filter(group__in=allImageGroups, isPrivate=True, user=pubrequest.user, dateCreated__lt=now)
+        tags = Tag.objects.filter(group__in=allImageGroups, isPrivate=True, user=pubrequest.user,
+            dateCreated__lt=pubrequest.dateCreated)
 
         # get all the gene links that are private and were created before the timestamp on the
         # request and were in one of the tags being updated and were created by the
         # request's user
         geneLinks = GeneLink.objects.filter(tag__in=Tag.objects.filter(group__in=allImageGroups),
-            isPrivate=True, user=pubrequest.user, dateCreated__lt=now)
+            isPrivate=True, user=pubrequest.user, dateCreated__lt=pubrequest.dateCreated)
 
         serialized = PublicationRequestSerializer(pubrequest).data
 
@@ -270,21 +271,20 @@ class PreviewForm(forms.Form):
         except Image.DoesNotExist:
             raise ImageDoesNotExist()
 
-        # get all the tag groups that are private and were created before the timestamp
-        # on the request and were on the image targeted and were created by the request's user
-        tagGroups = TagGroup.objects.filter(image=image, isPrivate=True, user=pubrequest.user,
+        tagGroups = TagGroup.objects.filter(picture=image, isPrivate=True, user=pubrequest.user,
             dateCreated__lt=pubrequest.dateCreated)
 
         # get all the tags that are private and were created before the timestamp on the
         # request and were in one of the tag groups being updated and were created by the
         # request's user
-        tags = Tag.objects.filter(group__in=tagGroups, isPrivate=True, user=pubrequest.user,
+        allImageGroups = TagGroup.objects.filter(picture=image)
+        tags = Tag.objects.filter(group__in=allImageGroups, isPrivate=True, user=pubrequest.user,
             dateCreated__lt=pubrequest.dateCreated)
 
         # get all the gene links that are private and were created before the timestamp on the
         # request and were in one of the tags being updated and were created by the
         # request's user
-        geneLinks = GeneLink.objects.filter(tag__in=tags, isPrivate=True, user=pubrequest.user,
-            dateCreated__lt=pubrequest.dateCreated)
+        geneLinks = GeneLink.objects.filter(tag__in=Tag.objects.filter(group__in=allImageGroups),
+            isPrivate=True, user=pubrequest.user, dateCreated__lt=pubrequest.dateCreated)
 
         return PublicationRequestPreviewSerializer(image, tagGroups, tags, geneLinks).data

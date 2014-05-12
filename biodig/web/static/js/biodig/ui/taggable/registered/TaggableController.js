@@ -596,7 +596,7 @@ define(deps, function($, util) {
 
                     $.when(self.imageDao.deletePublicationRequest(data.id))
                         .done(function(request) {
-                            self.messager.add(self.messager.SUCCESS, 'Sent publication request');
+                            self.messager.add(self.messager.SUCCESS, 'Cancelled publication request');
                         })
                         .fail(function(e) {
                             self.messager.add(self.messager.ERROR, error.detail || error.message);

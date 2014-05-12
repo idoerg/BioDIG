@@ -8,17 +8,14 @@
 from biodig.base.renderEngine.PageletBase import PageletBase
 from django.core.exceptions import ObjectDoesNotExist
 
-class CustomizePagelet(PageletBase):
+class DashboardPagelet(PageletBase):
     '''
-        Renders the center of the home page        
-    
+        Renders the center of the home page
+
         Params: request -- the Django request object with the POST & GET args
-        
+
         Returns: Dictionary of arguments for rendering this pagelet
     '''
     def doProcessRender(self, request):
-        self.setLayout('admin/customize.html')
-        
-        return {
-            
-        }
+        self.setLayout('admin/dashboard.html')
+        return {}

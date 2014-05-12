@@ -14,6 +14,10 @@ define(['jquery'], function($) {
         };
     };
 
+    Util.prettyDate = function(d) {
+        return d;
+    };
+
     Util.set = function() {
         this.items = {};
         $.each(arguments, function(index, arg) {

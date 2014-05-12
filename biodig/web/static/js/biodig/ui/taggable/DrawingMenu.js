@@ -62,7 +62,7 @@ define(deps, function($, _, settings, DrawingMenuTmpl) {
         });
 
         $alphaSlider.on('slidechange', function(event, ui) {
-            $alphaText.val(ui.value + "%");
+            $alphaText.text(ui.value + "%");
             self.alpha = ui.value / 100.0;
             $(self).trigger('alpha:change', [self.alpha]);
         });

@@ -114,6 +114,40 @@ define(deps, function($, settings, URLBuilderFactory, util) {
         }).promise();
     };
 
+    PublicationRequestClient.prototype.previewRequest = function(publication_request_id) {
+        try {
+            this.validator.create(publication_request_id);
+        }
+        catch (e) {
+            return $.Deferred(function(deferredObj) {
+                deferredObj.reject(e);
+            }).promise();
+        }
+
+        var self = this;
+
+        return $.Deferred(function(deferredObj) {
+            $.ajax({
+                url: self.url + publication_request_id + '/preview/',
+                method: 'GET',
+                beforeSend: util.auth(self.token),
+                dataType: 'json',
+                success: function(data, textStatus, jqXHR) {
+                    deferredObj.resolve(data);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    try {
+                        var e = $.parseJSON(jqXHR.responseText);
+                        deferredObj.reject(e);
+                    }
+                    catch (e) {
+                        deferredObj.reject({ detail: 'An unidentified error occurred with the server.'});
+                    }
+                }
+            });
+        }).promise();
+    };
+
     PublicationRequestClient.prototype.list = function(opts) {
         if (!opts) opts = {};
         var urlBuilder = URLBuilderFactory.newBuilder(this.url);
@@ -167,6 +201,39 @@ define(deps, function($, settings, URLBuilderFactory, util) {
                 url: self.url + id,
                 beforeSend: util.auth(self.token),
                 method: 'DELETE',
+                success: function(data) {
+                    deferredObj.resolve(data);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    try {
+                        var e = $.parseJSON(jqXHR.responseText);
+                        deferredObj.reject(e);
+                    }
+                    catch (e) {
+                        deferredObj.reject({ detail: 'An unidentified error occurred with the server.'});
+                    }
+                }
+            });
+        }).promise();
+    }
+
+    PublicationRequestClient.prototype.approve = function(id) {
+        try {
+            this.validator.delete(id);
+        }
+        catch (e) {
+            return $.Deferred(function(deferredObj) {
+                deferredObj.reject(e);
+            }).promise();
+        }
+
+        var self = this;
+
+        return $.Deferred(function(deferredObj) {
+            $.ajax({
+                url: self.url + id,
+                beforeSend: util.auth(self.token),
+                method: 'PUT',
                 success: function(data) {
                     deferredObj.resolve(data);
                 },
