@@ -12,11 +12,11 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
     var registeredDeps = [
         'biodig/ui/dialogs/DynamicFlowDialog', 'biodig/ui/taggable/flows/EditTagGroupFlow',
         'biodig/ui/taggable/flows/EditTagFlow','biodig/ui/taggable/flows/AddTagFlow',
+        'biodig/ui/taggable/flows/AddGeneLinkFlow',
         'text!biodig/tmpl/taggable/dialogs/choose-organism.html',
         'text!biodig/tmpl/taggable/dialogs/choose-tag-group.html',
         'text!biodig/tmpl/taggable/dialogs/choose-tag.html',
-        'text!biodig/tmpl/taggable/dialogs/edit-tag-group.html',
-        'text!biodig/tmpl/taggable/dialogs/add-gene-link.html'
+        'text!biodig/tmpl/taggable/dialogs/edit-tag-group.html'
     ];
 
     function DialogManager() {
@@ -79,7 +79,7 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
                     'DeleteTag': DynamicDialog.create('DeleteTag', 'Delete Tag',
                         _.template(ChooseTagTmpl)),
                     'AddGeneLink': DynamicDialog.create('AddGeneLink', 'Add Gene Link',
-                        _.template(AddGeneLinkTmpl)),
+                        AddGeneLinkFlow.get()),
                     //'DeleteGeneLink': DynamicDialog.create('DeleteGeneLink', 'Delete Gene Link',
                     //    _.template(ChooseGeneLinkTmpl + DeleteGeneLinkTmpl))
                 };
