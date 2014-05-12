@@ -325,12 +325,14 @@ define(deps, function($, util) {
                                 $.when(self.imageDao.tags(ids))
                                     .done(function(tags) {
                                         var query = {};
+                                        var data = {};
                                         $.each(tags, function(id, tag) {
-                                            if (!tagGroups[tag.group].tags) {
-                                                tagGroups[tag.group].tags = {};
+                                            if (!data[tag.group]) {
+                                                $.extend(data, tagGroups[tag.group]);
+                                                data[tag.group].tags = {};
                                                 query[tag.group] = [];
                                             }
-                                            tagGroups[tag.group].tags[tag.id] = tag;
+                                            data[tag.group].tags[tag.id] = tag;
                                             query[tag.group].push(tag.id);
                                         });
 
@@ -338,10 +340,10 @@ define(deps, function($, util) {
                                             .done(function(geneLinks) {
                                                 $.each(geneLinks, function(id, geneLink) {
                                                     var group = tags[geneLink.tag].group;
-                                                    if (!tagGroups[group].tags[geneLink.tag].geneLinks) {
-                                                        tagGroups[group].tags[geneLink.tag].geneLinks = {};
+                                                    if (!data[group].tags[geneLink.tag].geneLinks) {
+                                                        data[group].tags[geneLink.tag].geneLinks = {};
                                                     }
-                                                    tagGroups[group].tags[geneLink.tag].geneLinks[geneLink.id] = geneLink;
+                                                    data[group].tags[geneLink.tag].geneLinks[geneLink.id] = geneLink;
                                                 });
                                                 self.loading.hide();
                                                 self.dialogs.get('DeleteGeneLink').show({ 'tagGroups' : tagGroups });
