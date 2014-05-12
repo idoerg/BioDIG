@@ -1,14 +1,15 @@
 var deps = [
-    'jquery', 'underscore', 'lib/util', 'text!biodig/tmpl/loading/loading.html', 'bootstrap'
+    'jquery', 'underscore', 'settings', 'lib/util', 'text!biodig/tmpl/loading/loading.html', 'bootstrap'
 ];
 
-define(deps, function($, _, util, LoadingTmpl) {
+define(deps, function($, _, settings, util, LoadingTmpl) {
 
     var LoadingTemplate = _.template(LoadingTmpl);
 
     function LoadingDialog() {
         this.$el = LoadingTemplate({
-            'name': 'loading-' + util.uuid4()
+            'name': 'loading-' + util.uuid4(),
+            'settings': settings
         });
     }
 
