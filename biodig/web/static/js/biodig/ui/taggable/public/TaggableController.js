@@ -117,9 +117,8 @@ define(deps, function($, util) {
 
                         var display = {};
                         $.each(tags, function(id, tag) {
-                            var query = {
-                                tag.group: [tag.id]    
-                            };
+                            var query = {};
+                            query[tag.group] = [tag.id];
                             $.when(self.imageDao.geneLinks(query))
                                 .done(function(geneLinks) {
                                     display[id] = $.extend({}, tag, { 'group': tagGroups[tag.group].name });
