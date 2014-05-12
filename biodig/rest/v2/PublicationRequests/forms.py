@@ -105,7 +105,7 @@ class PostForm(forms.Form):
             now = datetime.datetime.now()
             # get all the tag groups that are private and were created before the timestamp
             # on the request and were on the image targeted and were created by the request's user
-            tagGroups = TagGroup.objects.filter(image=image, isPrivate=True, user=pubrequest.user,
+            tagGroups = TagGroup.objects.filter(picture=image, isPrivate=True, user=pubrequest.user,
                 dateCreated__lt=now)
 
             # get all the tags that are private and were created before the timestamp on the
