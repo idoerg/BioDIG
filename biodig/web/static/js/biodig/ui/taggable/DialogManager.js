@@ -12,7 +12,7 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
     var registeredDeps = [
         'biodig/ui/dialogs/DynamicFlowDialog', 'biodig/ui/taggable/flows/EditTagGroupFlow',
         'biodig/ui/taggable/flows/EditTagFlow','biodig/ui/taggable/flows/AddTagFlow',
-        'biodig/ui/taggable/flows/AddGeneLinkFlow',
+        'biodig/ui/taggable/flows/AddGeneLinkFlow', 'biodig/ui/taggable/flows/DeleteGeneLinkFlow',
         'text!biodig/tmpl/taggable/dialogs/choose-organism.html',
         'text!biodig/tmpl/taggable/dialogs/choose-tag-group.html',
         'text!biodig/tmpl/taggable/dialogs/choose-tag.html',
@@ -35,31 +35,9 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
     DialogManager.prototype.loadRegistered = function() {
         var self = this;
         return $.Deferred(function(deferred_obj) {
-            require(registeredDeps, function(DynamicFlowDialog, EditTagGroupFlow,
-                EditTagFlow, AddTagFlow, AddGeneLinkFlow, ChooseOrganismTmpl, ChooseTagGroupTmpl, ChooseTagTmpl,
-                EditTagGroupTmpl) {
-
-                /*var addGeneLinkFlow = [
-                    FlowNode.create(_.template(ChooseTagTmpl), function(body) {
-                        // get the json stringified geneLink array stored in the data section
-                        // of the option and turn it back into an object for rendering
-                        return $.parseJSON(
-                            body.find('.select-tag option:selected').data('geneLinks')
-                        );
-                    }),
-                    FlowNode.create(_.template(AddGeneLinkTmpl))
-                ];
-
-                var deleteGeneLinkFlow = [
-                    FlowNode.create(_.template(ChooseTagTmpl), function(body) {
-                        // get the json stringified geneLink array stored in the data section
-                        // of the option and turn it back into an object for rendering
-                        return $.parseJSON(
-                            body.find('.select-tag option:selected').data('geneLinks')
-                        );
-                    }),
-                    FlowNode.create(_.template(AddGeneLinkTmpl))
-                ];*/
+            require(registeredDeps, function(DynamicFlowDialog, EditTagGroupFlow, EditTagFlow,
+                AddTagFlow, AddGeneLinkFlow, DeleteGeneLinkFlow, ChooseOrganismTmpl,
+                ChooseTagGroupTmpl, ChooseTagTmpl, EditTagGroupTmpl) {
 
                 var dialogs = {
                     'AddOrganism': DynamicDialog.create('AddOrganism', 'Add Organism to Image',

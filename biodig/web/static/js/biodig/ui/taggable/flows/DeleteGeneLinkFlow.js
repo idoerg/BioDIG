@@ -45,9 +45,9 @@ define(deps, function($, _, FlowNode, ChooseTagGroupTmpl, ChooseTagTmpl, ChooseG
                 return false;
             }),
             FlowNode.create(_.template(ChooseGeneLinkTmpl), function(body) {
-                return {
-                    "id" : body.find('input[name="id"]').val()
-                };
+                return $.parseJSON(
+                    unescape(body.find('.select-gene-link option:selected').data('geneLink'))
+                );
             })
         ];
 
