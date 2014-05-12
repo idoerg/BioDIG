@@ -2,7 +2,7 @@ from biodig.base.exceptions import BadRequestException
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from biodig.rest.v2.PublicationRequests.forms import MultiGetForm, PostForm, PutForm, DeleteForm, SingleGetForm
+from biodig.rest.v2.PublicationRequests.forms import MultiGetForm, PreviewForm, PostForm, PutForm, DeleteForm, SingleGetForm
 
 class PublicationRequestList(APIView):
     '''
@@ -77,6 +77,24 @@ class PublicationRequestSingle(APIView):
         params = dict((key, val) for key, val in request.QUERY_PARAMS.iteritems())
         params['publication_request_id'] = publication_request_id
         form = DeleteForm(params)
+
+        if not form.is_valid():
+            raise BadRequestException()
+
+        return Response(form.submit(request))
+
+class PublicationRequestPreview(APIView):
+    '''
+       Class for rendering the view for getting a preview of a PublicationRequest.
+    '''
+
+    def get(self, request, publication_request_id):
+        '''
+            Method for getting an PublicationRequest's preview.
+        '''
+        params = dict((key, val) for key, val in request.QUERY_PARAMS.iteritems())
+        params['publication_request_id'] = publication_request_id
+        form = PreviewForm(params)
 
         if not form.is_valid():
             raise BadRequestException()

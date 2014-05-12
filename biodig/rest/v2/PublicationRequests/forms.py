@@ -9,7 +9,7 @@
 from django import forms
 from biodig.base.models import PublicationRequest, Image, TagGroup, Tag, GeneLink
 from biodig.base import forms as bioforms
-from biodig.base.serializers import PublicationRequestSerializer
+from biodig.base.serializers import PublicationRequestSerializer, PublicationRequestPreviewSerializer
 from biodig.base.exceptions import PublicationRequestDoesNotExist, ImageDoesNotExist, DatabaseIntegrity
 from rest_framework.exceptions import PermissionDenied
 from django.db import transaction, DatabaseError
@@ -217,3 +217,49 @@ class SingleGetForm(forms.Form):
             raise PermissionDenied()
 
         return PublicationRequestSerializer(pubrequest).data
+
+class PreviewForm(forms.Form):
+    # Path Parameters
+    publication_request_id = forms.IntegerField(required=True)
+
+    def clean_publication_request_id(self):
+        return FormUtil.clean_publication_request_id(self.cleaned_data)
+
+    def submit(self, request):
+        '''
+            Submits the form for getting an PublicationRequest's preview
+            once the form has cleaned the input data.
+        '''
+        try:
+            pubrequest = PublicationRequest.objects.get(pk__exact=self.cleaned_data['publication_request_id'])
+        except PublicationRequest.DoesNotExist:
+            raise PublicationRequestDoesNotExist()
+
+        if pubrequest.user != request.user and not request.user.is_staff:
+            raise PermissionDenied()
+
+        # get the image that has been targeted and make it public
+        try:
+            image = Image.objects.get(pk__exact=pubrequest.target)
+            image.isPrivate = False
+        except Image.DoesNotExist:
+            raise ImageDoesNotExist()
+
+        # get all the tag groups that are private and were created before the timestamp
+        # on the request and were on the image targeted and were created by the request's user
+        tagGroups = TagGroup.objects.filter(image=image, isPrivate=True, user=pubrequest.user,
+            dateCreated__lt=pubrequest.dateCreated)
+
+        # get all the tags that are private and were created before the timestamp on the
+        # request and were in one of the tag groups being updated and were created by the
+        # request's user
+        tags = Tag.objects.filter(group__in=tagGroups, isPrivate=True, user=pubrequest.user,
+            dateCreated__lt=pubrequest.dateCreated)
+
+        # get all the gene links that are private and were created before the timestamp on the
+        # request and were in one of the tags being updated and were created by the
+        # request's user
+        geneLinks = GeneLink.objects.filter(tag__in=tags, isPrivate=True, user=pubrequest.user,
+            dateCreated__lt=pubrequest.dateCreated)
+
+        return PublicationRequestPreviewSerializer(image, tagGroups, tags, geneLinks).data

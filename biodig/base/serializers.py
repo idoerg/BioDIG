@@ -25,6 +25,15 @@ class PublicationRequestSerializer(serializers.ModelSerializer):
         model = PublicationRequest
         fields = ('id', 'target', 'owner', 'status', 'dateCreated')
 
+class PublicationRequestPreviewSerializer:
+    def __init__(self, image, tagGroups, tags, geneLinks):
+        self.data = {
+            'images': ImageSerializer(image).data,
+            'tagGroups': TagGroupSerializer(tagGroups, many=True),
+            'tags': TagSerializer(tags, many=True),
+            'geneLinks': GeneLinkSerializer(geneLinks, many=True)
+        }
+
 class ImageOrganismSerializer:
     def __init__(self, imageOrg, many=False):
         if not many:
