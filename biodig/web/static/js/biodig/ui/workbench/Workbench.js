@@ -28,7 +28,7 @@ define(deps, function($, _, settings, Toolbar, Taggable, StructureTmpl) {
             Taggable.create($image, { 'mode' : Taggable.MODES.REGISTERED, 'alreadyLoaded': false });
         };
 
-        $(this.toolbar.get('MyImages')).on('image:click', imageFn);
+        $(this.toolbar.get('PublicImages')).on('image:click', imageFn);
         //$(this.toolbar.get('RecentlyViewedImages')).on('image:click', imageFn);
     }
 
