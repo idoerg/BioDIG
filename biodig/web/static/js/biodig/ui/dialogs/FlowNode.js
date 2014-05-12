@@ -53,7 +53,7 @@ define([], function() {
             this.$view = $(this.template(this.mydata));
         }
 
-        $(this).trigger('view');
+        $(this).trigger('render');
 
         return this.$view;
     };

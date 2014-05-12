@@ -13,7 +13,7 @@ define(deps, function($, _, FlowNode, ChooseFeatureTmpl) {
 
             // add the controls onto the FlowNode for displaying
             // the limiting of features
-            $(node).on('view', function() {
+            $(node).on('render', function() {
                 var $organismselect = node.view().find('select[name="select-organism"]');
                 var $typeselect = node.view().find('select[name="select-organism"]');
                 var $featureselect = node.view().find('select[name="select-feature"]');
