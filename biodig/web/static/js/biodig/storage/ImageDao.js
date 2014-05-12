@@ -1,9 +1,9 @@
 var deps = [
     'jquery', 'biodig/clients/ImageClient', 'biodig/clients/ImageOrganismClient',
-    'biodig/clients/TagGroupClient', 'biodig/clients/TagClient'
+    'biodig/clients/TagGroupClient', 'biodig/clients/TagClient', 'biodig/clients/GeneLinkClient'
 ];
 
-define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagClient) {
+define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagClient, GeneLinkClient) {
 
     function ImageDao(image_id) {
         this.image_id = image_id;
