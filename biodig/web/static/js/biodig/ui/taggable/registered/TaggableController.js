@@ -458,6 +458,7 @@ define(deps, function($, util) {
                 });
             },
             geneLinks: function() {
+                var self = this;
                 $(this.dialogs.get('AddGeneLink')).on('accept', function(event, $el, data) {
                     $.when(self.imageDao.addGeneLink(data))
                         .done(function(geneLink) {
