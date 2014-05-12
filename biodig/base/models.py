@@ -321,7 +321,6 @@ class Cv(models.Model):
     definition = models.TextField()
     class Meta:
         db_table = u'cv'
-
         app_label = u'base'
 
 
