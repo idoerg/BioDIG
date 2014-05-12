@@ -346,7 +346,7 @@ define(deps, function($, util) {
                                                     data[group].tags[geneLink.tag].geneLinks[geneLink.id] = geneLink;
                                                 });
                                                 self.loading.hide();
-                                                self.dialogs.get('DeleteGeneLink').show({ 'tagGroups' : tagGroups });
+                                                self.dialogs.get('DeleteGeneLink').show({ 'tagGroups' : data });
                                             })
                                             .fail(function(e) {
                                                 self.messager.add(self.messager.ERROR, error.detail || error.message);
