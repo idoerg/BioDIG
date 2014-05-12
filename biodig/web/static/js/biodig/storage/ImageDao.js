@@ -330,7 +330,7 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
                     });
             }).promise();
         };
-        
+
         if (this.tags_cache[opts.group].tags == null) {
             return $.Deferred(function(deferred_obj) {
                 self.tagGroups()
@@ -410,7 +410,138 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
         }).promise();
     };
 
-    ImageDao.prototype.geneLinks = function(tag_id) {
+
+    /**
+        @param tagGroups: Dictionary of tagGroup ids containing a list of tag ids
+    **/
+    ImageDao.prototype.geneLinks = function(tagGroups) {
+        var self = this;
+        var promises = [];
+        var data = {};
+
+        $.each(tagGroups, function(group, tag_ids) {
+            if (!self.geneLinks_cache[group]) {
+                self.geneLinks_cache[group] = {};
+            }
+
+            $.each(tag_ids, function(index, tag_id) {
+                if (!self.geneLinks_cache[group][tag_id]) {
+                    self.geneLinks_cache[group][tag_id] = {
+                        'client': GeneLinkClient.create(self.image_id, group, tag_id),
+                        'geneLinks': null
+                    };
+                }
+
+                if (self.geneLinks_cache[group][tag_id].geneLinks != null) {
+                    promises.push($.Deferred(function(deferred_obj) {
+                        $.extend(data, self.geneLinks_cache[group][tag_id].geneLinks);
+                        deferred_obj.resolve();
+                    }));
+                }
+                else {
+                    promises.push($.Deferred(function(deferred_obj) {
+                        $.when(self.geneLinks_cache[group][tag_id].client.list())
+                            .done(function(geneLinks) {
+                                self.geneLinks_cache[group][tag_id].geneLinks = {};
+                                $.each(geneLinks, function(index, geneLink) {
+                                    self.geneLinks_cache[group][tag_id].geneLinks[geneLink.id] = geneLink;
+                                    data[geneLink.id] = geneLink;
+                                });
+
+                                deferred_obj.resolve();
+                            })
+                            .fail(function(e) {
+                                deferred_obj.reject();
+                            });
+                    }));
+                }
+            });
+
+        });
+
+
+        return $.Deferred(function(deferred_obj) {
+            $.when.apply($, promises)
+                .done(function() {
+                    deferred_obj.resolve(data);
+                })
+                .fail(function(e) {
+                    deferred_obj.reject(e);
+                });
+        }).promise();
+    };
+
+    ImageDao.prototype.addGeneLink = function(opts) {
+        var self = this;
+
+        var add = function() {
+            return $.Deferred(function(deferred_obj) {
+                // find the correct tag client
+                var client = self.geneLinks_cache[group_id][tag_id].client;
+
+                $.when(client.create(opts.tag, opts.organism_id, opts.feature_id))
+                    .done(function(geneLink) {
+                        self.geneLinks_cache[opts.group][opts.tag].geneLinks = {};
+                        self.geneLinks_cache[opts.group][opts.tag].geneLinks[geneLink.id] = geneLink;
+
+                        // emit event so that UI components can update
+                        $(self).trigger('geneLinks:change');
+
+                        deferred_obj.resolve(geneLink);
+                    })
+                    .fail(function(e) {
+                        deferred_obj.reject(e);
+                    });
+            }).promise();
+        };
+
+        if (this.geneLinks_cache[opts.group][opts.tag].geneLinks == null) {
+            return $.Deferred(function(deferred_obj) {
+                self.tagGroups()
+                    .done(function(tagGroups) {
+                        var ids = $.map(tagGroups, function(tagGroup) {
+                            return tagGroup.id;
+                        });
+
+                        self.tags(ids)
+                            .done(function(tags) {
+                                var geneLinkQuery = {};
+                                $.each(tags, function(id, tag) {
+                                    if (!geneLinkQuery[tag.group]) {
+                                        geneLinkQuery[tag.group] = [];
+                                    }
+
+                                    geneLinkQuery[tag.group].push(tag.id);
+                                });
+
+                                self.geneLinks(geneLinkQuery)
+                                    .done(function() {
+                                        $.when(add())
+                                            .done(function(geneLink) {
+                                                deferred_obj.resolve(geneLink);
+                                            })
+                                            .fail(function(e) {
+                                                deferred_obj.reject(e);
+                                            });
+                                    })
+                                    .fail();
+
+                            })
+                            .fail(function(e) {
+                                deferred_obj.reject(e);
+                            });
+                    })
+                    .fail(function(e) {
+                        deferred_obj.reject(e);
+                    });
+            }).promise();
+        }
+        else {
+            return add();
+        }
+    };
+
+    ImageDao.prototype.deleteGeneLink = function(id) {
 
     };
 

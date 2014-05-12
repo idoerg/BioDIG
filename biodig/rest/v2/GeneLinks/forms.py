@@ -108,7 +108,7 @@ class MultiGetForm(forms.Form):
     # Gene Link filters
     lastModified = bioforms.DateTimeRangeField(required=False)
     dateCreated = bioforms.DateTimeRangeField(required=False)
-    user = forms.IntegerField(required=False)
+    owner = forms.IntegerField(required=False)
 
     # Path Parameters
     image_id = forms.IntegerField(required=True)
@@ -147,9 +147,11 @@ class MultiGetForm(forms.Form):
         else:
             qbuild.q = qbuild().filter(isPrivate=False)
 
-        filterkeys = ['user', 'lastModified', 'dateCreated']
+        filterkeys = ['lastModified', 'dateCreated']
         for key in filterkeys:
             qbuild.filter(key, self.cleaned_data[key])
+
+        qbuild.filter('user', self.cleaned_data['owner'])
 
         if not self.cleaned_data['limit'] or self.cleaned_data['limit'] < 0:
             qbuild.q = qbuild()[self.cleaned_data['offset']:]

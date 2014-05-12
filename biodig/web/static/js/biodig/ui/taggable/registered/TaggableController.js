@@ -458,7 +458,15 @@ define(deps, function($, util) {
                 });
             },
             geneLinks: function() {
-
+                $(this.dialogs.get('AddGeneLink')).on('accept', function(event, $el, data) {
+                    $.when(self.imageDao.addGeneLink(data))
+                        .done(function(geneLink) {
+                            self.messager.add(self.messager.SUCCESS, 'Added gene link "' + geneLink.feature.name + '"');
+                        })
+                        .fail(function(e) {
+                            console.error(e.detail || e.message);
+                        })
+                });
             }
         },
         tearDown: {
@@ -522,10 +530,6 @@ define(deps, function($, util) {
                     self.drawingBoard.config('fillStyle', color);
                     self.drawingBoard.redraw();
                 });
-            },
-            board: function() {
-                var self = this;
-
             }
         },
         tearDown: {
@@ -536,9 +540,6 @@ define(deps, function($, util) {
                 $(this.drawingMenu).off('submit');
                 $(this.drawingMenu).off('style:change');
                 $(this.drawingMenu).off('color:change alpha:change');
-            },
-            board: function() {
-
             }
         }
     };
