@@ -37,9 +37,11 @@
                                                 <%= gene.feature.name %>
                                             </a>
                                         </td>
-                                        <a href="<%= settings.SITE_URL %>genome_browser?organismId=<%= gene.feature.organism %>&uniquename=<%= gene.feature.uniquename %>">
-                                            <%= gene.feature.uniquename %>
-                                        </a>
+                                        <td>
+                                            <a href="<%= settings.SITE_URL %>genome_browser?organismId=<%= gene.feature.organism %>&uniquename=<%= gene.feature.uniquename %>">
+                                                <%= gene.feature.uniquename %>
+                                            </a>
+                                        </td>
                                     </tr>
                                 <% }); %>
                             </tbody>
