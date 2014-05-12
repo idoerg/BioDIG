@@ -29,7 +29,7 @@ define(deps, function($, _, settings, Toolbar, Taggable, StructureTmpl) {
         };
 
         $(this.toolbar.get('MyImages')).on('image:click', imageFn);
-        $(this.toolbar.get('RecentlyViewedImages')).on('image:click', imageFn);
+        //$(this.toolbar.get('RecentlyViewedImages')).on('image:click', imageFn);
     }
 
     return {

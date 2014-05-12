@@ -31,7 +31,7 @@ define(deps, function($, _, util, PublicationRequestClient, UserClient, ImageCli
         $.when(this.client.list())
             .done(function(publicationRequests) {
                 if (publicationRequests.length == 0) {
-                    self.$el.append('<div class="panel-body">There are no Publication Requests at this time</div>');
+                    self.$el.append('<div class="panel-body">There are no requests at this time</div>');
                 }
 
                 $.each(publicationRequests, function(id, publicationReq) {
