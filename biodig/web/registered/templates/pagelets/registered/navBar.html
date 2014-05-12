@@ -73,12 +73,15 @@
                 <div>
                     <ul id="user_options">
                         <li class="logged_in_title_left"><a href="{{ SITE_URL }}registered/workbench">Workbench</a></li>
+                        {% if user.is_staff %}
                         <li class="logged_in_title_left"><a href="{{ SITE_URL }}admin">Administration</a></li>
+                        {% endif %}
                         <li class="logout"><a onclick="logout(event)">Logout</a></li>
                     </ul>
                 </div>
             {% endif %}
         </div>
+        <!--
         <div class="login_search">
             <form id="search"  method="get" action="{{ SITE_URL }}search/">
                 <input type="text" name="query" id="query" />
@@ -90,5 +93,6 @@
                 <a href="{{ SITE_URL }}advancedSearch/">Advanced Search</a>
             </div>
         </div>
+        -->
     </div>
 </body>
