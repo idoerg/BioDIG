@@ -383,7 +383,7 @@ define(deps, function($, util) {
                 this.menu.section('publication').item('add').on('click', function() {
                     $.when(self.imageDao.previewPublicationRequest())
                         .done(function(preview) {
-                            self.dialogs.get('AddPublicationRequest').show({ 'preview' : preview })
+                            self.dialogs.get('AddPublicationRequest').show(preview)
                         })
                         .fail(function(e) {
                             self.messager.add(self.messager.ERROR, error.detail || error.message);
