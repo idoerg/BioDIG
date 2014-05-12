@@ -119,6 +119,7 @@ define(deps, function($, settings, util, URLBuilderFactory) {
      *               offset: The number of entries to skip before listing.
     **/
     ImageClient.prototype.list = function(opts) {
+        if (!opts) opts = {};
         var urlBuilder = URLBuilderFactory.newBuilder(this.url);
         $.each(opts, function(key, val) {
             urlBuilder.addQuery(key, val, URLBuilderFactory.NOT_EMPTY);
