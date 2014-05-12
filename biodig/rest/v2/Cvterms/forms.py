@@ -75,10 +75,10 @@ class MultiGetForm(forms.Form):
             qbuild.filter(key, self.cleaned_data[key])
 
         if self.cleaned_data['is_relationshiptype'] is not None:
-            qbuild.filter('is_relationshiptype', self.cleaned_data['is_relationshiptype'])
+            qbuild.filter('is_relationshiptype', self.cleaned_data['is_relationshiptype'], '')
 
         if self.cleaned_data['is_obsolete'] is not None:
-            qbuild.filter('is_obsolete', self.cleaned_data['is_obsolete'])
+            qbuild.filter('is_obsolete', self.cleaned_data['is_obsolete'], '')
 
         if not self.cleaned_data['limit'] or self.cleaned_data['limit'] < 0:
             qbuild.q = qbuild()[self.cleaned_data['offset']:]

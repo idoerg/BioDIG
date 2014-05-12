@@ -291,7 +291,7 @@ define(deps, function($, util) {
                     );
 
                     $.when.apply($, promises).always(function() {
-                        if (errors) {
+                        if (errors.length > 0) {
                             $.each(errors, function(index, error) {
                                 self.messager.add(self.messager.ERROR, error.detail || error.message);
                             });
