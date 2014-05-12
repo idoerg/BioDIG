@@ -14,6 +14,13 @@ class UserDoesNotExist(APIException):
     status_code = 404
     default_detail = "The user_id provided does not refer to a user in this database."
 
+class PublicationRequestDoesNotExist(APIException):
+    '''
+        PublicationRequest does not exist error.
+    '''
+    status_code = 404
+    default_detail = "The publication_request_id provided does not refer to an publication request in this database."
+
 class ImageDoesNotExist(APIException):
     '''
         Image does not exist error.
