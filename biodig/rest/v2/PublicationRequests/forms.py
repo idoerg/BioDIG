@@ -14,6 +14,7 @@ from biodig.base.exceptions import PublicationRequestDoesNotExist, ImageDoesNotE
 from rest_framework.exceptions import PermissionDenied
 from django.db import transaction, DatabaseError
 from django.core.exceptions import ValidationError
+import datetime
 
 class FormUtil:
     @staticmethod
@@ -101,7 +102,7 @@ class PostForm(forms.Form):
             # get the image that has been targeted and make it public
             image.isPrivate = False
 
-            now = datetime.now()
+            now = datetime.datetime.now()
             # get all the tag groups that are private and were created before the timestamp
             # on the request and were on the image targeted and were created by the request's user
             tagGroups = TagGroup.objects.filter(image=image, isPrivate=True, user=pubrequest.user,
