@@ -1,21 +1,30 @@
 '''
     This file holds all of the forms for the cleaning and validation of
-    the parameters being used for ImageOrganisms.
-    
-    Created on January 13, 2013
+    the parameters being used for PublicationRequests.
+
+    Created on May 12, 2014
 
     @author: Andrew Oberlin
 '''
 from django import forms
-from biodig.base.models import Image, ImageOrganism, Organism
+from biodig.base.models import PublicationRequest, Image, TagGroup, Tag, GeneLink
 from biodig.base import forms as bioforms
-from biodig.base.serializers import ImageOrganismSerializer
-from biodig.base.exceptions import ImageOrganismDoesNotExist, ImageDoesNotExist, DatabaseIntegrity
+from biodig.base.serializers import PublicationRequestSerializer
+from biodig.base.exceptions import PublicationRequestDoesNotExist, ImageDoesNotExist, DatabaseIntegrity
 from rest_framework.exceptions import PermissionDenied
 from django.db import transaction, DatabaseError
 from django.core.exceptions import ValidationError
 
-class FormCleaningUtil:
+class FormUtil:
+    @staticmethod
+    def clean_publication_request_id(data):
+        '''
+            Cleans an publication_request id ensuring that it is a positive integer.
+        '''
+        if data['publication_request_id'] < 0:
+            raise ValidationError("PublicationRequest id is incorrect.")
+        return data['publication_request_id']
+
     @staticmethod
     def clean_image_id(data):
         '''
@@ -25,25 +34,13 @@ class FormCleaningUtil:
             raise ValidationError("Image id is incorrect.")
         return data['image_id']
 
-    @staticmethod
-    def clean_organism_id(data):
-        '''
-            Cleans an organism id ensuring that it is a positive integer.
-        '''
-        if data['organism_id'] < 0:
-            raise ValidationError("Organism id is incorrect.")
-        return data['organism_id']
-
 class MultiGetForm(forms.Form):
     # Query Parameters
     offset = forms.IntegerField(required=False)
     limit = forms.IntegerField(required=False)
 
-    # Path Parameters
-    image_id = forms.IntegerField(required=True) 
-
-    def clean_image_id(self):
-        return FormCleaningUtil.clean_image_id(self.cleaned_data)
+    def clean_publication_request_id(self):
+        return FormUtil.clean_publication_request_id(self.cleaned_data)
 
     def clean(self):
         if not self.cleaned_data['offset']: self.cleaned_data['offset'] = 0
@@ -51,102 +48,148 @@ class MultiGetForm(forms.Form):
 
     def submit(self, request):
         '''
-            Submits the form for getting multiple ImageOrganisms
+            Submits the form for getting multiple PublicationRequests
+            once the form has cleaned the input data.
+        '''
+        qbuild = bioforms.QueryBuilder(PublicationRequest)
+        if not request.user.is_staff:
+            qbuild.filter('user', request.user)
+
+        if not self.cleaned_data['limit'] or self.cleaned_data['limit'] < 0:
+            qbuild.q = qbuild()[self.cleaned_data['offset']:]
+        else:
+            qbuild.q = qbuild()[self.cleaned_data['offset'] : self.cleaned_data['offset']+self.cleaned_data['limit']]
+
+        return PublicationRequestSerializer(qbuild(), many=True).data
+
+class PostForm(forms.Form):
+    # Path Parameters
+    image_id = forms.IntegerField(required=True)
+
+    def clean_image_id(self):
+        return FormUtil.clean_image_id(self.cleaned_data)
+
+    @transaction.commit_on_success
+    def submit(self, request):
+        '''
+            Submits the form for creating a PublicationRequest
             once the form has cleaned the input data.
         '''
         try:
             image = Image.objects.get(pk__exact=self.cleaned_data['image_id'])
         except Image.DoesNotExist:
             raise ImageDoesNotExist()
-        
-        if image.isPrivate:
-            if request.user and request.user.is_authenticated():
-                if not user.is_staff and image.user != request.user:
-                    raise PermissionDenied()
-            else:
-                raise PermissionDenied()
-        
-        organisms = ImageOrganism.objects.filter(picture=image)
-        
-        if not self.cleaned_data['limit'] or self.cleaned_data['limit'] < 0:
-            organisms = organisms[self.cleaned_data['offset']:]
-        else:
-            organims = organisms[self.cleaned_data['offset'] : self.cleaned_data['offset']+self.cleaned_data['limit']]
 
-        return ImageOrganismSerializer(organisms, many=True).data
-
-class PostForm(forms.Form):
-    # Path Parameters
-    image_id = forms.IntegerField(required=True)
-    
-    # POST (data section) Body Parameters
-    organism_id = forms.IntegerField(required=True)
-
-    def clean_image_id(self):
-        return FormCleaningUtil.clean_image_id(self.cleaned_data)
-
-    def clean_organism_id(self):
-        return FormCleaningUtil.clean_organism_id(self.cleaned_data)
-
-    @transaction.commit_on_success
-    def submit(self, request):
-        '''
-            Submits the form for creating an ImageOrganism
-            once the form has cleaned the input data.
-        '''
-        try:
-            image = Image.objects.get(pk__exact=self.cleaned_data['image_id'])
-        except (Image.DoesNotExist, ValueError):
-            raise ImageDoesNotExist()
-        
-        try:
-            organism = Organism.objects.get(pk__exact=self.cleaned_data['organism_id'])
-        except (Organism.DoesNotExist, ValueError):
-            raise OrganismDoesNotExist()
-
-        if not request.user.is_staff and image.user != request.user:
+        # check to see if the user has permissions to publish changes on this image
+        permitted = not image.isPrivate or image.user == request.user or request.user.is_staff
+        if not permitted:
             raise PermissionDenied()
 
-        # start saving the new tag now that it has passed all tests
-        imageOrg = ImageOrganism(picture=image, organism=organism)
+        pubrequest = PublicationRequest(target=image, user=request.user)
+
         try:
-            imageOrg.save()
+            pubrequest.save()
         except DatabaseError:
             transaction.rollback()
             raise DatabaseIntegrity()
 
-        return ImageOrganismSerializer(imageOrg).data
+        return PublicationRequestSerializer(pubrequest).data
 
-class DeleteForm(forms.Form):
+class PutForm(forms.Form):
     # Path Parameters
-    image_id = forms.IntegerField(required=True)
-    organism_id = forms.IntegerField(required=True)
+    publication_request_id = forms.IntegerField(required=True)
 
-    def clean_image_id(self):
-        return FormCleaningUtil.clean_image_id(self.cleaned_data)
+    def clean_publication_request_id(self):
+        return FormUtil.clean_publication_request_id(self.cleaned_data)
 
-    def clean_organism_id(self):
-        return FormCleaningUtil.clean_organism_id(self.cleaned_data)
-    
+
     @transaction.commit_on_success
     def submit(self, request):
         '''
-            Submits the form for deleting a ImageOrganism
+            Submits the form for fulfilling a PublicationRequest
             once the form has cleaned the input data.
         '''
         try:
-            image = Image.objects.get(pk__exact=self.cleaned_data['image_id'])
-            if not request.user.is_staff and image.user != request.user:
-                raise PermissionDenied()
+            pubrequest = PublicationRequest.objects.get(pk__exact=self.cleaned_data['publication_request_id'])
+        except PublicationRequest.DoesNotExist:
+            raise PublicationRequestDoesNotExist()
 
-            imageOrg = ImageOrganism.objects.get(picture=image, organism=self.cleaned_data['organism_id']) 
-        except (ImageOrganism.DoesNotExist, Image.DoesNotExist):
-            raise ImageOrganismDoesNotExist()
+        if not request.user.is_staff:
+            raise PermissionDenied()
 
-        serialized = ImageOrganismSerializer(imageOrg).data
+        # update the pubrequest to show that it is running
+        try:
+            pubrequest.status = PublicationRequest.RUNNING
+            pubrequest.save()
+        except DatabaseError:
+            transaction.rollback()
+            raise DatabaseIntegrity()
+
+        # get the image that has been targeted and make it public
+        try:
+            image = Image.objects.get(pk__exact=pubrequest.target)
+            image.isPrivate = False
+        except Image.DoesNotExist:
+            raise ImageDoesNotExist()
+
+        # get all the tag groups that are private and were created before the timestamp
+        # on the request and were on the image targeted and were created by the request's user
+        tagGroups = TagGroup.objects.filter(image=image, isPrivate=True, user=pubrequest.user,
+            dateCreated__lt=pubrequest.dateCreated)
+
+        # get all the tags that are private and were created before the timestamp on the
+        # request and were in one of the tag groups being updated and were created by the
+        # request's user
+        tags = Tag.objects.filter(group__in=tagGroups, isPrivate=True, user=pubrequest.user,
+            dateCreated__lt=pubrequest.dateCreated)
+
+        # get all the gene links that are private and were created before the timestamp on the
+        # request and were in one of the tags being updated and were created by the
+        # request's user
+        geneLinks = GeneLink.objects.filter(tag__in=tags, isPrivate=True, user=pubrequest.user,
+            dateCreated__lt=pubrequest.dateCreated)
+
+        serialized = PublicationRequestSerializer(pubrequest).data
+
+        # save all the changes
+        try:
+            image.save()
+            tagGroups.update(isPrivate=False)
+            tags.update(isPrivate=False)
+            geneLinks.update(isPrivate=False)
+            pubrequest.delete()
+        except DatabaseError:
+            transaction.rollback()
+            raise DatabaseIntegrity()
+
+        return serialized
+
+
+class DeleteForm(forms.Form):
+    # Path Parameters
+    publication_request_id = forms.IntegerField(required=True)
+
+    def clean_publication_request_id(self):
+        return FormUtil.clean_publication_request_id(self.cleaned_data)
+
+    @transaction.commit_on_success
+    def submit(self, request):
+        '''
+            Submits the form for deleting a PublicationRequest
+            once the form has cleaned the input data.
+        '''
+        try:
+            pubrequest = PublicationRequest.objects.get(pk__exact=self.cleaned_data['publication_request_id'])
+        except PublicationRequest.DoesNotExist:
+            raise PublicationRequestDoesNotExist()
+
+        if pubrequest.user != request.user and not request.user.is_staff:
+            raise PermissionDenied()
+
+        serialized = PublicationRequestSerializer(pubrequest).data
 
         try:
-            imageOrg.delete()
+            pubrequest.delete()
         except DatabaseError:
             transaction.rollback()
             raise DatabaseIntegrity()
@@ -155,34 +198,22 @@ class DeleteForm(forms.Form):
 
 class SingleGetForm(forms.Form):
     # Path Parameters
-    image_id = forms.IntegerField(required=True)
-    organism_id = forms.IntegerField(required=True)
+    publication_request_id = forms.IntegerField(required=True)
 
-    def clean_image_id(self):
-        return FormCleaningUtil.clean_image_id(self.cleaned_data)
-
-    def clean_organism_id(self):
-        return FormCleaningUtil.clean_organism_id(self.cleaned_data)
+    def clean_publication_request_id(self):
+        return FormUtil.clean_publication_request_id(self.cleaned_data)
 
     def submit(self, request):
         '''
-            Submits the form for getting an ImageOrganism
+            Submits the form for getting an PublicationRequest
             once the form has cleaned the input data.
         '''
         try:
-            image = Image.objects.get(pk__exact=self.cleaned_data['image_id'])
-        except Image.DoesNotExist:
-            raise ImageDoesNotExist()
+            pubrequest = PublicationRequest.objects.get(pk__exact=self.cleaned_data['publication_request_id'])
+        except PublicationRequest.DoesNotExist:
+            raise PublicationRequestDoesNotExist()
 
-        if image.isPrivate:
-            if request.user and request.user.is_authenticated():
-                if not user.is_staff and image.user != request.user:
-                    raise PermissionDenied()
-            else:
-                raise PermissionDenied()
-        try:
-            imageOrg = ImageOrganism.objects.get(picture=image, organism__exact=self.cleaned_data['organism_id'])
-        except ImageOrganism.DoesNotExist:
-            raise ImageOrganismDoesNotExist()
+        if pubrequest.user != request.user and not request.user.is_staff:
+            raise PermissionDenied()
 
-        return ImageOrganismSerializer(imageOrg).data
+        return PublicationRequestSerializer(pubrequest).data

@@ -1,7 +1,7 @@
 '''
     This file holds all of the forms for the cleaning and validation of
     the parameters being used for Tag Groups.
-    
+
     Created on January 13, 2013
 
     @author: Andrew Oberlin
@@ -26,7 +26,7 @@ class MultiGetForm(forms.Form):
     name = forms.CharField(required=False)
 
     # Path Parameters
-    image_id = forms.IntegerField(required=True) 
+    image_id = forms.IntegerField(required=True)
 
     def clean(self):
         if not self.cleaned_data['offset']: self.cleaned_data['offset'] = 0
@@ -39,14 +39,14 @@ class MultiGetForm(forms.Form):
             once the form has cleaned the input data.
         '''
         qbuild = bioforms.QueryBuilder(TagGroup)
-        
+
         # add permissions to query
         if request.user and request.user.is_authenticated():
             if not request.user.is_staff:
                 qbuild.q = qbuild().filter(isPrivate = False) | TagGroup.objects.filter(user__pk__exact=request.user.pk)
         else:
             qbuild.q = qbuild().filter(isPrivate=False)
-        
+
         filterkeys = {
             'name' : 'name', 'user' : 'owner',
             'lastModified' : 'lastModified',
@@ -55,7 +55,7 @@ class MultiGetForm(forms.Form):
         }
         for buildkey, key in filterkeys.iteritems():
             qbuild.filter(buildkey, self.cleaned_data[key])
-            
+
         if not self.cleaned_data['limit'] or self.cleaned_data['limit'] < 0:
             qbuild.q = qbuild()[self.cleaned_data['offset']:]
         else:
@@ -66,7 +66,7 @@ class MultiGetForm(forms.Form):
 class PostForm(forms.Form):
     # Path Parameters
     image_id = forms.IntegerField(required=True)
-    
+
     # POST (data section) Body Parameters
     name = forms.CharField(required=True)
 
@@ -77,7 +77,7 @@ class PostForm(forms.Form):
         '''
         if self.cleaned_data['image_id'] < 0: raise ValidationError("The given image id is incorrect.")
         return self.cleaned_data
-    
+
     @transaction.commit_on_success
     def submit(self, request):
         '''
@@ -88,13 +88,12 @@ class PostForm(forms.Form):
             image = Image.objects.get(pk__exact=self.cleaned_data['image_id'])
         except (Image.DoesNotExist, ValueError):
             raise ImageDoesNotExist()
-        
+
         if not image.writePermissions(request.user):
             raise PermissionDenied()
-        
+
         # start saving the new tag now that it has passed all tests
-        isPrivate = not request.user.is_staff
-        tagGroup = TagGroup(name=self.cleaned_data['name'], picture=image, user=request.user, isPrivate=isPrivate)
+        tagGroup = TagGroup(name=self.cleaned_data['name'], picture=image, user=request.user)
         try:
             tagGroup.save()
         except DatabaseError:
@@ -115,22 +114,22 @@ class DeleteForm(forms.Form):
         if self.cleaned_data['image_id'] < 0: raise ValidationError("The given image id is incorrect.")
         if self.cleaned_data['tag_group_id'] < 0: raise ValidationError("The given tag group id is incorrect.")
         return self.cleaned_data
-    
+
     @transaction.commit_on_success
     def submit(self, request):
         '''
             Submits the form for deleting a TagGroup
             once the form has cleaned the input data.
         '''
-        
+
         try:
             group = TagGroup.objects.get(pk__exact=self.cleaned_data['tag_group_id'], picture__exact=self.cleaned_data['image_id'])
         except (TagGroup.DoesNotExist, ValueError):
             raise TagGroupDoesNotExist()
-        
+
         if not group.writePermissions(request.user):
             raise PermissionDenied()
-       
+
         serialized = TagGroupSerializer(group).data
 
         try:
@@ -138,7 +137,7 @@ class DeleteForm(forms.Form):
         except DatabaseError:
             transaction.rollback()
             raise DatabaseIntegrity()
-        
+
         return serialized
 
 class PutForm(forms.Form):
@@ -167,14 +166,14 @@ class PutForm(forms.Form):
             group = TagGroup.objects.get(pk__exact=self.cleaned_data['tag_group_id'], picture__exact=self.cleaned_data['image_id'])
         except (TagGroup.DoesNotExist, ValueError):
             raise TagGroupDoesNotExist()
-        
+
         if not group.writePermissions(request.user):
             raise PermissionDenied()
-        
+
         # update the name
         if self.cleaned_data['name']:
             group.name = self.cleaned_data['name']
-        
+
         try:
             group.save()
         except DatabaseError:

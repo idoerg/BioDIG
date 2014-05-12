@@ -4,7 +4,7 @@ Created on Nov 3, 2013
 @author: Andrew Oberlin
 '''
 from django.contrib.auth.models import User
-from models import Image, TagGroup, Tag, TagPoint, TagColor, GeneLink, Organism, Feature, Cvterm
+from models import Image, TagGroup, Tag, TagPoint, TagColor, GeneLink, Organism, Feature, Cvterm, PublicationJob
 from rest_framework import serializers
 import biodig.swagger.decorators.Models as Models
 import biodig.swagger.decorators.Types as Types
@@ -17,6 +17,13 @@ class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
         fields = ('id', 'description', 'url', 'thumbnail', 'owner', 'dateCreated', 'altText')
+
+class PublicationRequestSerializer(serializers.ModelSerializer):
+    owner = serializers.PrimaryKeyRelatedField(source='user')
+
+    class Meta:
+        model = PublicationRequest
+        fields = ('id', 'target', 'owner', 'status', 'dateCreated')
 
 class ImageOrganismSerializer:
     def __init__(self, imageOrg, many=False):

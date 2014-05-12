@@ -2,7 +2,7 @@ from biodig.base.exceptions import BadRequestException
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from biodig.rest.v2.PublicationRequests.forms import MultiGetForm, PostForm, DeleteForm, SingleGetForm
+from biodig.rest.v2.PublicationRequests.forms import MultiGetForm, PostForm, PutForm, DeleteForm, SingleGetForm
 
 class PublicationRequestList(APIView):
     '''
@@ -10,13 +10,12 @@ class PublicationRequestList(APIView):
        searching through the PublicationRequests.
     '''
 
-    def get(self, request, image_id):
+    def get(self, request):
         '''
             Method for getting multiple PublicationRequests either through search
             or general listing.
         '''
         params = dict((key, val) for key, val in request.QUERY_PARAMS.iteritems())
-        params['image_id'] = image_id
         form = MultiGetForm(params)
 
         if not form.is_valid():
@@ -41,17 +40,16 @@ class PublicationRequestList(APIView):
 
 class PublicationRequestSingle(APIView):
     '''
-       Class for rendering the view for getting a Organim, deleting a PublicationRequest
+       Class for rendering the view for getting a PublicationRequest, deleting a PublicationRequest
        and updating a PublicationRequest.
     '''
 
-    def get(self, request, image_id, organism_id):
+    def get(self, request, publication_request_id):
         '''
             Method for getting an PublicationRequest.
         '''
         params = dict((key, val) for key, val in request.QUERY_PARAMS.iteritems())
-        params['image_id'] = image_id
-        params['organism_id'] = organism_id
+        params['publication_request_id'] = publication_request_id
         form = SingleGetForm(params)
 
         if not form.is_valid():
@@ -59,13 +57,25 @@ class PublicationRequestSingle(APIView):
 
         return Response(form.submit(request))
 
-    def delete(self, request, image_id, organism_id):
+    def put(self, request, publication_request_id):
         '''
-            Method for deleting an PublicationRequest.
+            Method for updating a PublicationRequest's information.
+        '''
+        params = dict((key, val) for key, val in request.DATA.iteritems())
+        params['publication_request_id'] = publication_request_id
+        form = PutForm(params)
+
+        if not form.is_valid():
+            raise BadRequestException()
+
+        return Response(form.submit(request))
+
+    def delete(self, request, publication_request_id):
+        '''
+            Method for canceling an PublicationRequest.
         '''
         params = dict((key, val) for key, val in request.QUERY_PARAMS.iteritems())
-        params['image_id'] = image_id
-        params['organism_id'] = organism_id
+        params['publication_request_id'] = publication_request_id
         form = DeleteForm(params)
 
         if not form.is_valid():

@@ -67,7 +67,7 @@ class ImageSingle(APIView):
         '''
         params = dict((key, val) for key, val in request.DATA.iteritems())
         params['image_id'] = image_id
-        form = PutForm(request.DATA, { 'image_id' : image_id })
+        form = PutForm(params)
 
         if not form.is_valid():
             raise BadRequestException()

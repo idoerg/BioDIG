@@ -2411,18 +2411,16 @@ class ImageOrganism(models.Model):
     def __unicode__(self):
         return ", ".join((str(self.picture.imageName), str(self.organism.common_name)))
 
-class PublicationJob(models.Model):
+class PublicationRequest(models.Model):
     '''
         Requests made to publish a part of the data
         from a registered user.
     '''
     RUNNING = "Running"
     REQUESTED = "Requested"
-    COMPLETED = "Completed"
     JOB_STATUS_CHOICES = (
         (RUNNING, "Running"),
-        (REQUESTED, "Requested"),
-        (COMPLETED, "Completed")
+        (REQUESTED, "Requested")
     )
     status = models.CharField(choices=JOB_STATUS_CHOICES, max_length=10, default=REQUESTED)
     target = models.ForeignKey(Image)
