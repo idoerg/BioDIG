@@ -40,6 +40,7 @@ class MultiGetForm(forms.Form):
     is_obsolete = forms.CharField(required=False)
 
     def clean(self):
+        raise DatabaseIntegrity(detail=self.cleaned_data['is_relationshiptype'])
         is_rel = self.cleaned_data['is_relationshiptype'].lower()
         if is_rel:
             converted = 1 if is_rel == "true" else (0 if is_rel == "false" else None)
@@ -53,7 +54,6 @@ class MultiGetForm(forms.Form):
             self.cleaned_data['is_obsolete'] = converted
         else:
             self.cleaned_data['is_obsolete'] = None
-
 
         if not self.cleaned_data['offset']: self.cleaned_data['offset'] = 0
         return self.cleaned_data
