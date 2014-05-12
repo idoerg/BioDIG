@@ -78,7 +78,7 @@ define(deps, function($, _, util, DynamicDialog, ChangeVisibleTagGroupsTmpl, Dow
                         EditTagFlow.get()),
                     'DeleteTag': DynamicDialog.create('DeleteTag', 'Delete Tag',
                         _.template(ChooseTagTmpl)),
-                    'AddGeneLink': DynamicDialog.create('AddGeneLink', 'Add Gene Link',
+                    'AddGeneLink': DynamicFlowDialog.create('AddGeneLink', 'Add Gene Link',
                         AddGeneLinkFlow.get()),
                     //'DeleteGeneLink': DynamicDialog.create('DeleteGeneLink', 'Delete Gene Link',
                     //    _.template(ChooseGeneLinkTmpl + DeleteGeneLinkTmpl))
