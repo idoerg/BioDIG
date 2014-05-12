@@ -14,7 +14,7 @@ define(deps, function($, _, MyImages, PublicImages, ToolbarTmpl) {
         this.$container.append(this.$el);
         this.menus = {};
 
-        //this.add(RecentlyViewedImages.create());
+        /*this.add(RecentlyViewedImages.create());
         var myImages = MyImages.create(user);
         this.add(myImages);
         $(myImages).on('render', function() {
@@ -35,6 +35,7 @@ define(deps, function($, _, MyImages, PublicImages, ToolbarTmpl) {
                 }
             });
         });
+        */
 
         var pubImages = PublicImages.create();
         this.add(pubImages);
