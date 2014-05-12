@@ -328,7 +328,7 @@ define(deps, function($, util) {
                                         var data = {};
                                         $.each(tags, function(id, tag) {
                                             if (!data[tag.group]) {
-                                                $.extend(data, tagGroups[tag.group]);
+                                                data[tag.group] = tagGroups[tag.group]);
                                                 data[tag.group].tags = {};
                                                 query[tag.group] = [];
                                             }
