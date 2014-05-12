@@ -164,6 +164,7 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
     'biodig.web.public',
     'biodig.web.registered',
+    'biodig.web.admin',
     'biodig.rest.v2',
     'biodig.base'
 )
