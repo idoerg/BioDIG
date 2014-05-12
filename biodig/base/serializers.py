@@ -101,6 +101,7 @@ class FeatureSerializer(serializers.ModelSerializer):
 
 class CvtermSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(source='cvterm_id')
+    cv = serializers.PrimaryKeyRelatedField(source='cv')
 
     class Meta:
         model = Feature
