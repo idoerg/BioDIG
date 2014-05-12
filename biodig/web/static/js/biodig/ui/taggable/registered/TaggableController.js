@@ -330,7 +330,7 @@ define(deps, function($, util) {
                                                 tagGroups[tag.group].tags = {};
                                                 query[tag.group] = [];
                                             }
-                                            tagGroups[tag.group] = tag;
+                                            tagGroups[tag.group].tags[tag.id] = tag;
                                             query[tag.group].push(tag.id);
                                         });
 
