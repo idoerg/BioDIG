@@ -153,11 +153,8 @@ class PutForm(forms.Form):
             raise DatabaseIntegrity()
 
         # get the image that has been targeted and make it public
-        try:
-            image = Image.objects.get(pk__exact=pubrequest.target)
-            image.isPrivate = False
-        except Image.DoesNotExist:
-            raise ImageDoesNotExist()
+        image = pubrequest.target
+        image.isPrivate = False
 
         tagGroups = TagGroup.objects.filter(picture=image, isPrivate=True, user=pubrequest.user,
             dateCreated__lt=pubrequest.dateCreated)
@@ -265,11 +262,8 @@ class PreviewForm(forms.Form):
             raise PermissionDenied()
 
         # get the image that has been targeted and make it public
-        try:
-            image = Image.objects.get(pk__exact=pubrequest.target)
-            image.isPrivate = False
-        except Image.DoesNotExist:
-            raise ImageDoesNotExist()
+        image = pubrequest.target
+        image.isPrivate = False
 
         tagGroups = TagGroup.objects.filter(picture=image, isPrivate=True, user=pubrequest.user,
             dateCreated__lt=pubrequest.dateCreated)
