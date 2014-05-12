@@ -183,7 +183,7 @@ class PostForm(forms.Form):
         return FormUtil.clean_tag_group_id(self.cleaned_data)
 
     def clean_tag_id(self):
-        return FormUtil.clean_points(self.cleaned_data)
+        return FormUtil.clean_tag_id(self.cleaned_data)
 
     @transaction.commit_on_success
     def submit(self, request):
