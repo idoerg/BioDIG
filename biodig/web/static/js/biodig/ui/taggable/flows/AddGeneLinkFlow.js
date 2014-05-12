@@ -60,6 +60,10 @@ define(deps, function($, _, FlowNode, ChooseFeatureFlowNode, ChooseTagGroupTmpl,
         }),
         ChooseFeatureFlowNode.create(function(body) {
             return {
+                'tag': this.data().tag,
+                'organism': $.parseJSON(
+                    unescape(body.find('.select-organism option:selected').data('organism'))
+                ),
                 'feature': $.parseJSON(
                     unescape(body.find('.select-feature option:selected').data('feature'))
                 )

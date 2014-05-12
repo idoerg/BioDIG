@@ -481,9 +481,9 @@ define(deps, function($, ImageClient, ImageOrganismClient, TagGroupClient, TagCl
         var add = function() {
             return $.Deferred(function(deferred_obj) {
                 // find the correct tag client
-                var client = self.geneLinks_cache[group_id][tag_id].client;
+                var client = self.geneLinks_cache[opts.group][opts.tag].client;
 
-                $.when(client.create(opts.tag, opts.organism_id, opts.feature_id))
+                $.when(client.create(opts.tag, opts.organism, opts.feature))
                     .done(function(geneLink) {
                         self.geneLinks_cache[opts.group][opts.tag].geneLinks = {};
                         self.geneLinks_cache[opts.group][opts.tag].geneLinks[geneLink.id] = geneLink;

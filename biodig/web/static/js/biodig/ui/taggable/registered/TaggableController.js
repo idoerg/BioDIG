@@ -460,7 +460,14 @@ define(deps, function($, util) {
             geneLinks: function() {
                 var self = this;
                 $(this.dialogs.get('AddGeneLink')).on('accept', function(event, $el, data) {
-                    $.when(self.imageDao.addGeneLink(data))
+                    var opts = {
+                        'group': data.tag.group,
+                        'tag': data.tag.id,
+                        'feature': data.feature.id,
+                        'organism': data.organism.id
+                    };
+
+                    $.when(self.imageDao.addGeneLink(opts))
                         .done(function(geneLink) {
                             self.messager.add(self.messager.SUCCESS, 'Added gene link "' + geneLink.feature.name + '"');
                         })
