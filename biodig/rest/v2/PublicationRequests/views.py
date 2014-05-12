@@ -23,13 +23,12 @@ class PublicationRequestList(APIView):
 
         return Response(form.submit(request))
 
-    def post(self, request, image_id):
+    def post(self, request):
         '''
             Method for creating a new PublicationRequest.
         '''
         params = dict((key, val) for key, val in request.DATA.iteritems())
         params.update(request.QUERY_PARAMS)
-        params['image_id'] = image_id
         form = PostForm(params)
 
         if not form.is_valid():
