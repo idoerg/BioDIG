@@ -65,7 +65,7 @@ define(deps, function($, ChadoClient) {
 
         return $.Deferred(function(deferred_obj) {
             $.when.apply($, promises).always(function() {
-                if (errors) {
+                if (errors.length > 0) {
                     var e = { 'detail' : '' };
                     $.each(errors, function(index, error) {
                         e.detail += error.detail || error.message + "<br />";
@@ -85,7 +85,7 @@ define(deps, function($, ChadoClient) {
             return $.Deferred(function(deferred_obj) {
                 var opts = {
                     'is_relationshiptype': "false",
-                    "is_obsolete": "false"    
+                    "is_obsolete": "false"
                 };
                 $.when(self.chadoClient.cvterms('sequence', opts))
                     .done(function(types) {
