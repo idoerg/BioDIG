@@ -1,4 +1,4 @@
-define([], function() {
+define(['jquery', 'lib/util'], function($, util) {
     function FlowNode(template, transition) {
         this.template = template;
         this.transition = transition;
@@ -7,15 +7,21 @@ define([], function() {
         this.nextNode = null;
         this.prevNode = null;
         this.$view = null;
+        this.uuid = util.uuid4();
     }
 
     FlowNode.prototype.data = function(data) {
         if (data) {
             this.mydata = data;
+            this.mydata['uuid'] = this.uuid;
         }
         else {
             return this.mydata;
         }
+    };
+
+    FlowNode.prototype.uid = function() {
+        return this.uuid;
     };
 
     FlowNode.prototype.next = function(node) {

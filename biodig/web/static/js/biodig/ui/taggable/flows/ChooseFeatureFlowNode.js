@@ -14,19 +14,20 @@ define(deps, function($, _, FlowNode, ChooseFeatureTmpl) {
             // add the controls onto the FlowNode for displaying
             // the limiting of features
             $(node).on('render', function() {
-                var $organismselect = node.view().find('select[name="select-organism"]');
-                var $typeselect = node.view().find('select[name="select-organism"]');
-                var $featureselect = node.view().find('select[name="select-feature"]');
+                var organism_selector = '#' + node.uid() + ' select[name="select-organism"] option:selected';
+                var type_selector = '#' + node.uid() + ' select[name="select-type"] option:selected';
+                var feature_selector = '#' + node.uid() + ' select[name="select-feature"] option:selected';
 
                 var changeFn = function() {
                     var organism = $.parseJSON(
-                        unescape($organismselect.find('option:selected').data('organism'))
+                        unescape($(organism_selector).data('organism'))
                     );
                     var type = $.parseJSON(
-                        unescape($typeselect.find('option:selected').data('type'))
+                        unescape($(type_selector)).data('type'))
                     );
 
                     // clear out the feature select box
+                    var $featureselect = $(feature_selector);
                     $featureselect.empty();
 
                     // refill the feature select box
@@ -39,8 +40,8 @@ define(deps, function($, _, FlowNode, ChooseFeatureTmpl) {
                     });
                 };
 
-                $organismselect.on('change', changeFn);
-                $typeselect.on('change', changeFn);
+                $(document).on('change', organism_selector, changeFn);
+                $(document).on('change', type_selector, changeFn);
             });
 
 
