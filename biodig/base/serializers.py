@@ -28,7 +28,7 @@ class PublicationRequestSerializer(serializers.ModelSerializer):
 class PublicationRequestPreviewSerializer:
     def __init__(self, image, tagGroups, tags, geneLinks):
         self.data = {
-            'images': ImageSerializer(image).data,
+            'image': ImageSerializer(image).data,
             'tagGroups': TagGroupSerializer(tagGroups, many=True).data,
             'tags': TagSerializer(tags, many=True).data,
             'geneLinks': GeneLinkSerializer(geneLinks, many=True).data
