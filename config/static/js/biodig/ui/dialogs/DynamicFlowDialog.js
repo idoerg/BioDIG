@@ -1,6 +1,6 @@
 var deps = [
     'jquery', 'underscore', 'lib/util', 'biodig/ui/dialogs/FlowNode',
-    'text!biodig/tmpl/taggable/dialogs/structure.html'
+    'text!biodig/tmpl/taggable/dialogs/structure.html', 'bootstrap'
 ];
 
 define(deps, function($, _, util, FlowNode, DialogStructureTmpl) {

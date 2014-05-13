@@ -5,15 +5,16 @@
                 <img class="media-object" src="<%= image.thumbnail %>"></img>
             </a>
             <div class="media-body">
-                <div class="pull-left">
-                    <div><h3>User:</h3><%= user.username %></div>
-                    <div><h3>Date:</h3><%= dateCreated %></div>
+                <div class="pull-left" style="width: 30%;">
+                    <div><strong>User:</strong>&nbsp;&nbsp;<%= user.username %></div>
+                    <br />
+                    <div><strong>Date:</strong>&nbsp;&nbsp;<%= dateCreated %></div>
                 </div>
-                <div class="pull-left">
-                    <button name="preview" class="btn btn-info">Preview</button>
+                <div class="pull-left" style="width:30%; margin-top:25px;">
+                    <button name="preview" class="btn btn-info center-block">Preview</button>
                 </div>
-                <div class="pull-left">
-                    <div class="btn-group">
+                <div class="pull-left" style="width:30%;">
+                    <div class="btn-group" style="top:25px; left:50%">
                         <button name="publish" type="button" class="btn btn-primary">Publish</button>
                         <button name="deny" type="button" class="btn btn-default">Deny</button>
                     </div>

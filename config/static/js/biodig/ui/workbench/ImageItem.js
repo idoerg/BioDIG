@@ -16,9 +16,11 @@ define(deps, function($, _, ImageItemTmpl) {
             $(self).trigger('click');
         });
 
+        /*
         this.$el.find('.delete-image-button').on('click', function() {
             $(self).trigger('delete');
         });
+        */
     }
 
     ImageItem.prototype.view = function() {

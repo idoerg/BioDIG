@@ -35,6 +35,7 @@ var deps = [
 ];
 
 require(deps, function($, _, settings, Taggable, Login, HelpBox) {
+
     // setup the help dialog box for this page
     var helpDialog = $(_.template(HelpBox).call(settings));
 
@@ -63,5 +64,5 @@ require(deps, function($, _, settings, Taggable, Login, HelpBox) {
     });
 
     // setup the Taggable plugin to run in public mode
-    Taggable.create('#target-image', { mode : Taggable.MODES.REGISTERED });
+    Taggable.create('#target-image', { mode : Taggable.MODES.PUBLIC });
 });

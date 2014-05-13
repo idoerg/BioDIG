@@ -7,16 +7,16 @@ define(deps, function($, _, settings, ImageClient, ImageItem, ToolbarMenuTmpl) {
 
     var ToolbarMenuTemplate = _.template(ToolbarMenuTmpl);
 
-    function MyImages(user) {
+    function PublicImages() {
         this.$el = $(ToolbarMenuTemplate({
             'settings': settings,
-            'title': 'My Images'
+            'title': 'Public Images'
         }));
         this.$body = this.$el.find('.toolbar-body');
         this.client = ImageClient.create();
 
         var self = this;
-        $.when(this.client.list({ 'owner' : user }))
+        $.when(this.client.list())
             .done(function(images) {
                 $.each(images, function(id, image) {
                     var item = ImageItem.create(image);
@@ -44,17 +44,17 @@ define(deps, function($, _, settings, ImageClient, ImageItem, ToolbarMenuTmpl) {
             });
     }
 
-    MyImages.prototype.view = function() {
+    PublicImages.prototype.view = function() {
         return this.$el;
     };
 
-    MyImages.prototype.name = function() {
-        return "MyImages";
+    PublicImages.prototype.name = function() {
+        return "PublicImages";
     }
 
     return {
-        create: function(user) {
-            return new MyImages(user);
+        create: function() {
+            return new PublicImages();
         }
     }
 
