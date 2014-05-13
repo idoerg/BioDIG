@@ -2432,4 +2432,4 @@ class PublicationRequest(models.Model):
         app_label = u'base'
 
     def __unicode__(self):
-        return str(self.type) + " Job: " + str(self.target) + " is " + str(self.status)
+        return "Job: " + str(self.target) + " from " + str(user.username) + " is " + str(self.status)
