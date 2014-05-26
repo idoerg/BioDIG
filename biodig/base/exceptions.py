@@ -106,3 +106,12 @@ class NotImplementedException(APIException):
     '''
     status_code = 404
     default_detail = 'This method has not been implemented, and is thus missing.'
+
+class OrthologDoesNotExist(APIException):
+   '''
+	TC_num does not exist
+   '''
+   status_code = 404
+   default_deatil = 'An error occured because TC number does not exist in file.'
+
+
