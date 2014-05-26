@@ -9,7 +9,7 @@ from biodig.rest.v2.Tags.views import TagList, TagSingle
 from biodig.rest.v2.GeneLinks.views import GeneLinkList, GeneLinkSingle
 from biodig.rest.v2.Cvterms.views import CvtermList, CvtermSingle
 from biodig.rest.v2.PublicationRequests.views import PublicationRequestList, PublicationRequestSingle, PublicationRequestPreview
-from biodig.rest.v2.Orthologs.views import OrthologList, OrthologSingle
+
 
 urlpatterns = patterns('',
     url(r'^images/(\d+)/tagGroups/(\d+)/tags/(\d+)/geneLinks/(\d+)/?$', GeneLinkSingle.as_view(), name="Gene Links Single View"),
@@ -30,8 +30,6 @@ urlpatterns = patterns('',
     url(r'^chado/organisms/?$', OrganismList.as_view(), name="Organism List View"),
     url(r'^chado/cv/([\w]+)/terms/(\d+)/?$', CvtermSingle.as_view(), name="Controlled Vocabulary Term Single View"),
     url(r'^chado/cv/([\w]+)/terms/?$', CvtermList.as_view(), name="Controlled Vocabulary Term List View")
-    url(r'^orthologs/?$', OrthologList.as_view(), name="OrthologListView")
-    url(r'^orthologs/(\w\w_[\w]+)', OrthologSingle.as_view(), name="Ortholog Single View")
 )
 
 urlpatterns += patterns('',
@@ -40,3 +38,4 @@ urlpatterns += patterns('',
     url(r'^users/(\d+)/?$', UserSingle.as_view(), name="User Single View"),
     url(r'^users/?$', UserList.as_view(), name="User List View")
 )
+
