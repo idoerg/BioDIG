@@ -1,5 +1,14 @@
-<div style="margin-top: 10px; margin-left: 10px;">
-    <% _.each(ortho_list, function(ortholog) { %>
-    <div class="btn btn-default pull-left" style="margin-right: 10px;"><%= ortholog %></div>
+
+
+<!--<div style="margin-top: 10px; margin-left: 10px;">-->
+    <% _.each(ortho_list, function(ortholog, i) { %>
+    <div data-ortholog="<%= ortholog %>" class="ortho-btn btn btn-default pull-left" style="margin-left: 10px; margin-right: 10px; margin-bottom: 20px"> 
+          <%= ortholog %>
+    </div>
+    <br>
     <% }); %>
-</div>
+<!--</div>-->
+
+
+
+

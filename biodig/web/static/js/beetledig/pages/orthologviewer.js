@@ -29,10 +29,14 @@ require.config({
     }
 });
 
+
 var deps = [
     'jquery', 'beetledig/ui/OrthologViewer'
 ];
 
-require(deps, function($, OrthologViewer) {
-    OrthologViewer.create('#ortholog-container');
+require(deps, function($, OrthologViewer){
+     links = { 'OrthoDB':'http://cegg.unige.ch/orthodb7/results',
+              'FlyBase':'http://flybase.org/cgi-bin/uniq.html?species=Dmel&db=fbgn&caller=quicksearch'
+            };
+     OrthologViewer.create('#ortholog-container',links);
 });

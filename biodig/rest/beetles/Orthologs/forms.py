@@ -22,18 +22,18 @@ class FormUtil:
             Cleans an user id ensuring that it is a positive integer.
         '''
         TCNum = data['TC_id']
-        if len(TCNum) <= 3 or TCNum[:3] != "TC_":
+        if len(TCNum) <= 2 or TCNum[:2] != "TC":
             raise ValidationError("TC id is incorrect.")
         return data['TC_id']
 
     @staticmethod
-    def ortholog_dict():
+    def ortholog_dict(filePath):
 	'''
 	    Reads a csv file,
 	    returns a dict of TC_Num and its orthologs.
         '''
 	ortho_dict= {}
-	with open(os.path.join(settings.PROJECT_PATH, 'data/testGen.csv'), 'r') as f:
+	with open(os.path.join(settings.PROJECT_PATH, filePath), 'r') as f:
             reader= csv.reader(f)
 	    for i,row in enumerate(reader):
                 if i == 0:
@@ -50,8 +50,9 @@ class MultiGetForm(forms.Form):
             Submits the form for getting multiple Organisms
             once the form has cleaned the input data.
         '''
-	ortho_dict = FormUtil.ortholog_dict()
-        return ortho_dict
+	ortho_dict = FormUtil.ortholog_dict('data/testGen.csv')
+        ortho_dict1 = FormUtil.ortholog_dict('data/orthoDB.csv')
+        return ortho_dict, ortho_dict1
 
 
 class SingleGetForm(forms.Form):
@@ -66,12 +67,17 @@ class SingleGetForm(forms.Form):
             Submits the form for getting a Organism
             once the form has cleaned the input data.
         '''
+        final_dict = {}
         try:
-            ortho_dict = FormUtil.ortholog_dict()
+            ortho_dict = FormUtil.ortholog_dict('data/testGen.csv')
+            ortho_dict1 = FormUtil.ortholog_dict('data/orthoDB.csv')
 	    ortho_list = ortho_dict[self.cleaned_data['TC_id']]
+            ortho_list1 = ortho_dict1[self.cleaned_data['TC_id']]
+            final_dict["FlyBase"] = ortho_list;
+            final_dict["OrthoDB"] = ortho_list1;
         except KeyError:
             raise OrthologDoesNotExist()
 
-        return ortho_list
+        return final_dict
 
 

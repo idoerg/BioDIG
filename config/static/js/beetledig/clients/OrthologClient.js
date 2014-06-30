@@ -12,7 +12,7 @@ define(deps, function($, settings, util) {
             // validator
             return {
                 get: function(TC_id) {
-                    if (!TC_id ||TC_id.length<=3 ||TC_id.substring(0,3)!="TC_") throw { detail : 'The id is not a valid TC Number' }
+                    if (!TC_id ||TC_id.length<=2 ||TC_id.substring(0,2)!="TC") throw { detail : TC_id + 'The id is not a valid TC Number' }
                 }
             };
 	}
