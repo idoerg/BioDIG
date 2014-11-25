@@ -55,10 +55,12 @@ define(['jquery', 'lib/util'], function($, util) {
     };
 
     FlowNode.prototype.view = function() {
-        if (this.$view == null) {
-            this.$view = $(this.template(this.mydata));
-            $(this).trigger('render');
+        if (this.$view != null) {
+            this.$view.remove();
         }
+
+        this.$view = $(this.template(this.mydata));
+        $(this).trigger('render');
 
         return this.$view;
     };
